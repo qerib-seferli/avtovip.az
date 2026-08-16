@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://qerib-seferli.github.io/avtovip.az/sitemap.xml
