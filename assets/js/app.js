@@ -1,5 +1,5 @@
 /* ============================================================
-   AvtoVİP.az — əsas frontend modulu
+   AvtoVİP — əsas frontend modulu
    1 əsas JS + ayrıca supabase.js. Admin kodu admin/js/admin.js-dədir.
    ============================================================ */
 (() => {
@@ -26,8 +26,8 @@
   const TRANSMISSIONS = ['Avtomat (AT)','Avtomat (DHT)','Avtomat (Robot)','Avtomat (Variator)','Avtomat (Reduktor)','Mexaniki (MT)'];
   const DRIVETRAINS = ['Ön','Arxa','Tam'];
   const COLOR_OPTIONS = [
-    ['Qara','#111111','Black','Чёрный','Siyah','შავი'],['Yaş Asfalt','#45484d','Graphite','Графитовый','Grafit','გრაფიტისფერი'],['Boz','#777b82','Gray','Серый','Gri','ნაცრისფერი'],['Gümüşü','#c1c5ca','Silver','Серебристый','Gümüş','ვერცხლისფერი'],['Ağ','#f4f4f2','White','Белый','Beyaz','თეთრი'],['Bej','#d8c7a8','Beige','Бежевый','Bej','ბეჟი'],['Tünd qırmızı','#7b1822','Burgundy','Бордовый','Bordo','ბორდოსფერი'],['Qırmızı','#d5222e','Red','Красный','Kırmızı','წითელი'],['Çəhrayı','#e98ca9','Pink','Розовый','Pembe','ვარდისფერი'],['Narıncı','#e77820','Orange','Оранжевый','Turuncu','ნარინჯისფერი'],['Qızılı','#c5a04b','Gold','Золотистый','Altın','ოქროსფერი'],['Sarı','#e2cc25','Yellow','Жёлтый','Sarı','ყვითელი'],['Xaki','#77774b','Khaki','Хаки','Haki','ხაკისფერი'],['Tünd yaşıl','#1f5137','Dark green','Тёмно-зелёный','Koyu yeşil','მუქი მწვანე'],['Yaşıl','#2f8c4b','Green','Зелёный','Yeşil','მწვანე'],['Açıq yaşıl','#78b86e','Light green','Светло-зелёный','Açık yeşil','ღია მწვანე'],['Mavi','#73a7d8','Light blue','Голубой','Açık mavi','ცისფერი'],['Göy','#2359a8','Blue','Синий','Mavi','ლურჯი'],['Bənövşəyi','#744e9a','Purple','Фиолетовый','Mor','იისფერი'],['Qəhvəyi','#70462e','Brown','Коричневый','Kahverengi','ყავისფერი']
-  ].map(([value,hex,en,ru,tr,ka])=>({value,hex,en,ru,tr,ka}));
+    ['Qara','#111111','Black','Чёрный','Siyah','შავი'],['Antrasit','#30343b','Anthracite','Антрацит','Antrasit','ანტრაციტი'],['Qrafit','#4a4f56','Graphite','Графитовый','Grafit','გრაფიტისფერი'],['Yaş asfalt','#555a60','Asphalt gray','Мокрый асфальт','Asfalt gri','ასფალტისფერი'],['Tünd boz','#5f6368','Dark gray','Тёмно-серый','Koyu gri','მუქი ნაცრისფერი'],['Boz','#80858c','Gray','Серый','Gri','ნაცრისფერი'],['Gümüşü','#c5c9ce','Silver','Серебристый','Gümüş','ვერცხლისფერი'],['Ağ','#f4f4f2','White','Белый','Beyaz','თეთრი'],['Mirvari ağ','#fffdf2','Pearl white','Жемчужно-белый','İnci beyaz','მარგალიტის თეთრი'],['Fil sümüyü','#eee4cc','Ivory','Слоновая кость','Fildişi','სპილოს ძვლისფერი'],['Bej','#d8c7a8','Beige','Бежевый','Bej','ბეჟი'],['Şampan','#d7c19a','Champagne','Шампань','Şampanya','შამპანური'],['Bürünc','#a56f42','Bronze','Бронзовый','Bronz','ბრინჯაოსფერი'],['Qəhvəyi','#70462e','Brown','Коричневый','Kahverengi','ყავისფერი'],['Tünd qəhvəyi','#4a2c20','Dark brown','Тёмно-коричневый','Koyu kahverengi','მუქი ყავისფერი'],['Bordo','#7b1822','Burgundy','Бордовый','Bordo','ბორდოსფერი'],['Qırmızı','#d5222e','Red','Красный','Kırmızı','წითელი'],['Al qırmızı','#f04444','Scarlet','Алый','Kızıl','ალისფერი'],['Mərcan','#eb6b5c','Coral','Коралловый','Mercan','მარჯნისფერი'],['Çəhrayı','#e98ca9','Pink','Розовый','Pembe','ვარდისფერი'],['Qızılgül rəngi','#c96f87','Rose','Пыльная роза','Gül kurusu','ვარდისფერი'],['Narıncı','#e77820','Orange','Оранжевый','Turuncu','ნარინჯისფერი'],['Mis','#b66a35','Copper','Медный','Bakır','სპილენძისფერი'],['Qızılı','#c5a04b','Gold','Золотистый','Altın','ოქროსფერი'],['Sarı','#e2cc25','Yellow','Жёлтый','Sarı','ყვითელი'],['Limon sarısı','#dbe531','Lime yellow','Лимонный','Limon sarısı','ლიმონისფერი'],['Xaki','#77774b','Khaki','Хаки','Haki','ხაკისფერი'],['Zeytun','#687447','Olive','Оливковый','Zeytin','ზეთისხილისფერი'],['Tünd yaşıl','#1f5137','Dark green','Тёмно-зелёный','Koyu yeşil','მუქი მწვანე'],['Yaşıl','#2f8c4b','Green','Зелёный','Yeşil','მწვანე'],['Nanə yaşıl','#86c6a1','Mint green','Мятный','Nane yeşili','პიტნისფერი'],['Firuzəyi','#39aeb0','Turquoise','Бирюзовый','Turkuaz','ფირუზისფერი'],['Açıq mavi','#73a7d8','Light blue','Голубой','Açık mavi','ცისფერი'],['Göy','#2359a8','Blue','Синий','Mavi','ლურჯი'],['Tünd göy','#173a72','Navy blue','Тёмно-синий','Lacivert','მუქი ლურჯი'],['Bənövşəyi','#744e9a','Purple','Фиолетовый','Mor','იისფერი'],['Lavanda','#9a85c4','Lavender','Лавандовый','Lavanta','ლავანდისფერი']
+  ].map(([value,hex,en,ru,tr,ka])=>({value,az:value,hex,en,ru,tr,ka}));
   const COLORS = COLOR_OPTIONS.map(x=>x.value);
   const EQUIPMENT_OPTIONS = [
     ['Yüngül lehimli disklər','Alloy wheels','Легкосплавные диски','Alaşım jantlar','მსუბუქი დისკები'],
@@ -46,7 +46,7 @@
     ['Yağış sensoru','Rain sensor','Датчик дождя','Yağmur sensörü','წვიმის სენსორი'],['İşıq sensoru','Light sensor','Датчик света','Far sensörü','სინათლის სენსორი'],['Avtomatik uzaq işıq','Automatic high beam','Автоматический дальний свет','Otomatik uzun far','ავტომატური შორი განათება'],['Ksenon lampalar','Xenon headlights','Ксеноновые фары','Xenon farlar','ქსენონის ფარები'],['LED faralar','LED headlights','LED-фары','LED farlar','LED ფარები'],['Matrix LED','Matrix LED','Matrix LED','Matrix LED','Matrix LED'],['Duman faraları','Fog lights','Противотуманные фары','Sis farları','ნისლის ფარები'],
     ['Naviqasiya sistemi','Navigation system','Навигация','Navigasyon','ნავიგაცია'],['Monitor (Multimediya)','Multimedia display','Мультимедийный экран','Multimedya ekranı','მულტიმედიის ეკრანი'],['Rəqəmsal cihaz paneli','Digital instrument cluster','Цифровая приборная панель','Dijital gösterge paneli','ციფრული პანელი'],['Head-Up Display','Head-Up Display','Проекционный дисплей','Head-Up Display','Head-Up Display'],['Apple CarPlay / Android Auto','Apple CarPlay / Android Auto','Apple CarPlay / Android Auto','Apple CarPlay / Android Auto','Apple CarPlay / Android Auto'],['Bluetooth','Bluetooth','Bluetooth','Bluetooth','Bluetooth'],['USB','USB','USB','USB','USB'],['Simsiz şarj','Wireless charging','Беспроводная зарядка','Kablosuz şarj','უსადენო დამუხტვა'],['Premium audio','Premium audio','Премиальная аудиосистема','Premium ses sistemi','Premium აუდიო'],['Arxa sərnişin monitoru','Rear entertainment screen','Экран для задних пассажиров','Arka eğlence ekranı','უკანა მგზავრის ეკრანი'],
     ['Multi-sükan','Multifunction steering wheel','Мультируль','Çok fonksiyonlu direksiyon','მულტიფუნქციური საჭე'],['Sükan gücləndiricisi','Power steering','Усилитель руля','Direksiyon desteği','საჭის გამაძლიერებელი'],['Adaptiv asqı','Adaptive suspension','Адаптивная подвеска','Adaptif süspansiyon','ადაპტიური საკიდარი'],['Pnevmatik asqı','Air suspension','Пневмоподвеска','Havalı süspansiyon','პნევმატური საკიდარი'],['TPMS təkər təzyiqi nəzarəti','TPMS tire pressure monitoring','Контроль давления в шинах TPMS','TPMS lastik basınç takibi','TPMS საბურავის წნევის კონტროლი'],['Gecə görmə sistemi','Night vision','Ночное видение','Gece görüşü','ღამის ხედვა'],['Yedək qarmağı','Tow hitch','Фаркоп','Çeki demiri','ბუქსირის კაუჭი'],['Dam reylinqləri','Roof rails','Рейлинги','Tavan rayları','სახურავის რელსები']
-  ].map(([value,en,ru,tr,ka])=>({value,en,ru,tr,ka}));
+  ].map(([value,en,ru,tr,ka])=>({value,az:value,en,ru,tr,ka}));
   const EQUIPMENT = EQUIPMENT_OPTIONS.map(x=>x.value);
   const CITIES = ['Bakı','Bərdə','Gəncə','Mingəçevir','Naxçıvan','Sumqayıt','Xırdalan'];
   let countryCatalog=[]; let vehicleMakes=[]; let activeLocationData=null;
@@ -84,7 +84,7 @@
     'AvtoVİP hesabı':['AvtoVİP account','Аккаунт AvtoVİP'],'Elan, mesaj, sevimlilər və premium xidmətlər bir hesabda.':['Ads, messages, favorites and premium services in one account.','Объявления, сообщения, избранное и премиум-услуги в одном аккаунте.'],
     'Giriş et':['Sign in','Войти'],'Qeydiyyat':['Register','Регистрация'],'Hesab yarat':['Create account','Создать аккаунт'],'Email':['Email','Email'],'Şifrə':['Password','Пароль'],'Şifrə təkrar':['Repeat password','Повторите пароль'],'Şifrəni unutmusunuz?':['Forgot password?','Забыли пароль?'],
     'Şifrəni yenilə':['Reset password','Сбросить пароль'],'Hesabınıza yenidən giriş üçün təhlükəsiz link alın.':['Get a secure link to regain access to your account.','Получите безопасную ссылку для восстановления доступа.'],'Link göndər':['Send link','Отправить ссылку'],'Giriş səhifəsinə qayıt':['Back to sign in','Вернуться ко входу'],'Yeni şifrə':['New password','Новый пароль'],'Şifrəni dəyiş':['Change password','Изменить пароль'],
-    'Tətbiqi yüklə':['Install app','Установить приложение'],'AvtoVİP.az-ı telefona tətbiq kimi əlavə edin.':['Add AvtoVİP.az to your phone as an app.','Добавьте AvtoVİP.az на телефон как приложение.'],
+    'Tətbiqi yüklə':['Install app','Установить приложение'],'AvtoVİP-ı telefona tətbiq kimi əlavə edin.':['Add AvtoVİP to your phone as an app.','Добавьте AvtoVİP на телефон как приложение.'],
     'Ölkə':['Country','Страна'],'Ölkə *':['Country *','Страна *'],'Region / Ştat':['Region / State','Регион / Штат'],'Rayon / Bölgə':['District / Area','Район / Округ'],'Qiymət və il':['Price and year','Цена и год'],'Texniki göstəricilər':['Technical specifications','Технические характеристики'],'Əlavə şərtlər':['Additional conditions','Дополнительные условия'],'Avtomobilin təchizatı':['Vehicle equipment','Оснащение автомобиля'],'Yürüş min':['Min mileage','Пробег от'],'Mühərrik min, L':['Engine min, L','Двигатель от, л'],'Mühərrik max, L':['Engine max, L','Двигатель до, л'],'Güc min, a.g.':['Min power, hp','Мощность от, л.с.'],'Güc max, a.g.':['Max power, hp','Мощность до, л.с.'],'Oturacaq min':['Min seats','Мест от'],'Oturacaq max':['Max seats','Мест до'],'Sahib sayı max':['Max owners','Владельцев до'],'Vəziyyət':['Condition','Состояние'],'Sürülmüş':['Used','С пробегом'],'Yeni':['New','Новый'],'Bazar mənşəyi':['Market origin','Рынок происхождения'],'Məkan':['Location','Местоположение'],'Yürüş ↑':['Mileage ↑','Пробег ↑'],'Hamısı':['All','Все'],'Seçin':['Select','Выберите'],
     'Premium avtomobil bazarı':['Premium car marketplace','Премиум авторынок'],'Avtomobil bazarının ağıllı tərəfi.':['The smarter side of the car market.','Умная сторона авторынка.'],'Al, sat, müqayisə et, qiyməti analiz et və satıcı ilə birbaşa əlaqə saxla.':['Buy, sell, compare, analyze prices and contact the seller directly.','Покупайте, продавайте, сравнивайте, анализируйте цены и связывайтесь с продавцом напрямую.'],
     'Bir toxunuşla filtr':['One-tap filters','Фильтры в одно касание'],'Premium və VIP elanlar ön sırada':['Premium and VIP ads come first','Premium и VIP объявления выше'],'WhatsApp əlaqəsi':['WhatsApp contact','Связь через WhatsApp'],'Sevimli':['Favorite','Избранное'],'Aktiv elan':['Active ads','Активные объявления']
@@ -92,11 +92,11 @@
 
 
   const BRAND_BY_LANG = {
-    az:{name:'AvtoVİP.az',tagline:'Premium avtomobil bazarı'},
-    en:{name:'AutoVIP.az',tagline:'Premium car marketplace'},
-    ru:{name:'АвтоVIP.az',tagline:'Премиум авторынок'},
-    tr:{name:'OtoVIP.az',tagline:'Premium otomobil pazarı'},
-    ka:{name:'ავტოVIP.az',tagline:'პრემიუმ ავტომობილების ბაზარი'}
+    az:{name:'AvtoVİP',tagline:'Premium avtomobil bazarı'},
+    en:{name:'AutoVIP',tagline:'Premium car marketplace'},
+    ru:{name:'АвтоVIP',tagline:'Премиум авторынок'},
+    tr:{name:'OtoVIP',tagline:'Premium otomobil pazarı'},
+    ka:{name:'ავტოVIP',tagline:'პრემიუმ ავტომობილების ბაზარი'}
   };
 
   const DOMAIN_TEXT = {
@@ -166,7 +166,7 @@
     'Yüklənir...':{en:'Loading...',ru:'Загрузка...',tr:'Yükleniyor...',ka:'იტვირთება...'},'Elan yüklənir...':{en:'Loading ad...',ru:'Объявление загружается...',tr:'İlan yükleniyor...',ka:'განცხადება იტვირთება...'},
     'Mesaj yoxdur.':{en:'No messages.',ru:'Сообщений нет.',tr:'Mesaj yok.',ka:'შეტყობინებები არ არის.'},'İstifadəçi':{en:'User',ru:'Пользователь',tr:'Kullanıcı',ka:'მომხმარებელი'},
     'Satıldı':{en:'Sold',ru:'Продано',tr:'Satıldı',ka:'გაყიდულია'},'Sil':{en:'Delete',ru:'Удалить',tr:'Sil',ka:'წაშლა'},'baxış':{en:'views',ru:'просмотров',tr:'görüntüleme',ka:'ნახვა'},
-    'Tətbiqi yüklə':{en:'Install app',ru:'Установить приложение',tr:'Uygulamayı yükle',ka:'აპის დაყენება'},'AvtoVİP.az-ı telefona tətbiq kimi əlavə edin.':{en:'Add AutoVIP.az to your phone as an app.',ru:'Добавьте АвтоVIP.az на телефон как приложение.',tr:'OtoVIP.az uygulamasını telefonunuza ekleyin.',ka:'დაამატეთ ავტოVIP.az ტელეფონში აპის სახით.'},
+    'Tətbiqi yüklə':{en:'Install app',ru:'Установить приложение',tr:'Uygulamayı yükle',ka:'აპის დაყენება'},'AvtoVİP-ı telefona tətbiq kimi əlavə edin.':{en:'Add AutoVIP to your phone as an app.',ru:'Добавьте АвтоVIP на телефон как приложение.',tr:'OtoVIP uygulamasını telefonunuza ekleyin.',ka:'დაამატეთ ავტოVIP ტელეფონში აპის სახით.'},
     'Premium avtomobil bazarı':{en:'Premium car marketplace',ru:'Премиум авторынок',tr:'Premium otomobil pazarı',ka:'პრემიუმ ავტომობილების ბაზარი'},
     'Avtomobil bazarının ağıllı tərəfi.':{en:'The smarter side of the car market.',ru:'Умная сторона авторынка.',tr:'Otomobil pazarının akıllı tarafı.',ka:'ავტობაზრის ჭკვიანი მხარე.'},
     'Al, sat, müqayisə et, qiyməti analiz et və satıcı ilə birbaşa əlaqə saxla.':{en:'Buy, sell, compare, analyze prices and contact the seller directly.',ru:'Покупайте, продавайте, сравнивайте, анализируйте цены и связывайтесь с продавцом напрямую.',tr:'Al, sat, karşılaştır, fiyatı analiz et ve satıcıyla doğrudan iletişime geç.',ka:'იყიდეთ, გაყიდეთ, შეადარეთ, გააანალიზეთ ფასი და პირდაპირ დაუკავშირდით გამყიდველს.'}
@@ -214,6 +214,86 @@
     'Filtri bağla':{en:'Close filters',ru:'Закрыть фильтры',tr:'Filtreleri kapat',ka:'ფილტრების დახურვა'}
   });
 
+
+  Object.assign(FULL_TEXT, {
+    'Avtomobilləri müqayisə et':{en:'Compare vehicles',ru:'Сравнить автомобили',tr:'Araçları karşılaştır',ka:'ავტომობილების შედარება'},
+    'Maksimum 4 elanı yan-yana müqayisə edin.':{en:'Compare up to 4 ads side by side.',ru:'Сравнивайте до 4 объявлений рядом.',tr:'En fazla 4 ilanı yan yana karşılaştırın.',ka:'შეადარეთ მაქსიმუმ 4 განცხადება გვერდიგვერდ.'},
+    'Elan seç':{en:'Choose ad',ru:'Выберите объявление',tr:'İlan seç',ka:'აირჩიეთ განცხადება'},
+    'Müqayisə üçün elan kartlarında “Müqayisə” düyməsinə toxunun.':{en:'Tap “Compare” on listing cards to add vehicles.',ru:'Нажмите «Сравнить» на карточках объявлений.',tr:'Araç eklemek için ilan kartındaki “Karşılaştır” düğmesine dokunun.',ka:'ავტომობილის დასამატებლად განცხადების ბარათზე დააჭირეთ „შედარებას“.'},
+    'Mesaj yoxdur.':{en:'No messages.',ru:'Сообщений нет.',tr:'Mesaj yok.',ka:'შეტყობინებები არ არის.'},
+    'Mesaj yazın...':{en:'Write a message...',ru:'Напишите сообщение...',tr:'Mesaj yazın...',ka:'დაწერეთ შეტყობინება...'},
+    'Söhbət':{en:'Conversation',ru:'Диалог',tr:'Sohbet',ka:'საუბარი'},
+    'AvtoVİP mesajlaşma':{en:'AutoVIP messaging',ru:'Чат AutoVIP',tr:'OtoVIP mesajlaşma',ka:'ავტოVIP მიმოწერა'},
+    'Şəhər':{en:'City',ru:'Город',tr:'Şehir',ka:'ქალაქი'},'Ünvan':{en:'Address',ru:'Адрес',tr:'Adres',ka:'მისამართი'},
+    'Haqqında':{en:'About',ru:'О себе',tr:'Hakkında',ka:'შესახებ'},'Etibar':{en:'Trust',ru:'Доверие',tr:'Güven',ka:'ნდობა'},
+    'Profil məlumatları':{en:'Profile information',ru:'Данные профиля',tr:'Profil bilgileri',ka:'პროფილის ინფორმაცია'},
+    'Mənim elanlarım':{en:'My listings',ru:'Мои объявления',tr:'İlanlarım',ka:'ჩემი განცხადებები'},
+    'Yeni elan':{en:'New ad',ru:'Новое объявление',tr:'Yeni ilan',ka:'ახალი განცხადება'},
+    'Ödəniş sorğuları':{en:'Payment requests',ru:'Запросы на оплату',tr:'Ödeme talepleri',ka:'გადახდის მოთხოვნები'},
+    'Bildirişlər':{en:'Notifications',ru:'Уведомления',tr:'Bildirimler',ka:'შეტყობინებები'},
+    'Ödəniş sorğusu yoxdur.':{en:'No payment requests.',ru:'Нет запросов на оплату.',tr:'Ödeme talebi yok.',ka:'გადახდის მოთხოვნა არ არის.'},
+    'Yeni bildiriş yoxdur.':{en:'No new notifications.',ru:'Новых уведомлений нет.',tr:'Yeni bildirim yok.',ka:'ახალი შეტყობინება არ არის.'},
+    'Telefon':{en:'Phone',ru:'Телефон',tr:'Telefon',ka:'ტელეფონი'},'Soyad':{en:'Surname',ru:'Фамилия',tr:'Soyad',ka:'გვარი'},'Ad':{en:'Name',ru:'Имя',tr:'Ad',ka:'სახელი'},
+    'Avtomobil elanı yerləşdir':{en:'Post a vehicle ad',ru:'Подать объявление об автомобиле',tr:'Araç ilanı ver',ka:'ავტომობილის განცხადების დამატება'},
+    'Məlumatları dəqiq doldurun. Yeni elan əvvəlcə moderasiyaya göndərilir.':{en:'Fill in the details accurately. New ads are reviewed before publication.',ru:'Заполните данные точно. Новое объявление сначала отправляется на модерацию.',tr:'Bilgileri doğru doldurun. Yeni ilan önce moderasyona gönderilir.',ka:'შეავსეთ ინფორმაცია ზუსტად. ახალი განცხადება ჯერ მოდერაციაზე იგზავნება.'},
+    'Əsas məlumatlar':{en:'Main information',ru:'Основная информация',tr:'Temel bilgiler',ka:'ძირითადი ინფორმაცია'},
+    'Texniki məlumatlar':{en:'Technical information',ru:'Технические данные',tr:'Teknik bilgiler',ka:'ტექნიკური ინფორმაცია'},
+    'Təchizat':{en:'Equipment',ru:'Оснащение',tr:'Donanım',ka:'აღჭურვილობა'},'Şəkillər':{en:'Photos',ru:'Фотографии',tr:'Fotoğraflar',ka:'ფოტოები'},
+    'Satıcı və açıqlama':{en:'Seller and description',ru:'Продавец и описание',tr:'Satıcı ve açıklama',ka:'გამყიდველი და აღწერა'},
+    'Açıqlama':{en:'Description',ru:'Описание',tr:'Açıklama',ka:'აღწერა'},'Moderasiyaya göndər':{en:'Send for review',ru:'Отправить на модерацию',tr:'Moderasyona gönder',ka:'მოდერაციაზე გაგზავნა'},
+    'Ban növü':{en:'Body type',ru:'Тип кузова',tr:'Kasa tipi',ka:'ძარის ტიპი'},'Rəng':{en:'Color',ru:'Цвет',tr:'Renk',ka:'ფერი'},
+    'Yanacaq':{en:'Fuel',ru:'Топливо',tr:'Yakıt',ka:'საწვავი'},'Sürətlər qutusu':{en:'Transmission',ru:'Коробка передач',tr:'Şanzıman',ka:'გადაცემათა კოლოფი'},
+    'Ötürücü':{en:'Drivetrain',ru:'Привод',tr:'Çekiş',ka:'ამძრავი'},'Mühərrik, L':{en:'Engine, L',ru:'Двигатель, л',tr:'Motor, L',ka:'ძრავა, ლ'},
+    'Güc, a.g.':{en:'Power, hp',ru:'Мощность, л.с.',tr:'Güç, hp',ka:'სიმძლავრე, ცხ.ძ.'},'Yürüş, km *':{en:'Mileage, km *',ru:'Пробег, км *',tr:'Kilometre, km *',ka:'გარბენი, კმ *'},
+    'Oturacaq sayı':{en:'Seats',ru:'Количество мест',tr:'Koltuk sayısı',ka:'ადგილების რაოდენობა'},'Sahib sayı':{en:'Owners',ru:'Количество владельцев',tr:'Sahip sayısı',ka:'მფლობელების რაოდენობა'},
+    'Yeni avtomobil':{en:'New vehicle',ru:'Новый автомобиль',tr:'Yeni araç',ka:'ახალი ავტომობილი'},'Kredit mümkündür':{en:'Credit available',ru:'Возможен кредит',tr:'Kredi mümkün',ka:'კრედიტი შესაძლებელია'},
+    'Barter mümkündür':{en:'Trade-in available',ru:'Возможен обмен',tr:'Takas mümkün',ka:'გაცვლა შესაძლებელია'},'Vuruğu var':{en:'Has accident damage',ru:'Есть повреждения',tr:'Hasar kaydı var',ka:'აქვს დაზიანება'},
+    'Rənglənib':{en:'Repainted',ru:'Красился',tr:'Boyalı',ka:'შეღებილია'},'Nəsil':{en:'Generation',ru:'Поколение',tr:'Nesil',ka:'თაობა'},'Komplektasiya':{en:'Trim',ru:'Комплектация',tr:'Donanım paketi',ka:'კომპლექტაცია'},
+    'Bazar mənşəyi':{en:'Market origin',ru:'Рынок происхождения',tr:'Pazar menşei',ka:'ბაზრის წარმოშობა'},
+    'Qiymət min':{en:'Min price',ru:'Цена от',tr:'Min fiyat',ka:'მინ. ფასი'},'Qiymət max':{en:'Max price',ru:'Цена до',tr:'Maks fiyat',ka:'მაქს. ფასი'},
+    'İl min':{en:'Min year',ru:'Год от',tr:'Min yıl',ka:'მინ. წელი'},'İl max':{en:'Max year',ru:'Год до',tr:'Maks yıl',ka:'მაქს. წელი'},
+    'Yürüş max':{en:'Max mileage',ru:'Пробег до',tr:'Maks kilometre',ka:'მაქს. გარბენი'},'Sırala':{en:'Sort',ru:'Сортировка',tr:'Sırala',ka:'დალაგება'},
+    'Ən yeni':{en:'Newest',ru:'Сначала новые',tr:'En yeni',ka:'უახლესი'},'Qiymət ↑':{en:'Price ↑',ru:'Цена ↑',tr:'Fiyat ↑',ka:'ფასი ↑'},'Qiymət ↓':{en:'Price ↓',ru:'Цена ↓',tr:'Fiyat ↓',ka:'ფასი ↓'},'İl ↓':{en:'Year ↓',ru:'Год ↓',tr:'Yıl ↓',ka:'წელი ↓'},'Sıfırla':{en:'Reset',ru:'Сбросить',tr:'Sıfırla',ka:'გასუფთავება'},
+    'Hekayə yerləşdir':{en:'Post story',ru:'Добавить историю',tr:'Hikaye ekle',ka:'ისტორიის დამატება'},'Avto Hekayələr':{en:'Auto Stories',ru:'Авто Истории',tr:'Oto Hikayeler',ka:'ავტო ისტორიები'},
+    '24 saatlıq premium vitrin':{en:'24-hour premium showcase',ru:'Премиум-витрина на 24 часа',tr:'24 saatlik premium vitrin',ka:'24 საათიანი პრემიუმ ვიტრინა'},
+    'Model':{en:'Model',ru:'Модель',tr:'Model',ka:'მოდელი'},'Marka':{en:'Make',ru:'Марка',tr:'Marka',ka:'ბრენდი'},
+    'Məs: 25 minə qədər ailə üçün avtomat SUV...':{en:'E.g. automatic family SUV under 25k...',ru:'Напр.: семейный SUV автомат до 25 тыс....',tr:'Örn: 25 bin altı aile için otomatik SUV...',ka:'მაგ.: ოჯახისთვის ავტომატური SUV 25 ათასამდე...'},
+    'Rayon, county, district...':{en:'District, county, area...',ru:'Район, округ, область...',tr:'İlçe, bölge...',ka:'რაიონი, ოლქი...'},
+    'Rəsmi diler / ABŞ / Koreya...':{en:'Official dealer / USA / Korea...',ru:'Официальный дилер / США / Корея...',tr:'Yetkili bayi / ABD / Kore...',ka:'ოფიციალური დილერი / აშშ / კორეა...'},
+    'Müqayisə üçün elan kartlarında “Müqayisə” düyməsinə toxunun.':{en:'Tap “Compare” on listing cards to add cars here.',ru:'Нажмите «Сравнить» на карточке объявления, чтобы добавить авто.',tr:'Araç eklemek için ilan kartındaki “Karşılaştır” düğmesine dokunun.',ka:'ავტომობილის დასამატებლად განცხადების ბარათზე დააჭირეთ „შედარებას“.'},
+    'Mesaj yoxdur.':{en:'No messages yet.',ru:'Сообщений пока нет.',tr:'Henüz mesaj yok.',ka:'შეტყობინებები ჯერ არ არის.'},
+    'Mesaj yazın...':{en:'Write a message...',ru:'Напишите сообщение...',tr:'Mesaj yazın...',ka:'დაწერეთ შეტყობინება...'},
+    'Hələ elan yerləşdirməmisiniz.':{en:'You have not posted any listings yet.',ru:'Вы ещё не разместили объявлений.',tr:'Henüz ilan vermediniz.',ka:'თქვენ ჯერ განცხადება არ დაგიმატებიათ.'},
+    'Ödəniş sorğusu yoxdur.':{en:'No payment requests.',ru:'Запросов на оплату нет.',tr:'Ödeme talebi yok.',ka:'გადახდის მოთხოვნები არ არის.'},
+    'Yeni bildiriş yoxdur.':{en:'No new notifications.',ru:'Новых уведомлений нет.',tr:'Yeni bildirim yok.',ka:'ახალი შეტყობინებები არ არის.'},
+    'Şəhər':{en:'City',ru:'Город',tr:'Şehir',ka:'ქალაქი'},
+    'Şəxsi satıcı':{en:'Private seller',ru:'Частный продавец',tr:'Bireysel satıcı',ka:'კერძო გამყიდველი'},
+    'Diler':{en:'Dealer',ru:'Дилер',tr:'Bayi',ka:'დილერი'},
+    'Etibar':{en:'Trust',ru:'Доверие',tr:'Güven',ka:'ნდობა'},
+    'Mesaj yaz':{en:'Message',ru:'Написать',tr:'Mesaj yaz',ka:'მიწერა'},
+    'Təhlükəsiz alış':{en:'Safe purchase',ru:'Безопасная покупка',tr:'Güvenli alışveriş',ka:'უსაფრთხო ყიდვა'},
+    'Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli elanları bizə bildirin.':{en:'Inspect the vehicle and documents in person before paying. Report suspicious listings to us.',ru:'Перед оплатой лично проверьте автомобиль и документы. Сообщайте нам о подозрительных объявлениях.',tr:'Ödeme yapmadan önce aracı ve belgeleri yerinde kontrol edin. Şüpheli ilanları bize bildirin.',ka:'გადახდამდე ადგილზე შეამოწმეთ ავტომობილი და დოკუმენტები. საეჭვო განცხადებები შეგვატყობინეთ.'},
+    'Elana bax':{en:'View listing',ru:'Открыть объявление',tr:'İlanı gör',ka:'განცხადების ნახვა'},
+    'Median':{en:'Median',ru:'Медиана',tr:'Medyan',ka:'მედიანა'},
+    'İl':{en:'Year',ru:'Год',tr:'Yıl',ka:'წელი'},
+    'Ban':{en:'Body',ru:'Кузов',tr:'Kasa',ka:'ძარა'},
+    'Mühərrik':{en:'Engine',ru:'Двигатель',tr:'Motor',ka:'ძრავი'},
+    'Güc':{en:'Power',ru:'Мощность',tr:'Güç',ka:'სიმძლავრე'},
+    'Yürüş':{en:'Mileage',ru:'Пробег',tr:'Kilometre',ka:'გარბენი'},
+    'Bazar':{en:'Market',ru:'Рынок',tr:'Pazar',ka:'ბაზარი'},
+    'Vəziyyət':{en:'Condition',ru:'Состояние',tr:'Durum',ka:'მდგომარეობა'},
+    'Bu brauzerdə səsli axtarış dəstəklənmir':{en:'Voice search is not supported in this browser.',ru:'Этот браузер не поддерживает голосовой поиск.',tr:'Bu tarayıcı sesli aramayı desteklemiyor.',ka:'ამ ბრაუზერში ხმოვანი ძიება არ არის მხარდაჭერილი.'},
+    'Səs tanınmadı. Yenidən cəhd edin.':{en:'Voice was not recognized. Please try again.',ru:'Речь не распознана. Попробуйте ещё раз.',tr:'Ses algılanamadı. Tekrar deneyin.',ka:'ხმა ვერ ამოიცნო. სცადეთ კიდევ ერთხელ.'},
+    'iPhone/iPad: Safari → Paylaş → Add to Home Screen.':{en:'iPhone/iPad: Safari → Share → Add to Home Screen.',ru:'iPhone/iPad: Safari → Поделиться → На экран «Домой».',tr:'iPhone/iPad: Safari → Paylaş → Ana Ekrana Ekle.',ka:'iPhone/iPad: Safari → გაზიარება → მთავარ ეკრანზე დამატება.'},
+    'Gözlənilməz xəta baş verdi.':{en:'An unexpected error occurred.',ru:'Произошла непредвиденная ошибка.',tr:'Beklenmeyen bir hata oluştu.',ka:'მოულოდნელი შეცდომა მოხდა.'},
+    'Ödəniş sorğusu göndərildi.':{en:'Payment request sent.',ru:'Запрос на оплату отправлен.',tr:'Ödeme talebi gönderildi.',ka:'გადახდის მოთხოვნა გაიგზავნა.'},
+    'Şikayət admin yoxlamasına göndərildi.':{en:'Report sent for admin review.',ru:'Жалоба отправлена на проверку администратору.',tr:'Şikayet yönetici incelemesine gönderildi.',ka:'საჩივარი ადმინისტრატორის შემოწმებაზე გაიგზავნა.'},
+    'Elanı “Satılıb” statusuna keçirək?':{en:'Mark this listing as sold?',ru:'Отметить объявление как проданное?',tr:'Bu ilan satıldı olarak işaretlensin mi?',ka:'მოვნიშნოთ განცხადება გაყიდულად?'},
+    'Bu elanı silmək istəyirsiniz?':{en:'Do you want to delete this listing?',ru:'Удалить это объявление?',tr:'Bu ilanı silmek istiyor musunuz?',ka:'გსურთ ამ განცხადების წაშლა?'},
+    'Şifrə yeniləmə linki emailə göndərildi.':{en:'Password reset link was sent by email.',ru:'Ссылка для сброса пароля отправлена на email.',tr:'Şifre yenileme bağlantısı e-postaya gönderildi.',ka:'პაროლის აღდგენის ბმული ელფოსტაზე გაიგზავნა.'},
+    'Şifrə yeniləndi. Giriş edə bilərsiniz.':{en:'Password updated. You can sign in now.',ru:'Пароль обновлён. Теперь можно войти.',tr:'Şifre güncellendi. Şimdi giriş yapabilirsiniz.',ka:'პაროლი განახლდა. ახლა შეგიძლიათ შესვლა.'}
+  });
+
   let lang = localStorage.getItem('avtovip-lang') || 'az';
   let currentUser = null;
   let currentProfile = null;
@@ -254,7 +334,17 @@
   }
   function setStatus(el,msg,type=''){ if(typeof el==='string') el=$(el); if(!el)return; el.textContent=runtimeText(msg||''); el.className=`form-status ${type}`; }
   function fillSelect(el,items,placeholder=t('all')){ if(!el)return; const sorted=[...items].sort((a,b)=>byLocale(staticText(a),staticText(b))); el.innerHTML=`<option value="">${esc(staticText(placeholder))}</option>`+sorted.map(x=>`<option value="${esc(x)}">${esc(staticText(x))}</option>`).join(''); }
-  function relative(v){ if(!v)return ''; const s=Math.floor((Date.now()-new Date(v))/1000); if(s<60)return lang==='ru'?'только что':lang==='en'?'just now':'indi'; if(s<3600)return `${Math.floor(s/60)} ${lang==='ru'?'мин':lang==='en'?'min':'dəq'}`; if(s<86400)return `${Math.floor(s/3600)} ${lang==='ru'?'ч':lang==='en'?'h':'saat'}`; return dateText(v); }
+  function relative(v){
+    if(!v)return '';
+    const s=Math.floor((Date.now()-new Date(v))/1000);
+    const now={az:'indi',en:'just now',ru:'только что',tr:'az önce',ka:'ახლახან'}[lang]||'just now';
+    const min={az:'dəq',en:'min',ru:'мин',tr:'dk',ka:'წთ'}[lang]||'min';
+    const hour={az:'saat',en:'h',ru:'ч',tr:'sa',ka:'სთ'}[lang]||'h';
+    if(s<60)return now;
+    if(s<3600)return `${Math.floor(s/60)} ${min}`;
+    if(s<86400)return `${Math.floor(s/3600)} ${hour}`;
+    return dateText(v);
+  }
 
   async function loadCurrent(){
     const cur=await db.current(); currentUser=cur.user; currentProfile=cur.profile;
@@ -278,14 +368,14 @@
     return FULL_TEXT[v]?.en || v;
   }
   function optionLabel(item){ return item?.[lang] || item?.en || item?.value || ''; }
-  function colorLabel(item){ return `${item.hex==='transparent'?'◯':'●'} ${optionLabel(item)}`; }
+  function colorLabel(item){ return optionLabel(item); }
   function byLocale(a,b){const c=intl?.collator?.(lang)||new Intl.Collator(locale(),{numeric:true,sensitivity:'base'});return c.compare(String(a||''),String(b||''))}
   function equipmentLabel(value){const item=EQUIPMENT_OPTIONS.find(x=>x.value===value);return item?optionLabel(item):staticText(value)}
   function localizeBranding(){
     const brand=BRAND_BY_LANG[lang]||BRAND_BY_LANG.en;
     $$('.brand-copy strong').forEach(el=>el.textContent=brand.name);
     $$('.brand-copy span').forEach(el=>el.textContent=brand.tagline);
-    $$('img[alt="AvtoVİP.az"]').forEach(el=>el.alt=brand.name);
+    $$('img[alt="AvtoVİP"]').forEach(el=>el.alt=brand.name);
     if(document.title){const suffix=document.title.split('—')[0].trim();const titleMap={'Giriş':{en:'Sign in',ru:'Вход',tr:'Giriş',ka:'შესვლა'},'Profil':{en:'Profile',ru:'Профиль',tr:'Profil',ka:'პროფილი'},'Mesajlar':{en:'Messages',ru:'Сообщения',tr:'Mesajlar',ka:'შეტყობინებები'},'Sevimlilər':{en:'Favorites',ru:'Избранное',tr:'Favoriler',ka:'რჩეულები'},'Müqayisə':{en:'Compare',ru:'Сравнение',tr:'Karşılaştır',ka:'შედარება'},'Elan yerləşdir':{en:'Post ad',ru:'Подать объявление',tr:'İlan ver',ka:'განცხადების დამატება'},'Hekayə yerləşdir':{en:'Post story',ru:'Добавить историю',tr:'Hikaye ekle',ka:'ისტორიის დამატება'},'Şifrə yenilə':{en:'Reset password',ru:'Сброс пароля',tr:'Şifre yenile',ka:'პაროლის აღდგენა'}};const first=titleMap[suffix]?.[lang]||titleMap[suffix]?.en||suffix;document.title=page==='home'?`${brand.name} — ${staticText('Avtomobil bazarının ağıllı tərəfi.')}`:`${first} — ${brand.name}`}
   }
   function translateStaticDom(){
@@ -316,7 +406,7 @@
       const box=document.createElement('div');box.className='standalone-controls';box.innerHTML=`<div class="header-control"><i class="fa-solid fa-language"></i><select id="langSelect" aria-label="Language"><option value="az">AZ</option><option value="en">EN</option><option value="ru">RU</option><option value="tr">TR</option><option value="ka">KA</option></select></div><button class="icon-btn" id="themeBtn" aria-label="Theme"></button>`;document.body.append(box);langSel=$('#langSelect')
     }
     $('#themeBtn')?.addEventListener('click',()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;localStorage.setItem('avtovip-theme',n);renderThemeIcon()}); renderThemeIcon();
-    if(langSel){langSel.value=lang;langSel.addEventListener('change',()=>{lang=langSel.value;localStorage.setItem('avtovip-lang',lang);applyTranslations();location.reload()})}
+    if(langSel){const langLabels={az:'🇦🇿 AZ',en:'🇬🇧 EN',ru:'🇷🇺 RU',tr:'🇹🇷 TR',ka:'🇬🇪 KA'};langSel.innerHTML=Object.entries(langLabels).map(([v,l])=>`<option value="${v}">${l}</option>`).join('');langSel.value=lang;langSel.addEventListener('change',()=>{lang=langSel.value;localStorage.setItem('avtovip-lang',lang);applyTranslations();location.reload()})}
     applyTranslations();
   }
   function renderThemeIcon(){const b=$('#themeBtn');if(b)b.innerHTML=`<i class="fa-solid ${document.documentElement.dataset.theme==='dark'?'fa-sun':'fa-moon'}"></i>`}
@@ -327,17 +417,30 @@
     badge.textContent=count||''; badge.hidden=!count;
   }
 
-  function brandRail(container){
+  const LOCAL_BRAND_LOGOS = Object.fromEntries(BRANDS.map(([name,file])=>[name.toLowerCase(),`assets/img/brands/${file}`]));
+  function brandLogoFor(make){ const remote=(typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||make?.logo?.url||'')); return LOCAL_BRAND_LOGOS[String(make?.name||'').toLowerCase()] || remote || ''; }
+  async function brandRail(container){
     if(!container)return;
-    const chips=BRANDS.map(([name,file])=>`<button class="brand-chip" type="button" data-brand="${esc(name)}"><img loading="lazy" src="assets/img/brands/${file}" alt="${esc(name)}"><span>${esc(name)}</span></button>`).join('');
-    container.innerHTML=`<div class="brands-track">${chips}${chips}</div>`;
-    let paused=false,last=performance.now();const tick=now=>{if(!container.isConnected)return;const dt=Math.min(40,now-last);last=now;if(!paused){container.scrollLeft+=dt*0.025;const half=container.scrollWidth/2;if(container.scrollLeft>=half)container.scrollLeft-=half}requestAnimationFrame(tick)};requestAnimationFrame(tick);
-    ['pointerenter','touchstart','wheel'].forEach(ev=>container.addEventListener(ev,()=>paused=true,{passive:true}));['pointerleave','touchend'].forEach(ev=>container.addEventListener(ev,()=>paused=false,{passive:true}));
+    await ensureCatalogs();
+    const makes=vehicleMakes.length?vehicleMakes:BRANDS.map(([name,file])=>({name,logo:`assets/img/brands/${file}`}));
+    container.innerHTML='';
+    const track=document.createElement('div'); track.className='brands-track'; container.append(track);
+    for(const make of makes){
+      const b=document.createElement('button'); b.className='brand-chip'; b.type='button'; b.dataset.brand=make.name;
+      const logo=brandLogoFor(make); const fallback=(make.name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();
+      b.innerHTML=`<span class="brand-logo-box">${logo?`<img loading="lazy" referrerpolicy="no-referrer" src="${esc(logo)}" alt="${esc(make.name)}">`:''}<b>${esc(fallback)}</b></span><span>${esc(make.name)}</span>`;
+      const img=b.querySelector('img'); if(img)img.addEventListener('error',()=>{img.remove();b.querySelector('.brand-logo-box').classList.add('fallback')},{once:true}); track.append(b);
+    }
+    let paused=false,last=performance.now(),offset=0;
+    const tick=now=>{if(!container.isConnected)return;const dt=Math.min(50,now-last);last=now;if(!paused&&track.children.length>1){offset+=dt*0.026;const first=track.firstElementChild;if(first){const w=first.getBoundingClientRect().width+8;if(offset>=w){offset-=w;track.append(first)}track.style.transform=`translate3d(${-offset}px,0,0)`}}requestAnimationFrame(tick)};
+    requestAnimationFrame(tick);
+    ['pointerenter','touchstart','wheel','pointerdown'].forEach(ev=>container.addEventListener(ev,()=>paused=true,{passive:true}));
+    ['pointerleave','touchend','pointerup'].forEach(ev=>container.addEventListener(ev,()=>paused=false,{passive:true}));
   }
   function fillSelectPairs(el,items,placeholder=t('all')){
     if(!el)return; const sorted=[...items].sort((a,b)=>byLocale(a.label,b.label)); el.innerHTML=`<option value="">${esc(staticText(placeholder))}</option>`+sorted.map(x=>`<option value="${esc(x.value)}">${esc(x.label)}</option>`).join('');
   }
-  function fillDatalist(el,items){if(!el)return;const sorted=[...new Set(items)].sort(byLocale);el.innerHTML=sorted.slice(0,160).map(x=>`<option value="${esc(x)}"></option>`).join('')}
+  function fillDatalist(el,items){if(!el)return;const sorted=[...new Set(items)].sort(byLocale);el.innerHTML=sorted.map(x=>`<option value="${esc(x)}"></option>`).join('')}
   async function ensureCatalogs(){
     if(!countryCatalog.length) countryCatalog=intl?await intl.countries(lang):[];
     if(!vehicleMakes.length) vehicleMakes=intl?await intl.makes(lang):BRANDS.map(([name])=>({id:name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),name}));
@@ -366,8 +469,17 @@
   }
   function fillColorSelect(el,placeholder='Seçin'){
     if(!el)return;
-    el.innerHTML=`<option value="">${esc(staticText(placeholder))}</option>`+COLOR_OPTIONS.map(item=>`<option value="${esc(item.value)}" data-hex="${item.hex}">● ${esc(optionLabel(item))}</option>`).join('');
-    const paint=()=>{const item=COLOR_OPTIONS.find(x=>x.value===el.value);el.style.setProperty('--selected-color',item?.hex||'transparent');el.classList.toggle('has-color',!!item)};el.addEventListener('change',paint);paint();
+    el.innerHTML=`<option value="">${esc(staticText(placeholder))}</option>`+COLOR_OPTIONS.map(item=>`<option value="${esc(item.value)}">${esc(optionLabel(item))}</option>`).join('');
+    if(el.dataset.colorReady==='1')return; el.dataset.colorReady='1'; el.classList.add('native-color-select');
+    const wrap=document.createElement('div');wrap.className='color-picker';el.parentNode.insertBefore(wrap,el);wrap.append(el);
+    const btn=document.createElement('button');btn.type='button';btn.className='color-picker-btn';wrap.append(btn);
+    const menu=document.createElement('div');menu.className='color-picker-menu';menu.hidden=true;wrap.append(menu);
+    const renderButton=()=>{const item=COLOR_OPTIONS.find(x=>x.value===el.value);btn.innerHTML=`<span class="color-swatch ${item?.value==='Ağ'||item?.value==='Mirvari ağ'?'light':''}" style="--sw:${item?.hex||'transparent'}"></span><span>${esc(item?optionLabel(item):staticText(placeholder))}</span><i class="fa-solid fa-chevron-down"></i>`};
+    const renderMenu=()=>{menu.innerHTML=COLOR_OPTIONS.map(item=>`<button type="button" class="color-option ${el.value===item.value?'active':''}" data-value="${esc(item.value)}"><span class="color-swatch ${['Ağ','Mirvari ağ','Fil sümüyü'].includes(item.value)?'light':''}" style="--sw:${item.hex}"></span><span>${esc(optionLabel(item))}</span></button>`).join('')};
+    btn.onclick=e=>{e.stopPropagation();renderMenu();menu.hidden=!menu.hidden};
+    menu.onclick=e=>{const opt=e.target.closest('.color-option');if(!opt)return;el.value=opt.dataset.value;el.dispatchEvent(new Event('change',{bubbles:true}));menu.hidden=true};
+    document.addEventListener('click',e=>{if(!wrap.contains(e.target))menu.hidden=true});
+    el.addEventListener('change',renderButton);renderButton();
   }
   function renderEquipment(root,name='equipment'){
     if(!root)return;const items=[...EQUIPMENT_OPTIONS].sort((a,b)=>byLocale(optionLabel(a),optionLabel(b)));
@@ -407,7 +519,7 @@
 
   function parseSmart(text){
     const s=text.toLocaleLowerCase('az'); const f={};
-    const brand=BRANDS.map(x=>x[0]).find(b=>s.includes(b.toLocaleLowerCase('az').replace('mercedes-benz','mercedes'))); if(brand)f.brand=brand;
+    const brand=(vehicleMakes.length?vehicleMakes.map(x=>x.name):BRANDS.map(x=>x[0])).find(b=>s.includes(String(b).toLocaleLowerCase('az').replace('mercedes-benz','mercedes'))); if(brand)f.brand=brand;
     let m=s.match(/(?:maks(?:imum)?|qədər|altı|under|до)\s*([0-9]+)[\s,.]*(min|k)?/i) || s.match(/([0-9]+)\s*(min|k)\s*(?:manat|azn|₼)?\s*(?:qədər|altı|under|до)/i); if(m){let n=Number(m[1]);if(m[2]||n<1000)n*=1000;f.priceMax=n}
     m=s.match(/(19\d{2}|20\d{2})\s*(?:-?dən|-?dan|sonra|yuxarı|\+|after|от)/i); if(m)f.yearMin=Number(m[1]);
     if(/avtomat|automatic|автомат/i.test(s))f.transmission='Avtomat'; if(/mexanik|manual|механик/i.test(s))f.transmission='Mexaniki';
@@ -419,7 +531,7 @@
   }
 
   async function initHome(){
-    brandRail($('#brandsRail')); await ensureCatalogs(); await populateMakes($('#filterBrand')); await populateCurrencies($('#filterCurrency'),''); fillSelect($('#filterFuel'),FUELS); fillSelect($('#filterTransmission'),TRANSMISSIONS); fillSelect($('#filterDrivetrain'),DRIVETRAINS); fillColorSelect($('#filterColor'),'Hamısı'); fillSelect($('#filterBody'),BODY_TYPES);
+    await brandRail($('#brandsRail')); await ensureCatalogs(); await populateMakes($('#filterBrand')); await populateCurrencies($('#filterCurrency'),''); fillSelect($('#filterFuel'),FUELS); fillSelect($('#filterTransmission'),TRANSMISSIONS); fillSelect($('#filterDrivetrain'),DRIVETRAINS); fillColorSelect($('#filterColor'),'Hamısı'); fillSelect($('#filterBody'),BODY_TYPES);
     const eq=$('#filterEquipmentGrid'); renderEquipment(eq,'');
     await populateCountries($('#filterCountry'),$('#filterCountryAdvanced'));
     const pref=localStorage.getItem('avtovip-country')||''; if(pref){if($('#filterCountry'))$('#filterCountry').value=pref;if($('#filterCountryAdvanced'))$('#filterCountryAdvanced').value=pref}
@@ -444,8 +556,8 @@
     const smartMsgs={az:`${Object.keys(f).length} parametr tanındı. Filtrlər tətbiq edildi.`,en:`${Object.keys(f).length} parameters recognized. Filters applied.`,ru:`Распознано параметров: ${Object.keys(f).length}. Фильтры применены.`,tr:`${Object.keys(f).length} parametre tanındı. Filtreler uygulandı.`,ka:`ამოცნობილია ${Object.keys(f).length} პარამეტრი. ფილტრები გამოყენებულია.`}; $('#smartSearchResult').textContent=smartMsgs[lang]||smartMsgs.en; loadHomeListings();
   }
   function initVoice(){
-    const btn=$('#voiceBtn'); if(!btn)return; const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){btn.disabled=true;btn.title='Bu brauzerdə səsli axtarış dəstəklənmir';return}
-    const rec=new SR();rec.interimResults=false;rec.maxAlternatives=1;rec.lang=lang==='az'?'az-AZ':lang==='ru'?'ru-RU':'en-US'; btn.addEventListener('click',()=>{try{rec.start();btn.classList.add('is-listening')}catch{}}); rec.onresult=e=>{$('#smartSearchInput').value=e.results[0][0].transcript;applySmartSearch(e.results[0][0].transcript)}; rec.onend=()=>btn.classList.remove('is-listening'); rec.onerror=()=>{btn.classList.remove('is-listening');toast('Səs tanınmadı. Yenidən cəhd edin.','error')};
+    const btn=$('#voiceBtn'); if(!btn)return; const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){btn.disabled=true;btn.title=runtimeText('Bu brauzerdə səsli axtarış dəstəklənmir');return}
+    const rec=new SR();rec.interimResults=false;rec.maxAlternatives=1;rec.lang=({az:'az-AZ',en:'en-US',ru:'ru-RU',tr:'tr-TR',ka:'ka-GE'})[lang]||'en-US'; btn.addEventListener('click',()=>{try{rec.start();btn.classList.add('is-listening')}catch{}}); rec.onresult=e=>{$('#smartSearchInput').value=e.results[0][0].transcript;applySmartSearch(e.results[0][0].transcript)}; rec.onend=()=>btn.classList.remove('is-listening'); rec.onerror=()=>{btn.classList.remove('is-listening');toast('Səs tanınmadı. Yenidən cəhd edin.','error')};
   }
   async function loadHomeStats(){
     const {count}=await sb.from('elanlar').select('*',{count:'exact',head:true}).eq('status','approved'); $('#statListings') && ($('#statListings').textContent=count||0); if(currentUser){const {count:f}=await sb.from('favorites').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);$('#statFavorites')&&($('#statFavorites').textContent=f||0)}
@@ -485,9 +597,9 @@
   function renderDetail(x,seller,hist,insight,isFav){
     const root=$('#detailRoot'); const photos=x.image_urls?.length?x.image_urls:['assets/img/brand/icon-512.png']; const name=[seller?.name,seller?.surname].filter(Boolean).join(' ')||'Satıcı'; const wa=digits(x.whatsapp_phone||x.phone); const phone=String(x.phone||''); let priceClass='',priceLabel=''; if(insight){if(insight.delta<=-4){priceClass='good';priceLabel=t('goodPrice')}else if(insight.delta>=8){priceLabel=t('highPrice')}else priceLabel=t('marketPrice')}
     root.innerHTML=`<div class="detail-layout"><div class="stack"><section class="panel gallery"><div class="gallery-main"><img id="mainPhoto" src="${esc(photos[0])}" alt="${esc(x.title)}"></div><div class="gallery-thumbs">${photos.map((p,i)=>`<button class="gallery-thumb ${i===0?'active':''}" data-photo="${esc(p)}"><img src="${esc(p)}" alt=""></button>`).join('')}</div></section>
-      <section class="panel detail-main"><div class="detail-title"><div><h1>${esc(x.brand)} ${esc(x.model)}</h1><div class="muted small">${x.year} • ${Number(x.mileage).toLocaleString(locale())} km • ${esc([x.city,x.state_name,x.country_code].filter(Boolean).join(', '))}</div></div><div class="card-badges" style="position:static;max-width:none">${listingBadges(x)}</div></div><div class="detail-price">${money(x.price,x.currency)}</div>${insight?`<div class="price-insight"><span class="badge ${priceClass}">${esc(priceLabel)}</span><span>Median: <strong>${money(insight.median,x.currency)}</strong> • ${insight.count} elan</span></div>`:''}<div class="divider"></div><div class="detail-actions"><button class="btn btn-outline ${isFav?'active':''}" id="detailFav"><i class="fa-${isFav?'solid':'regular'} fa-heart"></i>${t('favorites')}</button><button class="btn btn-outline" id="detailCompare"><i class="fa-solid fa-code-compare"></i>${t('compare')}</button><button class="btn btn-outline" id="detailShare"><i class="fa-solid fa-share-nodes"></i>${t('share')}</button></div><div class="divider"></div><div class="spec-grid">${[['İl',x.year],['Ban',x.body_type],['Mühərrik',x.engine_volume?`${x.engine_volume} L`:'-'],['Güc',x.engine_power?`${x.engine_power} a.g.`:'-'],['Yanacaq',x.fuel],['Sürətlər qutusu',x.transmission],['Ötürücü',x.drivetrain],['Rəng',COLOR_OPTIONS.find(c=>c.value===x.color)?optionLabel(COLOR_OPTIONS.find(c=>c.value===x.color)):x.color],['Yürüş',`${Number(x.mileage).toLocaleString()} km`],['Bazar',x.market_origin||'-'],['VIN',x.vin||'-'],['Vəziyyət',x.is_new?'Yeni':'Sürülmüş']].map(([a,b])=>`<div class="spec"><span>${esc(a)}</span><strong>${esc(b??'-')}</strong></div>`).join('')}</div><div class="divider"></div><h3>Açıqlama</h3><p style="white-space:pre-wrap">${esc(x.description||'Açıqlama əlavə edilməyib.')}</p>${x.equipment?.length?`<div class="divider"></div><h3>Təchizat</h3><div class="equipment-list">${x.equipment.map(y=>`<span class="equipment-tag"><i class="fa-solid fa-check"></i> ${esc(equipmentLabel(y))}</span>`).join('')}</div>`:''}</section>
+      <section class="panel detail-main"><div class="detail-title"><div><h1>${esc(x.brand)} ${esc(x.model)}</h1><div class="muted small">${x.year} • ${Number(x.mileage).toLocaleString(locale())} km • ${esc([x.city,x.state_name,x.country_code].filter(Boolean).join(', '))}</div></div><div class="card-badges" style="position:static;max-width:none">${listingBadges(x)}</div></div><div class="detail-price">${money(x.price,x.currency)}</div>${insight?`<div class="price-insight"><span class="badge ${priceClass}">${esc(priceLabel)}</span><span>Median: <strong>${money(insight.median,x.currency)}</strong> • ${insight.count} elan</span></div>`:''}<div class="divider"></div><div class="detail-actions"><button class="btn btn-outline ${isFav?'active':''}" id="detailFav"><i class="fa-${isFav?'solid':'regular'} fa-heart"></i>${t('favorites')}</button><button class="btn btn-outline" id="detailCompare"><i class="fa-solid fa-code-compare"></i>${t('compare')}</button><button class="btn btn-outline" id="detailShare"><i class="fa-solid fa-share-nodes"></i>${t('share')}</button></div><div class="divider"></div><div class="spec-grid">${[['İl',x.year],['Ban',x.body_type],['Mühərrik',x.engine_volume?`${x.engine_volume} L`:'-'],['Güc',x.engine_power?`${x.engine_power} a.g.`:'-'],['Yanacaq',x.fuel],['Sürətlər qutusu',x.transmission],['Ötürücü',x.drivetrain],['Rəng',COLOR_OPTIONS.find(c=>c.value===x.color)?optionLabel(COLOR_OPTIONS.find(c=>c.value===x.color)):x.color],['Yürüş',`${Number(x.mileage).toLocaleString()} km`],['Bazar',x.market_origin||'-'],['VIN',x.vin||'-'],['Vəziyyət',x.is_new?'Yeni':'Sürülmüş']].map(([a,b])=>`<div class="spec"><span>${esc(staticText(a))}</span><strong>${esc(staticText(b??'-'))}</strong></div>`).join('')}</div><div class="divider"></div><h3>Açıqlama</h3><p style="white-space:pre-wrap">${esc(x.description||'Açıqlama əlavə edilməyib.')}</p>${x.equipment?.length?`<div class="divider"></div><h3>Təchizat</h3><div class="equipment-list">${x.equipment.map(y=>`<span class="equipment-tag"><i class="fa-solid fa-check"></i> ${esc(equipmentLabel(y))}</span>`).join('')}</div>`:''}</section>
       ${hist.length?`<section class="panel panel-pad"><div class="section-head"><h3>Qiymət tarixçəsi</h3></div><div class="price-history">${hist.map(h=>`<div class="price-row"><span>${dateText(h.created_at)}</span><strong>${money(h.new_price,h.currency)}</strong></div>`).join('')}</div></section>`:''}
-      </div><aside class="detail-sidebar stack"><section class="panel seller-card"><div class="row"><img class="seller-avatar" src="${esc(seller?.avatar_url||'assets/img/brand/icon-192.png')}" alt=""><div class="grow"><strong>${esc(name)}</strong><div class="muted small">${seller?.role==='dealer'?'Diler':'Şəxsi satıcı'} ${seller?.is_verified?'<i class="fa-solid fa-circle-check" style="color:var(--info)"></i>':''}</div><div class="trust"><span>Etibar ${seller?.trust_score||50}/100</span><span class="trust-bar"><i style="width:${seller?.trust_score||50}%"></i></span></div></div></div><div class="contact-grid"><a class="btn" href="tel:${esc(phone)}"><i class="fa-solid fa-phone"></i>${t('call')}</a>${wa?`<a class="btn btn-whatsapp" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(`Salam. AvtoVİP.az-da ${x.brand} ${x.model} (${x.year}) elanınızla maraqlanıram: ${location.href}`)}"><i class="fa-brands fa-whatsapp"></i>${t('whatsapp')}</a>`:'<button class="btn btn-outline" disabled>WhatsApp</button>'}</div>${currentUser&&currentUser.id!==x.user_id?`<a class="btn btn-outline btn-block" style="margin-top:7px" href="mesajlar.html?with=${x.user_id}&listing=${x.id}"><i class="fa-regular fa-comment"></i> Mesaj yaz</a>`:''}</section><section class="panel panel-pad"><div class="section-head"><h3>Təhlükəsiz alış</h3></div><p class="muted small">Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli elanları bizə bildirin.</p><button class="btn btn-outline btn-block" id="reportBtn"><i class="fa-regular fa-flag"></i>${t('report')}</button></section></aside></div>`;
+      </div><aside class="detail-sidebar stack"><section class="panel seller-card"><div class="row"><img class="seller-avatar" src="${esc(seller?.avatar_url||'assets/img/brand/icon-192.png')}" alt=""><div class="grow"><strong>${esc(name)}</strong><div class="muted small">${seller?.role==='dealer'?'Diler':'Şəxsi satıcı'} ${seller?.is_verified?'<i class="fa-solid fa-circle-check" style="color:var(--info)"></i>':''}</div><div class="trust"><span>Etibar ${seller?.trust_score||50}/100</span><span class="trust-bar"><i style="width:${seller?.trust_score||50}%"></i></span></div></div></div><div class="contact-grid"><a class="btn" href="tel:${esc(phone)}"><i class="fa-solid fa-phone"></i>${t('call')}</a>${wa?`<a class="btn btn-whatsapp" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(`Salam. AvtoVİP-da ${x.brand} ${x.model} (${x.year}) elanınızla maraqlanıram: ${location.href}`)}"><i class="fa-brands fa-whatsapp"></i>${t('whatsapp')}</a>`:'<button class="btn btn-outline" disabled>WhatsApp</button>'}</div>${currentUser&&currentUser.id!==x.user_id?`<a class="btn btn-outline btn-block" style="margin-top:7px" href="mesajlar.html?with=${x.user_id}&listing=${x.id}"><i class="fa-regular fa-comment"></i> Mesaj yaz</a>`:''}</section><section class="panel panel-pad"><div class="section-head"><h3>Təhlükəsiz alış</h3></div><p class="muted small">Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli elanları bizə bildirin.</p><button class="btn btn-outline btn-block" id="reportBtn"><i class="fa-regular fa-flag"></i>${t('report')}</button></section></aside></div>`;
     $$('.gallery-thumb').forEach(b=>b.onclick=()=>{$('#mainPhoto').src=b.dataset.photo;$$('.gallery-thumb').forEach(z=>z.classList.toggle('active',z===b))}); $('#detailFav').onclick=e=>toggleFavorite(x.id,e.currentTarget); $('#detailCompare').onclick=()=>toggleCompare(x.id); $('#detailShare').onclick=async()=>{try{if(navigator.share)await navigator.share({title:`${x.brand} ${x.model}`,url:location.href});else{await navigator.clipboard.writeText(location.href);toast('Link kopyalandı.','success')}}catch{}}; $('#reportBtn').onclick=()=>reportListing(x.id);
   }
   async function reportListing(id){
@@ -574,7 +686,7 @@
   }
   async function loadOwnListings(uid){
     const {data,error}=await sb.from('elanlar').select('*').eq('user_id',uid).order('created_at',{ascending:false});const root=$('#myListings');if(error){root.textContent=error.message;return}$('#myListingCount').textContent=(data||[]).length;root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="profile-listing"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-192.png')}" alt=""><div class="grow"><div class="space-between"><a href="elan.html?id=${x.id}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a><span class="status-pill ${x.status}">${esc(t(x.status)||x.status)}</span></div><div class="muted small">${money(x.price,x.currency)} • ${x.year} • ${x.view_count||0} baxış</div>${x.rejection_reason?`<div class="small" style="color:var(--danger)">${esc(x.rejection_reason)}</div>`:''}<div class="row-wrap" style="margin-top:5px">${x.status==='approved'?`<button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_vip"><i class="fa-solid fa-crown"></i> VIP</button><button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_premium"><i class="fa-solid fa-gem"></i> Premium</button><button class="btn btn-outline btn-sm" data-sold="${x.id}">Satıldı</button>`:''}<button class="btn btn-outline btn-sm" data-delete-listing="${x.id}">Sil</button></div></div></div>`).join(''):'<div class="empty-state">Hələ elan yerləşdirməmisiniz.</div>';
-    root.onclick=async e=>{const p=e.target.closest('[data-promote]');if(p){openPromotion(p.dataset.promote,p.dataset.kind);return}const s=e.target.closest('[data-sold]');if(s&&confirm('Elanı “Satılıb” statusuna keçirək?')){const {error}=await sb.from('elanlar').update({status:'sold'}).eq('id',s.dataset.sold);if(error)toast(error.message,'error');else loadOwnListings(uid);return}const d=e.target.closest('[data-delete-listing]');if(d&&confirm(runtimeText('Bu elanı silmək istəyirsiniz?'))){const row=(data||[]).find(x=>x.id===d.dataset.deleteListing);const {error}=await sb.from('elanlar').delete().eq('id',d.dataset.deleteListing);if(error)toast(error.message,'error');else{if(row?.image_urls?.length)await db.removeUrls('elan-images',row.image_urls).catch(()=>{});loadOwnListings(uid)}}};
+    root.onclick=async e=>{const p=e.target.closest('[data-promote]');if(p){openPromotion(p.dataset.promote,p.dataset.kind);return}const s=e.target.closest('[data-sold]');if(s&&confirm(runtimeText('Elanı “Satılıb” statusuna keçirək?'))){const {error}=await sb.from('elanlar').update({status:'sold'}).eq('id',s.dataset.sold);if(error)toast(error.message,'error');else loadOwnListings(uid);return}const d=e.target.closest('[data-delete-listing]');if(d&&confirm(runtimeText('Bu elanı silmək istəyirsiniz?'))){const row=(data||[]).find(x=>x.id===d.dataset.deleteListing);const {error}=await sb.from('elanlar').delete().eq('id',d.dataset.deleteListing);if(error)toast(error.message,'error');else{if(row?.image_urls?.length)await db.removeUrls('elan-images',row.image_urls).catch(()=>{});loadOwnListings(uid)}}};
   }
   function openPromotion(id,kind){
     const premium=kind==='listing_premium'; const modal=document.createElement('div');modal.className='modal';modal.innerHTML=`<div class="modal-card"><div class="modal-head"><h3>${premium?'Premium':'VIP'} irəli çəkmə</h3><button class="modal-close"><i class="fa-solid fa-xmark"></i></button></div><div class="modal-body stack"><p class="muted small">Hazırda bank merchant inteqrasiyası aktiv deyil. Sorğu göndərilir və ödəniş admin tərəfindən manual təsdiqlənir.</p><div class="field"><label>Paket</label><select id="promoPlan"><option value="1d" data-price="${premium?4:3}">1 gün — ${premium?4:3} AZN</option><option value="7d" data-price="${premium?15:10}">7 gün — ${premium?15:10} AZN</option><option value="30d" data-price="${premium?35:25}">30 gün — ${premium?35:25} AZN</option></select></div><div class="field"><label>Ödəniş üsulu</label><select id="promoMethod"><option value="card_transfer">Kartdan karta</option><option value="m10">m10</option><option value="manual">Digər/manual</option></select></div><div class="field"><label>Qeyd / əməliyyat məlumatı</label><textarea id="promoNote" placeholder="Ödəniş etdikdən sonra qeyd yaza bilərsiniz"></textarea></div><button class="btn btn-block" id="promoSend">Sorğu göndər</button></div></div>`;document.body.append(modal);const close=()=>modal.remove();modal.querySelector('.modal-close').onclick=close;modal.onclick=e=>{if(e.target===modal)close()};modal.querySelector('#promoSend').onclick=async()=>{const plan=modal.querySelector('#promoPlan');const price=Number(plan.selectedOptions[0].dataset.price);const {error}=await sb.from('payment_requests').insert({user_id:currentUser.id,target_type:kind,target_id:id,plan_code:plan.value,amount:price,payment_method:modal.querySelector('#promoMethod').value,payer_note:modal.querySelector('#promoNote').value.trim()});if(error)toast(error.message,'error');else{toast('Ödəniş sorğusu göndərildi.','success');close();loadOwnPayments(currentUser.id)}};
@@ -604,7 +716,7 @@
   }
 
   async function boot(){
-    initThemeLang();initBottomNav();initPWA();await loadCurrent();
+    initThemeLang();observeDynamicI18n();initBottomNav();initPWA();await loadCurrent();
     const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};try{await handlers[page]?.()}catch(err){console.error(err);toast(err.message||'Gözlənilməz xəta baş verdi.','error')}
   }
   document.addEventListener('DOMContentLoaded',boot);

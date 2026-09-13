@@ -1,7 +1,7 @@
 {
-  "name": "AvtoVİP.az",
+  "name": "AvtoVİP",
   "short_name": "AvtoVİP",
-  "description": "Azərbaycan üçün ağıllı avtomobil marketplace və PWA.",
+  "description": "Global smart automotive marketplace and PWA.",
   "id": "./",
   "start_url": "./index.html",
   "scope": "./",
