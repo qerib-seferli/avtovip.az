@@ -88,6 +88,42 @@
     return { path, url: data.publicUrl };
   }
 
+
+  function storagePathFromPublicUrl(bucket, url='') {
+    try {
+      const marker=`/storage/v1/object/public/${bucket}/`;
+      const i=String(url).indexOf(marker);
+      return i>=0 ? decodeURIComponent(String(url).slice(i+marker.length).split('?')[0]) : null;
+    } catch { return null; }
+  }
+
+  async function removePaths(bucket, paths=[]) {
+    const clean=[...new Set((paths||[]).filter(Boolean))];
+    if(!clean.length)return {data:[],error:null};
+    return client.storage.from(bucket).remove(clean);
+  }
+
+  async function removeUrls(bucket, urls=[]) {
+    return removePaths(bucket,(urls||[]).map(u=>storagePathFromPublicUrl(bucket,u)).filter(Boolean));
+  }
+
+  async function prepareImage(file,{maxWidth=1600,maxHeight=1600,quality=.82,maxBytes=2_500_000}={}){
+    if(!file?.type?.startsWith('image/'))return file;
+    if(file.size<=maxBytes && !['image/png'].includes(file.type)) return file;
+    const bitmap=await createImageBitmap(file);
+    const ratio=Math.min(1,maxWidth/bitmap.width,maxHeight/bitmap.height);
+    const w=Math.max(1,Math.round(bitmap.width*ratio)),h=Math.max(1,Math.round(bitmap.height*ratio));
+    const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d',{alpha:false});ctx.drawImage(bitmap,0,0,w,h);bitmap.close?.();
+    let qualityNow=quality,blob=null;
+    for(let i=0;i<4;i++){
+      blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',qualityNow));
+      if(!blob||blob.size<=maxBytes)break;qualityNow=Math.max(.55,qualityNow-.09);
+    }
+    if(!blob)return file;
+    const base=(file.name||'image').replace(/\.[^.]+$/,'');
+    return new File([blob],`${base}.webp`,{type:'image/webp',lastModified:Date.now()});
+  }
+
   window.avtoDb = {
     client,
     url: SUPABASE_URL,
@@ -97,6 +133,10 @@
     current,
     requireAuth,
     requireAdmin,
-    upload
+    upload,
+    storagePathFromPublicUrl,
+    removePaths,
+    removeUrls,
+    prepareImage
   };
 })();
