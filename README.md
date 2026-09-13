@@ -29,3 +29,8 @@ Azərbaycan üçün mobile-first avtomobil marketplace/PWA. Layihə GitHub Pages
 ## Təhlükəsizlik
 
 Anon key frontend-də public istifadə üçün nəzərdə tutulub. **Supabase service_role key, bank merchant secret, OTP secret və başqa gizli açarlar repoya yazılmamalıdır.** RLS bütün kritik cədvəllərdə aktivdir.
+
+## Beynəlxalq data qatı
+`assets/js/international.js` dünya ölkə/şəhər və qlobal avtomobil marka/model məlumatını ölkə/marka seçildikcə lazy-load edir. Bu, 150k+ şəhəri və böyük avtomobil katalogunu birbaşa əsas bundle-a yükləmədiyi üçün mobil performansı qoruyur. Lisenziya/atribusiya qeydləri `NOTICE-DATA.md` faylındadır.
+
+Supabase-də əvvəlki baza artıq qurulubsa, beynəlxalq lokasiya sütunları və indekslər üçün `sql/02_international_marketplace_upgrade.sql` faylını bir dəfə RUN edin.
