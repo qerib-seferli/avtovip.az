@@ -1,1 +1,87 @@
+name: Freeze Vehicle Catalog
 
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and validate vehicle catalog snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/data/brand-logos
+          curl --fail --location --retry 3 \
+            'https://cdn.jsdelivr.net/gh/open-vehicle-db/open-vehicle-db@main/data/makes.json' \
+            -o assets/data/vehicle-makes.json.tmp
+          curl --fail --location --retry 3 \
+            'https://raw.githubusercontent.com/plowman/open-vehicle-db/refs/heads/master/data/models.csv' \
+            -o assets/data/vehicle-models.csv.tmp
+          python - <<'PY'
+          import csv, json, mimetypes, re, urllib.request
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          root=Path('assets/data')
+          makes=json.loads((root/'vehicle-makes.json.tmp').read_text(encoding='utf-8'))
+          if not isinstance(makes,list) or len(makes)<50:
+              raise SystemExit('makes snapshot looks incomplete')
+          rows=list(csv.DictReader((root/'vehicle-models.csv.tmp').open(encoding='utf-8')))
+          if len(rows)<1000:
+              raise SystemExit('models snapshot looks incomplete')
+          if not {'make_slug','model_name'}.issubset(rows[0]):
+              raise SystemExit('unexpected models schema')
+
+          allowed_ext={'.svg','.png','.webp','.jpg','.jpeg'}
+          ct_ext={'image/svg+xml':'.svg','image/png':'.png','image/webp':'.webp','image/jpeg':'.jpg'}
+          saved=0
+          notices=[]
+          for make in makes:
+              logo=make.get('logo') or {}
+              url=logo.get('url') if isinstance(logo,dict) else None
+              if not url: continue
+              slug=re.sub(r'[^a-z0-9-]+','-',str(make.get('id') or make.get('name') or '').lower()).strip('-')
+              if not slug: continue
+              ext=Path(urlparse(url).path).suffix.lower()
+              if ext not in allowed_ext: ext=''
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'AvtoVIP catalog snapshot/1.0'})
+                  with urllib.request.urlopen(req,timeout=20) as r:
+                      data=r.read(2_500_000)
+                      ct=(r.headers.get_content_type() or '').lower()
+                  if not ext: ext=ct_ext.get(ct,'')
+                  if not ext or len(data)<40: continue
+                  out=root/'brand-logos'/f'{slug}{ext}'
+                  out.write_bytes(data)
+                  logo['local_url']=f'assets/data/brand-logos/{out.name}'
+                  saved+=1
+                  notices.append({
+                    'make':make.get('name'),'file':logo['local_url'],'source':url,
+                    'license':logo.get('license'),'source_type':logo.get('source')
+                  })
+              except Exception as exc:
+                  print(f'logo skipped for {make.get("name")}: {exc}')
+
+          (root/'vehicle-makes.json.tmp').write_text(json.dumps(makes,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          (root/'brand-logo-sources.json').write_text(json.dumps(notices,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(f'validated {len(makes)} makes and {len(rows)} models; vendored {saved} logos')
+          PY
+          mv assets/data/vehicle-makes.json.tmp assets/data/vehicle-makes.json
+          mv assets/data/vehicle-models.csv.tmp assets/data/vehicle-models.csv
+      - name: Commit snapshot only when changed
+        shell: bash
+        run: |
+          git add assets/data/vehicle-makes.json assets/data/vehicle-models.csv assets/data/brand-logos assets/data/brand-logo-sources.json
+          if git diff --cached --quiet; then
+            echo 'Catalog snapshot is already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'data: freeze vehicle catalog snapshot'
+          git push
