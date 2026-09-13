@@ -624,7 +624,9 @@
     await commonFormOptions();
     const form=$('#listingForm'),files=$('#listingImages'),preview=$('#imagePreview');
     setupFriendlyFileInput(files,{kind:'images'});
-    files?.addEventListener('change',()=>renderPreview(files.files,preview));
+    let selectedListingFiles=[];
+    const syncListingFiles=()=>{const dt=new DataTransfer();selectedListingFiles.slice(0,15).forEach(f=>dt.items.add(f));files.files=dt.files;renderPreview(files.files,preview,index=>{selectedListingFiles.splice(index,1);syncListingFiles()})};
+    files?.addEventListener('change',()=>{for(const f of [...files.files]){if(!selectedListingFiles.some(x=>x.name===f.name&&x.size===f.size&&x.lastModified===f.lastModified))selectedListingFiles.push(f)}selectedListingFiles=selectedListingFiles.slice(0,15);syncListingFiles()});
     form?.addEventListener('submit',async e=>{
       e.preventDefault();const btn=$('#submitListing');btn.disabled=true;setStatus('#listingStatus','Şəkillər yüklənir...');
       const uploadedPaths=[];
@@ -633,7 +635,7 @@
         if(imageFiles.length<3)throw new Error('Minimum 3 avtomobil şəkli əlavə edin.');
         const urls=[];
         for(const original of imageFiles){
-          if(original.size>18*1024*1024)throw new Error(`${original.name} 10 MB-dan böyükdür.`);
+          if(original.size>10*1024*1024)throw new Error(`${original.name} 10 MB-dan böyükdür.`);
           const file=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.82,maxBytes:2_500_000});
           const up=await db.upload('elan-images',user.id,file,'listings');uploadedPaths.push(up.path);urls.push(up.url);
         }
@@ -642,14 +644,14 @@
         if(!payload.brand||!payload.model||!payload.year||!payload.price||!payload.phone)throw new Error('Vacib sahələri doldurun.');
         if(payload.country_code==='AM'||payload.currency==='AMD')throw new Error('Bu ölkə/valyuta bazarda aktiv deyil.');
         const {data,error}=await sb.from('elanlar').insert(payload).select('id').single();if(error)throw error;
-        setStatus('#listingStatus','Elan moderasiyaya göndərildi.','success');toast('Elan yaradıldı və admin yoxlamasına göndərildi.','success');setTimeout(()=>location.href=`profile.html?created=${data.id}`,900)
+        localStorage.removeItem('avtovip-listing-draft-v2');setStatus('#listingStatus','Elan moderasiyaya göndərildi.','success');toast('Elan yaradıldı və admin yoxlamasına göndərildi.','success');setTimeout(()=>location.href=`profile.html?created=${data.id}`,900)
       }catch(err){
         if(uploadedPaths.length)await db.removePaths('elan-images',uploadedPaths).catch(()=>{});
         setStatus('#listingStatus',err.message,'error');toast(err.message,'error')
       }finally{btn.disabled=false}
     });
   }
-  function renderPreview(files,root){if(!root)return;root.innerHTML=[...files].slice(0,15).map(f=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt=""></div>`).join('')}
+  function renderPreview(files,root,onRemove){if(!root)return;root.innerHTML=[...files].slice(0,15).map((f,i)=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt="">${onRemove?`<button type="button" class="upload-remove" data-remove-upload="${i}" aria-label="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}</div>`).join('');if(onRemove)root.onclick=e=>{const b=e.target.closest('[data-remove-upload]');if(b)onRemove(Number(b.dataset.removeUpload))}}
 
   async function initCreateStory(){
     const user=await db.requireAuth();if(!user)return;
