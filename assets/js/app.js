@@ -838,7 +838,8 @@
     /* Theme/language are now stable; reveal immediately and load data progressively. */
     document.documentElement.classList.remove('av-preboot');
     await loadCurrent();
-    const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};
+    window.AvtoVIPUI=Object.assign(window.AvtoVIPUI||{},{updateMessageBadge,renderConversations,renderThread,openConversation,loadOwnListings,loadOwnPayments,loadWalletTransactions});
+  const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};
     try{await handlers[page]?.()}catch(err){console.error(err);toast(err.message||'Gözlənilməz xəta baş verdi.','error')}
   }
   document.addEventListener('DOMContentLoaded',boot);

@@ -45,19 +45,22 @@
   async function loadTab(id){if(id==='dashboard')return loadDashboard();if(id==='listings')return loadListings();if(id==='users')return loadUsers();if(id==='stories')return loadStories();if(id==='payments')return loadPayments();if(id==='reports')return loadReports()}
   function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
 
-  let adminRealtime=null,adminRealtimeTimer=0;
+  let adminRealtime=null,adminRealtimeTimer=0,adminRealtimeRetry=0;
   function startAdminRealtime(){
     if(adminRealtime)sb.removeChannel(adminRealtime).catch(()=>{});
     const refresh=()=>{clearTimeout(adminRealtimeTimer);adminRealtimeTimer=setTimeout(()=>loadTab(currentTab),180)};
-    adminRealtime=sb.channel('admin-live-dashboard')
+    adminRealtime=sb.channel(`admin-live-dashboard-${Date.now()}`)
       .on('postgres_changes',{event:'*',schema:'public',table:'elanlar'},refresh)
       .on('postgres_changes',{event:'*',schema:'public',table:'users'},refresh)
       .on('postgres_changes',{event:'*',schema:'public',table:'stories'},refresh)
       .on('postgres_changes',{event:'*',schema:'public',table:'payment_requests'},refresh)
       .on('postgres_changes',{event:'*',schema:'public',table:'listing_reports'},refresh)
-      .subscribe(status=>{if(status==='SUBSCRIBED')document.body.dataset.realtime='on';if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')console.warn('[AvtoVIP admin realtime]',status)});
-    window.addEventListener('pagehide',()=>{if(adminRealtime)sb.removeChannel(adminRealtime).catch(()=>{})},{once:true});
+      .on('postgres_changes',{event:'*',schema:'public',table:'messages'},refresh)
+      .on('postgres_changes',{event:'*',schema:'public',table:'notifications'},refresh)
+      .subscribe(status=>{if(status==='SUBSCRIBED'){document.body.dataset.realtime='on';clearTimeout(adminRealtimeRetry)}if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'||status==='CLOSED'){console.warn('[AvtoVIP admin realtime]',status);document.body.dataset.realtime='retry';clearTimeout(adminRealtimeRetry);adminRealtimeRetry=setTimeout(startAdminRealtime,2500)}});
   }
+  window.addEventListener('online',startAdminRealtime);document.addEventListener('visibilitychange',()=>{if(!document.hidden)startAdminRealtime()});
+  window.addEventListener('pagehide',()=>{if(adminRealtime)sb.removeChannel(adminRealtime).catch(()=>{})},{once:true});
   async function boot(){const auth=await db.requireAdmin();if(!auth)return;me=auth.user;profile=auth.profile;$('#adminGate').hidden=true;$('#adminContent').hidden=false;const ls=$('#adminLang');if(ls){ls.value=lang();ls.onchange=()=>{localStorage.setItem('avtovip-lang',ls.value);renderNav();translateStatic();loadTab(currentTab)}}renderNav();translateStatic();$('#adminLogout').onclick=async()=>{await sb.auth.signOut();location.href='../login.html'};document.documentElement.dataset.theme=localStorage.getItem('avtovip-theme')||'light';$('#adminTheme').onclick=()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;localStorage.setItem('avtovip-theme',n)};$$('[data-refresh]').forEach(b=>b.onclick=()=>loadTab(currentTab));$('#listingStatusFilter').onchange=loadListings;$('#listingSearch').addEventListener('input',debounce(loadListings,300));$('#userSearch').addEventListener('input',debounce(loadUsers,300));$('#paymentStatus').onchange=loadPayments;startAdminRealtime();await cleanupExpiredStories();await loadDashboard()}
   document.addEventListener('DOMContentLoaded',boot);
 })();
