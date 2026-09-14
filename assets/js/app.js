@@ -418,7 +418,7 @@
   }
 
   const LOCAL_BRAND_LOGOS = Object.fromEntries(BRANDS.map(([name,file])=>[name.toLowerCase(),`assets/img/brands/${file}`]));
-  function brandLogoFor(make){ const remote=(typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||make?.logo?.url||'')); return LOCAL_BRAND_LOGOS[String(make?.name||'').toLowerCase()] || remote || ''; }
+  function brandLogoCandidates(make){const name=String(make?.name||'');const local=LOCAL_BRAND_LOGOS[name.toLowerCase()]||'';const snap=typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||'');const remote=typeof make?.logo==='object'?(make?.logo?.url||''):'';const simpleSlug=name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g,'');const simple=simpleSlug?`https://cdn.simpleicons.org/${simpleSlug}`:'';return [...new Set([local,snap,remote,simple].filter(Boolean))];}
   async function brandRail(container){
     if(!container)return;
     await ensureCatalogs();
@@ -427,9 +427,9 @@
     const track=document.createElement('div'); track.className='brands-track'; container.append(track);
     for(const make of makes){
       const b=document.createElement('button'); b.className='brand-chip'; b.type='button'; b.dataset.brand=make.name;
-      const logo=brandLogoFor(make); const fallback=(make.name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();
-      b.innerHTML=`<span class="brand-logo-box">${logo?`<img loading="lazy" referrerpolicy="no-referrer" src="${esc(logo)}" alt="${esc(make.name)}">`:''}<b>${esc(fallback)}</b></span><span>${esc(make.name)}</span>`;
-      const img=b.querySelector('img'); if(img)img.addEventListener('error',()=>{img.remove();b.querySelector('.brand-logo-box').classList.add('fallback')},{once:true}); track.append(b);
+      const logos=brandLogoCandidates(make); const fallback=(make.name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();
+      b.innerHTML=`<span class="brand-logo-box">${logos.length?`<img loading="lazy" referrerpolicy="no-referrer" src="${esc(logos[0])}" alt="${esc(make.name)}">`:''}<b>${esc(fallback)}</b></span><span>${esc(make.name)}</span>`;
+      const img=b.querySelector('img'); if(img){let i=0;img.addEventListener('error',()=>{i++;if(i<logos.length){img.src=logos[i]}else{img.remove();b.querySelector('.brand-logo-box').classList.add('fallback')}})}else b.querySelector('.brand-logo-box').classList.add('fallback'); track.append(b);
     }
     let paused=false,last=performance.now(),offset=0;
     const tick=now=>{if(!container.isConnected)return;const dt=Math.min(50,now-last);last=now;if(!paused&&track.children.length>1){offset+=dt*0.026;const first=track.firstElementChild;if(first){const w=first.getBoundingClientRect().width+8;if(offset>=w){offset-=w;track.append(first)}track.style.transform=`translate3d(${-offset}px,0,0)`}}requestAnimationFrame(tick)};
@@ -673,7 +673,7 @@
   }
 
   async function initFavorites(){
-    const user=await db.requireAuth();if(!user)return;const root=$('#favoritesGrid');bindCardActions(root);const {data,error}=await sb.from('favorites').select('listing_id,notify_price_drop,elanlar(*)').eq('user_id',user.id).order('created_at',{ascending:false});if(error){root.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;return}const listings=(data||[]).map(x=>x.elanlar).filter(Boolean);root.innerHTML=listings.length?listings.map(x=>listingCard(x,new Set(listings.map(z=>z.id)))).join(''):`<div class="empty-state">Sevimli elanınız yoxdur.</div>`;
+    const user=await db.requireAuth();if(!user)return;const root=$('#favoritesGrid');bindCardActions(root);const {data,error}=await sb.from('favorites').select('listing_id,notify_price_drop,elanlar(*)').eq('user_id',user.id).order('created_at',{ascending:false});if(error){root.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;return}const listings=(data||[]).map(x=>x.elanlar).filter(Boolean);root.innerHTML=listings.length?listings.map(x=>listingCard(x,new Set(listings.map(z=>z.id)))).join(''):`<div class="empty-state">${esc(runtimeText('Sevimli elanınız yoxdur.'))}</div>`;
   }
 
   async function initCompare(){
