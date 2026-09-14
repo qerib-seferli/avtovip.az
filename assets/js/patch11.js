@@ -51,6 +51,9 @@
     trust:{az:'Etibar',en:'Trust',ru:'Доверие',tr:'Güven',ka:'ნდობა'},
     chatService:{az:'AvtoVIP mesajlaşma',en:'AvtoVIP messaging',ru:'Чат AvtoVIP',tr:'AvtoVIP mesajlaşma',ka:'AvtoVIP მიმოწერა'},
     markRead:{az:'Hamısını oxunmuş et',en:'Mark all read',ru:'Отметить всё прочитанным',tr:'Tümünü okundu yap',ka:'ყველას წაკითხულად მონიშვნა'},
+    home:{az:'Əsas',en:'Home',ru:'Главная',tr:'Ana Sayfa',ka:'მთავარი'},
+    create:{az:'Elan ver',en:'Post ad',ru:'Подать объявление',tr:'İlan Ver',ka:'განცხადების დამატება'},
+    profile:{az:'Profil',en:'Profile',ru:'Профиль',tr:'Profil',ka:'პროფილი'},
   };
   const tr = key => T[key]?.[lang()] || T[key]?.en || key;
   const reverse = new Map();
@@ -72,6 +75,25 @@
     const mapping=[
       ['#exploreSearch','searchExplore'],['#chatInput','writeMessage']
     ]; mapping.forEach(([s,k])=>{const e=$(s);if(e)e.placeholder=tr(k)});
+    const navKeys={home:'home',explore:'explore',create:'create',messages:'messages',profile:'profile'};
+    Object.entries(navKeys).forEach(([nav,key])=>{const e=$(`.bottom-nav [data-nav="${nav}"] span`,root);if(e)e.textContent=tr(key)});
+  }
+
+
+  function isoFlag(code){
+    code=String(code||'').trim().toUpperCase();
+    if(!/^[A-Z]{2}$/.test(code))return '';
+    try{return String.fromCodePoint(...[...code].map(c=>127397+c.charCodeAt(0)))}catch{return ''}
+  }
+  function syncCountrySelectFlags(root=document){
+    const ids=['filterCountry','filterCountryAdvanced','profileCountry','countryCode'];
+    ids.forEach(id=>{
+      const sel=root.getElementById?root.getElementById(id):document.getElementById(id); if(!sel)return;
+      const wrap=sel.closest('.av-select'); const btn=wrap?.querySelector('.av-select-btn span'); if(!btn)return;
+      const opt=sel.selectedOptions?.[0], code=sel.value, label=opt?.textContent?.trim()||'';
+      if(code){const flag=isoFlag(code); const clean=label.replace(/^\p{Regional_Indicator}{2}\s*/u,'').replace(/^[\u{1F1E6}-\u{1F1FF}]{2}\s*/u,'');btn.textContent=`${flag?flag+' ':''}${clean}`}
+      else btn.textContent=label;
+    });
   }
 
   const flagAssets={AZ:'assets/img/flags/az.svg',GB:'assets/img/flags/en.svg',RU:'assets/img/flags/ru.svg',TR:'assets/img/flags/tr.svg',GE:'assets/img/flags/ka.svg',US:'assets/img/flags/us.svg'};
@@ -108,6 +130,7 @@
     if(!selected){ if(form) form.hidden=true; $('#chatMessages')?.replaceChildren(); const peer=$('#chatPeerName'); if(peer) peer.textContent=tr('chooseChat'); }
     if(input)input.placeholder=tr('writeMessage');
     $$('.conversation-item').forEach(card=>{card.classList.add('p11-conversation')});
+    syncCountrySelectFlags();
   }
 
   async function refreshProfileLive(userId){
@@ -173,7 +196,7 @@
   }
 
   function patchAll(){
-    localizeKnownText();fixCountryFlags();fixVerified();decorateTierCards();fixMessagesUI();fixFinanceLanguage();
+    localizeKnownText();fixCountryFlags();fixVerified();decorateTierCards();fixMessagesUI();fixFinanceLanguage();syncCountrySelectFlags();
     const trust=$('.status-pill.approved');if(trust&&/Etibar|Trust|Доверие|Güven|ნდობა/.test(trust.textContent))trust.childNodes.forEach(n=>{if(n.nodeType===3&&n.nodeValue.trim())n.nodeValue=' '+tr('trust')+' '});
     const chatSub=$('#chatPeerLink .muted.tiny');if(chatSub)chatSub.textContent=tr('chatService');
   }
