@@ -177,7 +177,7 @@
 
   async function syncBlockedComposer(uid){
     const pane=$('#chatPane'),peer=pane?.dataset.peer,form=$('#chatForm'),notice=$('#chatBlockedNotice');if(!uid||!peer||!form)return;
-    const {data}=await sb.from('user_blocks').select('blocker_id,blocked_id').or(`and(blocker_id.eq.${uid},blocked_id.eq.${peer}),and(blocker_id.eq.${peer},blocked_id.eq.${uid})`).limit(2);const rows=data||[],blocked=rows.length>0;form.hidden=blocked; if(notice){notice.hidden=!blocked;if(blocked)notice.textContent=tr('blocked')}
+    const {data,error}=await sb.from('user_blocks').select('blocker_id,blocked_id').or(`and(blocker_id.eq.${uid},blocked_id.eq.${peer}),and(blocker_id.eq.${peer},blocked_id.eq.${uid})`).limit(2);if(error){console.warn('[Patch11 block sync]',error);form.hidden=false;if(notice)notice.hidden=true;return}const rows=data||[],blocked=rows.length>0;form.hidden=blocked; if(notice){notice.hidden=!blocked;if(blocked)notice.textContent=tr('blocked')}
   }
   async function refreshLanguageBoundData(){
     patchAll();relocalizeProfileCountry();const {data:{session}}=await sb.auth.getSession();const uid=session?.user?.id;if(!uid)return;
@@ -206,7 +206,7 @@
     window.addEventListener('avtovip:language',()=>setTimeout(refreshLanguageBoundData,0));
     document.addEventListener('avtovip:p11-notifications',()=>{refreshNotificationBadge();const pop=$('#notificationPopover');if(pop){pop.remove();document.documentElement.classList.remove('popover-open')}});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden){rtUser=null;setupRealtime();refreshNotificationBadge()}});window.addEventListener('online',()=>{rtUser=null;setupRealtime()});
-    setupRealtime();refreshNotificationBadge();
+    setupRealtime();refreshNotificationBadge();setTimeout(refreshLanguageBoundData,120);setTimeout(()=>{patchAll();decorateTierCards();syncCountrySelectFlags();},450);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,80),{once:true});else setTimeout(boot,80);
 })();

@@ -354,7 +354,8 @@
     'Təmizlə':{en:'Clear',ru:'Очистить',tr:'Temizle',ka:'გასუფთავება'}
   });
 
-  let lang = localStorage.getItem('avtovip-lang') || 'az';
+  let lang = ['az','en','ru','tr','ka'].includes(localStorage.getItem('avtovip-lang')) ? localStorage.getItem('avtovip-lang') : 'az';
+  let catalogLang = null;
   let currentUser = null;
   let currentProfile = null;
   let deferredInstallPrompt = null;
@@ -476,7 +477,7 @@
     let langSel=$('#langSelect');
     if(!langSel && ['auth','reset'].includes(page)){const box=document.createElement('div');box.className='standalone-controls';box.innerHTML=`<div class="header-control"><select id="langSelect" aria-label="Language"><option value="az">🇦🇿</option><option value="en">🇬🇧</option><option value="ru">🇷🇺</option><option value="tr">🇹🇷</option><option value="ka">🇬🇪</option></select></div><button class="icon-btn" id="themeBtn" aria-label="Theme"></button>`;document.body.append(box);langSel=$('#langSelect')}
     $('#themeBtn')?.addEventListener('click',()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;localStorage.setItem('avtovip-theme',n);renderThemeIcon()}); renderThemeIcon();
-    if(langSel){const labels={az:'🇦🇿',en:'🇬🇧',ru:'🇷🇺',tr:'🇹🇷',ka:'🇬🇪'};langSel.innerHTML=Object.entries(labels).map(([v,l])=>`<option value="${v}">${l}</option>`).join('');langSel.value=lang;langSel.addEventListener('change',()=>{lang=langSel.value;localStorage.setItem('avtovip-lang',lang);document.documentElement.lang=lang;document.documentElement.dataset.lang=lang;applyTranslations();renderAccountButton();window.dispatchEvent(new CustomEvent('avtovip:language',{detail:{lang}}))})}
+    if(langSel){const labels={az:'🇦🇿',en:'🇬🇧',ru:'🇷🇺',tr:'🇹🇷',ka:'🇬🇪'};langSel.innerHTML=Object.entries(labels).map(([v,l])=>`<option value="${v}">${l}</option>`).join('');langSel.value=lang;langSel.addEventListener('change',()=>{lang=langSel.value;catalogLang=null;countryCatalog=[];localStorage.setItem('avtovip-lang',lang);document.documentElement.lang=lang;document.documentElement.dataset.lang=lang;applyTranslations();renderAccountButton();window.dispatchEvent(new CustomEvent('avtovip:language',{detail:{lang}}))})}
     applyTranslations();
   }
   function renderThemeIcon(){const b=$('#themeBtn');if(b)b.innerHTML=`<i class="fa-solid ${document.documentElement.dataset.theme==='dark'?'fa-sun':'fa-moon'}"></i>`}
@@ -509,6 +510,7 @@
   }
   function fillDatalist(el,items){if(!el)return;const sorted=[...new Set(items)].sort(byLocale);el.innerHTML=sorted.map(x=>`<option value="${esc(x)}"></option>`).join('')}
   async function ensureCatalogs(){
+    if(catalogLang!==lang){countryCatalog=[];catalogLang=lang;}
     if(!countryCatalog.length) countryCatalog=intl?await intl.countries(lang):[];
     if(!vehicleMakes.length) vehicleMakes=intl?await intl.makes(lang):BRANDS.map(([name])=>({id:name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),name}));
   }
@@ -758,9 +760,10 @@
     const country=profile?.country_code||'AZ';
     const profileCountries=intl?.countries?await intl.countries(lang):[];
     const countryMeta=profileCountries.find(x=>x.iso2===country);const flag=countryMeta?.emoji||'';
-    $('#profileName').innerHTML=`${flag?`<span class="profile-country-flag" aria-label="${esc(country)}">${esc(flag)}</span> `:''}${esc([profile?.name,profile?.surname].filter(Boolean).join(' ')||user.email)}`;
+    $('#profileName').innerHTML=`${flag?`<span class="profile-country-flag" data-country="${esc(country)}" aria-label="${esc(country)}">${esc(flag)}</span> `:''}${esc([profile?.name,profile?.surname].filter(Boolean).join(' ')||user.email)}`;
     $('#profileEmail').textContent=user.email||'';$('#trustScore').textContent=profile?.trust_score||50;
     const avatar=$('#profileAvatar');avatar?.classList.toggle('vip-avatar',profile?.membership_tier==='vip');avatar?.classList.toggle('premium-avatar',profile?.membership_tier==='premium');
+    const profileHead=$('.profile-head');profileHead?.classList.toggle('tier-vip',profile?.membership_tier==='vip');profileHead?.classList.toggle('tier-premium',profile?.membership_tier==='premium');
     const nameBox=$('#profileName'); if(profile?.is_verified&&nameBox&&!nameBox.querySelector('.verified-mark'))nameBox.insertAdjacentHTML('beforeend',' <span class="verified-mark verified-rosette" title="Verified"><i class="fa-solid fa-check"></i></span>');
     const countrySel=$('#profileCountry');if(countrySel&&intl){const countries=profileCountries;countrySel.innerHTML=countries.map(c=>`<option value="${c.iso2}">${c.emoji||''} ${esc(c.displayName||c.name)}</option>`).join('');countrySel.value=country}
     ['name','surname','phone','whatsapp_phone','city','address','bio'].forEach(k=>{const el=$(`[name="${k}"]`);if(el)el.value=profile?.[k]||''});
@@ -806,7 +809,8 @@
   }
   async function blockedRelationship(peer){
     if(!currentUser||!peer)return {blocked:false,byMe:false,byPeer:false};
-    const {data}=await sb.from('user_blocks').select('blocker_id,blocked_id').or(`and(blocker_id.eq.${currentUser.id},blocked_id.eq.${peer}),and(blocker_id.eq.${peer},blocked_id.eq.${currentUser.id})`).limit(2);
+    const {data,error}=await sb.from('user_blocks').select('blocker_id,blocked_id').or(`and(blocker_id.eq.${currentUser.id},blocked_id.eq.${peer}),and(blocker_id.eq.${peer},blocked_id.eq.${currentUser.id})`).limit(2);
+    if(error){console.warn('[AvtoVIP blocks]',error);return {blocked:false,byMe:false,byPeer:false};}
     const rows=data||[];return {blocked:rows.length>0,byMe:rows.some(x=>x.blocker_id===currentUser.id),byPeer:rows.some(x=>x.blocker_id===peer)};
   }
   async function openConversation(peer,listing=''){
@@ -840,6 +844,7 @@
     window.AvtoVIPUI=Object.assign(window.AvtoVIPUI||{},{updateMessageBadge,renderConversations,renderThread,openConversation,loadOwnListings,loadOwnPayments,loadWalletTransactions});
   const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};
     try{await handlers[page]?.()}catch(err){console.error(err);toast(err.message||'Gözlənilməz xəta baş verdi.','error')}
+    requestAnimationFrame(()=>window.dispatchEvent(new CustomEvent('avtovip:language',{detail:{lang,initial:true}})));
   }
   document.addEventListener('DOMContentLoaded',boot);
 })();
