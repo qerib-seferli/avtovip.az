@@ -7,45 +7,24 @@
     }
   },
   {
-    "id": "alfa-romeo",
+    "id": "alfa_romeo",
     "name": "Alfa Romeo",
     "logo": {
-      "local_url": "assets/data/brand-logos/alfa-romeo.svg"
+      "local_url": "assets/data/brand-logos/alfa_romeo.svg"
     }
   },
   {
-    "id": "alpine",
-    "name": "Alpine",
-    "logo": {
-      "local_url": "assets/data/brand-logos/alpine.svg"
-    }
-  },
-  {
-    "id": "am-general",
+    "id": "am_general",
     "name": "AM General",
     "logo": {
-      "local_url": "assets/data/brand-logos/am-general.svg"
+      "local_url": "assets/data/brand-logos/am_general.svg"
     }
   },
   {
-    "id": "aptera",
-    "name": "Aptera",
-    "logo": {
-      "local_url": "assets/data/brand-logos/aptera.svg"
-    }
-  },
-  {
-    "id": "arcfox",
-    "name": "Arcfox",
-    "logo": {
-      "local_url": "assets/data/brand-logos/arcfox.svg"
-    }
-  },
-  {
-    "id": "aston-martin",
+    "id": "aston_martin",
     "name": "Aston Martin",
     "logo": {
-      "local_url": "assets/data/brand-logos/aston-martin.svg"
+      "local_url": "assets/data/brand-logos/aston_martin.svg"
     }
   },
   {
@@ -56,13 +35,6 @@
     }
   },
   {
-    "id": "baic",
-    "name": "BAIC",
-    "logo": {
-      "local_url": "assets/data/brand-logos/baic.svg"
-    }
-  },
-  {
     "id": "bentley",
     "name": "Bentley",
     "logo": {
@@ -70,24 +42,10 @@
     }
   },
   {
-    "id": "bestune",
-    "name": "Bestune",
-    "logo": {
-      "local_url": "assets/data/brand-logos/bestune.svg"
-    }
-  },
-  {
     "id": "bmw",
     "name": "BMW",
     "logo": {
       "local_url": "assets/img/brands/bmw_logo.png"
-    }
-  },
-  {
-    "id": "brilliance",
-    "name": "Brilliance",
-    "logo": {
-      "local_url": "assets/data/brand-logos/brilliance.svg"
     }
   },
   {
@@ -105,31 +63,10 @@
     }
   },
   {
-    "id": "byd",
-    "name": "BYD",
-    "logo": {
-      "local_url": "assets/img/brands/byd_logo.png"
-    }
-  },
-  {
     "id": "cadillac",
     "name": "Cadillac",
     "logo": {
       "local_url": "assets/data/brand-logos/cadillac.svg"
-    }
-  },
-  {
-    "id": "changan",
-    "name": "Changan",
-    "logo": {
-      "local_url": "assets/img/brands/changan_logo.png"
-    }
-  },
-  {
-    "id": "chery",
-    "name": "Chery",
-    "logo": {
-      "local_url": "assets/img/brands/chery_logo.png"
     }
   },
   {
@@ -147,27 +84,6 @@
     }
   },
   {
-    "id": "citroen",
-    "name": "Citroen",
-    "logo": {
-      "local_url": "assets/data/brand-logos/citroen.svg"
-    }
-  },
-  {
-    "id": "cupra",
-    "name": "Cupra",
-    "logo": {
-      "local_url": "assets/data/brand-logos/cupra.svg"
-    }
-  },
-  {
-    "id": "dacia",
-    "name": "Dacia",
-    "logo": {
-      "local_url": "assets/data/brand-logos/dacia.svg"
-    }
-  },
-  {
     "id": "daewoo",
     "name": "Daewoo",
     "logo": {
@@ -182,24 +98,31 @@
     }
   },
   {
+    "id": "daimler",
+    "name": "Daimler",
+    "logo": {
+      "local_url": "assets/data/brand-logos/daimler.svg"
+    }
+  },
+  {
+    "id": "datsun",
+    "name": "Datsun",
+    "logo": {
+      "local_url": "assets/data/brand-logos/datsun.svg"
+    }
+  },
+  {
+    "id": "delorean",
+    "name": "Delorean",
+    "logo": {
+      "local_url": "assets/data/brand-logos/delorean.svg"
+    }
+  },
+  {
     "id": "dodge",
     "name": "Dodge",
     "logo": {
       "local_url": "assets/data/brand-logos/dodge.svg"
-    }
-  },
-  {
-    "id": "dongfeng",
-    "name": "Dongfeng",
-    "logo": {
-      "local_url": "assets/data/brand-logos/dongfeng.svg"
-    }
-  },
-  {
-    "id": "ds",
-    "name": "DS",
-    "logo": {
-      "local_url": "assets/data/brand-logos/ds.svg"
     }
   },
   {
@@ -231,17 +154,10 @@
     }
   },
   {
-    "id": "geely",
-    "name": "Geely",
+    "id": "geo",
+    "name": "GEO",
     "logo": {
-      "local_url": "assets/data/brand-logos/geely.svg"
-    }
-  },
-  {
-    "id": "genesis",
-    "name": "Genesis",
-    "logo": {
-      "local_url": "assets/data/brand-logos/genesis.svg"
+      "local_url": "assets/data/brand-logos/geo.svg"
     }
   },
   {
@@ -252,31 +168,10 @@
     }
   },
   {
-    "id": "great-wall",
-    "name": "Great Wall",
-    "logo": {
-      "local_url": "assets/data/brand-logos/great-wall.svg"
-    }
-  },
-  {
-    "id": "haval",
-    "name": "Haval",
-    "logo": {
-      "local_url": "assets/data/brand-logos/haval.svg"
-    }
-  },
-  {
     "id": "honda",
     "name": "Honda",
     "logo": {
       "local_url": "assets/data/brand-logos/honda.svg"
-    }
-  },
-  {
-    "id": "hongqi",
-    "name": "Hongqi",
-    "logo": {
-      "local_url": "assets/data/brand-logos/hongqi.svg"
     }
   },
   {
@@ -308,13 +203,6 @@
     }
   },
   {
-    "id": "jac",
-    "name": "JAC",
-    "logo": {
-      "local_url": "assets/data/brand-logos/jac.svg"
-    }
-  },
-  {
     "id": "jaguar",
     "name": "Jaguar",
     "logo": {
@@ -326,13 +214,6 @@
     "name": "Jeep",
     "logo": {
       "local_url": "assets/img/brands/jeep_logo.png"
-    }
-  },
-  {
-    "id": "jetour",
-    "name": "Jetour",
-    "logo": {
-      "local_url": "assets/data/brand-logos/jetour.svg"
     }
   },
   {
@@ -350,13 +231,6 @@
     }
   },
   {
-    "id": "lada-vaz",
-    "name": "Lada/VAZ",
-    "logo": {
-      "local_url": "assets/img/brands/lada_vaz_logo.png"
-    }
-  },
-  {
     "id": "lamborghini",
     "name": "Lamborghini",
     "logo": {
@@ -364,17 +238,10 @@
     }
   },
   {
-    "id": "land-rover",
+    "id": "land_rover",
     "name": "Land Rover",
     "logo": {
-      "local_url": "assets/img/brands/land_rover_logo.png"
-    }
-  },
-  {
-    "id": "leapmotor",
-    "name": "Leapmotor",
-    "logo": {
-      "local_url": "assets/data/brand-logos/leapmotor.svg"
+      "local_url": "assets/data/brand-logos/land_rover.svg"
     }
   },
   {
@@ -434,10 +301,10 @@
     }
   },
   {
-    "id": "mercedes-benz",
-    "name": "Mercedes-Benz",
+    "id": "mercedes_benz",
+    "name": "Mercedes Benz",
     "logo": {
-      "local_url": "assets/img/brands/mercedes_logo.png"
+      "local_url": "assets/data/brand-logos/mercedes_benz.svg"
     }
   },
   {
@@ -445,13 +312,6 @@
     "name": "Mercury",
     "logo": {
       "local_url": "assets/data/brand-logos/mercury.svg"
-    }
-  },
-  {
-    "id": "mg",
-    "name": "MG",
-    "logo": {
-      "local_url": "assets/data/brand-logos/mg.svg"
     }
   },
   {
@@ -469,13 +329,6 @@
     }
   },
   {
-    "id": "nio",
-    "name": "NIO",
-    "logo": {
-      "local_url": "assets/data/brand-logos/nio.svg"
-    }
-  },
-  {
     "id": "nissan",
     "name": "Nissan",
     "logo": {
@@ -490,10 +343,10 @@
     }
   },
   {
-    "id": "opel",
-    "name": "Opel",
+    "id": "peterbilt",
+    "name": "Peterbilt",
     "logo": {
-      "local_url": "assets/img/brands/opel_logo.png"
+      "local_url": "assets/data/brand-logos/peterbilt.svg"
     }
   },
   {
@@ -508,13 +361,6 @@
     "name": "Plymouth",
     "logo": {
       "local_url": "assets/data/brand-logos/plymouth.svg"
-    }
-  },
-  {
-    "id": "polestar",
-    "name": "Polestar",
-    "logo": {
-      "local_url": "assets/data/brand-logos/polestar.svg"
     }
   },
   {
@@ -553,10 +399,10 @@
     }
   },
   {
-    "id": "rolls-royce",
-    "name": "Rolls-Royce",
+    "id": "rolls_royce",
+    "name": "Rolls Royce",
     "logo": {
-      "local_url": "assets/data/brand-logos/rolls-royce.svg"
+      "local_url": "assets/data/brand-logos/rolls_royce.svg"
     }
   },
   {
@@ -567,24 +413,17 @@
     }
   },
   {
-    "id": "scion",
-    "name": "Scion",
+    "id": "saturn",
+    "name": "Saturn",
     "logo": {
-      "local_url": "assets/data/brand-logos/scion.svg"
+      "local_url": "assets/data/brand-logos/saturn.svg"
     }
   },
   {
-    "id": "seat",
-    "name": "Seat",
+    "id": "shelby",
+    "name": "Shelby",
     "logo": {
-      "local_url": "assets/data/brand-logos/seat.svg"
-    }
-  },
-  {
-    "id": "skoda",
-    "name": "Skoda",
-    "logo": {
-      "local_url": "assets/data/brand-logos/skoda.svg"
+      "local_url": "assets/data/brand-logos/shelby.svg"
     }
   },
   {
@@ -595,10 +434,10 @@
     }
   },
   {
-    "id": "ssangyong",
-    "name": "Ssangyong",
+    "id": "spyker",
+    "name": "Spyker",
     "logo": {
-      "local_url": "assets/data/brand-logos/ssangyong.svg"
+      "local_url": "assets/data/brand-logos/spyker.svg"
     }
   },
   {
@@ -630,17 +469,10 @@
     }
   },
   {
-    "id": "vinfast",
-    "name": "Vinfast",
+    "id": "triumph",
+    "name": "Triumph",
     "logo": {
-      "local_url": "assets/data/brand-logos/vinfast.svg"
-    }
-  },
-  {
-    "id": "volkswagen",
-    "name": "Volkswagen",
-    "logo": {
-      "local_url": "assets/img/brands/volkswagen_logo.png"
+      "local_url": "assets/data/brand-logos/triumph.svg"
     }
   },
   {
@@ -651,17 +483,10 @@
     }
   },
   {
-    "id": "xpeng",
-    "name": "Xpeng",
+    "id": "yugo",
+    "name": "Yugo",
     "logo": {
-      "local_url": "assets/data/brand-logos/xpeng.svg"
-    }
-  },
-  {
-    "id": "zeekr",
-    "name": "Zeekr",
-    "logo": {
-      "local_url": "assets/data/brand-logos/zeekr.svg"
+      "local_url": "assets/data/brand-logos/yugo.svg"
     }
   }
 ]

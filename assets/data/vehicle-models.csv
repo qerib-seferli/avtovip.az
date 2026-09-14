@@ -1,600 +1,1679 @@
 make_slug,make_name,model_name,source
-audi,Audi,A1,built-in
-audi,Audi,A3,built-in
-audi,Audi,A4,built-in
-audi,Audi,A5,built-in
-audi,Audi,A6,built-in
-audi,Audi,A7,built-in
-audi,Audi,A8,built-in
-audi,Audi,Q2,built-in
-audi,Audi,Q3,built-in
-audi,Audi,Q4 e-tron,built-in
-audi,Audi,Q5,built-in
-audi,Audi,Q6 e-tron,built-in
-audi,Audi,Q7,built-in
-audi,Audi,Q8,built-in
-audi,Audi,e-tron GT,built-in
-audi,Audi,TT,built-in
-audi,Audi,R8,built-in
-audi,Audi,RS 3,built-in
-audi,Audi,RS 4,built-in
-audi,Audi,RS 5,built-in
-audi,Audi,RS 6,built-in
-audi,Audi,RS 7,built-in
-audi,Audi,RS Q8,built-in
-audi,Audi,S3,built-in
-audi,Audi,S4,built-in
-audi,Audi,S5,built-in
-audi,Audi,S6,built-in
-audi,Audi,S7,built-in
-audi,Audi,S8,built-in
-audi,Audi,SQ5,built-in
-audi,Audi,SQ7,built-in
-audi,Audi,SQ8,built-in
-bmw,BMW,1 Series,built-in
-bmw,BMW,2 Series,built-in
-bmw,BMW,3 Series,built-in
-bmw,BMW,4 Series,built-in
-bmw,BMW,5 Series,built-in
-bmw,BMW,6 Series,built-in
-bmw,BMW,7 Series,built-in
-bmw,BMW,8 Series,built-in
-bmw,BMW,i3,built-in
-bmw,BMW,i4,built-in
-bmw,BMW,i5,built-in
-bmw,BMW,i7,built-in
-bmw,BMW,i8,built-in
-bmw,BMW,iX,built-in
-bmw,BMW,M2,built-in
-bmw,BMW,M3,built-in
-bmw,BMW,M4,built-in
-bmw,BMW,M5,built-in
-bmw,BMW,M8,built-in
-bmw,BMW,X1,built-in
-bmw,BMW,X2,built-in
-bmw,BMW,X3,built-in
-bmw,BMW,X4,built-in
-bmw,BMW,X5,built-in
-bmw,BMW,X6,built-in
-bmw,BMW,X7,built-in
-bmw,BMW,XM,built-in
-bmw,BMW,Z3,built-in
-bmw,BMW,Z4,built-in
-mercedes-benz,Mercedes-Benz,A-Class,built-in
-mercedes-benz,Mercedes-Benz,B-Class,built-in
-mercedes-benz,Mercedes-Benz,C-Class,built-in
-mercedes-benz,Mercedes-Benz,CLA,built-in
-mercedes-benz,Mercedes-Benz,CLE,built-in
-mercedes-benz,Mercedes-Benz,CLS,built-in
-mercedes-benz,Mercedes-Benz,E-Class,built-in
-mercedes-benz,Mercedes-Benz,S-Class,built-in
-mercedes-benz,Mercedes-Benz,G-Class,built-in
-mercedes-benz,Mercedes-Benz,GLA,built-in
-mercedes-benz,Mercedes-Benz,GLB,built-in
-mercedes-benz,Mercedes-Benz,GLC,built-in
-mercedes-benz,Mercedes-Benz,GLE,built-in
-mercedes-benz,Mercedes-Benz,GLS,built-in
-mercedes-benz,Mercedes-Benz,AMG GT,built-in
-mercedes-benz,Mercedes-Benz,EQA,built-in
-mercedes-benz,Mercedes-Benz,EQB,built-in
-mercedes-benz,Mercedes-Benz,EQC,built-in
-mercedes-benz,Mercedes-Benz,EQE,built-in
-mercedes-benz,Mercedes-Benz,EQS,built-in
-mercedes-benz,Mercedes-Benz,V-Class,built-in
-mercedes-benz,Mercedes-Benz,Vito,built-in
-mercedes-benz,Mercedes-Benz,Sprinter,built-in
-toyota,Toyota,4Runner,built-in
-toyota,Toyota,Alphard,built-in
-toyota,Toyota,Avalon,built-in
-toyota,Toyota,Avensis,built-in
-toyota,Toyota,C-HR,built-in
-toyota,Toyota,Camry,built-in
-toyota,Toyota,Corolla,built-in
-toyota,Toyota,Corolla Cross,built-in
-toyota,Toyota,Crown,built-in
-toyota,Toyota,Fortuner,built-in
-toyota,Toyota,GR86,built-in
-toyota,Toyota,Hiace,built-in
-toyota,Toyota,Highlander,built-in
-toyota,Toyota,Hilux,built-in
-toyota,Toyota,Land Cruiser,built-in
-toyota,Toyota,Land Cruiser Prado,built-in
-toyota,Toyota,Mirai,built-in
-toyota,Toyota,Prius,built-in
-toyota,Toyota,RAV4,built-in
-toyota,Toyota,Sequoia,built-in
-toyota,Toyota,Sienna,built-in
-toyota,Toyota,Supra,built-in
-toyota,Toyota,Tacoma,built-in
-toyota,Toyota,Tundra,built-in
-toyota,Toyota,Venza,built-in
-toyota,Toyota,Yaris,built-in
-toyota,Toyota,Yaris Cross,built-in
-lexus,Lexus,CT,built-in
-lexus,Lexus,ES,built-in
-lexus,Lexus,GS,built-in
-lexus,Lexus,GX,built-in
-lexus,Lexus,IS,built-in
-lexus,Lexus,LC,built-in
-lexus,Lexus,LM,built-in
-lexus,Lexus,LS,built-in
-lexus,Lexus,LX,built-in
-lexus,Lexus,NX,built-in
-lexus,Lexus,RC,built-in
-lexus,Lexus,RX,built-in
-lexus,Lexus,RZ,built-in
-lexus,Lexus,TX,built-in
-lexus,Lexus,UX,built-in
-nissan,Nissan,350Z,built-in
-nissan,Nissan,370Z,built-in
-nissan,Nissan,Almera,built-in
-nissan,Nissan,Altima,built-in
-nissan,Nissan,Ariya,built-in
-nissan,Nissan,Armada,built-in
-nissan,Nissan,Frontier,built-in
-nissan,Nissan,GT-R,built-in
-nissan,Nissan,Juke,built-in
-nissan,Nissan,Kicks,built-in
-nissan,Nissan,Leaf,built-in
-nissan,Nissan,Maxima,built-in
-nissan,Nissan,Micra,built-in
-nissan,Nissan,Murano,built-in
-nissan,Nissan,Navara,built-in
-nissan,Nissan,Note,built-in
-nissan,Nissan,Pathfinder,built-in
-nissan,Nissan,Patrol,built-in
-nissan,Nissan,Qashqai,built-in
-nissan,Nissan,Rogue,built-in
-nissan,Nissan,Sentra,built-in
-nissan,Nissan,Skyline,built-in
-nissan,Nissan,Sunny,built-in
-nissan,Nissan,Teana,built-in
-nissan,Nissan,Terrano,built-in
-nissan,Nissan,Titan,built-in
-nissan,Nissan,X-Trail,built-in
-nissan,Nissan,Z,built-in
-honda,Honda,Accord,built-in
-honda,Honda,Civic,built-in
-honda,Honda,City,built-in
-honda,Honda,Clarity,built-in
-honda,Honda,CR-V,built-in
-honda,Honda,CR-Z,built-in
-honda,Honda,e,built-in
-honda,Honda,Element,built-in
-honda,Honda,Fit/Jazz,built-in
-honda,Honda,HR-V,built-in
-honda,Honda,Insight,built-in
-honda,Honda,Odyssey,built-in
-honda,Honda,Passport,built-in
-honda,Honda,Pilot,built-in
-honda,Honda,Prelude,built-in
-honda,Honda,Ridgeline,built-in
-honda,Honda,S2000,built-in
-hyundai,Hyundai,Accent,built-in
-hyundai,Hyundai,Azera/Grandeur,built-in
-hyundai,Hyundai,Bayon,built-in
-hyundai,Hyundai,Creta,built-in
-hyundai,Hyundai,Elantra,built-in
-hyundai,Hyundai,Equus,built-in
-hyundai,Hyundai,Genesis,built-in
-hyundai,Hyundai,i10,built-in
-hyundai,Hyundai,i20,built-in
-hyundai,Hyundai,i30,built-in
-hyundai,Hyundai,Ioniq,built-in
-hyundai,Hyundai,Ioniq 5,built-in
-hyundai,Hyundai,Ioniq 6,built-in
-hyundai,Hyundai,Kona,built-in
-hyundai,Hyundai,Palisade,built-in
-hyundai,Hyundai,Santa Fe,built-in
-hyundai,Hyundai,Sonata,built-in
-hyundai,Hyundai,Staria,built-in
-hyundai,Hyundai,Tucson,built-in
-hyundai,Hyundai,Veloster,built-in
-hyundai,Hyundai,Venue,built-in
-kia,KIA,Carnival,built-in
-kia,KIA,Carens,built-in
-kia,KIA,Ceed,built-in
-kia,KIA,Cerato/Forte,built-in
-kia,KIA,EV3,built-in
-kia,KIA,EV5,built-in
-kia,KIA,EV6,built-in
-kia,KIA,EV9,built-in
-kia,KIA,K5,built-in
-kia,KIA,K8,built-in
-kia,KIA,K9,built-in
-kia,KIA,Niro,built-in
-kia,KIA,Optima,built-in
-kia,KIA,Picanto,built-in
-kia,KIA,Rio,built-in
-kia,KIA,Seltos,built-in
-kia,KIA,Sorento,built-in
-kia,KIA,Soul,built-in
-kia,KIA,Sportage,built-in
-kia,KIA,Stinger,built-in
-kia,KIA,Telluride,built-in
-volkswagen,Volkswagen,Amarok,built-in
-volkswagen,Volkswagen,Arteon,built-in
-volkswagen,Volkswagen,Atlas,built-in
-volkswagen,Volkswagen,Beetle,built-in
-volkswagen,Volkswagen,Bora,built-in
-volkswagen,Volkswagen,Caddy,built-in
-volkswagen,Volkswagen,Crafter,built-in
-volkswagen,Volkswagen,Golf,built-in
-volkswagen,Volkswagen,ID.3,built-in
-volkswagen,Volkswagen,ID.4,built-in
-volkswagen,Volkswagen,ID.5,built-in
-volkswagen,Volkswagen,ID.7,built-in
-volkswagen,Volkswagen,Jetta,built-in
-volkswagen,Volkswagen,Multivan,built-in
-volkswagen,Volkswagen,Passat,built-in
-volkswagen,Volkswagen,Phaeton,built-in
-volkswagen,Volkswagen,Polo,built-in
-volkswagen,Volkswagen,Scirocco,built-in
-volkswagen,Volkswagen,Taos,built-in
-volkswagen,Volkswagen,T-Cross,built-in
-volkswagen,Volkswagen,T-Roc,built-in
-volkswagen,Volkswagen,Tiguan,built-in
-volkswagen,Volkswagen,Touareg,built-in
-volkswagen,Volkswagen,Touran,built-in
-volkswagen,Volkswagen,Transporter,built-in
-ford,Ford,Bronco,built-in
-ford,Ford,Bronco Sport,built-in
-ford,Ford,Edge,built-in
-ford,Ford,Escape,built-in
-ford,Ford,Everest,built-in
-ford,Ford,Expedition,built-in
-ford,Ford,Explorer,built-in
-ford,Ford,F-150,built-in
-ford,Ford,Fiesta,built-in
-ford,Ford,Focus,built-in
-ford,Ford,Fusion,built-in
-ford,Ford,Galaxy,built-in
-ford,Ford,Kuga,built-in
-ford,Ford,Maverick,built-in
-ford,Ford,Mondeo,built-in
-ford,Ford,Mustang,built-in
-ford,Ford,Mustang Mach-E,built-in
-ford,Ford,Puma,built-in
-ford,Ford,Ranger,built-in
-ford,Ford,S-Max,built-in
-ford,Ford,Transit,built-in
-chevrolet,Chevrolet,Aveo,built-in
-chevrolet,Chevrolet,Blazer,built-in
-chevrolet,Chevrolet,Bolt,built-in
-chevrolet,Chevrolet,Camaro,built-in
-chevrolet,Chevrolet,Captiva,built-in
-chevrolet,Chevrolet,Colorado,built-in
-chevrolet,Chevrolet,Corvette,built-in
-chevrolet,Chevrolet,Cruze,built-in
-chevrolet,Chevrolet,Equinox,built-in
-chevrolet,Chevrolet,Impala,built-in
-chevrolet,Chevrolet,Malibu,built-in
-chevrolet,Chevrolet,Niva,built-in
-chevrolet,Chevrolet,Onix,built-in
-chevrolet,Chevrolet,Orlando,built-in
-chevrolet,Chevrolet,Silverado,built-in
-chevrolet,Chevrolet,Spark,built-in
-chevrolet,Chevrolet,Suburban,built-in
-chevrolet,Chevrolet,Tahoe,built-in
-chevrolet,Chevrolet,Tracker,built-in
-chevrolet,Chevrolet,Trailblazer,built-in
-chevrolet,Chevrolet,Traverse,built-in
-chevrolet,Chevrolet,Trax,built-in
-porsche,Porsche,718 Boxster,built-in
-porsche,Porsche,718 Cayman,built-in
-porsche,Porsche,911,built-in
-porsche,Porsche,Cayenne,built-in
-porsche,Porsche,Macan,built-in
-porsche,Porsche,Panamera,built-in
-porsche,Porsche,Taycan,built-in
-land-rover,Land Rover,Defender,built-in
-land-rover,Land Rover,Discovery,built-in
-land-rover,Land Rover,Discovery Sport,built-in
-land-rover,Land Rover,Freelander,built-in
-land-rover,Land Rover,Range Rover,built-in
-land-rover,Land Rover,Range Rover Evoque,built-in
-land-rover,Land Rover,Range Rover Sport,built-in
-land-rover,Land Rover,Range Rover Velar,built-in
-mazda,Mazda,2,built-in
-mazda,Mazda,3,built-in
-mazda,Mazda,5,built-in
-mazda,Mazda,6,built-in
-mazda,Mazda,CX-3,built-in
-mazda,Mazda,CX-30,built-in
-mazda,Mazda,CX-5,built-in
-mazda,Mazda,CX-50,built-in
-mazda,Mazda,CX-60,built-in
-mazda,Mazda,CX-70,built-in
-mazda,Mazda,CX-80,built-in
-mazda,Mazda,CX-90,built-in
-mazda,Mazda,MX-5,built-in
-mazda,Mazda,MX-30,built-in
-mazda,Mazda,RX-7,built-in
-mazda,Mazda,RX-8,built-in
-mitsubishi,Mitsubishi,ASX,built-in
-mitsubishi,Mitsubishi,Colt,built-in
-mitsubishi,Mitsubishi,Eclipse,built-in
-mitsubishi,Mitsubishi,Eclipse Cross,built-in
-mitsubishi,Mitsubishi,Galant,built-in
-mitsubishi,Mitsubishi,L200,built-in
-mitsubishi,Mitsubishi,Lancer,built-in
-mitsubishi,Mitsubishi,Mirage,built-in
-mitsubishi,Mitsubishi,Montero,built-in
-mitsubishi,Mitsubishi,Outlander,built-in
-mitsubishi,Mitsubishi,Pajero,built-in
-mitsubishi,Mitsubishi,Pajero Sport,built-in
-mitsubishi,Mitsubishi,Xpander,built-in
-renault,Renault,Arkana,built-in
-renault,Renault,Austral,built-in
-renault,Renault,Captur,built-in
-renault,Renault,Clio,built-in
-renault,Renault,Duster,built-in
-renault,Renault,Espace,built-in
-renault,Renault,Fluence,built-in
-renault,Renault,Kadjar,built-in
-renault,Renault,Kangoo,built-in
-renault,Renault,Koleos,built-in
-renault,Renault,Laguna,built-in
-renault,Renault,Megane,built-in
-renault,Renault,Rafale,built-in
-renault,Renault,Scenic,built-in
-renault,Renault,Symbol,built-in
-renault,Renault,Talisman,built-in
-renault,Renault,Trafic,built-in
-renault,Renault,Zoe,built-in
-opel,Opel,Adam,built-in
-opel,Opel,Astra,built-in
-opel,Opel,Corsa,built-in
-opel,Opel,Crossland,built-in
-opel,Opel,Frontera,built-in
-opel,Opel,Grandland,built-in
-opel,Opel,Insignia,built-in
-opel,Opel,Mokka,built-in
-opel,Opel,Omega,built-in
-opel,Opel,Signum,built-in
-opel,Opel,Vectra,built-in
-opel,Opel,Vivaro,built-in
-opel,Opel,Zafira,built-in
-volvo,Volvo,C30,built-in
-volvo,Volvo,C40,built-in
-volvo,Volvo,EX30,built-in
-volvo,Volvo,EX40,built-in
-volvo,Volvo,EX90,built-in
-volvo,Volvo,S40,built-in
-volvo,Volvo,S60,built-in
-volvo,Volvo,S80,built-in
-volvo,Volvo,S90,built-in
-volvo,Volvo,V40,built-in
-volvo,Volvo,V50,built-in
-volvo,Volvo,V60,built-in
-volvo,Volvo,V70,built-in
-volvo,Volvo,V90,built-in
-volvo,Volvo,XC40,built-in
-volvo,Volvo,XC60,built-in
-volvo,Volvo,XC70,built-in
-volvo,Volvo,XC90,built-in
-tesla,Tesla,Cybertruck,built-in
-tesla,Tesla,Model 3,built-in
-tesla,Tesla,Model S,built-in
-tesla,Tesla,Model X,built-in
-tesla,Tesla,Model Y,built-in
-tesla,Tesla,Roadster,built-in
-byd,BYD,Atto 3,built-in
-byd,BYD,Dolphin,built-in
-byd,BYD,Han,built-in
-byd,BYD,Qin Plus,built-in
-byd,BYD,Seal,built-in
-byd,BYD,Seal U,built-in
-byd,BYD,Seagull,built-in
-byd,BYD,Song Plus,built-in
-byd,BYD,Tang,built-in
-byd,BYD,Yuan Plus,built-in
-changan,Changan,Alsvin,built-in
-changan,Changan,CS15,built-in
-changan,Changan,CS35 Plus,built-in
-changan,Changan,CS55 Plus,built-in
-changan,Changan,CS75 Plus,built-in
-changan,Changan,CS85 Coupe,built-in
-changan,Changan,CS95,built-in
-changan,Changan,Deepal S07,built-in
-changan,Changan,Eado,built-in
-changan,Changan,Hunter,built-in
-changan,Changan,UNI-K,built-in
-changan,Changan,UNI-T,built-in
-changan,Changan,UNI-V,built-in
-chery,Chery,Arrizo 5,built-in
-chery,Chery,Arrizo 8,built-in
-chery,Chery,eQ1,built-in
-chery,Chery,Exeed TXL,built-in
-chery,Chery,Omoda 5,built-in
-chery,Chery,Tiggo 2,built-in
-chery,Chery,Tiggo 4,built-in
-chery,Chery,Tiggo 7,built-in
-chery,Chery,Tiggo 8,built-in
-chery,Chery,Tiggo 9,built-in
-geely,Geely,Atlas,built-in
-geely,Geely,Coolray,built-in
-geely,Geely,Emgrand,built-in
-geely,Geely,Galaxy E5,built-in
-geely,Geely,Monjaro,built-in
-geely,Geely,Okavango,built-in
-geely,Geely,Preface,built-in
-geely,Geely,Tugella,built-in
-infiniti,Infiniti,EX,built-in
-infiniti,Infiniti,FX,built-in
-infiniti,Infiniti,G,built-in
-infiniti,Infiniti,JX,built-in
-infiniti,Infiniti,M,built-in
-infiniti,Infiniti,Q30,built-in
-infiniti,Infiniti,Q50,built-in
-infiniti,Infiniti,Q60,built-in
-infiniti,Infiniti,Q70,built-in
-infiniti,Infiniti,QX30,built-in
-infiniti,Infiniti,QX50,built-in
-infiniti,Infiniti,QX55,built-in
-infiniti,Infiniti,QX60,built-in
-infiniti,Infiniti,QX70,built-in
-infiniti,Infiniti,QX80,built-in
-jeep,Jeep,Avenger,built-in
-jeep,Jeep,Cherokee,built-in
-jeep,Jeep,Commander,built-in
-jeep,Jeep,Compass,built-in
-jeep,Jeep,Gladiator,built-in
-jeep,Jeep,Grand Cherokee,built-in
-jeep,Jeep,Renegade,built-in
-jeep,Jeep,Wagoneer,built-in
-jeep,Jeep,Wrangler,built-in
-lada-vaz,Lada/VAZ,2101,built-in
-lada-vaz,Lada/VAZ,2104,built-in
-lada-vaz,Lada/VAZ,2105,built-in
-lada-vaz,Lada/VAZ,2106,built-in
-lada-vaz,Lada/VAZ,2107,built-in
-lada-vaz,Lada/VAZ,2108,built-in
-lada-vaz,Lada/VAZ,2109,built-in
-lada-vaz,Lada/VAZ,21099,built-in
-lada-vaz,Lada/VAZ,2110,built-in
-lada-vaz,Lada/VAZ,2111,built-in
-lada-vaz,Lada/VAZ,2112,built-in
-lada-vaz,Lada/VAZ,2113,built-in
-lada-vaz,Lada/VAZ,2114,built-in
-lada-vaz,Lada/VAZ,2115,built-in
-lada-vaz,Lada/VAZ,Granta,built-in
-lada-vaz,Lada/VAZ,Kalina,built-in
-lada-vaz,Lada/VAZ,Largus,built-in
-lada-vaz,Lada/VAZ,Niva,built-in
-lada-vaz,Lada/VAZ,Priora,built-in
-lada-vaz,Lada/VAZ,Vesta,built-in
-lada-vaz,Lada/VAZ,XRAY,built-in
-skoda,Skoda,Enyaq,built-in
-skoda,Skoda,Fabia,built-in
-skoda,Skoda,Kamiq,built-in
-skoda,Skoda,Karoq,built-in
-skoda,Skoda,Kodiaq,built-in
-skoda,Skoda,Octavia,built-in
-skoda,Skoda,Rapid,built-in
-skoda,Skoda,Scala,built-in
-skoda,Skoda,Superb,built-in
-skoda,Skoda,Yeti,built-in
-peugeot,Peugeot,2008,built-in
-peugeot,Peugeot,208,built-in
-peugeot,Peugeot,3008,built-in
-peugeot,Peugeot,308,built-in
-peugeot,Peugeot,408,built-in
-peugeot,Peugeot,5008,built-in
-peugeot,Peugeot,508,built-in
-peugeot,Peugeot,Partner,built-in
-peugeot,Peugeot,Rifter,built-in
-peugeot,Peugeot,Traveller,built-in
-citroen,Citroen,Berlingo,built-in
-citroen,Citroen,C3,built-in
-citroen,Citroen,C3 Aircross,built-in
-citroen,Citroen,C4,built-in
-citroen,Citroen,C4 X,built-in
-citroen,Citroen,C5 Aircross,built-in
-citroen,Citroen,C5 X,built-in
-citroen,Citroen,Jumpy,built-in
-citroen,Citroen,SpaceTourer,built-in
-fiat,Fiat,500,built-in
-fiat,Fiat,500X,built-in
-fiat,Fiat,600,built-in
-fiat,Fiat,Doblo,built-in
-fiat,Fiat,Ducato,built-in
-fiat,Fiat,Panda,built-in
-fiat,Fiat,Punto,built-in
-fiat,Fiat,Tipo,built-in
-subaru,Subaru,Ascent,built-in
-subaru,Subaru,BRZ,built-in
-subaru,Subaru,Crosstrek,built-in
-subaru,Subaru,Forester,built-in
-subaru,Subaru,Impreza,built-in
-subaru,Subaru,Legacy,built-in
-subaru,Subaru,Outback,built-in
-subaru,Subaru,Solterra,built-in
-subaru,Subaru,WRX,built-in
-subaru,Subaru,XV,built-in
-suzuki,Suzuki,Across,built-in
-suzuki,Suzuki,Alto,built-in
-suzuki,Suzuki,Baleno,built-in
-suzuki,Suzuki,Grand Vitara,built-in
-suzuki,Suzuki,Ignis,built-in
-suzuki,Suzuki,Jimny,built-in
-suzuki,Suzuki,S-Cross,built-in
-suzuki,Suzuki,Swift,built-in
-suzuki,Suzuki,Vitara,built-in
-isuzu,Isuzu,D-Max,built-in
-isuzu,Isuzu,MU-X,built-in
-gmc,GMC,Acadia,built-in
-gmc,GMC,Canyon,built-in
-gmc,GMC,Hummer EV,built-in
-gmc,GMC,Sierra,built-in
-gmc,GMC,Terrain,built-in
-gmc,GMC,Yukon,built-in
-cadillac,Cadillac,CT4,built-in
-cadillac,Cadillac,CT5,built-in
-cadillac,Cadillac,CT6,built-in
-cadillac,Cadillac,Escalade,built-in
-cadillac,Cadillac,Lyriq,built-in
-cadillac,Cadillac,Optiq,built-in
-cadillac,Cadillac,XT4,built-in
-cadillac,Cadillac,XT5,built-in
-cadillac,Cadillac,XT6,built-in
-lincoln,Lincoln,Aviator,built-in
-lincoln,Lincoln,Corsair,built-in
-lincoln,Lincoln,MKC,built-in
-lincoln,Lincoln,MKX,built-in
-lincoln,Lincoln,MKZ,built-in
-lincoln,Lincoln,Nautilus,built-in
-lincoln,Lincoln,Navigator,built-in
-jaguar,Jaguar,E-Pace,built-in
-jaguar,Jaguar,F-Pace,built-in
-jaguar,Jaguar,F-Type,built-in
-jaguar,Jaguar,I-Pace,built-in
-jaguar,Jaguar,XE,built-in
-jaguar,Jaguar,XF,built-in
-jaguar,Jaguar,XJ,built-in
-jaguar,Jaguar,XK,built-in
-mini,Mini,Clubman,built-in
-mini,Mini,Cooper,built-in
-mini,Mini,Countryman,built-in
-mini,Mini,Paceman,built-in
-alfa-romeo,Alfa Romeo,4C,built-in
-alfa-romeo,Alfa Romeo,Giulia,built-in
-alfa-romeo,Alfa Romeo,Giulietta,built-in
-alfa-romeo,Alfa Romeo,Stelvio,built-in
-alfa-romeo,Alfa Romeo,Tonale,built-in
-maserati,Maserati,Ghibli,built-in
-maserati,Maserati,GranCabrio,built-in
-maserati,Maserati,GranTurismo,built-in
-maserati,Maserati,Grecale,built-in
-maserati,Maserati,Levante,built-in
-maserati,Maserati,MC20,built-in
-maserati,Maserati,Quattroporte,built-in
-bentley,Bentley,Bentayga,built-in
-bentley,Bentley,Continental GT,built-in
-bentley,Bentley,Flying Spur,built-in
-bentley,Bentley,Mulsanne,built-in
-aston-martin,Aston Martin,DB11,built-in
-aston-martin,Aston Martin,DB12,built-in
-aston-martin,Aston Martin,DBS,built-in
-aston-martin,Aston Martin,DBX,built-in
-aston-martin,Aston Martin,Rapide,built-in
-aston-martin,Aston Martin,Vanquish,built-in
-aston-martin,Aston Martin,Vantage,built-in
-ferrari,Ferrari,296 GTB,built-in
-ferrari,Ferrari,488,built-in
-ferrari,Ferrari,812,built-in
-ferrari,Ferrari,F8 Tributo,built-in
-ferrari,Ferrari,Purosangue,built-in
-ferrari,Ferrari,Roma,built-in
-ferrari,Ferrari,SF90,built-in
-lamborghini,Lamborghini,Aventador,built-in
-lamborghini,Lamborghini,Gallardo,built-in
-lamborghini,Lamborghini,Huracan,built-in
-lamborghini,Lamborghini,Revuelto,built-in
-lamborghini,Lamborghini,Urus,built-in
-rolls-royce,Rolls-Royce,Cullinan,built-in
-rolls-royce,Rolls-Royce,Dawn,built-in
-rolls-royce,Rolls-Royce,Ghost,built-in
-rolls-royce,Rolls-Royce,Phantom,built-in
-rolls-royce,Rolls-Royce,Spectre,built-in
-rolls-royce,Rolls-Royce,Wraith,built-in
+acura,Acura,ADX,snapshot
+acura,Acura,CL,snapshot
+acura,Acura,ILX,snapshot
+acura,Acura,Integra,snapshot
+acura,Acura,Legend,snapshot
+acura,Acura,MDX,snapshot
+acura,Acura,NSX,snapshot
+acura,Acura,RDX,snapshot
+acura,Acura,RL,snapshot
+acura,Acura,RLX,snapshot
+acura,Acura,RSX,snapshot
+acura,Acura,SLX,snapshot
+acura,Acura,TL,snapshot
+acura,Acura,TLX,snapshot
+acura,Acura,TSX,snapshot
+acura,Acura,Vigor,snapshot
+acura,Acura,ZDX,snapshot
+alfa_romeo,Alfa Romeo,164,snapshot
+alfa_romeo,Alfa Romeo,4C,snapshot
+alfa_romeo,Alfa Romeo,8C Competizione Spider,snapshot
+alfa_romeo,Alfa Romeo,Giulia (952),snapshot
+alfa_romeo,Alfa Romeo,GTV6,snapshot
+alfa_romeo,Alfa Romeo,Milano,snapshot
+alfa_romeo,Alfa Romeo,Spider,snapshot
+alfa_romeo,Alfa Romeo,Stelvio,snapshot
+alfa_romeo,Alfa Romeo,Tonale,snapshot
+am_general,AM General,MV-1,snapshot
+aston_martin,Aston Martin,DB11,snapshot
+aston_martin,Aston Martin,DB12,snapshot
+aston_martin,Aston Martin,DB7,snapshot
+aston_martin,Aston Martin,DB9,snapshot
+aston_martin,Aston Martin,DBS,snapshot
+aston_martin,Aston Martin,DBX,snapshot
+aston_martin,Aston Martin,Lagonda,snapshot
+aston_martin,Aston Martin,Rapide,snapshot
+aston_martin,Aston Martin,V12 Vantage,snapshot
+aston_martin,Aston Martin,V8,snapshot
+aston_martin,Aston Martin,V8 Vantage,snapshot
+aston_martin,Aston Martin,Valhalla,snapshot
+aston_martin,Aston Martin,Valiant,snapshot
+aston_martin,Aston Martin,Valour,snapshot
+aston_martin,Aston Martin,Vanquish,snapshot
+aston_martin,Aston Martin,Vanquish Zagato,snapshot
+aston_martin,Aston Martin,Vantage,snapshot
+aston_martin,Aston Martin,Virage,snapshot
+audi,Audi,100,snapshot
+audi,Audi,200,snapshot
+audi,Audi,4000,snapshot
+audi,Audi,5000,snapshot
+audi,Audi,80,snapshot
+audi,Audi,90,snapshot
+audi,Audi,A3,snapshot
+audi,Audi,A4,snapshot
+audi,Audi,A4 allroad,snapshot
+audi,Audi,A5,snapshot
+audi,Audi,A6,snapshot
+audi,Audi,A6 allroad,snapshot
+audi,Audi,A7,snapshot
+audi,Audi,A7 e,snapshot
+audi,Audi,A8,snapshot
+audi,Audi,A8 e,snapshot
+audi,Audi,A8 L,snapshot
+audi,Audi,A8 L e,snapshot
+audi,Audi,allroad,snapshot
+audi,Audi,Cabriolet,snapshot
+audi,Audi,Coupe,snapshot
+audi,Audi,e-tron,snapshot
+audi,Audi,e-tron GT,snapshot
+audi,Audi,e-tron Sportback,snapshot
+audi,Audi,Q3,snapshot
+audi,Audi,Q4,snapshot
+audi,Audi,Q5,snapshot
+audi,Audi,Q5 e,snapshot
+audi,Audi,Q6,snapshot
+audi,Audi,Q7,snapshot
+audi,Audi,Q8,snapshot
+audi,Audi,R8,snapshot
+audi,Audi,RS 3,snapshot
+audi,Audi,RS 4,snapshot
+audi,Audi,RS 5,snapshot
+audi,Audi,RS 6,snapshot
+audi,Audi,RS 6 Avant,snapshot
+audi,Audi,RS 7,snapshot
+audi,Audi,RS e-tron GT,snapshot
+audi,Audi,RS Q8,snapshot
+audi,Audi,S e-tron GT,snapshot
+audi,Audi,S3,snapshot
+audi,Audi,S4,snapshot
+audi,Audi,S5,snapshot
+audi,Audi,S6,snapshot
+audi,Audi,S7,snapshot
+audi,Audi,S8,snapshot
+audi,Audi,SQ5,snapshot
+audi,Audi,SQ6,snapshot
+audi,Audi,SQ7,snapshot
+audi,Audi,SQ8,snapshot
+audi,Audi,TT,snapshot
+audi,Audi,TT RS,snapshot
+audi,Audi,TTS,snapshot
+audi,Audi,V8,snapshot
+bentley,Bentley,ARMOURED ARNAGE,snapshot
+bentley,Bentley,Arnage,snapshot
+bentley,Bentley,Azure,snapshot
+bentley,Bentley,Bentayga,snapshot
+bentley,Bentley,Brooklands,snapshot
+bentley,Bentley,Continental,snapshot
+bentley,Bentley,Eight,snapshot
+bentley,Bentley,Flying Spur,snapshot
+bentley,Bentley,Mulsanne,snapshot
+bentley,Bentley,Roll Royce Silver Seraph,snapshot
+bentley,Bentley,Rolls-Royce Park Ward,snapshot
+bentley,Bentley,Turbo,snapshot
+bmw,BMW,128i,snapshot
+bmw,BMW,135i,snapshot
+bmw,BMW,1M,snapshot
+bmw,BMW,228,snapshot
+bmw,BMW,228i,snapshot
+bmw,BMW,230i,snapshot
+bmw,BMW,318i,snapshot
+bmw,BMW,318iC,snapshot
+bmw,BMW,318iS,snapshot
+bmw,BMW,318ti,snapshot
+bmw,BMW,320i,snapshot
+bmw,BMW,323i,snapshot
+bmw,BMW,323iC,snapshot
+bmw,BMW,323is,snapshot
+bmw,BMW,325/325e,snapshot
+bmw,BMW,325/325eS,snapshot
+bmw,BMW,325Ci,snapshot
+bmw,BMW,325i,snapshot
+bmw,BMW,325i/325is,snapshot
+bmw,BMW,325iC,snapshot
+bmw,BMW,325iS,snapshot
+bmw,BMW,325ix,snapshot
+bmw,BMW,325xi,snapshot
+bmw,BMW,328Ci,snapshot
+bmw,BMW,328d,snapshot
+bmw,BMW,328i,snapshot
+bmw,BMW,328iC,snapshot
+bmw,BMW,328iS,snapshot
+bmw,BMW,328xi,snapshot
+bmw,BMW,330Ci,snapshot
+bmw,BMW,330e,snapshot
+bmw,BMW,330i,snapshot
+bmw,BMW,330xi,snapshot
+bmw,BMW,335,snapshot
+bmw,BMW,335d,snapshot
+bmw,BMW,335i,snapshot
+bmw,BMW,335is,snapshot
+bmw,BMW,335xi,snapshot
+bmw,BMW,340i,snapshot
+bmw,BMW,428i,snapshot
+bmw,BMW,430i,snapshot
+bmw,BMW,435i,snapshot
+bmw,BMW,440i,snapshot
+bmw,BMW,524td,snapshot
+bmw,BMW,525i,snapshot
+bmw,BMW,525iA,snapshot
+bmw,BMW,525xi,snapshot
+bmw,BMW,528e,snapshot
+bmw,BMW,528i,snapshot
+bmw,BMW,528xi,snapshot
+bmw,BMW,530e,snapshot
+bmw,BMW,530i,snapshot
+bmw,BMW,530iA,snapshot
+bmw,BMW,530xi,snapshot
+bmw,BMW,533i,snapshot
+bmw,BMW,535d,snapshot
+bmw,BMW,535i,snapshot
+bmw,BMW,535i/535is,snapshot
+bmw,BMW,535xi,snapshot
+bmw,BMW,540d,snapshot
+bmw,BMW,540i,snapshot
+bmw,BMW,540iA,snapshot
+bmw,BMW,545i,snapshot
+bmw,BMW,550e,snapshot
+bmw,BMW,550i,snapshot
+bmw,BMW,633 csi,snapshot
+bmw,BMW,635CSi,snapshot
+bmw,BMW,640i,snapshot
+bmw,BMW,640xi,snapshot
+bmw,BMW,645Ci,snapshot
+bmw,BMW,645i,snapshot
+bmw,BMW,650i,snapshot
+bmw,BMW,"650i, Alpina B6",snapshot
+bmw,BMW,"650i, B6",snapshot
+bmw,BMW,650xi,snapshot
+bmw,BMW,730i,snapshot
+bmw,BMW,733i,snapshot
+bmw,BMW,735i,snapshot
+bmw,BMW,735iL,snapshot
+bmw,BMW,740e,snapshot
+bmw,BMW,740i,snapshot
+bmw,BMW,740iL,snapshot
+bmw,BMW,740Li,snapshot
+bmw,BMW,745e,snapshot
+bmw,BMW,745i,snapshot
+bmw,BMW,745Le,snapshot
+bmw,BMW,745Li,snapshot
+bmw,BMW,750e,snapshot
+bmw,BMW,750i,snapshot
+bmw,BMW,"750i, Alpina B7",snapshot
+bmw,BMW,"750i, B7",snapshot
+bmw,BMW,750iL,snapshot
+bmw,BMW,750Li,snapshot
+bmw,BMW,"750Li, Alpina B7",snapshot
+bmw,BMW,750Lxi,snapshot
+bmw,BMW,"750Lxi, Alpina B7",snapshot
+bmw,BMW,750xi,snapshot
+bmw,BMW,"750xi, Alpina B7",snapshot
+bmw,BMW,760i,snapshot
+bmw,BMW,760Li,snapshot
+bmw,BMW,840Ci,snapshot
+bmw,BMW,840i,snapshot
+bmw,BMW,850Ci,snapshot
+bmw,BMW,850CSi,snapshot
+bmw,BMW,850i,snapshot
+bmw,BMW,ActiveE,snapshot
+bmw,BMW,ActiveHybrid 3,snapshot
+bmw,BMW,ActiveHybrid 5,snapshot
+bmw,BMW,ActiveHybrid 7,snapshot
+bmw,BMW,Alpina,snapshot
+bmw,BMW,Alpina B8,snapshot
+bmw,BMW,B7,snapshot
+bmw,BMW,i3,snapshot
+bmw,BMW,i4,snapshot
+bmw,BMW,i5,snapshot
+bmw,BMW,i7,snapshot
+bmw,BMW,i8,snapshot
+bmw,BMW,iX,snapshot
+bmw,BMW,L7,snapshot
+bmw,BMW,M2,snapshot
+bmw,BMW,M235,snapshot
+bmw,BMW,M235i,snapshot
+bmw,BMW,M240i,snapshot
+bmw,BMW,M3,snapshot
+bmw,BMW,M340i,snapshot
+bmw,BMW,M3Ci,snapshot
+bmw,BMW,M4,snapshot
+bmw,BMW,M440i,snapshot
+bmw,BMW,M5,snapshot
+bmw,BMW,M550i,snapshot
+bmw,BMW,M6,snapshot
+bmw,BMW,M760i,snapshot
+bmw,BMW,M760Li,snapshot
+bmw,BMW,M8,snapshot
+bmw,BMW,M850i,snapshot
+bmw,BMW,X1,snapshot
+bmw,BMW,X2,snapshot
+bmw,BMW,X3,snapshot
+bmw,BMW,X4,snapshot
+bmw,BMW,X5,snapshot
+bmw,BMW,X6,snapshot
+bmw,BMW,X7,snapshot
+bmw,BMW,XM,snapshot
+bmw,BMW,Z3,snapshot
+bmw,BMW,Z4,snapshot
+bmw,BMW,Z8,snapshot
+bugatti,Bugatti,Chiron,snapshot
+bugatti,Bugatti,Chiron Pur Sport,snapshot
+bugatti,Bugatti,Chiron Supersport,snapshot
+bugatti,Bugatti,EB110,snapshot
+bugatti,Bugatti,Mistral,snapshot
+bugatti,Bugatti,Veyron,snapshot
+buick,Buick,Allure,snapshot
+buick,Buick,Cascada,snapshot
+buick,Buick,Century,snapshot
+buick,Buick,Coachbuilder,snapshot
+buick,Buick,Electra,snapshot
+buick,Buick,Enclave,snapshot
+buick,Buick,Encore,snapshot
+buick,Buick,Encore GX,snapshot
+buick,Buick,Envision,snapshot
+buick,Buick,Envista,snapshot
+buick,Buick,Incomplete,snapshot
+buick,Buick,LaCrosse,snapshot
+buick,Buick,LeSabre,snapshot
+buick,Buick,Lucerne,snapshot
+buick,Buick,Park Avenue,snapshot
+buick,Buick,Rainier,snapshot
+buick,Buick,Reatta,snapshot
+buick,Buick,Regal,snapshot
+buick,Buick,Regal TourX,snapshot
+buick,Buick,Rendezvous,snapshot
+buick,Buick,Riviera,snapshot
+buick,Buick,Roadmaster,snapshot
+buick,Buick,Skyhawk,snapshot
+buick,Buick,Skylark,snapshot
+buick,Buick,Somerset,snapshot
+buick,Buick,Terraza,snapshot
+buick,Buick,Verano,snapshot
+cadillac,Cadillac,60 Special,snapshot
+cadillac,Cadillac,Allante,snapshot
+cadillac,Cadillac,ATS,snapshot
+cadillac,Cadillac,Brougham,snapshot
+cadillac,Cadillac,Catera,snapshot
+cadillac,Cadillac,Celestiq,snapshot
+cadillac,Cadillac,Cimarron,snapshot
+cadillac,Cadillac,Commercial Chassis,snapshot
+cadillac,Cadillac,CT4,snapshot
+cadillac,Cadillac,CT5,snapshot
+cadillac,Cadillac,CT6,snapshot
+cadillac,Cadillac,CTS,snapshot
+cadillac,Cadillac,Deville,snapshot
+cadillac,Cadillac,DTS,snapshot
+cadillac,Cadillac,Eldorado,snapshot
+cadillac,Cadillac,ELR,snapshot
+cadillac,Cadillac,Escalade,snapshot
+cadillac,Cadillac,Escalade ESV,snapshot
+cadillac,Cadillac,Escalade IQ,snapshot
+cadillac,Cadillac,Escalade IQL,snapshot
+cadillac,Cadillac,Fleetwood,snapshot
+cadillac,Cadillac,Hearse,snapshot
+cadillac,Cadillac,Limousine,snapshot
+cadillac,Cadillac,Lyriq,snapshot
+cadillac,Cadillac,Optiq,snapshot
+cadillac,Cadillac,Seville,snapshot
+cadillac,Cadillac,SRX,snapshot
+cadillac,Cadillac,STS,snapshot
+cadillac,Cadillac,Vistiq,snapshot
+cadillac,Cadillac,XLR,snapshot
+cadillac,Cadillac,XT4,snapshot
+cadillac,Cadillac,XT5,snapshot
+cadillac,Cadillac,XT6,snapshot
+cadillac,Cadillac,XTS,snapshot
+chevrolet,Chevrolet,3 ton,snapshot
+chevrolet,Chevrolet,Alero,snapshot
+chevrolet,Chevrolet,Aluminum Tilt,snapshot
+chevrolet,Chevrolet,Astro Van,snapshot
+chevrolet,Chevrolet,Avalanche,snapshot
+chevrolet,Chevrolet,Aveo,snapshot
+chevrolet,Chevrolet,B7,snapshot
+chevrolet,Chevrolet,Beretta,snapshot
+chevrolet,Chevrolet,Blazer,snapshot
+chevrolet,Chevrolet,Bolt,snapshot
+chevrolet,Chevrolet,Bolt EUV,snapshot
+chevrolet,Chevrolet,Bolt EV,snapshot
+chevrolet,Chevrolet,BrightDrop,snapshot
+chevrolet,Chevrolet,Bus Chassis,snapshot
+chevrolet,Chevrolet,C/K Pickup,snapshot
+chevrolet,Chevrolet,C5,snapshot
+chevrolet,Chevrolet,C6,snapshot
+chevrolet,Chevrolet,C7,snapshot
+chevrolet,Chevrolet,Camaro,snapshot
+chevrolet,Chevrolet,Caprice,snapshot
+chevrolet,Chevrolet,Caprice Police Vehicle,snapshot
+chevrolet,Chevrolet,Captiva Sport,snapshot
+chevrolet,Chevrolet,Cavalier,snapshot
+chevrolet,Chevrolet,Celebrity,snapshot
+chevrolet,Chevrolet,Chevette,snapshot
+chevrolet,Chevrolet,Citation,snapshot
+chevrolet,Chevrolet,City Express,snapshot
+chevrolet,Chevrolet,Cobalt,snapshot
+chevrolet,Chevrolet,Colorado,snapshot
+chevrolet,Chevrolet,Corsica,snapshot
+chevrolet,Chevrolet,Corvette,snapshot
+chevrolet,Chevrolet,Cruze,snapshot
+chevrolet,Chevrolet,Cruze Limited,snapshot
+chevrolet,Chevrolet,Cutaway Chassis,snapshot
+chevrolet,Chevrolet,El Camino,snapshot
+chevrolet,Chevrolet,Epica,snapshot
+chevrolet,Chevrolet,Equinox,snapshot
+chevrolet,Chevrolet,Express,snapshot
+chevrolet,Chevrolet,Forward Control,snapshot
+chevrolet,Chevrolet,G-Series,snapshot
+chevrolet,Chevrolet,Geo Prizm,snapshot
+chevrolet,Chevrolet,Geo Spectrum,snapshot
+chevrolet,Chevrolet,Geo Sprint,snapshot
+chevrolet,Chevrolet,GMT-400,snapshot
+chevrolet,Chevrolet,Hearse/Limo,snapshot
+chevrolet,Chevrolet,Hearse/Limo Commercial Chassis,snapshot
+chevrolet,Chevrolet,Heavy Conventional,snapshot
+chevrolet,Chevrolet,HHR,snapshot
+chevrolet,Chevrolet,Hi-Cube,snapshot
+chevrolet,Chevrolet,Impala,snapshot
+chevrolet,Chevrolet,Impala Limited,snapshot
+chevrolet,Chevrolet,Kalos,snapshot
+chevrolet,Chevrolet,Lumina,snapshot
+chevrolet,Chevrolet,Lumina APV,snapshot
+chevrolet,Chevrolet,LUV,snapshot
+chevrolet,Chevrolet,Malibu,snapshot
+chevrolet,Chevrolet,Malibu Classic,snapshot
+chevrolet,Chevrolet,Malibu Limited,snapshot
+chevrolet,Chevrolet,Matiz,snapshot
+chevrolet,Chevrolet,Metro,snapshot
+chevrolet,Chevrolet,Military Truck,snapshot
+chevrolet,Chevrolet,Monte Carlo,snapshot
+chevrolet,Chevrolet,Motorhome Chassis,snapshot
+chevrolet,Chevrolet,Nova,snapshot
+chevrolet,Chevrolet,Onix,snapshot
+chevrolet,Chevrolet,Optra,snapshot
+chevrolet,Chevrolet,Orlando,snapshot
+chevrolet,Chevrolet,P - Series,snapshot
+chevrolet,Chevrolet,P6S,snapshot
+chevrolet,Chevrolet,R Conventional,snapshot
+chevrolet,Chevrolet,S-10 Blazer,snapshot
+chevrolet,Chevrolet,S-10 Pickup,snapshot
+chevrolet,Chevrolet,S6,snapshot
+chevrolet,Chevrolet,S7,snapshot
+chevrolet,Chevrolet,Silverado,snapshot
+chevrolet,Chevrolet,Silverado HD,snapshot
+chevrolet,Chevrolet,Silverado LD,snapshot
+chevrolet,Chevrolet,Silverado LTD,snapshot
+chevrolet,Chevrolet,Sonic,snapshot
+chevrolet,Chevrolet,Spark,snapshot
+chevrolet,Chevrolet,SS,snapshot
+chevrolet,Chevrolet,SSR,snapshot
+chevrolet,Chevrolet,Suburban,snapshot
+chevrolet,Chevrolet,Suburban HD,snapshot
+chevrolet,Chevrolet,Tahoe,snapshot
+chevrolet,Chevrolet,Tracker,snapshot
+chevrolet,Chevrolet,Trailblazer,snapshot
+chevrolet,Chevrolet,Traverse,snapshot
+chevrolet,Chevrolet,Traverse Limited,snapshot
+chevrolet,Chevrolet,Trax,snapshot
+chevrolet,Chevrolet,U100,snapshot
+chevrolet,Chevrolet,Uplander,snapshot
+chevrolet,Chevrolet,V Conventional,snapshot
+chevrolet,Chevrolet,Venture,snapshot
+chevrolet,Chevrolet,Volt,snapshot
+chrysler,Chrysler,200,snapshot
+chrysler,Chrysler,300,snapshot
+chrysler,Chrysler,300C,snapshot
+chrysler,Chrysler,Aspen,snapshot
+chrysler,Chrysler,Cirrus,snapshot
+chrysler,Chrysler,Concorde,snapshot
+chrysler,Chrysler,Concorde/LHS,snapshot
+chrysler,Chrysler,Conquest,snapshot
+chrysler,Chrysler,Cordoba,snapshot
+chrysler,Chrysler,Crossfire,snapshot
+chrysler,Chrysler,Daytona,snapshot
+chrysler,Chrysler,Dynasty,snapshot
+chrysler,Chrysler,E-CLASS,snapshot
+chrysler,Chrysler,EXECUTIVE,snapshot
+chrysler,Chrysler,FIFTH AVENUE,snapshot
+chrysler,Chrysler,Grand Caravan,snapshot
+chrysler,Chrysler,Grand Voyager,snapshot
+chrysler,Chrysler,Imperial,snapshot
+chrysler,Chrysler,Intrepid,snapshot
+chrysler,Chrysler,Laser,snapshot
+chrysler,Chrysler,LeBaron,snapshot
+chrysler,Chrysler,LHS,snapshot
+chrysler,Chrysler,Neon,snapshot
+chrysler,Chrysler,New Yorker,snapshot
+chrysler,Chrysler,NEWPORT,snapshot
+chrysler,Chrysler,Pacifica,snapshot
+chrysler,Chrysler,Prowler,snapshot
+chrysler,Chrysler,PT Cruiser,snapshot
+chrysler,Chrysler,SALON,snapshot
+chrysler,Chrysler,Sebring,snapshot
+chrysler,Chrysler,Shadow,snapshot
+chrysler,Chrysler,Stratus,snapshot
+chrysler,Chrysler,TC,snapshot
+chrysler,Chrysler,Town and Country,snapshot
+chrysler,Chrysler,Viper,snapshot
+chrysler,Chrysler,Vision,snapshot
+chrysler,Chrysler,Voyager,snapshot
+daewoo,Daewoo,G2X,snapshot
+daewoo,Daewoo,Laganza V-car,snapshot
+daewoo,Daewoo,LANOS,snapshot
+daewoo,Daewoo,LEGANZA,snapshot
+daewoo,Daewoo,Leganza V-200 & variants/derivatives,snapshot
+daewoo,Daewoo,NUBIRA,snapshot
+daihatsu,Daihatsu,Charade,snapshot
+daihatsu,Daihatsu,Rocky,snapshot
+daimler,Daimler,DS,snapshot
+daimler,Daimler,DT,snapshot
+datsun,Datsun,210,snapshot
+datsun,Datsun,280ZX,snapshot
+datsun,Datsun,310,snapshot
+datsun,Datsun,510,snapshot
+delorean,Delorean,DMC-12,snapshot
+dodge,Dodge,400,snapshot
+dodge,Dodge,600,snapshot
+dodge,Dodge,ARIES,snapshot
+dodge,Dodge,Avenger,snapshot
+dodge,Dodge,Caliber,snapshot
+dodge,Dodge,Caravan,snapshot
+dodge,Dodge,Caravan/Grand Caravan,snapshot
+dodge,Dodge,Challenger,snapshot
+dodge,Dodge,Charger,snapshot
+dodge,Dodge,Colt,snapshot
+dodge,Dodge,Conquest,snapshot
+dodge,Dodge,D-Series,snapshot
+dodge,Dodge,D50,snapshot
+dodge,Dodge,Dakota,snapshot
+dodge,Dodge,Dart,snapshot
+dodge,Dodge,Daytona,snapshot
+dodge,Dodge,DIPLOMAT,snapshot
+dodge,Dodge,Durango,snapshot
+dodge,Dodge,Dynasty,snapshot
+dodge,Dodge,Grand Caravan,snapshot
+dodge,Dodge,Hornet,snapshot
+dodge,Dodge,Intrepid,snapshot
+dodge,Dodge,Journey,snapshot
+dodge,Dodge,LANCER,snapshot
+dodge,Dodge,Magnum,snapshot
+dodge,Dodge,Mini Ram,snapshot
+dodge,Dodge,Mirada,snapshot
+dodge,Dodge,Monaco,snapshot
+dodge,Dodge,Neon,snapshot
+dodge,Dodge,Nitro,snapshot
+dodge,Dodge,OMNI,snapshot
+dodge,Dodge,Raider,snapshot
+dodge,Dodge,Ram,snapshot
+dodge,Dodge,RAM 50,snapshot
+dodge,Dodge,Ram Chassis Cab,snapshot
+dodge,Dodge,Ram Van,snapshot
+dodge,Dodge,Ram Wagon,snapshot
+dodge,Dodge,Ramcharger,snapshot
+dodge,Dodge,Rampage,snapshot
+dodge,Dodge,RD200 / RD250,snapshot
+dodge,Dodge,Royal Mini Ram Van,snapshot
+dodge,Dodge,Shadow,snapshot
+dodge,Dodge,Shelby Charger,snapshot
+dodge,Dodge,Spirit,snapshot
+dodge,Dodge,Sprinter,snapshot
+dodge,Dodge,ST.REGIS,snapshot
+dodge,Dodge,Stealth,snapshot
+dodge,Dodge,Stratus,snapshot
+dodge,Dodge,Viper,snapshot
+dodge,Dodge,W-Series,snapshot
+ferrari,Ferrari,12Cilindri,snapshot
+ferrari,Ferrari,296,snapshot
+ferrari,Ferrari,296 Speciale,snapshot
+ferrari,Ferrari,296 Speciale A,snapshot
+ferrari,Ferrari,3.2 Mondial,snapshot
+ferrari,Ferrari,308 Convertible,snapshot
+ferrari,Ferrari,308GTB,snapshot
+ferrari,Ferrari,308GTB Quattrovalvole,snapshot
+ferrari,Ferrari,308GTBi,snapshot
+ferrari,Ferrari,308GTS,snapshot
+ferrari,Ferrari,308GTS Quattrovalvole,snapshot
+ferrari,Ferrari,308GTSi,snapshot
+ferrari,Ferrari,328,snapshot
+ferrari,Ferrari,328 GTB,snapshot
+ferrari,Ferrari,328 GTS,snapshot
+ferrari,Ferrari,348 Spider,snapshot
+ferrari,Ferrari,348 tb,snapshot
+ferrari,Ferrari,348 ts,snapshot
+ferrari,Ferrari,355 Berlinetta,snapshot
+ferrari,Ferrari,355 GTS,snapshot
+ferrari,Ferrari,355 Spider,snapshot
+ferrari,Ferrari,360,snapshot
+ferrari,Ferrari,430,snapshot
+ferrari,Ferrari,456,snapshot
+ferrari,Ferrari,456M,snapshot
+ferrari,Ferrari,458,snapshot
+ferrari,Ferrari,458 Italia,snapshot
+ferrari,Ferrari,488,snapshot
+ferrari,Ferrari,512 TR,snapshot
+ferrari,Ferrari,550 Barchetta,snapshot
+ferrari,Ferrari,550 Maranello,snapshot
+ferrari,Ferrari,575M Maranello,snapshot
+ferrari,Ferrari,599,snapshot
+ferrari,Ferrari,599 GTB Fiorano,snapshot
+ferrari,Ferrari,612 Scaglietti,snapshot
+ferrari,Ferrari,812,snapshot
+ferrari,Ferrari,849 Testarossa,snapshot
+ferrari,Ferrari,Amalfi,snapshot
+ferrari,Ferrari,California,snapshot
+ferrari,Ferrari,California T,snapshot
+ferrari,Ferrari,Challenge Stradale,snapshot
+ferrari,Ferrari,Daytona SP3,snapshot
+ferrari,Ferrari,Enzo,snapshot
+ferrari,Ferrari,F12 Berlinetta,snapshot
+ferrari,Ferrari,F12 Special Series,snapshot
+ferrari,Ferrari,F12 tdf (Tour de France),snapshot
+ferrari,Ferrari,F355,snapshot
+ferrari,Ferrari,F40,snapshot
+ferrari,Ferrari,F430,snapshot
+ferrari,Ferrari,F50,snapshot
+ferrari,Ferrari,F60 America,snapshot
+ferrari,Ferrari,F8,snapshot
+ferrari,Ferrari,F80,snapshot
+ferrari,Ferrari,FF,snapshot
+ferrari,Ferrari,GTC4Lusso,snapshot
+ferrari,Ferrari,La Ferrari,snapshot
+ferrari,Ferrari,Luce,snapshot
+ferrari,Ferrari,Mondial 8,snapshot
+ferrari,Ferrari,Mondial T,snapshot
+ferrari,Ferrari,Monza SP1/SP2,snapshot
+ferrari,Ferrari,Portofino,snapshot
+ferrari,Ferrari,Portofino M,snapshot
+ferrari,Ferrari,Purosangue,snapshot
+ferrari,Ferrari,Roma,snapshot
+ferrari,Ferrari,SF90,snapshot
+ferrari,Ferrari,Testarossa,snapshot
+fiat,Fiat,124 Spider,snapshot
+fiat,Fiat,500,snapshot
+fiat,Fiat,500e,snapshot
+fiat,Fiat,500L,snapshot
+fiat,Fiat,500X,snapshot
+fiat,Fiat,Brava,snapshot
+fiat,Fiat,Ducato,snapshot
+fiat,Fiat,Freemont,snapshot
+fiat,Fiat,Spider 2000,snapshot
+fiat,Fiat,Strada,snapshot
+fiat,Fiat,X 1/9,snapshot
+fisker,Fisker,Karma,snapshot
+fisker,Fisker,Nina,snapshot
+fisker,Fisker,Ocean,snapshot
+ford,Ford,'34,snapshot
+ford,Ford,A8513,snapshot
+ford,Ford,A9513,snapshot
+ford,Ford,A9522,snapshot
+ford,Ford,Aerostar,snapshot
+ford,Ford,Aspire,snapshot
+ford,Ford,AT8513,snapshot
+ford,Ford,AT9513,snapshot
+ford,Ford,AT9522,snapshot
+ford,Ford,B-750,snapshot
+ford,Ford,B600,snapshot
+ford,Ford,B6000,snapshot
+ford,Ford,B700,snapshot
+ford,Ford,B7000,snapshot
+ford,Ford,B800,snapshot
+ford,Ford,Bronco,snapshot
+ford,Ford,Bronco II,snapshot
+ford,Ford,Bronco Sport,snapshot
+ford,Ford,C-Max,snapshot
+ford,Ford,C600,snapshot
+ford,Ford,C700,snapshot
+ford,Ford,C7000,snapshot
+ford,Ford,C800,snapshot
+ford,Ford,C8000,snapshot
+ford,Ford,CF6000,snapshot
+ford,Ford,CF7000,snapshot
+ford,Ford,CF8000,snapshot
+ford,Ford,CFT8000,snapshot
+ford,Ford,CL9000,snapshot
+ford,Ford,CLT9000,snapshot
+ford,Ford,Contour,snapshot
+ford,Ford,Courier,snapshot
+ford,Ford,Crown Victoria,snapshot
+ford,Ford,CT800,snapshot
+ford,Ford,CT8000,snapshot
+ford,Ford,E-100,snapshot
+ford,Ford,E-150,snapshot
+ford,Ford,E-250,snapshot
+ford,Ford,E-350,snapshot
+ford,Ford,E-450,snapshot
+ford,Ford,E-550,snapshot
+ford,Ford,Ecosport,snapshot
+ford,Ford,Edge,snapshot
+ford,Ford,Escape,snapshot
+ford,Ford,Escort,snapshot
+ford,Ford,Excursion,snapshot
+ford,Ford,Expedition,snapshot
+ford,Ford,Expedition EL,snapshot
+ford,Ford,Expedition MAX,snapshot
+ford,Ford,Explorer,snapshot
+ford,Ford,Explorer Sport,snapshot
+ford,Ford,Explorer Sport Trac,snapshot
+ford,Ford,F-100,snapshot
+ford,Ford,F-150,snapshot
+ford,Ford,F-150 Heritage,snapshot
+ford,Ford,F-250,snapshot
+ford,Ford,F-350,snapshot
+ford,Ford,F-450,snapshot
+ford,Ford,F-550,snapshot
+ford,Ford,F-590,snapshot
+ford,Ford,F-600,snapshot
+ford,Ford,F-650,snapshot
+ford,Ford,F-700,snapshot
+ford,Ford,F-750,snapshot
+ford,Ford,F-800,snapshot
+ford,Ford,F-Super Duty,snapshot
+ford,Ford,F6000,snapshot
+ford,Ford,F7000,snapshot
+ford,Ford,F8000,snapshot
+ford,Ford,Fairmont,snapshot
+ford,Ford,Festiva,snapshot
+ford,Ford,Fiesta,snapshot
+ford,Ford,Five Hundred,snapshot
+ford,Ford,Flex,snapshot
+ford,Ford,Focus,snapshot
+ford,Ford,Freestar,snapshot
+ford,Ford,Freestyle,snapshot
+ford,Ford,FT800,snapshot
+ford,Ford,FT8000,snapshot
+ford,Ford,FT900,snapshot
+ford,Ford,Fusion,snapshot
+ford,Ford,Granada,snapshot
+ford,Ford,GT,snapshot
+ford,Ford,GT MKII,snapshot
+ford,Ford,L800,snapshot
+ford,Ford,L8000,snapshot
+ford,Ford,L8501,snapshot
+ford,Ford,L8511,snapshot
+ford,Ford,L8513,snapshot
+ford,Ford,L9000,snapshot
+ford,Ford,L9501,snapshot
+ford,Ford,L9511,snapshot
+ford,Ford,L9513,snapshot
+ford,Ford,L9522,snapshot
+ford,Ford,LA8000,snapshot
+ford,Ford,LA9000,snapshot
+ford,Ford,Laser,snapshot
+ford,Ford,LL9000,snapshot
+ford,Ford,LLA9000,snapshot
+ford,Ford,LLS9000,snapshot
+ford,Ford,LN600,snapshot
+ford,Ford,LN700,snapshot
+ford,Ford,LN7000,snapshot
+ford,Ford,LN800,snapshot
+ford,Ford,LN8000,snapshot
+ford,Ford,LN9000,snapshot
+ford,Ford,LNT800,snapshot
+ford,Ford,LNT8000,snapshot
+ford,Ford,LNT9000,snapshot
+ford,Ford,LS8000,snapshot
+ford,Ford,LS9000,snapshot
+ford,Ford,LT800,snapshot
+ford,Ford,LT8000,snapshot
+ford,Ford,LT8501,snapshot
+ford,Ford,LT8511,snapshot
+ford,Ford,LT8513,snapshot
+ford,Ford,LT9000,snapshot
+ford,Ford,LT9501,snapshot
+ford,Ford,LT9511,snapshot
+ford,Ford,LT9513,snapshot
+ford,Ford,LT9522,snapshot
+ford,Ford,LTA9000,snapshot
+ford,Ford,LTD,snapshot
+ford,Ford,LTL9000,snapshot
+ford,Ford,LTLA9000,snapshot
+ford,Ford,LTLS9000,snapshot
+ford,Ford,LTS8000,snapshot
+ford,Ford,LTS9000,snapshot
+ford,Ford,Maverick,snapshot
+ford,Ford,Motorhome Chassis,snapshot
+ford,Ford,Mustang,snapshot
+ford,Ford,Mustang GTD,snapshot
+ford,Ford,Mustang Mach-E,snapshot
+ford,Ford,P600,snapshot
+ford,Ford,P700,snapshot
+ford,Ford,P800,snapshot
+ford,Ford,Probe,snapshot
+ford,Ford,Ranger,snapshot
+ford,Ford,Recreational Vehicle,snapshot
+ford,Ford,Taurus,snapshot
+ford,Ford,Taurus X,snapshot
+ford,Ford,Tempo,snapshot
+ford,Ford,Thunderbird,snapshot
+ford,Ford,Transit,snapshot
+ford,Ford,Transit Connect,snapshot
+ford,Ford,Windstar,snapshot
+ford,Ford,ZX2,snapshot
+geo,GEO,Metro,snapshot
+geo,GEO,Prizm,snapshot
+geo,GEO,Spectrum,snapshot
+geo,GEO,Sprint,snapshot
+geo,GEO,Storm,snapshot
+geo,GEO,Tracker,snapshot
+gmc,GMC,Acadia,snapshot
+gmc,GMC,Aluminum Tilt,snapshot
+gmc,GMC,Bus Chassis,snapshot
+gmc,GMC,C/K Pickup,snapshot
+gmc,GMC,C5,snapshot
+gmc,GMC,C6,snapshot
+gmc,GMC,C7,snapshot
+gmc,GMC,Caballero,snapshot
+gmc,GMC,Canyon,snapshot
+gmc,GMC,Cruise Origin AV,snapshot
+gmc,GMC,Electric Vehicle,snapshot
+gmc,GMC,Envoy,snapshot
+gmc,GMC,Forward Control,snapshot
+gmc,GMC,Geo Tracker,snapshot
+gmc,GMC,GMT-400,snapshot
+gmc,GMC,Heavy Conventional,snapshot
+gmc,GMC,Hi-Cube,snapshot
+gmc,GMC,Hummer EV Pickup,snapshot
+gmc,GMC,Hummer EV SUV,snapshot
+gmc,GMC,Jimmy,snapshot
+gmc,GMC,Jimmy Utility,snapshot
+gmc,GMC,Magna Van,snapshot
+gmc,GMC,Motorhome Chassis,snapshot
+gmc,GMC,P Truck Forward,snapshot
+gmc,GMC,R Conventional,snapshot
+gmc,GMC,Rally,snapshot
+gmc,GMC,S15 Pickup,snapshot
+gmc,GMC,S15 Utility,snapshot
+gmc,GMC,S6,snapshot
+gmc,GMC,Safari,snapshot
+gmc,GMC,Savana,snapshot
+gmc,GMC,Sierra,snapshot
+gmc,GMC,Sierra HD,snapshot
+gmc,GMC,Sierra Limited,snapshot
+gmc,GMC,Sonoma,snapshot
+gmc,GMC,Suburban,snapshot
+gmc,GMC,Terrain,snapshot
+gmc,GMC,V Conventional,snapshot
+gmc,GMC,Value Van,snapshot
+gmc,GMC,Vandura,snapshot
+gmc,GMC,Yukon,snapshot
+gmc,GMC,Yukon XL,snapshot
+honda,Honda,Accord,snapshot
+honda,Honda,Accord Crosstour,snapshot
+honda,Honda,Civic,snapshot
+honda,Honda,Civic Si,snapshot
+honda,Honda,Civic Type R,snapshot
+honda,Honda,Clarity,snapshot
+honda,Honda,CR-V,snapshot
+honda,Honda,CR-Z,snapshot
+honda,Honda,Crosstour,snapshot
+honda,Honda,del Sol,snapshot
+honda,Honda,Element,snapshot
+honda,Honda,EV Plus,snapshot
+honda,Honda,FCX Clarity,snapshot
+honda,Honda,Fit,snapshot
+honda,Honda,HR-V,snapshot
+honda,Honda,Insight,snapshot
+honda,Honda,Odyssey,snapshot
+honda,Honda,Passport,snapshot
+honda,Honda,Pilot,snapshot
+honda,Honda,Prelude,snapshot
+honda,Honda,Prologue,snapshot
+honda,Honda,Ridgeline,snapshot
+honda,Honda,S2000,snapshot
+hummer,Hummer,H1,snapshot
+hummer,Hummer,H2,snapshot
+hummer,Hummer,H3,snapshot
+hummer,Hummer,H3T,snapshot
+hyundai,Hyundai,Accent,snapshot
+hyundai,Hyundai,Azera,snapshot
+hyundai,Hyundai,Elantra,snapshot
+hyundai,Hyundai,Elantra GT,snapshot
+hyundai,Hyundai,Elantra N,snapshot
+hyundai,Hyundai,Elantra Touring,snapshot
+hyundai,Hyundai,Entourage,snapshot
+hyundai,Hyundai,Equus,snapshot
+hyundai,Hyundai,Excel,snapshot
+hyundai,Hyundai,Genesis,snapshot
+hyundai,Hyundai,Genesis Coupe,snapshot
+hyundai,Hyundai,Ioniq,snapshot
+hyundai,Hyundai,Ioniq 5,snapshot
+hyundai,Hyundai,Ioniq 5 N,snapshot
+hyundai,Hyundai,Ioniq 6,snapshot
+hyundai,Hyundai,Ioniq 6 N,snapshot
+hyundai,Hyundai,Ioniq 9,snapshot
+hyundai,Hyundai,Kona,snapshot
+hyundai,Hyundai,Kona N,snapshot
+hyundai,Hyundai,Nexo,snapshot
+hyundai,Hyundai,Palisade,snapshot
+hyundai,Hyundai,Pony,snapshot
+hyundai,Hyundai,Santa Cruz,snapshot
+hyundai,Hyundai,Santa Fe,snapshot
+hyundai,Hyundai,Santa Fe Sport,snapshot
+hyundai,Hyundai,Santa Fe XL,snapshot
+hyundai,Hyundai,Scoupe,snapshot
+hyundai,Hyundai,Sonata,snapshot
+hyundai,Hyundai,Stellar,snapshot
+hyundai,Hyundai,Tiburon,snapshot
+hyundai,Hyundai,Tucson,snapshot
+hyundai,Hyundai,Veloster,snapshot
+hyundai,Hyundai,Veloster N,snapshot
+hyundai,Hyundai,Venue,snapshot
+hyundai,Hyundai,Veracruz,snapshot
+hyundai,Hyundai,Xcient,snapshot
+hyundai,Hyundai,XG300,snapshot
+hyundai,Hyundai,XG350,snapshot
+infiniti,Infiniti,EX35,snapshot
+infiniti,Infiniti,FX35,snapshot
+infiniti,Infiniti,FX37,snapshot
+infiniti,Infiniti,FX45,snapshot
+infiniti,Infiniti,FX50,snapshot
+infiniti,Infiniti,G20,snapshot
+infiniti,Infiniti,G25,snapshot
+infiniti,Infiniti,G35,snapshot
+infiniti,Infiniti,G37,snapshot
+infiniti,Infiniti,I30,snapshot
+infiniti,Infiniti,I35,snapshot
+infiniti,Infiniti,J30,snapshot
+infiniti,Infiniti,JX35,snapshot
+infiniti,Infiniti,M30,snapshot
+infiniti,Infiniti,M35,snapshot
+infiniti,Infiniti,M35h,snapshot
+infiniti,Infiniti,M37,snapshot
+infiniti,Infiniti,M45,snapshot
+infiniti,Infiniti,M56,snapshot
+infiniti,Infiniti,Q40,snapshot
+infiniti,Infiniti,Q45,snapshot
+infiniti,Infiniti,Q50,snapshot
+infiniti,Infiniti,Q60,snapshot
+infiniti,Infiniti,Q70,snapshot
+infiniti,Infiniti,Q70L,snapshot
+infiniti,Infiniti,QX30,snapshot
+infiniti,Infiniti,QX4,snapshot
+infiniti,Infiniti,QX50,snapshot
+infiniti,Infiniti,QX55,snapshot
+infiniti,Infiniti,QX56,snapshot
+infiniti,Infiniti,QX60,snapshot
+infiniti,Infiniti,QX65,snapshot
+infiniti,Infiniti,QX70,snapshot
+infiniti,Infiniti,QX80,snapshot
+isuzu,Isuzu,Amigo,snapshot
+isuzu,Isuzu,Ascender,snapshot
+isuzu,Isuzu,Axiom,snapshot
+isuzu,Isuzu,F6,snapshot
+isuzu,Isuzu,F7,snapshot
+isuzu,Isuzu,FRR,snapshot
+isuzu,Isuzu,FSR,snapshot
+isuzu,Isuzu,FTR/FVR,snapshot
+isuzu,Isuzu,FTR/FVR/EVR,snapshot
+isuzu,Isuzu,H-Series,snapshot
+isuzu,Isuzu,Hombre,snapshot
+isuzu,Isuzu,i-280,snapshot
+isuzu,Isuzu,i-290,snapshot
+isuzu,Isuzu,i-350,snapshot
+isuzu,Isuzu,i-370,snapshot
+isuzu,Isuzu,I-Mark,snapshot
+isuzu,Isuzu,IMPULSE,snapshot
+isuzu,Isuzu,NPR,snapshot
+isuzu,Isuzu,NPR/NPR-HD,snapshot
+isuzu,Isuzu,NQR,snapshot
+isuzu,Isuzu,NQR/NRR,snapshot
+isuzu,Isuzu,NRR,snapshot
+isuzu,Isuzu,Oasis,snapshot
+isuzu,Isuzu,Pickup,snapshot
+isuzu,Isuzu,Rodeo,snapshot
+isuzu,Isuzu,Rodeo/Amigo,snapshot
+isuzu,Isuzu,Stylus,snapshot
+isuzu,Isuzu,T6F,snapshot
+isuzu,Isuzu,T7F,snapshot
+isuzu,Isuzu,T8F,snapshot
+isuzu,Isuzu,Trooper,snapshot
+isuzu,Isuzu,Trooper II,snapshot
+isuzu,Isuzu,VehiCross,snapshot
+jaguar,Jaguar,E-PACE,snapshot
+jaguar,Jaguar,F-PACE,snapshot
+jaguar,Jaguar,F-TYPE,snapshot
+jaguar,Jaguar,I-PACE,snapshot
+jaguar,Jaguar,S-Type,snapshot
+jaguar,Jaguar,Vanden Plas,snapshot
+jaguar,Jaguar,X-Type,snapshot
+jaguar,Jaguar,XE,snapshot
+jaguar,Jaguar,XF,snapshot
+jaguar,Jaguar,XJ,snapshot
+jaguar,Jaguar,XJ12,snapshot
+jaguar,Jaguar,XJ6,snapshot
+jaguar,Jaguar,XJ8,snapshot
+jaguar,Jaguar,XJR,snapshot
+jaguar,Jaguar,XJS,snapshot
+jaguar,Jaguar,XK,snapshot
+jaguar,Jaguar,XK8,snapshot
+jeep,Jeep,Cherokee,snapshot
+jeep,Jeep,CJ-5,snapshot
+jeep,Jeep,CJ-6,snapshot
+jeep,Jeep,CJ-7,snapshot
+jeep,Jeep,CJ-8 Scrambler,snapshot
+jeep,Jeep,Comanche,snapshot
+jeep,Jeep,Commander,snapshot
+jeep,Jeep,Compass,snapshot
+jeep,Jeep,Gladiator,snapshot
+jeep,Jeep,Grand Cherokee,snapshot
+jeep,Jeep,Grand Cherokee L,snapshot
+jeep,Jeep,Grand Wagoneer,snapshot
+jeep,Jeep,Grand Wagoneer L,snapshot
+jeep,Jeep,J-10,snapshot
+jeep,Jeep,J-20,snapshot
+jeep,Jeep,Liberty,snapshot
+jeep,Jeep,Patriot,snapshot
+jeep,Jeep,Recon,snapshot
+jeep,Jeep,Renegade,snapshot
+jeep,Jeep,Wagoneer,snapshot
+jeep,Jeep,Wagoneer L,snapshot
+jeep,Jeep,Wagoneer S,snapshot
+jeep,Jeep,Wrangler,snapshot
+jeep,Jeep,Wrangler JK,snapshot
+karma,Karma,Atlantic,snapshot
+karma,Karma,GS-6,snapshot
+karma,Karma,Gyesera,snapshot
+karma,Karma,Karma,snapshot
+karma,Karma,Kaveya,snapshot
+karma,Karma,Revero,snapshot
+karma,Karma,Revero GT,snapshot
+kia,KIA,Amanti,snapshot
+kia,KIA,Borrego,snapshot
+kia,KIA,Cadenza,snapshot
+kia,KIA,Carnival,snapshot
+kia,KIA,EV3,snapshot
+kia,KIA,EV6,snapshot
+kia,KIA,EV9,snapshot
+kia,KIA,Forte,snapshot
+kia,KIA,Forte Koup,snapshot
+kia,KIA,K4,snapshot
+kia,KIA,K5,snapshot
+kia,KIA,K900,snapshot
+kia,KIA,Niro,snapshot
+kia,KIA,Optima,snapshot
+kia,KIA,Rio,snapshot
+kia,KIA,Rondo,snapshot
+kia,KIA,Sedona,snapshot
+kia,KIA,Seltos,snapshot
+kia,KIA,Sephia,snapshot
+kia,KIA,Sorento,snapshot
+kia,KIA,Soul,snapshot
+kia,KIA,Spectra,snapshot
+kia,KIA,Sportage,snapshot
+kia,KIA,Stinger,snapshot
+kia,KIA,Telluride,snapshot
+lamborghini,Lamborghini,147,snapshot
+lamborghini,Lamborghini,Aventador,snapshot
+lamborghini,Lamborghini,Diablo,snapshot
+lamborghini,Lamborghini,Gallardo,snapshot
+lamborghini,Lamborghini,Huracan,snapshot
+lamborghini,Lamborghini,Murcielago,snapshot
+lamborghini,Lamborghini,Revuelto,snapshot
+lamborghini,Lamborghini,Roadster,snapshot
+lamborghini,Lamborghini,Temerario,snapshot
+lamborghini,Lamborghini,URUS,snapshot
+land_rover,Land Rover,Defender,snapshot
+land_rover,Land Rover,Discovery,snapshot
+land_rover,Land Rover,Discovery Sport,snapshot
+land_rover,Land Rover,Freelander,snapshot
+land_rover,Land Rover,LR2,snapshot
+land_rover,Land Rover,LR3,snapshot
+land_rover,Land Rover,LR4,snapshot
+land_rover,Land Rover,New Range Rover,snapshot
+land_rover,Land Rover,Range Rover,snapshot
+land_rover,Land Rover,Range Rover Evoque,snapshot
+land_rover,Land Rover,Range Rover Sport,snapshot
+land_rover,Land Rover,Range Rover Velar,snapshot
+lexus,Lexus,CT,snapshot
+lexus,Lexus,ES,snapshot
+lexus,Lexus,GS,snapshot
+lexus,Lexus,GX,snapshot
+lexus,Lexus,HS,snapshot
+lexus,Lexus,IS,snapshot
+lexus,Lexus,LC,snapshot
+lexus,Lexus,LFA,snapshot
+lexus,Lexus,LS,snapshot
+lexus,Lexus,LX,snapshot
+lexus,Lexus,NX,snapshot
+lexus,Lexus,RC,snapshot
+lexus,Lexus,RX,snapshot
+lexus,Lexus,RZ,snapshot
+lexus,Lexus,SC,snapshot
+lexus,Lexus,TX,snapshot
+lexus,Lexus,UX,snapshot
+lincoln,Lincoln,Aviator,snapshot
+lincoln,Lincoln,Blackwood,snapshot
+lincoln,Lincoln,Continental,snapshot
+lincoln,Lincoln,Corsair,snapshot
+lincoln,Lincoln,LS,snapshot
+lincoln,Lincoln,Mark,snapshot
+lincoln,Lincoln,Mark LT,snapshot
+lincoln,Lincoln,MKC,snapshot
+lincoln,Lincoln,MKS,snapshot
+lincoln,Lincoln,MKT,snapshot
+lincoln,Lincoln,MKX,snapshot
+lincoln,Lincoln,MKZ,snapshot
+lincoln,Lincoln,Nautilus,snapshot
+lincoln,Lincoln,Navigator,snapshot
+lincoln,Lincoln,Navigator L,snapshot
+lincoln,Lincoln,Town Car,snapshot
+lincoln,Lincoln,Zephyr,snapshot
+lotus,Lotus,2-Eleven,snapshot
+lotus,Lotus,340R,snapshot
+lotus,Lotus,Eagle,snapshot
+lotus,Lotus,Eclat,snapshot
+lotus,Lotus,Elan,snapshot
+lotus,Lotus,ELETRE,snapshot
+lotus,Lotus,Eleven,snapshot
+lotus,Lotus,Elise,snapshot
+lotus,Lotus,Elite,snapshot
+lotus,Lotus,Emira,snapshot
+lotus,Lotus,Esprit,snapshot
+lotus,Lotus,Europa,snapshot
+lotus,Lotus,Evora,snapshot
+lotus,Lotus,Exige,snapshot
+lotus,Lotus,MEL,snapshot
+lotus,Lotus,Monaco,snapshot
+lotus,Lotus,Monza,snapshot
+lotus,Lotus,Spa,snapshot
+lotus,Lotus,Turbo Esprit,snapshot
+lucid,Lucid,Air,snapshot
+lucid,Lucid,Gravity,snapshot
+maserati,Maserati,228,snapshot
+maserati,Maserati,430,snapshot
+maserati,Maserati,Biturbo,snapshot
+maserati,Maserati,Coupe,snapshot
+maserati,Maserati,Ghibli,snapshot
+maserati,Maserati,Grancabrio,snapshot
+maserati,Maserati,Granturismo,snapshot
+maserati,Maserati,Grecale,snapshot
+maserati,Maserati,Levante,snapshot
+maserati,Maserati,MC20,snapshot
+maserati,Maserati,MCPura,snapshot
+maserati,Maserati,Merak,snapshot
+maserati,Maserati,Quattroporte,snapshot
+maserati,Maserati,Spyder,snapshot
+maserati,Maserati,TC,snapshot
+maybach,Maybach,57,snapshot
+maybach,Maybach,62,snapshot
+mazda,Mazda,323,snapshot
+mazda,Mazda,626,snapshot
+mazda,Mazda,929,snapshot
+mazda,Mazda,B-Series,snapshot
+mazda,Mazda,CX-3,snapshot
+mazda,Mazda,CX-30,snapshot
+mazda,Mazda,CX-5,snapshot
+mazda,Mazda,CX-50,snapshot
+mazda,Mazda,CX-7,snapshot
+mazda,Mazda,CX-70,snapshot
+mazda,Mazda,CX-9,snapshot
+mazda,Mazda,CX-90,snapshot
+mazda,Mazda,GLC,snapshot
+mazda,Mazda,Mazda2,snapshot
+mazda,Mazda,Mazda3,snapshot
+mazda,Mazda,Mazda5,snapshot
+mazda,Mazda,Mazda6,snapshot
+mazda,Mazda,Millenia,snapshot
+mazda,Mazda,MPV,snapshot
+mazda,Mazda,MX-3,snapshot
+mazda,Mazda,MX-30,snapshot
+mazda,Mazda,MX-5,snapshot
+mazda,Mazda,MX-6,snapshot
+mazda,Mazda,Navajo,snapshot
+mazda,Mazda,Protege,snapshot
+mazda,Mazda,RX-7,snapshot
+mazda,Mazda,RX-8,snapshot
+mazda,Mazda,Tribute,snapshot
+mclaren,Mclaren,540C,snapshot
+mclaren,Mclaren,570GT,snapshot
+mclaren,Mclaren,570S,snapshot
+mclaren,Mclaren,600LT,snapshot
+mclaren,Mclaren,620R,snapshot
+mclaren,Mclaren,625C,snapshot
+mclaren,Mclaren,650S,snapshot
+mclaren,Mclaren,675LT,snapshot
+mclaren,Mclaren,720S,snapshot
+mclaren,Mclaren,750S,snapshot
+mclaren,Mclaren,765LT,snapshot
+mclaren,Mclaren,ARTURA,snapshot
+mclaren,Mclaren,ELVA,snapshot
+mclaren,Mclaren,GT,snapshot
+mclaren,Mclaren,GTS,snapshot
+mclaren,Mclaren,MP4-12C,snapshot
+mclaren,Mclaren,P1,snapshot
+mclaren,Mclaren,SENNA,snapshot
+mclaren,Mclaren,SENNA GTR,snapshot
+mercedes_benz,Mercedes Benz,190,snapshot
+mercedes_benz,Mercedes Benz,240,snapshot
+mercedes_benz,Mercedes Benz,260,snapshot
+mercedes_benz,Mercedes Benz,280,snapshot
+mercedes_benz,Mercedes Benz,300,snapshot
+mercedes_benz,Mercedes Benz,350,snapshot
+mercedes_benz,Mercedes Benz,380,snapshot
+mercedes_benz,Mercedes Benz,400,snapshot
+mercedes_benz,Mercedes Benz,420,snapshot
+mercedes_benz,Mercedes Benz,500,snapshot
+mercedes_benz,Mercedes Benz,560,snapshot
+mercedes_benz,Mercedes Benz,600,snapshot
+mercedes_benz,Mercedes Benz,A-Class,snapshot
+mercedes_benz,Mercedes Benz,AMG GT,snapshot
+mercedes_benz,Mercedes Benz,B-Class,snapshot
+mercedes_benz,Mercedes Benz,C-Class,snapshot
+mercedes_benz,Mercedes Benz,CL-Class,snapshot
+mercedes_benz,Mercedes Benz,CLA-Class,snapshot
+mercedes_benz,Mercedes Benz,CLE,snapshot
+mercedes_benz,Mercedes Benz,CLK-Class,snapshot
+mercedes_benz,Mercedes Benz,CLS-Class,snapshot
+mercedes_benz,Mercedes Benz,E-Class,snapshot
+mercedes_benz,Mercedes Benz,EQB-Class,snapshot
+mercedes_benz,Mercedes Benz,EQE-Class Sedan,snapshot
+mercedes_benz,Mercedes Benz,EQE-Class SUV,snapshot
+mercedes_benz,Mercedes Benz,EQS-Class Sedan,snapshot
+mercedes_benz,Mercedes Benz,EQS-Class SUV,snapshot
+mercedes_benz,Mercedes Benz,eSprinter,snapshot
+mercedes_benz,Mercedes Benz,G-Class,snapshot
+mercedes_benz,Mercedes Benz,GL-Class,snapshot
+mercedes_benz,Mercedes Benz,GLA-Class,snapshot
+mercedes_benz,Mercedes Benz,GLB-Class,snapshot
+mercedes_benz,Mercedes Benz,GLC-Class,snapshot
+mercedes_benz,Mercedes Benz,GLE-Class,snapshot
+mercedes_benz,Mercedes Benz,GLK-Class,snapshot
+mercedes_benz,Mercedes Benz,GLS-Class,snapshot
+mercedes_benz,Mercedes Benz,L1013,snapshot
+mercedes_benz,Mercedes Benz,L1113,snapshot
+mercedes_benz,Mercedes Benz,L1116,snapshot
+mercedes_benz,Mercedes Benz,L1117,snapshot
+mercedes_benz,Mercedes Benz,L1316,snapshot
+mercedes_benz,Mercedes Benz,L1317,snapshot
+mercedes_benz,Mercedes Benz,L1319,snapshot
+mercedes_benz,Mercedes Benz,L1418,snapshot
+mercedes_benz,Mercedes Benz,L1419,snapshot
+mercedes_benz,Mercedes Benz,LP1219,snapshot
+mercedes_benz,Mercedes Benz,LP1419,snapshot
+mercedes_benz,Mercedes Benz,LPS1525,snapshot
+mercedes_benz,Mercedes Benz,M-Class,snapshot
+mercedes_benz,Mercedes Benz,Metris,snapshot
+mercedes_benz,Mercedes Benz,ML-Class,snapshot
+mercedes_benz,Mercedes Benz,R-Class,snapshot
+mercedes_benz,Mercedes Benz,S-Class,snapshot
+mercedes_benz,Mercedes Benz,SL-Class,snapshot
+mercedes_benz,Mercedes Benz,SLC-Class,snapshot
+mercedes_benz,Mercedes Benz,SLK-Class,snapshot
+mercedes_benz,Mercedes Benz,SLR McLaren,snapshot
+mercedes_benz,Mercedes Benz,SLS-Class,snapshot
+mercedes_benz,Mercedes Benz,Sprinter,snapshot
+mercury,Mercury,Capri,snapshot
+mercury,Mercury,Cougar,snapshot
+mercury,Mercury,Grand Marquis,snapshot
+mercury,Mercury,Lynx,snapshot
+mercury,Mercury,Marauder,snapshot
+mercury,Mercury,Mariner,snapshot
+mercury,Mercury,MARQUIS,snapshot
+mercury,Mercury,Milan,snapshot
+mercury,Mercury,Montego,snapshot
+mercury,Mercury,Monterey,snapshot
+mercury,Mercury,Mountaineer,snapshot
+mercury,Mercury,Mystique,snapshot
+mercury,Mercury,Sable,snapshot
+mercury,Mercury,Topaz,snapshot
+mercury,Mercury,Tracer,snapshot
+mercury,Mercury,Villager,snapshot
+mercury,Mercury,Zephyr,snapshot
+mini,Mini,Clubman,snapshot
+mini,Mini,Cooper,snapshot
+mini,Mini,Cooper Convertible,snapshot
+mini,Mini,Cooper Coupe,snapshot
+mini,Mini,Cooper Roadster,snapshot
+mini,Mini,Countryman,snapshot
+mini,Mini,Hardtop,snapshot
+mini,Mini,Paceman,snapshot
+mitsubishi,Mitsubishi,3000GT,snapshot
+mitsubishi,Mitsubishi,Cordia,snapshot
+mitsubishi,Mitsubishi,Diamante,snapshot
+mitsubishi,Mitsubishi,Eclipse,snapshot
+mitsubishi,Mitsubishi,Eclipse Cross,snapshot
+mitsubishi,Mitsubishi,Endeavor,snapshot
+mitsubishi,Mitsubishi,Expo,snapshot
+mitsubishi,Mitsubishi,Galant,snapshot
+mitsubishi,Mitsubishi,i-MiEV,snapshot
+mitsubishi,Mitsubishi,Lancer,snapshot
+mitsubishi,Mitsubishi,Lancer Evolution,snapshot
+mitsubishi,Mitsubishi,Lancer SportBack,snapshot
+mitsubishi,Mitsubishi,Mighty Max,snapshot
+mitsubishi,Mitsubishi,Mirage,snapshot
+mitsubishi,Mitsubishi,Mirage G4,snapshot
+mitsubishi,Mitsubishi,Montero,snapshot
+mitsubishi,Mitsubishi,Montero Sport,snapshot
+mitsubishi,Mitsubishi,Outlander,snapshot
+mitsubishi,Mitsubishi,Outlander Sport,snapshot
+mitsubishi,Mitsubishi,Precis,snapshot
+mitsubishi,Mitsubishi,Raider,snapshot
+mitsubishi,Mitsubishi,RVR,snapshot
+mitsubishi,Mitsubishi,Sigma,snapshot
+mitsubishi,Mitsubishi,SP,snapshot
+mitsubishi,Mitsubishi,Space Wagon,snapshot
+mitsubishi,Mitsubishi,SPX,snapshot
+mitsubishi,Mitsubishi,Starion,snapshot
+mitsubishi,Mitsubishi,Tredia,snapshot
+mitsubishi,Mitsubishi,Van,snapshot
+mitsubishi,Mitsubishi,Wagon,snapshot
+nissan,Nissan,200SX,snapshot
+nissan,Nissan,240SX,snapshot
+nissan,Nissan,300ZX,snapshot
+nissan,Nissan,350Z,snapshot
+nissan,Nissan,370Z,snapshot
+nissan,Nissan,Altima,snapshot
+nissan,Nissan,Altra,snapshot
+nissan,Nissan,Altra-EV,snapshot
+nissan,Nissan,Ariya Hatchback,snapshot
+nissan,Nissan,Ariya MPV,snapshot
+nissan,Nissan,Armada,snapshot
+nissan,Nissan,Axxess,snapshot
+nissan,Nissan,Cube,snapshot
+nissan,Nissan,Frontier,snapshot
+nissan,Nissan,GT-R,snapshot
+nissan,Nissan,Juke,snapshot
+nissan,Nissan,Kicks,snapshot
+nissan,Nissan,Kicks MPV,snapshot
+nissan,Nissan,Kicks Play,snapshot
+nissan,Nissan,Leaf,snapshot
+nissan,Nissan,Maxima,snapshot
+nissan,Nissan,Micra,snapshot
+nissan,Nissan,Murano,snapshot
+nissan,Nissan,Nissan Z,snapshot
+nissan,Nissan,NV,snapshot
+nissan,Nissan,NV200,snapshot
+nissan,Nissan,NX,snapshot
+nissan,Nissan,Pathfinder,snapshot
+nissan,Nissan,Pickup,snapshot
+nissan,Nissan,PULSAR,snapshot
+nissan,Nissan,Quest,snapshot
+nissan,Nissan,Rogue,snapshot
+nissan,Nissan,Rogue Select,snapshot
+nissan,Nissan,Rogue Sport,snapshot
+nissan,Nissan,Sentra,snapshot
+nissan,Nissan,Sentra Classic,snapshot
+nissan,Nissan,Stanza,snapshot
+nissan,Nissan,Stanza Wagon,snapshot
+nissan,Nissan,Titan,snapshot
+nissan,Nissan,Van,snapshot
+nissan,Nissan,Versa,snapshot
+nissan,Nissan,Versa Note,snapshot
+nissan,Nissan,X-Trail,snapshot
+nissan,Nissan,Xterra,snapshot
+oldsmobile,Oldsmobile,Achieva,snapshot
+oldsmobile,Oldsmobile,Alero,snapshot
+oldsmobile,Oldsmobile,Aurora,snapshot
+oldsmobile,Oldsmobile,Bravada,snapshot
+oldsmobile,Oldsmobile,Custom Cruiser,snapshot
+oldsmobile,Oldsmobile,Cutlass,snapshot
+oldsmobile,Oldsmobile,Cutlass Calais,snapshot
+oldsmobile,Oldsmobile,Cutlass Ciera,snapshot
+oldsmobile,Oldsmobile,Cutlass Cruiser,snapshot
+oldsmobile,Oldsmobile,Cutlass Salon,snapshot
+oldsmobile,Oldsmobile,Cutlass Supreme,snapshot
+oldsmobile,Oldsmobile,Delta 88,snapshot
+oldsmobile,Oldsmobile,Eighty Eight (88),snapshot
+oldsmobile,Oldsmobile,Firenza,snapshot
+oldsmobile,Oldsmobile,Intrigue,snapshot
+oldsmobile,Oldsmobile,LSS,snapshot
+oldsmobile,Oldsmobile,Ninety Eight (98),snapshot
+oldsmobile,Oldsmobile,Omega,snapshot
+oldsmobile,Oldsmobile,Regency,snapshot
+oldsmobile,Oldsmobile,Silhouette,snapshot
+oldsmobile,Oldsmobile,Toronado,snapshot
+peterbilt,Peterbilt,200,snapshot
+peterbilt,Peterbilt,210,snapshot
+peterbilt,Peterbilt,220,snapshot
+peterbilt,Peterbilt,250,snapshot
+peterbilt,Peterbilt,310,snapshot
+peterbilt,Peterbilt,320,snapshot
+peterbilt,Peterbilt,325,snapshot
+peterbilt,Peterbilt,330,snapshot
+peterbilt,Peterbilt,335,snapshot
+peterbilt,Peterbilt,337,snapshot
+peterbilt,Peterbilt,340,snapshot
+peterbilt,Peterbilt,348,snapshot
+peterbilt,Peterbilt,349,snapshot
+peterbilt,Peterbilt,352,snapshot
+peterbilt,Peterbilt,353,snapshot
+peterbilt,Peterbilt,357,snapshot
+peterbilt,Peterbilt,359,snapshot
+peterbilt,Peterbilt,362,snapshot
+peterbilt,Peterbilt,363,snapshot
+peterbilt,Peterbilt,365,snapshot
+peterbilt,Peterbilt,367,snapshot
+peterbilt,Peterbilt,372,snapshot
+peterbilt,Peterbilt,375,snapshot
+peterbilt,Peterbilt,376,snapshot
+peterbilt,Peterbilt,377,snapshot
+peterbilt,Peterbilt,378,snapshot
+peterbilt,Peterbilt,379,snapshot
+peterbilt,Peterbilt,382,snapshot
+peterbilt,Peterbilt,384,snapshot
+peterbilt,Peterbilt,385,snapshot
+peterbilt,Peterbilt,386,snapshot
+peterbilt,Peterbilt,387,snapshot
+peterbilt,Peterbilt,388,snapshot
+peterbilt,Peterbilt,389,snapshot
+peterbilt,Peterbilt,397,snapshot
+peterbilt,Peterbilt,476,snapshot
+peterbilt,Peterbilt,477,snapshot
+peterbilt,Peterbilt,520,snapshot
+peterbilt,Peterbilt,535,snapshot
+peterbilt,Peterbilt,536,snapshot
+peterbilt,Peterbilt,537,snapshot
+peterbilt,Peterbilt,548,snapshot
+peterbilt,Peterbilt,567,snapshot
+peterbilt,Peterbilt,579,snapshot
+peterbilt,Peterbilt,587,snapshot
+peterbilt,Peterbilt,589,snapshot
+peterbilt,Peterbilt,Medium Duty COE,snapshot
+peugeot,Peugeot,405,snapshot
+peugeot,Peugeot,504,snapshot
+peugeot,Peugeot,505,snapshot
+peugeot,Peugeot,604,snapshot
+plymouth,Plymouth,Acclaim,snapshot
+plymouth,Plymouth,Arrow,snapshot
+plymouth,Plymouth,Breeze,snapshot
+plymouth,Plymouth,CARAVELLE,snapshot
+plymouth,Plymouth,Champ,snapshot
+plymouth,Plymouth,Colt,snapshot
+plymouth,Plymouth,Conquest,snapshot
+plymouth,Plymouth,GRAN FURY,snapshot
+plymouth,Plymouth,Grand Voyager,snapshot
+plymouth,Plymouth,HORIZON,snapshot
+plymouth,Plymouth,Laser,snapshot
+plymouth,Plymouth,Neon,snapshot
+plymouth,Plymouth,Prowler,snapshot
+plymouth,Plymouth,Reliant,snapshot
+plymouth,Plymouth,Sapporo,snapshot
+plymouth,Plymouth,Scamp,snapshot
+plymouth,Plymouth,Sundance,snapshot
+plymouth,Plymouth,Trailduster,snapshot
+plymouth,Plymouth,TURISMO,snapshot
+plymouth,Plymouth,Voyager,snapshot
+pontiac,Pontiac,6000,snapshot
+pontiac,Pontiac,Acadian,snapshot
+pontiac,Pontiac,Aztek,snapshot
+pontiac,Pontiac,Bonneville,snapshot
+pontiac,Pontiac,Catalina,snapshot
+pontiac,Pontiac,Fiero,snapshot
+pontiac,Pontiac,Firebird,snapshot
+pontiac,Pontiac,Firefly,snapshot
+pontiac,Pontiac,G3,snapshot
+pontiac,Pontiac,G5,snapshot
+pontiac,Pontiac,G6,snapshot
+pontiac,Pontiac,G8,snapshot
+pontiac,Pontiac,Grand AM,snapshot
+pontiac,Pontiac,Grand Lemans,snapshot
+pontiac,Pontiac,Grand Prix,snapshot
+pontiac,Pontiac,GTO,snapshot
+pontiac,Pontiac,J2000,snapshot
+pontiac,Pontiac,Laurentian,snapshot
+pontiac,Pontiac,Lemans,snapshot
+pontiac,Pontiac,Matiz,snapshot
+pontiac,Pontiac,Montana,snapshot
+pontiac,Pontiac,Montana SV6,snapshot
+pontiac,Pontiac,Parisienne,snapshot
+pontiac,Pontiac,Phoenix,snapshot
+pontiac,Pontiac,Pursuit,snapshot
+pontiac,Pontiac,Safari,snapshot
+pontiac,Pontiac,Solstice,snapshot
+pontiac,Pontiac,Sunbird,snapshot
+pontiac,Pontiac,Sunbird 2000,snapshot
+pontiac,Pontiac,Sunburst,snapshot
+pontiac,Pontiac,Sunfire,snapshot
+pontiac,Pontiac,T1000,snapshot
+pontiac,Pontiac,Tempest,snapshot
+pontiac,Pontiac,Torrent,snapshot
+pontiac,Pontiac,Trans Sport,snapshot
+pontiac,Pontiac,Vibe,snapshot
+pontiac,Pontiac,Wave,snapshot
+porsche,Porsche,718 Boxster,snapshot
+porsche,Porsche,718 Cayman,snapshot
+porsche,Porsche,718 Spyder,snapshot
+porsche,Porsche,911,snapshot
+porsche,Porsche,918,snapshot
+porsche,Porsche,924,snapshot
+porsche,Porsche,928,snapshot
+porsche,Porsche,944,snapshot
+porsche,Porsche,968,snapshot
+porsche,Porsche,Boxster,snapshot
+porsche,Porsche,Cayenne,snapshot
+porsche,Porsche,Cayman,snapshot
+porsche,Porsche,Macan,snapshot
+porsche,Porsche,Panamera,snapshot
+porsche,Porsche,Taycan,snapshot
+ram,RAM,1500,snapshot
+ram,RAM,2500,snapshot
+ram,RAM,3500,snapshot
+ram,RAM,4000,snapshot
+ram,RAM,4500,snapshot
+ram,RAM,5500,snapshot
+ram,RAM,Cargo Van,snapshot
+ram,RAM,ProMaster 1500,snapshot
+ram,RAM,ProMaster 2500,snapshot
+ram,RAM,ProMaster 3500,snapshot
+ram,RAM,Promaster City,snapshot
+renault,Renault,18i,snapshot
+renault,Renault,Alliance,snapshot
+renault,Renault,Encore,snapshot
+renault,Renault,Fuego,snapshot
+renault,Renault,LeCar,snapshot
+rivian,Rivian,EDV,snapshot
+rivian,Rivian,R1S,snapshot
+rivian,Rivian,R1T,snapshot
+rivian,Rivian,RCV,snapshot
+rolls_royce,Rolls Royce,Camargue,snapshot
+rolls_royce,Rolls Royce,Corniche,snapshot
+rolls_royce,Rolls Royce,Cullinan,snapshot
+rolls_royce,Rolls Royce,Dawn,snapshot
+rolls_royce,Rolls Royce,Flying Spur,snapshot
+rolls_royce,Rolls Royce,Ghost,snapshot
+rolls_royce,Rolls Royce,Park Ward,snapshot
+rolls_royce,Rolls Royce,Phantom,snapshot
+rolls_royce,Rolls Royce,Silver Dawn,snapshot
+rolls_royce,Rolls Royce,Silver Seraph,snapshot
+rolls_royce,Rolls Royce,Silver Spirit,snapshot
+rolls_royce,Rolls Royce,Silver Spur,snapshot
+rolls_royce,Rolls Royce,Spectre,snapshot
+rolls_royce,Rolls Royce,Touring Limousine,snapshot
+rolls_royce,Rolls Royce,Wraith,snapshot
+saab,Saab,9-2X,snapshot
+saab,Saab,9-3,snapshot
+saab,Saab,9-4x,snapshot
+saab,Saab,9-5,snapshot
+saab,Saab,9-7X,snapshot
+saab,Saab,900,snapshot
+saab,Saab,9000,snapshot
+saturn,Saturn,Astra,snapshot
+saturn,Saturn,Aura,snapshot
+saturn,Saturn,Ion,snapshot
+saturn,Saturn,L200,snapshot
+saturn,Saturn,L300,snapshot
+saturn,Saturn,LS,snapshot
+saturn,Saturn,LS1,snapshot
+saturn,Saturn,LS2,snapshot
+saturn,Saturn,LW1,snapshot
+saturn,Saturn,LW2,snapshot
+saturn,Saturn,LW200,snapshot
+saturn,Saturn,LW300,snapshot
+saturn,Saturn,Outlook,snapshot
+saturn,Saturn,Relay,snapshot
+saturn,Saturn,SC1,snapshot
+saturn,Saturn,SC2,snapshot
+saturn,Saturn,Sky,snapshot
+saturn,Saturn,SL,snapshot
+saturn,Saturn,SL1,snapshot
+saturn,Saturn,SL2,snapshot
+saturn,Saturn,SL3,snapshot
+saturn,Saturn,SW1,snapshot
+saturn,Saturn,SW2,snapshot
+saturn,Saturn,Vue,snapshot
+shelby,Shelby,Cobra,snapshot
+shelby,Shelby,GT,snapshot
+smart,Smart,EQ Fortwo,snapshot
+smart,Smart,Fortwo,snapshot
+smart,Smart,Fortwo Electric Drive,snapshot
+smart,Smart,smart,snapshot
+spyker,Spyker,C12,snapshot
+spyker,Spyker,C8,snapshot
+spyker,Spyker,D8/D12,snapshot
+subaru,Subaru,Ascent,snapshot
+subaru,Subaru,B9 Tribeca,snapshot
+subaru,Subaru,Baja,snapshot
+subaru,Subaru,Brat,snapshot
+subaru,Subaru,BRZ,snapshot
+subaru,Subaru,Crosstrek,snapshot
+subaru,Subaru,DL,snapshot
+subaru,Subaru,Forester,snapshot
+subaru,Subaru,GL,snapshot
+subaru,Subaru,GL-10,snapshot
+subaru,Subaru,GLF,snapshot
+subaru,Subaru,Impreza,snapshot
+subaru,Subaru,Justy,snapshot
+subaru,Subaru,Legacy,snapshot
+subaru,Subaru,Loyale,snapshot
+subaru,Subaru,Outback,snapshot
+subaru,Subaru,RX,snapshot
+subaru,Subaru,Solterra,snapshot
+subaru,Subaru,Standard,snapshot
+subaru,Subaru,SVX,snapshot
+subaru,Subaru,Trailseeker,snapshot
+subaru,Subaru,Uncharted,snapshot
+subaru,Subaru,WRX,snapshot
+subaru,Subaru,XT,snapshot
+subaru,Subaru,XT6,snapshot
+subaru,Subaru,XV CrossTrek,snapshot
+suzuki,Suzuki,Aerio,snapshot
+suzuki,Suzuki,Equator,snapshot
+suzuki,Suzuki,Esteem,snapshot
+suzuki,Suzuki,Forenza,snapshot
+suzuki,Suzuki,Forsa,snapshot
+suzuki,Suzuki,Grand Vitara,snapshot
+suzuki,Suzuki,Grand Vitara XL-7,snapshot
+suzuki,Suzuki,Kizashi,snapshot
+suzuki,Suzuki,Reno,snapshot
+suzuki,Suzuki,Samurai,snapshot
+suzuki,Suzuki,Sidekick,snapshot
+suzuki,Suzuki,Sidekick Sport,snapshot
+suzuki,Suzuki,Swift,snapshot
+suzuki,Suzuki,SX4,snapshot
+suzuki,Suzuki,Verona,snapshot
+suzuki,Suzuki,Vitara,snapshot
+suzuki,Suzuki,X-90,snapshot
+suzuki,Suzuki,XL7,snapshot
+tesla,Tesla,Cybercab,snapshot
+tesla,Tesla,Cybertruck,snapshot
+tesla,Tesla,Model 3,snapshot
+tesla,Tesla,Model S,snapshot
+tesla,Tesla,Model X,snapshot
+tesla,Tesla,Model Y,snapshot
+tesla,Tesla,Roadster,snapshot
+tesla,Tesla,Semi,snapshot
+toyota,Toyota,4Runner,snapshot
+toyota,Toyota,86,snapshot
+toyota,Toyota,Avalon,snapshot
+toyota,Toyota,bZ,snapshot
+toyota,Toyota,bZ Woodland,snapshot
+toyota,Toyota,bZ4X,snapshot
+toyota,Toyota,C-HR,snapshot
+toyota,Toyota,Camry,snapshot
+toyota,Toyota,Camry Solara,snapshot
+toyota,Toyota,Cargo Van,snapshot
+toyota,Toyota,Celica,snapshot
+toyota,Toyota,Corolla,snapshot
+toyota,Toyota,Corolla Cross,snapshot
+toyota,Toyota,COROLLA iM,snapshot
+toyota,Toyota,Corolla Matrix,snapshot
+toyota,Toyota,Corona,snapshot
+toyota,Toyota,Cressida,snapshot
+toyota,Toyota,Crown,snapshot
+toyota,Toyota,Crown Signia,snapshot
+toyota,Toyota,Echo,snapshot
+toyota,Toyota,FCHV-adv,snapshot
+toyota,Toyota,FJ Cruiser,snapshot
+toyota,Toyota,GR Corolla,snapshot
+toyota,Toyota,GR86,snapshot
+toyota,Toyota,Grand Highlander,snapshot
+toyota,Toyota,Highlander,snapshot
+toyota,Toyota,Land Cruiser,snapshot
+toyota,Toyota,Mirai,snapshot
+toyota,Toyota,MR2,snapshot
+toyota,Toyota,Paseo,snapshot
+toyota,Toyota,Pick-Up,snapshot
+toyota,Toyota,Previa,snapshot
+toyota,Toyota,Prius,snapshot
+toyota,Toyota,Prius C,snapshot
+toyota,Toyota,Prius Prime (PHEV),snapshot
+toyota,Toyota,Prius V,snapshot
+toyota,Toyota,RAV4,snapshot
+toyota,Toyota,RAV4 Prime (PHEV),snapshot
+toyota,Toyota,Scion FR-S,snapshot
+toyota,Toyota,Scion iA,snapshot
+toyota,Toyota,Scion iM,snapshot
+toyota,Toyota,Scion iQ,snapshot
+toyota,Toyota,Scion tC,snapshot
+toyota,Toyota,Scion xA,snapshot
+toyota,Toyota,Scion xB,snapshot
+toyota,Toyota,Scion xD,snapshot
+toyota,Toyota,Sequoia,snapshot
+toyota,Toyota,Sienna,snapshot
+toyota,Toyota,Starlet,snapshot
+toyota,Toyota,Supra,snapshot
+toyota,Toyota,T100,snapshot
+toyota,Toyota,Tacoma,snapshot
+toyota,Toyota,Tercel,snapshot
+toyota,Toyota,Tundra,snapshot
+toyota,Toyota,Van,snapshot
+toyota,Toyota,Venza,snapshot
+toyota,Toyota,Yaris,snapshot
+toyota,Toyota,Yaris iA,snapshot
+triumph,Triumph,TR7,snapshot
+triumph,Triumph,TR8,snapshot
+volvo,Volvo,240 Series,snapshot
+volvo,Volvo,260 Series,snapshot
+volvo,Volvo,740 Series,snapshot
+volvo,Volvo,760 Series,snapshot
+volvo,Volvo,780 Series,snapshot
+volvo,Volvo,850 Series,snapshot
+volvo,Volvo,940 Series,snapshot
+volvo,Volvo,960 Series,snapshot
+volvo,Volvo,C30,snapshot
+volvo,Volvo,C40,snapshot
+volvo,Volvo,C70,snapshot
+volvo,Volvo,C70 / C30,snapshot
+volvo,Volvo,Cab Behind Engine,snapshot
+volvo,Volvo,Cab Over Engine HT,snapshot
+volvo,Volvo,Cab Over Engine LT,snapshot
+volvo,Volvo,EC40,snapshot
+volvo,Volvo,EX30,snapshot
+volvo,Volvo,EX30 CC,snapshot
+volvo,Volvo,EX40,snapshot
+volvo,Volvo,EX60,snapshot
+volvo,Volvo,EX90,snapshot
+volvo,Volvo,F12 w/F7 Cab,snapshot
+volvo,Volvo,F6 w/F7 Cab,snapshot
+volvo,Volvo,S40,snapshot
+volvo,Volvo,S60,snapshot
+volvo,Volvo,S60 Cross Country,snapshot
+volvo,Volvo,S70,snapshot
+volvo,Volvo,S80,snapshot
+volvo,Volvo,S90,snapshot
+volvo,Volvo,V40,snapshot
+volvo,Volvo,V50,snapshot
+volvo,Volvo,V60,snapshot
+volvo,Volvo,V60CC,snapshot
+volvo,Volvo,V70,snapshot
+volvo,Volvo,V90,snapshot
+volvo,Volvo,V90CC,snapshot
+volvo,Volvo,VS,snapshot
+volvo,Volvo,VT,snapshot
+volvo,Volvo,XC40,snapshot
+volvo,Volvo,XC60,snapshot
+volvo,Volvo,XC70,snapshot
+volvo,Volvo,XC90,snapshot
+yugo,Yugo,"102, GV",snapshot
+yugo,Yugo,Yugo 45,snapshot
+yugo,Yugo,Yugo 55,snapshot
+yugo,Yugo,Yugo 65,snapshot
