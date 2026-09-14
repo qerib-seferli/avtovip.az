@@ -1,0 +1,600 @@
+make_slug,make_name,model_name,source
+audi,Audi,A1,built-in
+audi,Audi,A3,built-in
+audi,Audi,A4,built-in
+audi,Audi,A5,built-in
+audi,Audi,A6,built-in
+audi,Audi,A7,built-in
+audi,Audi,A8,built-in
+audi,Audi,Q2,built-in
+audi,Audi,Q3,built-in
+audi,Audi,Q4 e-tron,built-in
+audi,Audi,Q5,built-in
+audi,Audi,Q6 e-tron,built-in
+audi,Audi,Q7,built-in
+audi,Audi,Q8,built-in
+audi,Audi,e-tron GT,built-in
+audi,Audi,TT,built-in
+audi,Audi,R8,built-in
+audi,Audi,RS 3,built-in
+audi,Audi,RS 4,built-in
+audi,Audi,RS 5,built-in
+audi,Audi,RS 6,built-in
+audi,Audi,RS 7,built-in
+audi,Audi,RS Q8,built-in
+audi,Audi,S3,built-in
+audi,Audi,S4,built-in
+audi,Audi,S5,built-in
+audi,Audi,S6,built-in
+audi,Audi,S7,built-in
+audi,Audi,S8,built-in
+audi,Audi,SQ5,built-in
+audi,Audi,SQ7,built-in
+audi,Audi,SQ8,built-in
+bmw,BMW,1 Series,built-in
+bmw,BMW,2 Series,built-in
+bmw,BMW,3 Series,built-in
+bmw,BMW,4 Series,built-in
+bmw,BMW,5 Series,built-in
+bmw,BMW,6 Series,built-in
+bmw,BMW,7 Series,built-in
+bmw,BMW,8 Series,built-in
+bmw,BMW,i3,built-in
+bmw,BMW,i4,built-in
+bmw,BMW,i5,built-in
+bmw,BMW,i7,built-in
+bmw,BMW,i8,built-in
+bmw,BMW,iX,built-in
+bmw,BMW,M2,built-in
+bmw,BMW,M3,built-in
+bmw,BMW,M4,built-in
+bmw,BMW,M5,built-in
+bmw,BMW,M8,built-in
+bmw,BMW,X1,built-in
+bmw,BMW,X2,built-in
+bmw,BMW,X3,built-in
+bmw,BMW,X4,built-in
+bmw,BMW,X5,built-in
+bmw,BMW,X6,built-in
+bmw,BMW,X7,built-in
+bmw,BMW,XM,built-in
+bmw,BMW,Z3,built-in
+bmw,BMW,Z4,built-in
+mercedes-benz,Mercedes-Benz,A-Class,built-in
+mercedes-benz,Mercedes-Benz,B-Class,built-in
+mercedes-benz,Mercedes-Benz,C-Class,built-in
+mercedes-benz,Mercedes-Benz,CLA,built-in
+mercedes-benz,Mercedes-Benz,CLE,built-in
+mercedes-benz,Mercedes-Benz,CLS,built-in
+mercedes-benz,Mercedes-Benz,E-Class,built-in
+mercedes-benz,Mercedes-Benz,S-Class,built-in
+mercedes-benz,Mercedes-Benz,G-Class,built-in
+mercedes-benz,Mercedes-Benz,GLA,built-in
+mercedes-benz,Mercedes-Benz,GLB,built-in
+mercedes-benz,Mercedes-Benz,GLC,built-in
+mercedes-benz,Mercedes-Benz,GLE,built-in
+mercedes-benz,Mercedes-Benz,GLS,built-in
+mercedes-benz,Mercedes-Benz,AMG GT,built-in
+mercedes-benz,Mercedes-Benz,EQA,built-in
+mercedes-benz,Mercedes-Benz,EQB,built-in
+mercedes-benz,Mercedes-Benz,EQC,built-in
+mercedes-benz,Mercedes-Benz,EQE,built-in
+mercedes-benz,Mercedes-Benz,EQS,built-in
+mercedes-benz,Mercedes-Benz,V-Class,built-in
+mercedes-benz,Mercedes-Benz,Vito,built-in
+mercedes-benz,Mercedes-Benz,Sprinter,built-in
+toyota,Toyota,4Runner,built-in
+toyota,Toyota,Alphard,built-in
+toyota,Toyota,Avalon,built-in
+toyota,Toyota,Avensis,built-in
+toyota,Toyota,C-HR,built-in
+toyota,Toyota,Camry,built-in
+toyota,Toyota,Corolla,built-in
+toyota,Toyota,Corolla Cross,built-in
+toyota,Toyota,Crown,built-in
+toyota,Toyota,Fortuner,built-in
+toyota,Toyota,GR86,built-in
+toyota,Toyota,Hiace,built-in
+toyota,Toyota,Highlander,built-in
+toyota,Toyota,Hilux,built-in
+toyota,Toyota,Land Cruiser,built-in
+toyota,Toyota,Land Cruiser Prado,built-in
+toyota,Toyota,Mirai,built-in
+toyota,Toyota,Prius,built-in
+toyota,Toyota,RAV4,built-in
+toyota,Toyota,Sequoia,built-in
+toyota,Toyota,Sienna,built-in
+toyota,Toyota,Supra,built-in
+toyota,Toyota,Tacoma,built-in
+toyota,Toyota,Tundra,built-in
+toyota,Toyota,Venza,built-in
+toyota,Toyota,Yaris,built-in
+toyota,Toyota,Yaris Cross,built-in
+lexus,Lexus,CT,built-in
+lexus,Lexus,ES,built-in
+lexus,Lexus,GS,built-in
+lexus,Lexus,GX,built-in
+lexus,Lexus,IS,built-in
+lexus,Lexus,LC,built-in
+lexus,Lexus,LM,built-in
+lexus,Lexus,LS,built-in
+lexus,Lexus,LX,built-in
+lexus,Lexus,NX,built-in
+lexus,Lexus,RC,built-in
+lexus,Lexus,RX,built-in
+lexus,Lexus,RZ,built-in
+lexus,Lexus,TX,built-in
+lexus,Lexus,UX,built-in
+nissan,Nissan,350Z,built-in
+nissan,Nissan,370Z,built-in
+nissan,Nissan,Almera,built-in
+nissan,Nissan,Altima,built-in
+nissan,Nissan,Ariya,built-in
+nissan,Nissan,Armada,built-in
+nissan,Nissan,Frontier,built-in
+nissan,Nissan,GT-R,built-in
+nissan,Nissan,Juke,built-in
+nissan,Nissan,Kicks,built-in
+nissan,Nissan,Leaf,built-in
+nissan,Nissan,Maxima,built-in
+nissan,Nissan,Micra,built-in
+nissan,Nissan,Murano,built-in
+nissan,Nissan,Navara,built-in
+nissan,Nissan,Note,built-in
+nissan,Nissan,Pathfinder,built-in
+nissan,Nissan,Patrol,built-in
+nissan,Nissan,Qashqai,built-in
+nissan,Nissan,Rogue,built-in
+nissan,Nissan,Sentra,built-in
+nissan,Nissan,Skyline,built-in
+nissan,Nissan,Sunny,built-in
+nissan,Nissan,Teana,built-in
+nissan,Nissan,Terrano,built-in
+nissan,Nissan,Titan,built-in
+nissan,Nissan,X-Trail,built-in
+nissan,Nissan,Z,built-in
+honda,Honda,Accord,built-in
+honda,Honda,Civic,built-in
+honda,Honda,City,built-in
+honda,Honda,Clarity,built-in
+honda,Honda,CR-V,built-in
+honda,Honda,CR-Z,built-in
+honda,Honda,e,built-in
+honda,Honda,Element,built-in
+honda,Honda,Fit/Jazz,built-in
+honda,Honda,HR-V,built-in
+honda,Honda,Insight,built-in
+honda,Honda,Odyssey,built-in
+honda,Honda,Passport,built-in
+honda,Honda,Pilot,built-in
+honda,Honda,Prelude,built-in
+honda,Honda,Ridgeline,built-in
+honda,Honda,S2000,built-in
+hyundai,Hyundai,Accent,built-in
+hyundai,Hyundai,Azera/Grandeur,built-in
+hyundai,Hyundai,Bayon,built-in
+hyundai,Hyundai,Creta,built-in
+hyundai,Hyundai,Elantra,built-in
+hyundai,Hyundai,Equus,built-in
+hyundai,Hyundai,Genesis,built-in
+hyundai,Hyundai,i10,built-in
+hyundai,Hyundai,i20,built-in
+hyundai,Hyundai,i30,built-in
+hyundai,Hyundai,Ioniq,built-in
+hyundai,Hyundai,Ioniq 5,built-in
+hyundai,Hyundai,Ioniq 6,built-in
+hyundai,Hyundai,Kona,built-in
+hyundai,Hyundai,Palisade,built-in
+hyundai,Hyundai,Santa Fe,built-in
+hyundai,Hyundai,Sonata,built-in
+hyundai,Hyundai,Staria,built-in
+hyundai,Hyundai,Tucson,built-in
+hyundai,Hyundai,Veloster,built-in
+hyundai,Hyundai,Venue,built-in
+kia,KIA,Carnival,built-in
+kia,KIA,Carens,built-in
+kia,KIA,Ceed,built-in
+kia,KIA,Cerato/Forte,built-in
+kia,KIA,EV3,built-in
+kia,KIA,EV5,built-in
+kia,KIA,EV6,built-in
+kia,KIA,EV9,built-in
+kia,KIA,K5,built-in
+kia,KIA,K8,built-in
+kia,KIA,K9,built-in
+kia,KIA,Niro,built-in
+kia,KIA,Optima,built-in
+kia,KIA,Picanto,built-in
+kia,KIA,Rio,built-in
+kia,KIA,Seltos,built-in
+kia,KIA,Sorento,built-in
+kia,KIA,Soul,built-in
+kia,KIA,Sportage,built-in
+kia,KIA,Stinger,built-in
+kia,KIA,Telluride,built-in
+volkswagen,Volkswagen,Amarok,built-in
+volkswagen,Volkswagen,Arteon,built-in
+volkswagen,Volkswagen,Atlas,built-in
+volkswagen,Volkswagen,Beetle,built-in
+volkswagen,Volkswagen,Bora,built-in
+volkswagen,Volkswagen,Caddy,built-in
+volkswagen,Volkswagen,Crafter,built-in
+volkswagen,Volkswagen,Golf,built-in
+volkswagen,Volkswagen,ID.3,built-in
+volkswagen,Volkswagen,ID.4,built-in
+volkswagen,Volkswagen,ID.5,built-in
+volkswagen,Volkswagen,ID.7,built-in
+volkswagen,Volkswagen,Jetta,built-in
+volkswagen,Volkswagen,Multivan,built-in
+volkswagen,Volkswagen,Passat,built-in
+volkswagen,Volkswagen,Phaeton,built-in
+volkswagen,Volkswagen,Polo,built-in
+volkswagen,Volkswagen,Scirocco,built-in
+volkswagen,Volkswagen,Taos,built-in
+volkswagen,Volkswagen,T-Cross,built-in
+volkswagen,Volkswagen,T-Roc,built-in
+volkswagen,Volkswagen,Tiguan,built-in
+volkswagen,Volkswagen,Touareg,built-in
+volkswagen,Volkswagen,Touran,built-in
+volkswagen,Volkswagen,Transporter,built-in
+ford,Ford,Bronco,built-in
+ford,Ford,Bronco Sport,built-in
+ford,Ford,Edge,built-in
+ford,Ford,Escape,built-in
+ford,Ford,Everest,built-in
+ford,Ford,Expedition,built-in
+ford,Ford,Explorer,built-in
+ford,Ford,F-150,built-in
+ford,Ford,Fiesta,built-in
+ford,Ford,Focus,built-in
+ford,Ford,Fusion,built-in
+ford,Ford,Galaxy,built-in
+ford,Ford,Kuga,built-in
+ford,Ford,Maverick,built-in
+ford,Ford,Mondeo,built-in
+ford,Ford,Mustang,built-in
+ford,Ford,Mustang Mach-E,built-in
+ford,Ford,Puma,built-in
+ford,Ford,Ranger,built-in
+ford,Ford,S-Max,built-in
+ford,Ford,Transit,built-in
+chevrolet,Chevrolet,Aveo,built-in
+chevrolet,Chevrolet,Blazer,built-in
+chevrolet,Chevrolet,Bolt,built-in
+chevrolet,Chevrolet,Camaro,built-in
+chevrolet,Chevrolet,Captiva,built-in
+chevrolet,Chevrolet,Colorado,built-in
+chevrolet,Chevrolet,Corvette,built-in
+chevrolet,Chevrolet,Cruze,built-in
+chevrolet,Chevrolet,Equinox,built-in
+chevrolet,Chevrolet,Impala,built-in
+chevrolet,Chevrolet,Malibu,built-in
+chevrolet,Chevrolet,Niva,built-in
+chevrolet,Chevrolet,Onix,built-in
+chevrolet,Chevrolet,Orlando,built-in
+chevrolet,Chevrolet,Silverado,built-in
+chevrolet,Chevrolet,Spark,built-in
+chevrolet,Chevrolet,Suburban,built-in
+chevrolet,Chevrolet,Tahoe,built-in
+chevrolet,Chevrolet,Tracker,built-in
+chevrolet,Chevrolet,Trailblazer,built-in
+chevrolet,Chevrolet,Traverse,built-in
+chevrolet,Chevrolet,Trax,built-in
+porsche,Porsche,718 Boxster,built-in
+porsche,Porsche,718 Cayman,built-in
+porsche,Porsche,911,built-in
+porsche,Porsche,Cayenne,built-in
+porsche,Porsche,Macan,built-in
+porsche,Porsche,Panamera,built-in
+porsche,Porsche,Taycan,built-in
+land-rover,Land Rover,Defender,built-in
+land-rover,Land Rover,Discovery,built-in
+land-rover,Land Rover,Discovery Sport,built-in
+land-rover,Land Rover,Freelander,built-in
+land-rover,Land Rover,Range Rover,built-in
+land-rover,Land Rover,Range Rover Evoque,built-in
+land-rover,Land Rover,Range Rover Sport,built-in
+land-rover,Land Rover,Range Rover Velar,built-in
+mazda,Mazda,2,built-in
+mazda,Mazda,3,built-in
+mazda,Mazda,5,built-in
+mazda,Mazda,6,built-in
+mazda,Mazda,CX-3,built-in
+mazda,Mazda,CX-30,built-in
+mazda,Mazda,CX-5,built-in
+mazda,Mazda,CX-50,built-in
+mazda,Mazda,CX-60,built-in
+mazda,Mazda,CX-70,built-in
+mazda,Mazda,CX-80,built-in
+mazda,Mazda,CX-90,built-in
+mazda,Mazda,MX-5,built-in
+mazda,Mazda,MX-30,built-in
+mazda,Mazda,RX-7,built-in
+mazda,Mazda,RX-8,built-in
+mitsubishi,Mitsubishi,ASX,built-in
+mitsubishi,Mitsubishi,Colt,built-in
+mitsubishi,Mitsubishi,Eclipse,built-in
+mitsubishi,Mitsubishi,Eclipse Cross,built-in
+mitsubishi,Mitsubishi,Galant,built-in
+mitsubishi,Mitsubishi,L200,built-in
+mitsubishi,Mitsubishi,Lancer,built-in
+mitsubishi,Mitsubishi,Mirage,built-in
+mitsubishi,Mitsubishi,Montero,built-in
+mitsubishi,Mitsubishi,Outlander,built-in
+mitsubishi,Mitsubishi,Pajero,built-in
+mitsubishi,Mitsubishi,Pajero Sport,built-in
+mitsubishi,Mitsubishi,Xpander,built-in
+renault,Renault,Arkana,built-in
+renault,Renault,Austral,built-in
+renault,Renault,Captur,built-in
+renault,Renault,Clio,built-in
+renault,Renault,Duster,built-in
+renault,Renault,Espace,built-in
+renault,Renault,Fluence,built-in
+renault,Renault,Kadjar,built-in
+renault,Renault,Kangoo,built-in
+renault,Renault,Koleos,built-in
+renault,Renault,Laguna,built-in
+renault,Renault,Megane,built-in
+renault,Renault,Rafale,built-in
+renault,Renault,Scenic,built-in
+renault,Renault,Symbol,built-in
+renault,Renault,Talisman,built-in
+renault,Renault,Trafic,built-in
+renault,Renault,Zoe,built-in
+opel,Opel,Adam,built-in
+opel,Opel,Astra,built-in
+opel,Opel,Corsa,built-in
+opel,Opel,Crossland,built-in
+opel,Opel,Frontera,built-in
+opel,Opel,Grandland,built-in
+opel,Opel,Insignia,built-in
+opel,Opel,Mokka,built-in
+opel,Opel,Omega,built-in
+opel,Opel,Signum,built-in
+opel,Opel,Vectra,built-in
+opel,Opel,Vivaro,built-in
+opel,Opel,Zafira,built-in
+volvo,Volvo,C30,built-in
+volvo,Volvo,C40,built-in
+volvo,Volvo,EX30,built-in
+volvo,Volvo,EX40,built-in
+volvo,Volvo,EX90,built-in
+volvo,Volvo,S40,built-in
+volvo,Volvo,S60,built-in
+volvo,Volvo,S80,built-in
+volvo,Volvo,S90,built-in
+volvo,Volvo,V40,built-in
+volvo,Volvo,V50,built-in
+volvo,Volvo,V60,built-in
+volvo,Volvo,V70,built-in
+volvo,Volvo,V90,built-in
+volvo,Volvo,XC40,built-in
+volvo,Volvo,XC60,built-in
+volvo,Volvo,XC70,built-in
+volvo,Volvo,XC90,built-in
+tesla,Tesla,Cybertruck,built-in
+tesla,Tesla,Model 3,built-in
+tesla,Tesla,Model S,built-in
+tesla,Tesla,Model X,built-in
+tesla,Tesla,Model Y,built-in
+tesla,Tesla,Roadster,built-in
+byd,BYD,Atto 3,built-in
+byd,BYD,Dolphin,built-in
+byd,BYD,Han,built-in
+byd,BYD,Qin Plus,built-in
+byd,BYD,Seal,built-in
+byd,BYD,Seal U,built-in
+byd,BYD,Seagull,built-in
+byd,BYD,Song Plus,built-in
+byd,BYD,Tang,built-in
+byd,BYD,Yuan Plus,built-in
+changan,Changan,Alsvin,built-in
+changan,Changan,CS15,built-in
+changan,Changan,CS35 Plus,built-in
+changan,Changan,CS55 Plus,built-in
+changan,Changan,CS75 Plus,built-in
+changan,Changan,CS85 Coupe,built-in
+changan,Changan,CS95,built-in
+changan,Changan,Deepal S07,built-in
+changan,Changan,Eado,built-in
+changan,Changan,Hunter,built-in
+changan,Changan,UNI-K,built-in
+changan,Changan,UNI-T,built-in
+changan,Changan,UNI-V,built-in
+chery,Chery,Arrizo 5,built-in
+chery,Chery,Arrizo 8,built-in
+chery,Chery,eQ1,built-in
+chery,Chery,Exeed TXL,built-in
+chery,Chery,Omoda 5,built-in
+chery,Chery,Tiggo 2,built-in
+chery,Chery,Tiggo 4,built-in
+chery,Chery,Tiggo 7,built-in
+chery,Chery,Tiggo 8,built-in
+chery,Chery,Tiggo 9,built-in
+geely,Geely,Atlas,built-in
+geely,Geely,Coolray,built-in
+geely,Geely,Emgrand,built-in
+geely,Geely,Galaxy E5,built-in
+geely,Geely,Monjaro,built-in
+geely,Geely,Okavango,built-in
+geely,Geely,Preface,built-in
+geely,Geely,Tugella,built-in
+infiniti,Infiniti,EX,built-in
+infiniti,Infiniti,FX,built-in
+infiniti,Infiniti,G,built-in
+infiniti,Infiniti,JX,built-in
+infiniti,Infiniti,M,built-in
+infiniti,Infiniti,Q30,built-in
+infiniti,Infiniti,Q50,built-in
+infiniti,Infiniti,Q60,built-in
+infiniti,Infiniti,Q70,built-in
+infiniti,Infiniti,QX30,built-in
+infiniti,Infiniti,QX50,built-in
+infiniti,Infiniti,QX55,built-in
+infiniti,Infiniti,QX60,built-in
+infiniti,Infiniti,QX70,built-in
+infiniti,Infiniti,QX80,built-in
+jeep,Jeep,Avenger,built-in
+jeep,Jeep,Cherokee,built-in
+jeep,Jeep,Commander,built-in
+jeep,Jeep,Compass,built-in
+jeep,Jeep,Gladiator,built-in
+jeep,Jeep,Grand Cherokee,built-in
+jeep,Jeep,Renegade,built-in
+jeep,Jeep,Wagoneer,built-in
+jeep,Jeep,Wrangler,built-in
+lada-vaz,Lada/VAZ,2101,built-in
+lada-vaz,Lada/VAZ,2104,built-in
+lada-vaz,Lada/VAZ,2105,built-in
+lada-vaz,Lada/VAZ,2106,built-in
+lada-vaz,Lada/VAZ,2107,built-in
+lada-vaz,Lada/VAZ,2108,built-in
+lada-vaz,Lada/VAZ,2109,built-in
+lada-vaz,Lada/VAZ,21099,built-in
+lada-vaz,Lada/VAZ,2110,built-in
+lada-vaz,Lada/VAZ,2111,built-in
+lada-vaz,Lada/VAZ,2112,built-in
+lada-vaz,Lada/VAZ,2113,built-in
+lada-vaz,Lada/VAZ,2114,built-in
+lada-vaz,Lada/VAZ,2115,built-in
+lada-vaz,Lada/VAZ,Granta,built-in
+lada-vaz,Lada/VAZ,Kalina,built-in
+lada-vaz,Lada/VAZ,Largus,built-in
+lada-vaz,Lada/VAZ,Niva,built-in
+lada-vaz,Lada/VAZ,Priora,built-in
+lada-vaz,Lada/VAZ,Vesta,built-in
+lada-vaz,Lada/VAZ,XRAY,built-in
+skoda,Skoda,Enyaq,built-in
+skoda,Skoda,Fabia,built-in
+skoda,Skoda,Kamiq,built-in
+skoda,Skoda,Karoq,built-in
+skoda,Skoda,Kodiaq,built-in
+skoda,Skoda,Octavia,built-in
+skoda,Skoda,Rapid,built-in
+skoda,Skoda,Scala,built-in
+skoda,Skoda,Superb,built-in
+skoda,Skoda,Yeti,built-in
+peugeot,Peugeot,2008,built-in
+peugeot,Peugeot,208,built-in
+peugeot,Peugeot,3008,built-in
+peugeot,Peugeot,308,built-in
+peugeot,Peugeot,408,built-in
+peugeot,Peugeot,5008,built-in
+peugeot,Peugeot,508,built-in
+peugeot,Peugeot,Partner,built-in
+peugeot,Peugeot,Rifter,built-in
+peugeot,Peugeot,Traveller,built-in
+citroen,Citroen,Berlingo,built-in
+citroen,Citroen,C3,built-in
+citroen,Citroen,C3 Aircross,built-in
+citroen,Citroen,C4,built-in
+citroen,Citroen,C4 X,built-in
+citroen,Citroen,C5 Aircross,built-in
+citroen,Citroen,C5 X,built-in
+citroen,Citroen,Jumpy,built-in
+citroen,Citroen,SpaceTourer,built-in
+fiat,Fiat,500,built-in
+fiat,Fiat,500X,built-in
+fiat,Fiat,600,built-in
+fiat,Fiat,Doblo,built-in
+fiat,Fiat,Ducato,built-in
+fiat,Fiat,Panda,built-in
+fiat,Fiat,Punto,built-in
+fiat,Fiat,Tipo,built-in
+subaru,Subaru,Ascent,built-in
+subaru,Subaru,BRZ,built-in
+subaru,Subaru,Crosstrek,built-in
+subaru,Subaru,Forester,built-in
+subaru,Subaru,Impreza,built-in
+subaru,Subaru,Legacy,built-in
+subaru,Subaru,Outback,built-in
+subaru,Subaru,Solterra,built-in
+subaru,Subaru,WRX,built-in
+subaru,Subaru,XV,built-in
+suzuki,Suzuki,Across,built-in
+suzuki,Suzuki,Alto,built-in
+suzuki,Suzuki,Baleno,built-in
+suzuki,Suzuki,Grand Vitara,built-in
+suzuki,Suzuki,Ignis,built-in
+suzuki,Suzuki,Jimny,built-in
+suzuki,Suzuki,S-Cross,built-in
+suzuki,Suzuki,Swift,built-in
+suzuki,Suzuki,Vitara,built-in
+isuzu,Isuzu,D-Max,built-in
+isuzu,Isuzu,MU-X,built-in
+gmc,GMC,Acadia,built-in
+gmc,GMC,Canyon,built-in
+gmc,GMC,Hummer EV,built-in
+gmc,GMC,Sierra,built-in
+gmc,GMC,Terrain,built-in
+gmc,GMC,Yukon,built-in
+cadillac,Cadillac,CT4,built-in
+cadillac,Cadillac,CT5,built-in
+cadillac,Cadillac,CT6,built-in
+cadillac,Cadillac,Escalade,built-in
+cadillac,Cadillac,Lyriq,built-in
+cadillac,Cadillac,Optiq,built-in
+cadillac,Cadillac,XT4,built-in
+cadillac,Cadillac,XT5,built-in
+cadillac,Cadillac,XT6,built-in
+lincoln,Lincoln,Aviator,built-in
+lincoln,Lincoln,Corsair,built-in
+lincoln,Lincoln,MKC,built-in
+lincoln,Lincoln,MKX,built-in
+lincoln,Lincoln,MKZ,built-in
+lincoln,Lincoln,Nautilus,built-in
+lincoln,Lincoln,Navigator,built-in
+jaguar,Jaguar,E-Pace,built-in
+jaguar,Jaguar,F-Pace,built-in
+jaguar,Jaguar,F-Type,built-in
+jaguar,Jaguar,I-Pace,built-in
+jaguar,Jaguar,XE,built-in
+jaguar,Jaguar,XF,built-in
+jaguar,Jaguar,XJ,built-in
+jaguar,Jaguar,XK,built-in
+mini,Mini,Clubman,built-in
+mini,Mini,Cooper,built-in
+mini,Mini,Countryman,built-in
+mini,Mini,Paceman,built-in
+alfa-romeo,Alfa Romeo,4C,built-in
+alfa-romeo,Alfa Romeo,Giulia,built-in
+alfa-romeo,Alfa Romeo,Giulietta,built-in
+alfa-romeo,Alfa Romeo,Stelvio,built-in
+alfa-romeo,Alfa Romeo,Tonale,built-in
+maserati,Maserati,Ghibli,built-in
+maserati,Maserati,GranCabrio,built-in
+maserati,Maserati,GranTurismo,built-in
+maserati,Maserati,Grecale,built-in
+maserati,Maserati,Levante,built-in
+maserati,Maserati,MC20,built-in
+maserati,Maserati,Quattroporte,built-in
+bentley,Bentley,Bentayga,built-in
+bentley,Bentley,Continental GT,built-in
+bentley,Bentley,Flying Spur,built-in
+bentley,Bentley,Mulsanne,built-in
+aston-martin,Aston Martin,DB11,built-in
+aston-martin,Aston Martin,DB12,built-in
+aston-martin,Aston Martin,DBS,built-in
+aston-martin,Aston Martin,DBX,built-in
+aston-martin,Aston Martin,Rapide,built-in
+aston-martin,Aston Martin,Vanquish,built-in
+aston-martin,Aston Martin,Vantage,built-in
+ferrari,Ferrari,296 GTB,built-in
+ferrari,Ferrari,488,built-in
+ferrari,Ferrari,812,built-in
+ferrari,Ferrari,F8 Tributo,built-in
+ferrari,Ferrari,Purosangue,built-in
+ferrari,Ferrari,Roma,built-in
+ferrari,Ferrari,SF90,built-in
+lamborghini,Lamborghini,Aventador,built-in
+lamborghini,Lamborghini,Gallardo,built-in
+lamborghini,Lamborghini,Huracan,built-in
+lamborghini,Lamborghini,Revuelto,built-in
+lamborghini,Lamborghini,Urus,built-in
+rolls-royce,Rolls-Royce,Cullinan,built-in
+rolls-royce,Rolls-Royce,Dawn,built-in
+rolls-royce,Rolls-Royce,Ghost,built-in
+rolls-royce,Rolls-Royce,Phantom,built-in
+rolls-royce,Rolls-Royce,Spectre,built-in
+rolls-royce,Rolls-Royce,Wraith,built-in

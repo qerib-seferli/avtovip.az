@@ -5,7 +5,7 @@
   'use strict';
 
   const GEO_BASE = 'https://cdn.jsdelivr.net/gh/srestre/world-countries-cities-db@main';
-  const VEHICLE_BASE = 'https://cdn.jsdelivr.net/gh/open-vehicle-db/open-vehicle-db@main/data';
+  const VEHICLE_BASE = ''; // vehicle katalogu local snapshot-first işləyir
   const VEHICLE_INDEX_URL = 'https://raw.githubusercontent.com/plowman/open-vehicle-db/refs/heads/master/data/models.csv';
   const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json';
   const LOCAL_VEHICLE_MODELS = 'assets/data/vehicle-models.csv';
@@ -146,7 +146,7 @@
     modelIndex=map; return map;
   }
   async function makes(lang='en'){
-    const data=await localFirstJson(LOCAL_VEHICLE_MAKES,`${VEHICLE_BASE}/makes.json`,'vehicle:makes'); const arr=Array.isArray(data)?data:[];
+    let data=null; try{const r=await fetch(LOCAL_VEHICLE_MAKES,{cache:'no-cache'});if(r.ok)data=await r.json()}catch{} const arr=Array.isArray(data)?data:[];
     const merged=new Map();
     for(const m of FALLBACK_MAKES)merged.set(slug(m.id),{id:slug(m.id),name:m.name,logo:null});
     for(const m of arr){if(!m?.name)continue;merged.set(slug(m.id||m.name),{id:slug(m.id||m.name),name:m.name,country:m.country||'',logo:(m.logo?.local_url||m.logo?.url||m.logo||null),aliases:m.aliases||[]})}
@@ -156,7 +156,6 @@
   async function models(makeId,lang='en'){
     if(!makeId)return[]; const id=slug(makeId); const names=new Set();
     const local=CORE_MODELS[id]||CORE_MODELS[id.replace(/-benz$/,'-benz')]||[];local.forEach(x=>names.add(x));
-    const data=await json(`${VEHICLE_BASE}/models/${encodeURIComponent(id)}.json`,`vehicle:models:${id}`,{persist:true}); const arr=Array.isArray(data)?data:(data?.models||[]);arr.forEach(m=>{if(m?.name)names.add(m.name)});
     const idx=await loadModelIndex(); const keys=[indexSlug(id),indexSlug(id.replace('mercedes-benz','mercedes_benz')),indexSlug(id.replace('lada-vaz','lada'))];
     for(const k of keys)(idx.get(k)||[]).forEach(x=>names.add(x));
     return sortByName([...names].map(name=>({id:slug(name),name})),lang)
