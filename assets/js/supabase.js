@@ -23,6 +23,9 @@
   });
 
   async function getUser() {
+    /* Fast path: persisted session is enough for UI; RLS still validates every DB request. */
+    const { data: sessionData } = await client.auth.getSession();
+    if (sessionData?.session?.user) return sessionData.session.user;
     const { data, error } = await client.auth.getUser();
     if (error) return null;
     return data?.user || null;

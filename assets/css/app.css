@@ -281,3 +281,26 @@ html.av-preboot body{visibility:hidden}html:not(.av-preboot) body{visibility:vis
 @media(max-width:700px){.lang-picker-menu{width:60px!important;max-width:60px!important}.chat-pane{min-width:0}.messages-shell{max-width:100%;overflow:hidden}.bubble{max-width:84%}.profile-head{overflow:hidden}.avatar-shell .avatar-crown,.avatar-shell .avatar-gem{right:-2px}}
 
 .lang-flag-img{width:26px;height:18px;object-fit:cover;border-radius:3px;display:block}.lang-choice .lang-flag-img{width:30px;height:20px}.profile-country-flag-img{width:24px;height:18px;object-fit:cover;border-radius:2px;vertical-align:-3px;margin-right:4px}
+
+
+/* Patch 10 — reliability, first-paint, realtime UI, local assets */
+html.av-preboot body{visibility:visible!important}
+.site-header,.bottom-nav,.panel{contain:layout style}
+.brand-logo-box{width:44px;height:30px;display:grid;place-items:center;overflow:hidden;flex:0 0 44px}
+.brand-logo-box img{width:40px!important;height:26px!important;object-fit:contain!important}
+.brand-logo-box>b{display:none;font-size:9px;letter-spacing:.2px;white-space:nowrap}
+.brand-logo-box.fallback>b{display:block}.brand-logo-box.fallback img{display:none}
+.brands-rail{touch-action:pan-x pan-y;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+.brands-track{width:max-content;min-width:100%}
+.lang-picker-host{position:relative!important;padding:0!important;overflow:visible!important}.lang-picker-host>select{display:none!important}.lang-picker-btn{height:38px;min-width:52px;border:0;background:transparent;color:var(--text);display:flex;align-items:center;justify-content:center;gap:7px;padding:0 9px;cursor:pointer}
+.lang-picker-menu{position:fixed!important;max-height:min(360px,calc(100dvh - 16px))!important;overflow:auto!important;overscroll-behavior:contain!important;background:var(--surface)!important}
+.notification-popover{position:fixed!important;right:max(8px,env(safe-area-inset-right))!important;left:auto!important;width:min(390px,calc(100vw - 16px))!important;max-height:min(620px,calc(100dvh - 86px))!important;overflow:auto!important;background:var(--surface)!important;overscroll-behavior:contain!important}
+.profile-country-flag{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:20px;line-height:1;vertical-align:-2px}
+.messages-shell{grid-template-columns:280px minmax(0,1fr)!important}.conversation-list{min-width:0!important}.conversation-item{width:100%!important}.conversation-copy strong,.conversation-copy span{max-width:100%!important}.chat-pane{min-width:0!important}.chat-messages{overflow:auto!important;overscroll-behavior:contain!important}.bubble p{overflow-wrap:anywhere;word-break:break-word}.chat-compose textarea{min-width:0!important}
+.av-select-menu{overscroll-behavior:contain!important;scrollbar-gutter:stable;transform:translateZ(0)}.av-select-option{min-height:40px!important}
+.profile-head{min-height:116px}.profile-name{min-width:0}.profile-name h1{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.verified-rosette{flex:0 0 18px}.profile-logout{z-index:2}
+#profileForm .field-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.profile-info-panel.collapsed{padding-bottom:14px!important}
+.own-social-stats a{min-width:max-content}.blocked-users-link{white-space:nowrap!important}
+.admin-user-cell .avatar,.admin-table .avatar{width:46px!important;height:46px!important;max-width:46px!important;max-height:46px!important;object-fit:cover!important;border-radius:50%!important}
+@media(max-width:800px){.messages-shell{grid-template-columns:1fr!important}.messages-shell.chat-selected .conversation-list{display:none!important}.messages-shell:not(.chat-selected) .chat-pane{display:none!important}.messages-shell.chat-selected .chat-pane{display:flex!important}.notification-popover{top:64px!important}}
+@media(max-width:700px){#profileForm .field-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.profile-head{padding-right:64px!important}.profile-name h1{font-size:20px!important}.own-social-stats{flex-wrap:wrap!important;row-gap:6px!important}.lang-picker-menu{right:8px!important;left:auto!important}.bottom-nav{left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));width:auto!important;max-width:none!important}}

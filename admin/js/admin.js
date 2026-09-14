@@ -44,6 +44,20 @@
   async function cleanupExpiredStories(){const {data}=await sb.from('stories').select('id,media_url').lt('expires_at',new Date().toISOString()).in('status',['active','expired']).limit(100);for(const row of data||[]){if(row.media_url)await db.removeUrls('story-media',[row.media_url]).catch(()=>{});await sb.from('stories').delete().eq('id',row.id)}}
   async function loadTab(id){if(id==='dashboard')return loadDashboard();if(id==='listings')return loadListings();if(id==='users')return loadUsers();if(id==='stories')return loadStories();if(id==='payments')return loadPayments();if(id==='reports')return loadReports()}
   function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
-  async function boot(){const auth=await db.requireAdmin();if(!auth)return;me=auth.user;profile=auth.profile;$('#adminGate').hidden=true;$('#adminContent').hidden=false;const ls=$('#adminLang');if(ls){ls.value=lang();ls.onchange=()=>{localStorage.setItem('avtovip-lang',ls.value);location.reload()}}renderNav();translateStatic();$('#adminLogout').onclick=async()=>{await sb.auth.signOut();location.href='../login.html'};document.documentElement.dataset.theme=localStorage.getItem('avtovip-theme')||'light';$('#adminTheme').onclick=()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;localStorage.setItem('avtovip-theme',n)};$$('[data-refresh]').forEach(b=>b.onclick=()=>loadTab(currentTab));$('#listingStatusFilter').onchange=loadListings;$('#listingSearch').addEventListener('input',debounce(loadListings,300));$('#userSearch').addEventListener('input',debounce(loadUsers,300));$('#paymentStatus').onchange=loadPayments;await cleanupExpiredStories();await loadDashboard()}
+
+  let adminRealtime=null,adminRealtimeTimer=0;
+  function startAdminRealtime(){
+    if(adminRealtime)sb.removeChannel(adminRealtime).catch(()=>{});
+    const refresh=()=>{clearTimeout(adminRealtimeTimer);adminRealtimeTimer=setTimeout(()=>loadTab(currentTab),180)};
+    adminRealtime=sb.channel('admin-live-dashboard')
+      .on('postgres_changes',{event:'*',schema:'public',table:'elanlar'},refresh)
+      .on('postgres_changes',{event:'*',schema:'public',table:'users'},refresh)
+      .on('postgres_changes',{event:'*',schema:'public',table:'stories'},refresh)
+      .on('postgres_changes',{event:'*',schema:'public',table:'payment_requests'},refresh)
+      .on('postgres_changes',{event:'*',schema:'public',table:'listing_reports'},refresh)
+      .subscribe(status=>{if(status==='SUBSCRIBED')document.body.dataset.realtime='on';if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')console.warn('[AvtoVIP admin realtime]',status)});
+    window.addEventListener('pagehide',()=>{if(adminRealtime)sb.removeChannel(adminRealtime).catch(()=>{})},{once:true});
+  }
+  async function boot(){const auth=await db.requireAdmin();if(!auth)return;me=auth.user;profile=auth.profile;$('#adminGate').hidden=true;$('#adminContent').hidden=false;const ls=$('#adminLang');if(ls){ls.value=lang();ls.onchange=()=>{localStorage.setItem('avtovip-lang',ls.value);renderNav();translateStatic();loadTab(currentTab)}}renderNav();translateStatic();$('#adminLogout').onclick=async()=>{await sb.auth.signOut();location.href='../login.html'};document.documentElement.dataset.theme=localStorage.getItem('avtovip-theme')||'light';$('#adminTheme').onclick=()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;localStorage.setItem('avtovip-theme',n)};$$('[data-refresh]').forEach(b=>b.onclick=()=>loadTab(currentTab));$('#listingStatusFilter').onchange=loadListings;$('#listingSearch').addEventListener('input',debounce(loadListings,300));$('#userSearch').addEventListener('input',debounce(loadUsers,300));$('#paymentStatus').onchange=loadPayments;startAdminRealtime();await cleanupExpiredStories();await loadDashboard()}
   document.addEventListener('DOMContentLoaded',boot);
 })();

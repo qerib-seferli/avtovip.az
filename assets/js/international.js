@@ -6,7 +6,7 @@
 
   const GEO_BASE = 'https://cdn.jsdelivr.net/gh/srestre/world-countries-cities-db@main';
   const VEHICLE_BASE = ''; // vehicle katalogu local snapshot-first işləyir
-  const VEHICLE_INDEX_URL = 'https://raw.githubusercontent.com/plowman/open-vehicle-db/refs/heads/master/data/models.csv';
+  const VEHICLE_INDEX_URL = ''; // local vehicle-models.csv is the authoritative runtime snapshot
   const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json';
   const LOCAL_VEHICLE_MODELS = 'assets/data/vehicle-models.csv';
   const BLOCKED_COUNTRIES = new Set(['AM']);
@@ -92,13 +92,13 @@
   async function json(url,key,{persist=false}={}) {
     if(memory.has(key)) return memory.get(key);
     const saved=persist?safeGet(key):null;
-    try { const r=await fetch(url,{cache:'force-cache'}); if(!r.ok)throw new Error(String(r.status)); const data=await r.json(); memory.set(key,data); if(persist)safeSet(key,data); return data; }
+    try { const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),4500);const r=await fetch(url,{cache:'force-cache',signal:ctl.signal});clearTimeout(tm); if(!r.ok)throw new Error(String(r.status)); const data=await r.json(); memory.set(key,data); if(persist)safeSet(key,data); return data; }
     catch(err){ console.warn('[AvtoVIP data]',key,err); if(saved){memory.set(key,saved);return saved} return null; }
   }
   async function text(url,key,{persist=false}={}) {
     if(memory.has(key)) return memory.get(key);
     const saved=persist?safeGet(key):null;
-    try { const r=await fetch(url,{cache:'force-cache'}); if(!r.ok)throw new Error(String(r.status)); const data=await r.text(); memory.set(key,data); if(persist)safeSet(key,data); return data; }
+    try { const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),4500);const r=await fetch(url,{cache:'force-cache',signal:ctl.signal});clearTimeout(tm); if(!r.ok)throw new Error(String(r.status)); const data=await r.text(); memory.set(key,data); if(persist)safeSet(key,data); return data; }
     catch(err){ console.warn('[AvtoVIP data]',key,err); if(saved){memory.set(key,saved);return saved} return null; }
   }
   function locale(lang='en'){return ({az:'az-AZ',en:'en-US',ru:'ru-RU',tr:'tr-TR',ka:'ka-GE'})[lang]||'en-US'}
@@ -133,7 +133,7 @@
   }
   async function localFirstText(localUrl,remoteUrl,key){
     try{const r=await fetch(localUrl,{cache:'no-cache'});if(r.ok){const d=await r.text();memory.set(key,d);return d}}catch{}
-    return text(remoteUrl,key,{persist:true});
+    return remoteUrl ? text(remoteUrl,key,{persist:true}) : null;
   }
   let modelIndex=null;
   async function loadModelIndex(){

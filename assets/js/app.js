@@ -308,6 +308,52 @@
     'Marka, model, insan adı...':{en:'Make, model, person name...',ru:'Марка, модель, имя пользователя...',tr:'Marka, model, kişi adı...',ka:'ბრენდი, მოდელი, მომხმარებლის სახელი...'}
   });
 
+
+  Object.assign(FULL_TEXT, {
+    'Baxış':{en:'views',ru:'просм.',tr:'görüntüleme',ka:'ნახვა'},
+    'Satıldı':{en:'Sold',ru:'Продано',tr:'Satıldı',ka:'გაყიდულია'},
+    'Sil':{en:'Delete',ru:'Удалить',tr:'Sil',ka:'წაშლა'},
+    '0 elan':{en:'0 ads',ru:'0 объявл.',tr:'0 ilan',ka:'0 განცხადება'},
+    'Pulsuz ağıllı axtarış':{en:'Free smart search',ru:'Бесплатный умный поиск',tr:'Ücretsiz akıllı arama',ka:'უფასო ჭკვიანი ძებნა'},
+    'Markalar':{en:'Makes',ru:'Марки',tr:'Markalar',ka:'ბრენდები'},
+    'Bir toxunuşla filtr':{en:'One-tap filter',ru:'Фильтр в одно касание',tr:'Tek dokunuşla filtre',ka:'ფილტრი ერთი შეხებით'},
+    'Məkan':{en:'Location',ru:'Местоположение',tr:'Konum',ka:'მდებარეობა'},
+    'Qiymət və il':{en:'Price & year',ru:'Цена и год',tr:'Fiyat ve yıl',ka:'ფასი და წელი'},
+    'Texniki göstəricilər':{en:'Technical specifications',ru:'Технические характеристики',tr:'Teknik özellikler',ka:'ტექნიკური მახასიათებლები'},
+    'Əlavə şərtlər':{en:'Additional conditions',ru:'Дополнительные условия',tr:'Ek koşullar',ka:'დამატებითი პირობები'},
+    'Avtomobilin təchizatı':{en:'Vehicle equipment',ru:'Оснащение автомобиля',tr:'Araç donanımı',ka:'ავტომობილის აღჭურვილობა'},
+    'Sırala':{en:'Sort',ru:'Сортировка',tr:'Sırala',ka:'დალაგება'},
+    'Ölkə':{en:'Country',ru:'Страна',tr:'Ülke',ka:'ქვეყანა'},
+    'Region / Ştat':{en:'Region / State',ru:'Регион / Штат',tr:'Bölge / Eyalet',ka:'რეგიონი / შტატი'},
+    'Rayon / Bölgə':{en:'District / Area',ru:'Район / Область',tr:'İlçe / Bölge',ka:'რაიონი / რეგიონი'},
+    'Qiymət min':{en:'Min price',ru:'Цена от',tr:'Min fiyat',ka:'მინ. ფასი'},
+    'Qiymət max':{en:'Max price',ru:'Цена до',tr:'Maks fiyat',ka:'მაქს. ფასი'},
+    'Valyuta':{en:'Currency',ru:'Валюта',tr:'Para birimi',ka:'ვალუტა'},
+    'İl min':{en:'Min year',ru:'Год от',tr:'Min yıl',ka:'მინ. წელი'},
+    'İl max':{en:'Max year',ru:'Год до',tr:'Maks yıl',ka:'მაქს. წელი'},
+    'Kredit':{en:'Credit',ru:'Кредит',tr:'Kredi',ka:'კრედიტი'},
+    'Barter':{en:'Trade-in',ru:'Обмен',tr:'Takas',ka:'ბარტერი'},
+    'Vuruğu var':{en:'Damaged',ru:'Есть повреждения',tr:'Hasarlı',ka:'დაზიანებულია'},
+    'Rənglənib':{en:'Repainted',ru:'Красился',tr:'Boyalı',ka:'შეღებილია'}
+  });
+
+  Object.assign(FULL_TEXT, {
+    'Məs: Camry':{en:'e.g. Camry',ru:'Напр.: Camry',tr:'Örn: Camry',ka:'მაგ: Camry'},
+    'Məs: XSE':{en:'e.g. XSE',ru:'Напр.: XSE',tr:'Örn: XSE',ka:'მაგ: XSE'},
+    'Məs: XV70':{en:'e.g. XV70',ru:'Напр.: XV70',tr:'Örn: XV70',ka:'მაგ: XV70'},
+    'Şəhər *':{en:'City *',ru:'Город *',tr:'Şehir *',ka:'ქალაქი *'},
+    'Avtomobil haqqında qısa premium təqdimat':{en:'Short premium description of the vehicle',ru:'Краткое премиум-описание автомобиля',tr:'Araç için kısa premium tanıtım',ka:'ავტომობილის მოკლე პრემიუმ აღწერა'},
+    'Əməliyyat/telefon qeydi':{en:'Payment/phone note',ru:'Примечание к оплате/телефону',tr:'Ödeme/telefon notu',ka:'გადახდის/ტელეფონის შენიშვნა'},
+    'Təhlükəsiz ödəniş və balans dəstəyi':{en:'Secure payment and balance support',ru:'Безопасная оплата и поддержка баланса',tr:'Güvenli ödeme ve bakiye desteği',ka:'უსაფრთხო გადახდა და ბალანსის მხარდაჭერა'},
+    'Ödəniş sorğusu':{en:'Payment request',ru:'Запрос на оплату',tr:'Ödeme talebi',ka:'გადახდის მოთხოვნა'},
+    'Ödəniş üsulu ölkədən asılı olmayaraq universal göstərilir. Onlayn merchant inteqrasiyası aktiv edilənədək sorğular təhlükəsiz şəkildə yoxlanılır.':{en:'The payment method is shown universally. Requests are securely reviewed until online merchant processing is enabled.',ru:'Способ оплаты отображается универсально. До подключения онлайн-эквайринга заявки безопасно проверяются.',tr:'Ödeme yöntemi evrensel gösterilir. Online merchant entegrasyonu açılana kadar talepler güvenli biçimde kontrol edilir.',ka:'გადახდის მეთოდი უნივერსალურად ჩანს. ონლაინ merchant ინტეგრაციამდე მოთხოვნები უსაფრთხოდ მოწმდება.'},
+    'ABŞ / Koreya / Rəsmi diler...':{en:'USA / Korea / Official dealer...',ru:'США / Корея / Официальный дилер...',tr:'ABD / Kore / Yetkili bayi...',ka:'აშშ / კორეა / ოფიციალური დილერი...'},
+    'Məs: G30 / XV70':{en:'e.g. G30 / XV70',ru:'Напр.: G30 / XV70',tr:'Örn: G30 / XV70',ka:'მაგ: G30 / XV70'},
+    'Məs: XSE / AMG':{en:'e.g. XSE / AMG',ru:'Напр.: XSE / AMG',tr:'Örn: XSE / AMG',ka:'მაგ: XSE / AMG'},
+    'Səslə axtar':{en:'Voice search',ru:'Голосовой поиск',tr:'Sesli ara',ka:'ხმოვანი ძებნა'},
+    'Təmizlə':{en:'Clear',ru:'Очистить',tr:'Temizle',ka:'გასუფთავება'}
+  });
+
   let lang = localStorage.getItem('avtovip-lang') || 'az';
   let currentUser = null;
   let currentProfile = null;
@@ -407,6 +453,8 @@
     const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); const nodes=[]; let n; while((n=walker.nextNode()))nodes.push(n);
     nodes.forEach(node=>{const parent=node.parentElement;if(!parent||['SCRIPT','STYLE','TEXTAREA'].includes(parent.tagName)||parent.closest('[data-no-static-i18n]'))return;const raw=(node.__azText??node.nodeValue).trim();if(!raw)return;if(node.__azText===undefined)node.__azText=node.nodeValue;const translated=staticText(raw);if(translated!==raw){const lead=node.__azText.match(/^\s*/)?.[0]||'';const tail=node.__azText.match(/\s*$/)?.[0]||'';node.nodeValue=lead+translated+tail;}else if(lang==='az')node.nodeValue=node.__azText;});
     $$('input[placeholder],textarea[placeholder]').forEach(el=>{if(!el.dataset.azPlaceholder)el.dataset.azPlaceholder=el.placeholder;el.placeholder=lang==='az'?el.dataset.azPlaceholder:staticText(el.dataset.azPlaceholder)});
+    $$('[title]').forEach(el=>{if(!el.dataset.azTitle)el.dataset.azTitle=el.title;el.title=lang==='az'?el.dataset.azTitle:staticText(el.dataset.azTitle)});
+    $$('[aria-label]').forEach(el=>{if(!el.dataset.azAria)el.dataset.azAria=el.getAttribute('aria-label')||'';const base=el.dataset.azAria;if(base)el.setAttribute('aria-label',lang==='az'?base:staticText(base))});
     $$('select option').forEach(o=>{if(!o.dataset.azLabel)o.dataset.azLabel=o.textContent;o.textContent=lang==='az'?o.dataset.azLabel:staticText(o.dataset.azLabel)});
   }
   let i18nMutationTimer = 0;
@@ -441,13 +489,11 @@
 
   const LOCAL_BRAND_LOGOS = Object.fromEntries(BRANDS.map(([name,file])=>[name.toLowerCase(),`assets/img/brands/${file}`]));
   function brandLogoCandidates(make){
-    const name=String(make?.name||''); const local=LOCAL_BRAND_LOGOS[name.toLowerCase()]||'';
-    const slug=String(make?.id||name).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    const repoSlug=({'lada-vaz':'lada','mercedes':'mercedes-benz','mercedes-benz':'mercedes-benz','land-rover':'land-rover','alfa-romeo':'alfa-romeo','rolls-royce':'rolls-royce','aston-martin':'aston-martin'}[slug]||slug);
-    const verifiedCdn=repoSlug?`https://cdn.jsdelivr.net/gh/vehiclespecs/brand-logos@v1.0.0/${repoSlug}-logo.svg`:'';
-    const snap=typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||'');
-    /* Existing hand-curated local PNG first; verified pinned logo pack second; generated snapshot last. */
-    return [...new Set([local,verifiedCdn,snap].filter(Boolean))];
+    const name=String(make?.name||'');
+    const local=LOCAL_BRAND_LOGOS[name.toLowerCase()]||'';
+    const snapshot=typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||'');
+    /* Brand artwork is snapshot-local. Never depend on a remote logo CDN at runtime. */
+    return [...new Set([local,snapshot].filter(Boolean))];
   }
   async function brandRail(container){
     if(!container)return; await ensureCatalogs();
@@ -698,7 +744,7 @@
   }
 
   async function initCompare(){
-    const ids=compareIds();const root=$('#compareRoot');if(!ids.length){root.innerHTML='<div class="empty-state">Müqayisə üçün elan kartlarında “Müqayisə” düyməsinə toxunun.</div>';return}const {data,error}=await sb.from('elanlar').select('*').in('id',ids);if(error){root.innerHTML=esc(error.message);return}const arr=ids.map(id=>(data||[]).find(x=>x.id===id)).filter(Boolean);const rows=[['Qiymət',x=>money(x.price,x.currency)],['İl',x=>x.year],['Yürüş',x=>`${Number(x.mileage).toLocaleString()} km`],['Mühərrik',x=>x.engine_volume?`${x.engine_volume} L`:'-'],['Güc',x=>x.engine_power?`${x.engine_power} a.g.`:'-'],['Yanacaq',x=>x.fuel],['Sürətlər qutusu',x=>x.transmission],['Ötürücü',x=>x.drivetrain],['Ban',x=>x.body_type],['Rəng',x=>x.color],['Kredit',x=>x.is_credit?'Bəli':'Xeyr'],['Barter',x=>x.is_barter?'Bəli':'Xeyr'],['VIN',x=>x.vin||'-']];root.innerHTML=`<div class="compare-wrap panel"><table class="compare-table"><thead><tr><th>Parametr</th>${arr.map(x=>`<th><img class="compare-photo" src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}" alt=""><div style="margin-top:6px"><a href="elan.html?id=${x.id}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a></div><button class="btn btn-outline btn-sm" style="margin-top:6px" data-remove-compare="${x.id}">Sil</button></th>`).join('')}</tr></thead><tbody>${rows.map(([n,f])=>`<tr><td>${esc(n)}</td>${arr.map(x=>`<td>${esc(f(x)??'-')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;root.onclick=e=>{const b=e.target.closest('[data-remove-compare]');if(b){setCompareIds(compareIds().filter(x=>x!==b.dataset.removeCompare));initCompare()}};
+    const ids=compareIds();const root=$('#compareRoot');if(!ids.length){root.innerHTML='<div class="empty-state">Müqayisə üçün elan kartlarında “Müqayisə” düyməsinə toxunun.</div>';return}const {data,error}=await sb.from('elanlar').select('*').in('id',ids);if(error){root.innerHTML=esc(error.message);return}const arr=ids.map(id=>(data||[]).find(x=>x.id===id)).filter(Boolean);const rows=[['Qiymət',x=>money(x.price,x.currency)],['İl',x=>x.year],['Yürüş',x=>`${Number(x.mileage).toLocaleString()} km`],['Mühərrik',x=>x.engine_volume?`${x.engine_volume} L`:'-'],['Güc',x=>x.engine_power?`${x.engine_power} a.g.`:'-'],['Yanacaq',x=>x.fuel],['Sürətlər qutusu',x=>x.transmission],['Ötürücü',x=>x.drivetrain],['Ban',x=>x.body_type],['Rəng',x=>x.color],['Kredit',x=>x.is_credit?'Bəli':'Xeyr'],['Barter',x=>x.is_barter?'Bəli':'Xeyr'],['VIN',x=>x.vin||'-']];root.innerHTML=`<div class="compare-wrap panel"><table class="compare-table"><thead><tr><th>Parametr</th>${arr.map(x=>`<th><img class="compare-photo" src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}" alt=""><div style="margin-top:6px"><a href="elan.html?id=${x.id}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a></div><button class="btn btn-outline btn-sm" style="margin-top:6px" data-remove-compare="${x.id}">${esc(staticText('Sil'))}</button></th>`).join('')}</tr></thead><tbody>${rows.map(([n,f])=>`<tr><td>${esc(n)}</td>${arr.map(x=>`<td>${esc(f(x)??'-')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;root.onclick=e=>{const b=e.target.closest('[data-remove-compare]');if(b){setCompareIds(compareIds().filter(x=>x!==b.dataset.removeCompare));initCompare()}};
   }
 
 
@@ -709,12 +755,14 @@
   async function initProfile(){
     const user=await db.requireAuth();if(!user)return;const profile=await db.getProfile(user.id);currentProfile=profile;
     $('#profileAvatar').src=profile?.avatar_url||'assets/img/brand/icon-192.png';
-    const country=profile?.country_code||'AZ', flag=intl?.countries?((await intl.countries(lang)).find(x=>x.iso2===country)?.emoji||''):'';
-    $('#profileName').innerHTML=`<img class="profile-country-flag-img" src="https://flagcdn.com/24x18/${country.toLowerCase()}.png" alt="${country}" onerror="this.style.display='none'"> ${esc([profile?.name,profile?.surname].filter(Boolean).join(' ')||user.email)}`;
+    const country=profile?.country_code||'AZ';
+    const profileCountries=intl?.countries?await intl.countries(lang):[];
+    const countryMeta=profileCountries.find(x=>x.iso2===country);const flag=countryMeta?.emoji||'';
+    $('#profileName').innerHTML=`${flag?`<span class="profile-country-flag" aria-label="${esc(country)}">${esc(flag)}</span> `:''}${esc([profile?.name,profile?.surname].filter(Boolean).join(' ')||user.email)}`;
     $('#profileEmail').textContent=user.email||'';$('#trustScore').textContent=profile?.trust_score||50;
     const avatar=$('#profileAvatar');avatar?.classList.toggle('vip-avatar',profile?.membership_tier==='vip');avatar?.classList.toggle('premium-avatar',profile?.membership_tier==='premium');
     const nameBox=$('#profileName'); if(profile?.is_verified&&nameBox&&!nameBox.querySelector('.verified-mark'))nameBox.insertAdjacentHTML('beforeend',' <span class="verified-mark verified-rosette" title="Verified"><i class="fa-solid fa-check"></i></span>');
-    const countrySel=$('#profileCountry');if(countrySel&&intl){const countries=await intl.countries(lang);countrySel.innerHTML=countries.map(c=>`<option value="${c.iso2}">${c.emoji||''} ${esc(c.displayName||c.name)}</option>`).join('');countrySel.value=country}
+    const countrySel=$('#profileCountry');if(countrySel&&intl){const countries=profileCountries;countrySel.innerHTML=countries.map(c=>`<option value="${c.iso2}">${c.emoji||''} ${esc(c.displayName||c.name)}</option>`).join('');countrySel.value=country}
     ['name','surname','phone','whatsapp_phone','city','address','bio'].forEach(k=>{const el=$(`[name="${k}"]`);if(el)el.value=profile?.[k]||''});
     const walletCurrency=currencyForProfile(profile);if($('#walletBalance'))$('#walletBalance').textContent=money(profile?.wallet_balance||0,walletCurrency);localizeFinanceCurrencyHint(walletCurrency);
     $('#profileForm')?.addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(e.currentTarget);const payload={name:fd.get('name')?.trim(),surname:fd.get('surname')?.trim(),phone:fd.get('phone')?.trim(),whatsapp_phone:fd.get('whatsapp_phone')?.trim(),country_code:fd.get('country_code')||'AZ',preferred_currency:COUNTRY_CURRENCY[String(fd.get('country_code')||'AZ').toUpperCase()]||'USD',city:fd.get('city')?.trim(),address:fd.get('address')?.trim(),bio:fd.get('bio')?.trim()};const {error}=await sb.from('users').update(payload).eq('id',user.id);if(error)toast(error.message,'error');else{toast('Profil yeniləndi.','success');loadCurrent()}});
@@ -724,7 +772,7 @@
     await Promise.all([loadOwnListings(user.id),loadOwnPayments(user.id),loadWalletTransactions(user.id)]);
   }
   async function loadOwnListings(uid){
-    const {data,error}=await sb.from('elanlar').select('*').eq('user_id',uid).order('created_at',{ascending:false});const root=$('#myListings');if(error){root.textContent=error.message;return}$('#myListingCount').textContent=(data||[]).length;root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="profile-listing"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-192.png')}" alt=""><div class="grow"><div class="space-between"><a href="elan.html?id=${x.id}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a><span class="status-pill ${x.status}">${esc(t(x.status)||x.status)}</span></div><div class="muted small">${money(x.price,x.currency)} • ${x.year} • ${x.view_count||0} baxış</div>${x.rejection_reason?`<div class="small" style="color:var(--danger)">${esc(x.rejection_reason)}</div>`:''}<div class="row-wrap" style="margin-top:5px">${x.status==='approved'?`<button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_vip"><i class="fa-solid fa-crown"></i> VIP</button><button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_premium"><i class="fa-solid fa-gem"></i> Premium</button><button class="btn btn-outline btn-sm" data-sold="${x.id}">Satıldı</button>`:''}<button class="btn btn-outline btn-sm" data-delete-listing="${x.id}">Sil</button></div></div></div>`).join(''):'<div class="empty-state">Hələ elan yerləşdirməmisiniz.</div>';
+    const {data,error}=await sb.from('elanlar').select('*').eq('user_id',uid).order('created_at',{ascending:false});const root=$('#myListings');if(error){root.textContent=error.message;return}$('#myListingCount').textContent=(data||[]).length;const unit=$('#myListingUnit');if(unit)unit.textContent=({az:'elan',en:'ads',ru:'объявл.',tr:'ilan',ka:'განცხ.'})[lang]||'ads';root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="profile-listing"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-192.png')}" alt=""><div class="grow"><div class="space-between"><a href="elan.html?id=${x.id}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a><span class="status-pill ${x.status}">${esc(t(x.status)||x.status)}</span></div><div class="muted small">${money(x.price,x.currency)} • ${x.year} • ${x.view_count||0} ${esc(staticText('Baxış'))}</div>${x.rejection_reason?`<div class="small" style="color:var(--danger)">${esc(x.rejection_reason)}</div>`:''}<div class="row-wrap" style="margin-top:5px">${x.status==='approved'?`<button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_vip"><i class="fa-solid fa-crown"></i> VIP</button><button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_premium"><i class="fa-solid fa-gem"></i> Premium</button><button class="btn btn-outline btn-sm" data-sold="${x.id}">${esc(staticText('Satıldı'))}</button>`:''}<button class="btn btn-outline btn-sm" data-delete-listing="${x.id}">${esc(staticText('Sil'))}</button></div></div></div>`).join(''):`<div class="empty-state">${esc(staticText('Hələ elan yerləşdirməmisiniz.'))}</div>`;
     root.onclick=async e=>{const p=e.target.closest('[data-promote]');if(p){openPromotion(p.dataset.promote,p.dataset.kind);return}const s=e.target.closest('[data-sold]');if(s&&await uiDialog({title:'Təsdiq',message:'Elanı “Satılıb” statusuna keçirək?',confirmText:'Təsdiq et'})){const {error}=await sb.from('elanlar').update({status:'sold'}).eq('id',s.dataset.sold);if(error)toast(error.message,'error');else loadOwnListings(uid);return}const d=e.target.closest('[data-delete-listing]');if(d&&await uiDialog({title:'Təsdiq',message:'Bu elanı silmək istəyirsiniz?',confirmText:'Sil',danger:true})){const row=(data||[]).find(x=>x.id===d.dataset.deleteListing);const {error}=await sb.from('elanlar').delete().eq('id',d.dataset.deleteListing);if(error)toast(error.message,'error');else{if(row?.image_urls?.length)await db.removeUrls('elan-images',row.image_urls).catch(()=>{});loadOwnListings(uid)}}};
   }
   function openPromotion(id,kind){
@@ -733,7 +781,7 @@
   async function loadOwnPayments(uid){
     const root=$('#paymentRequests');if(!root)return;const {data}=await sb.from('payment_requests').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(30);
     const labels={story:{az:'Hekayə',en:'Story',ru:'История',tr:'Hikâye',ka:'ისტორია'},listing_vip:{az:'VIP elan',en:'VIP listing',ru:'VIP-объявление',tr:'VIP ilan',ka:'VIP განცხადება'},listing_premium:{az:'Premium elan',en:'Premium listing',ru:'Premium-объявление',tr:'Premium ilan',ka:'Premium განცხადება'},wallet_topup:{az:'Balans artırma',en:'Balance top-up',ru:'Пополнение баланса',tr:'Bakiye yükleme',ka:'ბალანსის შევსება'},account_verified:{az:'Mavi tik',en:'Verified badge',ru:'Верификация',tr:'Doğrulama',ka:'ვერიფიკაცია'},account_vip:{az:'VIP üzvlük',en:'VIP membership',ru:'VIP-подписка',tr:'VIP üyelik',ka:'VIP წევრობა'},account_premium:{az:'Premium üzvlük',en:'Premium membership',ru:'Premium-подписка',tr:'Premium üyelik',ka:'Premium წევრობა'}};
-    root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="payment-history-row"><div><strong>${esc(labels[x.target_type]?.[lang]||labels[x.target_type]?.en||x.target_type.replaceAll('_',' '))}</strong><div class="muted tiny">${dateText(x.created_at)}</div></div><div class="text-right"><strong>${money(x.amount,x.currency)}</strong><div><span class="status-pill ${x.status}">${esc(runtimeText(x.status))}</span></div></div></div>`).join(''):`<div class="muted small">${esc(runtimeText('Ödəniş sorğusu yoxdur.'))}</div>`;
+    root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="payment-history-row"><div><strong>${esc(labels[x.target_type]?.[lang]||labels[x.target_type]?.en||x.target_type.replaceAll('_',' '))}</strong><div class="muted tiny">${dateText(x.created_at)}</div></div><div class="text-right"><strong>${money(x.amount,x.currency)}</strong><div><span class="status-pill ${x.status}">${esc(({pending:{az:'Gözləyir',en:'Pending',ru:'Ожидает',tr:'Bekliyor',ka:'მოლოდინში'},approved:{az:'Təsdiqlənib',en:'Approved',ru:'Подтверждено',tr:'Onaylandı',ka:'დადასტურებულია'},rejected:{az:'Rədd edilib',en:'Rejected',ru:'Отклонено',tr:'Reddedildi',ka:'უარყოფილია'}}[x.status]?.[lang]||x.status))}</span></div></div></div>`).join(''):`<div class="muted small">${esc(runtimeText('Ödəniş sorğusu yoxdur.'))}</div>`;
   }
   async function loadWalletTransactions(uid){
     const root=$('#walletTransactions');if(!root)return;const {data,error}=await sb.from('wallet_transactions').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(30);if(error){root.innerHTML=`<div class="muted small">${esc(runtimeText('Balans əməliyyatı yoxdur.'))}</div>`;return}root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="payment-history-row"><div><strong>${esc(x.description||runtimeText('Balans əməliyyatı'))}</strong><div class="muted tiny">${dateText(x.created_at)}</div></div><strong class="wallet-amount ${x.kind}">${x.kind==='credit'?'+':'-'}${money(x.amount,x.currency||'AZN')}</strong></div>`).join(''):`<div class="muted small">${esc(runtimeText('Balans əməliyyatı yoxdur.'))}</div>`;
@@ -742,10 +790,19 @@
   async function loadNotifications(uid){const root=$('#notifications');if(!root)return;const {data}=await sb.from('notifications').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(20);root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div style="padding:8px 0;border-bottom:1px solid var(--line)"><strong>${esc(x.title)}</strong><div class="muted small">${esc(x.body)}</div><div class="tiny muted">${relative(x.created_at)}</div></div>`).join(''):'<div class="muted small">Yeni bildiriş yoxdur.</div>'}
 
   async function initMessages(){
-    const user=await db.requireAuth();if(!user)return;await renderConversations(user.id);const withId=qsParam('with'),listingId=qsParam('listing');if(withId)openConversation(withId,listingId); activeRealtimeChannel=sb.channel(`messages-${user.id}-${Date.now()}`).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},payload=>{const m=payload.new;if(m.sender_id===user.id||m.receiver_id===user.id){renderConversations(user.id);const pane=$('#chatPane');if(pane?.dataset.peer&&(m.sender_id===pane.dataset.peer||m.receiver_id===pane.dataset.peer))renderThread(pane.dataset.peer,pane.dataset.listing||'')}}).subscribe(); window.addEventListener('beforeunload',()=>activeRealtimeChannel&&sb.removeChannel(activeRealtimeChannel));
+    const user=await db.requireAuth();if(!user)return;
+    await renderConversations(user.id);
+    const withId=qsParam('with'),listingId=qsParam('listing');if(withId)await openConversation(withId,listingId);
+    const refresh=()=>{renderConversations(user.id);const pane=$('#chatPane');if(pane?.dataset.peer)renderThread(pane.dataset.peer,pane.dataset.listing||'')};
+    if(activeRealtimeChannel)await sb.removeChannel(activeRealtimeChannel).catch(()=>{});
+    activeRealtimeChannel=sb.channel(`messages-live-${user.id}`,{config:{broadcast:{self:false}}})
+      .on('postgres_changes',{event:'*',schema:'public',table:'messages'},payload=>{const m=payload.new?.id?payload.new:payload.old;if(!m)return;if(m.sender_id===user.id||m.receiver_id===user.id)refresh()})
+      .subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){console.warn('[AvtoVIP realtime] messages',status)}else if(status==='SUBSCRIBED'){document.body.dataset.realtime='on'}});
+    const cleanup=()=>{if(activeRealtimeChannel){sb.removeChannel(activeRealtimeChannel).catch(()=>{});activeRealtimeChannel=null}};
+    window.addEventListener('pagehide',cleanup,{once:true});window.addEventListener('beforeunload',cleanup,{once:true});
   }
   async function renderConversations(uid){
-    const root=$('#conversationList');const {data,error}=await sb.from('messages').select('*').or(`sender_id.eq.${uid},receiver_id.eq.${uid}`).order('created_at',{ascending:false}).limit(500);if(error){root.innerHTML=esc(error.message);return}const groups=new Map();for(const m of data||[]){const peer=m.sender_id===uid?m.receiver_id:m.sender_id;const key=`${peer}|${m.listing_id||''}`;if(!groups.has(key))groups.set(key,{peer,listing:m.listing_id,last:m,unread:0});if(m.receiver_id===uid&&!m.is_read)groups.get(key).unread++}const peers=[...new Set([...groups.values()].map(g=>g.peer))];let pmap={};if(peers.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').in('id',peers);(p||[]).forEach(x=>pmap[x.id]=x)}root.innerHTML=groups.size?[...groups.values()].map(g=>{const p=pmap[g.peer]||{};return `<button class="conversation-item" type="button" data-peer="${g.peer}" data-listing="${g.listing||''}"><span class="avatar-shell ${p.membership_tier||'free'}"><img class="conversation-avatar" src="${esc(p.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${p.membership_tier==='vip'?'<i class="fa-solid fa-crown avatar-crown"></i>':p.membership_tier==='premium'?'<i class="fa-solid fa-gem avatar-gem"></i>':''}</span><div class="conversation-copy"><strong>${esc([p.name,p.surname].filter(Boolean).join(' ')||staticText('İstifadəçi'))}</strong><span>${esc(g.last.body)}</span></div><time class="tiny muted">${timeText(g.last.created_at)}</time>${g.unread?'<i class="unread-dot"></i>':''}</button>`}).join(''):'<div class="empty-state" style="margin:10px">Mesaj yoxdur.</div>';root.onclick=e=>{const b=e.target.closest('[data-peer]');if(b)openConversation(b.dataset.peer,b.dataset.listing)};
+    const root=$('#conversationList');const {data,error}=await sb.from('messages').select('*').or(`sender_id.eq.${uid},receiver_id.eq.${uid}`).order('created_at',{ascending:false}).limit(500);if(error){root.innerHTML=esc(error.message);return}const groups=new Map();for(const m of data||[]){const peer=m.sender_id===uid?m.receiver_id:m.sender_id;const key=`${peer}|${m.listing_id||''}`;if(!groups.has(key))groups.set(key,{peer,listing:m.listing_id,last:m,unread:0});if(m.receiver_id===uid&&!m.is_read)groups.get(key).unread++}const peers=[...new Set([...groups.values()].map(g=>g.peer))];let pmap={};if(peers.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').in('id',peers);(p||[]).forEach(x=>pmap[x.id]=x)}root.innerHTML=groups.size?[...groups.values()].map(g=>{const p=pmap[g.peer]||{};return `<button class="conversation-item" type="button" data-peer="${g.peer}" data-listing="${g.listing||''}"><span class="avatar-shell ${p.membership_tier||'free'}"><img class="conversation-avatar" src="${esc(p.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${p.membership_tier==='vip'?'<i class="fa-solid fa-crown avatar-crown"></i>':p.membership_tier==='premium'?'<i class="fa-solid fa-gem avatar-gem"></i>':''}</span><div class="conversation-copy"><strong>${esc([p.name,p.surname].filter(Boolean).join(' ')||staticText('İstifadəçi'))}</strong><span>${esc(g.last.body)}</span></div><time class="tiny muted">${timeText(g.last.created_at)}</time>${g.unread?'<i class="unread-dot"></i>':''}</button>`}).join(''):`<div class="empty-state" style="margin:10px">${esc(staticText('Mesaj yoxdur.'))}</div>`;root.onclick=e=>{const b=e.target.closest('[data-peer]');if(b)openConversation(b.dataset.peer,b.dataset.listing)};
   }
   async function blockedRelationship(peer){
     if(!currentUser||!peer)return {blocked:false,byMe:false,byPeer:false};
@@ -777,8 +834,12 @@
   }
 
   async function boot(){
-    initThemeLang();observeDynamicI18n();initBottomNav();initPWA();await loadCurrent();
-    const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};try{await handlers[page]?.()}catch(err){console.error(err);toast(err.message||'Gözlənilməz xəta baş verdi.','error')}finally{document.documentElement.classList.remove('av-preboot')}
+    initThemeLang();observeDynamicI18n();initBottomNav();initPWA();
+    /* Theme/language are now stable; reveal immediately and load data progressively. */
+    document.documentElement.classList.remove('av-preboot');
+    await loadCurrent();
+    const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};
+    try{await handlers[page]?.()}catch(err){console.error(err);toast(err.message||'Gözlənilməz xəta baş verdi.','error')}
   }
   document.addEventListener('DOMContentLoaded',boot);
 })();
