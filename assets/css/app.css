@@ -263,3 +263,21 @@ html.modal-open,html.popover-open,html.modal-open body,html.popover-open body{ov
   .public-profile-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.public-profile-actions .btn{min-width:0!important;width:100%}
 }
 @media(max-width:390px){#profileForm .field-grid{gap:8px!important}.bottom-nav span{font-size:10px!important}.own-social-stats{gap:6px!important}}
+
+
+/* Patch 09 — speed, stable language picker, chat blocking, tier identity */
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+html.av-preboot body{visibility:hidden}html:not(.av-preboot) body{visibility:visible}
+.lang-picker-menu{overflow:hidden!important;scrollbar-width:none!important}.lang-picker-menu::-webkit-scrollbar{display:none!important}.lang-choice{overflow:hidden!important}.lang-emoji{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:23px;line-height:1;display:block}
+.lang-picker-btn{overflow:hidden}.lang-picker-btn .lang-flag{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.hero{display:none!important}
+.section-head:has(#storiesRail){margin-bottom:0}
+.verified-rosette{display:inline-grid;place-items:center;width:18px;height:18px;background:#1d9bf0;color:white!important;clip-path:polygon(50% 0,62% 10%,78% 6%,86% 20%,100% 25%,96% 41%,100% 55%,87% 65%,84% 81%,68% 84%,57% 100%,43% 94%,29% 100%,20% 84%,4% 78%,9% 62%,0 50%,11% 38%,5% 22%,21% 16%,31% 3%);vertical-align:-3px;font-size:10px}.verified-rosette i{color:#fff!important}
+.avatar-shell{position:relative;display:inline-grid;place-items:center;flex:0 0 auto}.avatar-shell>img{border-radius:50%;object-fit:cover}.avatar-shell.vip>img,.vip-avatar{box-shadow:0 0 0 3px #e3b341,0 0 14px rgba(227,179,65,.28)!important}.avatar-shell.premium>img,.premium-avatar{box-shadow:0 0 0 3px #ff4f91,0 0 0 6px rgba(117,72,255,.28),0 0 22px rgba(255,79,145,.32)!important}.avatar-crown,.avatar-gem{position:absolute;z-index:3;right:-4px;top:-7px;font-size:13px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}.avatar-crown{color:#ffd45b}.avatar-gem{color:#ff65a3}
+.chat-compose[hidden]{display:none!important}.blocked-chat-banner{display:block;margin:0 10px 10px!important}.blocked-chat-banner[hidden]{display:none!important}.chat-head{min-height:60px}.chat-peer-link{flex:1}.chat-messages{contain:layout paint}.bubble{max-width:min(72%,620px)}
+.conversation-item .avatar-shell{width:44px;height:44px}.conversation-item .avatar-shell img{width:44px;height:44px}.conversation-item{position:relative}.conversation-item .unread-dot{position:absolute;right:9px;bottom:10px}
+.brands-rail{scroll-behavior:smooth}.brand-logo-box{background:rgba(255,255,255,.96);border-radius:8px;padding:2px}.brand-logo-box.fallback{background:linear-gradient(145deg,var(--surface-2),var(--surface));color:var(--text)}
+.account-finance-panel h3,.account-finance-panel h4,.account-finance-panel p,.account-finance-panel span,.account-finance-panel button{max-width:100%}
+@media(max-width:700px){.lang-picker-menu{width:60px!important;max-width:60px!important}.chat-pane{min-width:0}.messages-shell{max-width:100%;overflow:hidden}.bubble{max-width:84%}.profile-head{overflow:hidden}.avatar-shell .avatar-crown,.avatar-shell .avatar-gem{right:-2px}}
+
+.lang-flag-img{width:26px;height:18px;object-fit:cover;border-radius:3px;display:block}.lang-choice .lang-flag-img{width:30px;height:20px}.profile-country-flag-img{width:24px;height:18px;object-fit:cover;border-radius:2px;vertical-align:-3px;margin-right:4px}
