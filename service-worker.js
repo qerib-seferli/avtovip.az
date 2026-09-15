@@ -1,5 +1,5 @@
-const CACHE='avtovip-v13';
-const CORE=['./','index.html','assets/css/app.css?v=13','assets/css/patch11.css?v=13','assets/js/supabase.js','assets/js/international.js','assets/js/app.js?v=13','assets/js/social.js?v=13','assets/js/patch11.js?v=13','assets/img/brand/icon-192.png'];
+const CACHE='avtovip-v14';
+const CORE=['./','index.html','assets/css/app.css?v=14','assets/css/patch11.css?v=14','assets/js/supabase.js','assets/js/international.js','assets/js/app.js?v=14','assets/js/social.js?v=14','assets/js/patch11.js?v=14','assets/img/brand/icon-192.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE).catch(()=>{})).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);if(u.origin!==location.origin)return;const dynamic=r.mode==='navigate'||/\.(?:html|css|js)$/.test(u.pathname);if(dynamic){e.respondWith(fetch(r).then(res=>{const copy=res.clone();caches.open(CACHE).then(c=>c.put(r,copy));return res}).catch(()=>caches.match(r).then(x=>x||caches.match('index.html'))));return}e.respondWith(caches.match(r).then(hit=>hit||fetch(r).then(res=>{if(res.ok)caches.open(CACHE).then(c=>c.put(r,res.clone()));return res}))) });
