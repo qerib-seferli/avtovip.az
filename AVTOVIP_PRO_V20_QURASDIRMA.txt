@@ -1,0 +1,68 @@
+AvtoVİP PRO v20 — QURAŞDIRMA VƏ TEST
+Tarix: 16.09.2026
+
+1) BACKUP
+- Hazır GitHub repo və Supabase bazasının backup-ını saxla.
+- Bu paket mövcud məlumatları silmək üçün hazırlanmayıb.
+
+2) GITHUB
+- ZIP-dəki dəyişən/yeni faylları eyni qovluqlara yüklə.
+- service-worker.js v20-dir. Köhnə avtovip-v14 cache aktivasiya zamanı avtomatik silinir.
+- UI faylları ?v=20 ilə çağırılır; online olduqda HTML/CSS/JS network-first/no-store işləyir.
+
+3) SUPABASE SQL
+- Supabase > SQL Editor aç.
+- sql/20260916_avtovip_pro_v20.sql faylını BİR DƏFƏ tam run et.
+- SQL mövcud elan/mesaj/profil cədvəllərini silmir; sosial lent, reels, saved search, push device və moderasiya infrastrukturu əlavə edir.
+
+4) GOOGLE İLƏ GİRİŞ
+- Google Cloud Console-da OAuth Web Client yarat.
+- Authorized JavaScript origin: https://qerib-seferli.github.io
+- Authorized redirect URI kimi Supabase layihənin callback URL-ni Google Console-da əlavə et (Supabase Authentication > Providers > Google səhifəsində göstərilir).
+- Supabase > Authentication > Providers > Google: Enable, Client ID və Client Secret daxil et.
+- Supabase > Authentication > URL Configuration > Redirect URLs:
+  https://qerib-seferli.github.io/avtovip.az/login.html
+- login.html-də “Google ilə davam et” avtomatik görünəcək.
+
+5) CACHE TEST
+- GitHub Pages deploy bitəndən sonra PWA-nı tam bağla və yenidən aç.
+- Köhnə quraşdırılmış PWA çox köhnə service worker saxlayırsa yalnız ilk keçiddə bir dəfə brauzeri/PWA-nı yenidən açmaq kifayətdir; v20 aktiv olduqda köhnə cache-lər silinir.
+- DevTools > Application > Service Workers: avtovip-v20-20260916 olmalıdır.
+
+6) FUNKSİONAL TEST
+- Dil: AZ/EN/RU/TR/KA arasında hər səhifədə dəyiş. Seçilən dil localStorage-da avtovip-lang kimi qalmalıdır.
+- Tema: açıq/qaranlıq rejim səhifələr arasında qalmalıdır.
+- Elan ver: marka/model, ölkə/şəhər, texniki məlumatlar, VIN, nəsil, komplektasiya, təchizat, kredit/barter və foto hissələrini ayrıca test et.
+- Ətraflı filtr: qiymət, il, yürüş, mühərrik, güc, yanacaq, sürətlər qutusu, ötürücü, ban, rəng, oturacaq, sahib sayı, nəsil, komplektasiya, bazar mənşəyi, VIN və təchizat test edilməlidir.
+- Markalar: assets/data/vehicle-makes.json + assets/data/brand-logos/*.svg local snapshot istifadə edir. Qırıq remote logo asılılığı yoxdur.
+- Mesaj: iki hesabla qarşılıqlı mesaj göndər; badge və realtime yenilənməni yoxla.
+- Bildiriş: follow/like/comment zamanı realtime badge-i yoxla.
+- Səs: Ayarlar > AvtoVİP mesaj və bildiriş səsləri aktiv olmalıdır. Brauzer ilk istifadəçi toxunuşundan əvvəl səsi bloklaya bilər; bu brauzer təhlükəsizlik qaydasıdır.
+- Profil: Standard/VIP/Premium statuslarını test et.
+- Avto Lent: lent.html; paylaşım: post-ver.html; Reels: reels.html.
+- Foto: böyük PNG/JPEG paylaş; upload-dan əvvəl WebP optimizasiyası tətbiq olunur.
+- Video: MP4/WebM maksimum 50 MB qəbul olunur. Böyük video istifadəçidən daha kompakt fayl tələb edir; brauzerdə ağır video transcode edilmir.
+- Paylaşımı sil: post silinərkən onun social-media bucket-dəki media faylları da client tərəfindən silinir.
+- Admin: admin/index.html mövcud elan, istifadəçi, hekayə, ödəniş və şikayət nəzarətini saxlayır.
+
+7) BEYNƏLXALQ
+- international.js-də əvvəlki ölkə/valyuta blokları çıxarılıb; dünya ölkələri kataloqu açıqdır.
+- Qiymət/elan valyutası ölkəyə uyğun göstərilə bilər. Real ödəniş settlement-i ayrıca payment provider müqaviləsi tələb edir; bank/provayder seçilmədən kart məlumatı və gizli payment key front-end-ə yazılmamalıdır.
+
+8) TƏHLÜKƏSİZLİK
+- Supabase anon key front-end-də public olması normaldır; SERVICE_ROLE heç vaxt GitHub-a yazılmamalıdır.
+- Ödəniş provider secret, Google client secret və server secret-lər yalnız Supabase secret/Edge Function/server tərəfində saxlanmalıdır.
+- SQL RLS sosial cədvəllərdə istifadəçi-sahibliyi qaydalarını aktiv edir.
+
+ƏSAS DƏYİŞİKLİKLƏR
+- Professional kompakt PWA UI v20.
+- Köhnə UI cache probleminə qarşı yeni service worker strategiyası.
+- Google OAuth UI və Supabase OAuth axını.
+- Sosial Lent + Reels + paylaşım yaratma.
+- Şəkil optimizasiyası və media silmə axını.
+- Realtime xüsusi AvtoVİP notification/message tonları.
+- Kəşfet üçün kompakt kateqoriya/populyar marka paneli.
+- Mesajlar üçün axtarış və filtr UI-si.
+- Profil üçün statistika və sürətli keçidlər.
+- Ayarlar və ayrıca balans/ödəniş səhifəsi.
+- Bütün ölkələr/valyutalar üçün beynəlxalq kataloq blokunun açılması.
