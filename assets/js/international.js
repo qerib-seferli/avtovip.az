@@ -9,8 +9,8 @@
   const VEHICLE_INDEX_URL = ''; // local vehicle-models.csv is the authoritative runtime snapshot
   const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json';
   const LOCAL_VEHICLE_MODELS = 'assets/data/vehicle-models.csv';
-  const BLOCKED_COUNTRIES = new Set(['AM']);
-  const BLOCKED_CURRENCIES = new Set(['AMD']);
+  const BLOCKED_COUNTRIES = new Set();
+  const BLOCKED_CURRENCIES = new Set();
   const memory = new Map();
   const STORE_PREFIX = 'avtovip:data:v4:';
 
