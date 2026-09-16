@@ -321,3 +321,19 @@ body[data-page="messages"] .conversation-delete{position:absolute!important;righ
 body[data-page="messages"] .conversation-delete:hover{background:color-mix(in srgb,var(--av-red) 10%,transparent)!important;color:var(--av-text)!important;opacity:1!important}
 body[data-page="messages"] .conversation-meta{padding-right:0!important}
 body[data-page="messages"] .chat-messages{touch-action:pan-y!important;overscroll-behavior-y:contain!important}
+
+
+/* v38 — requested message/date/filter/mobile safe-area polish */
+body[data-page="messages"] .presence-dot{width:13px!important;height:13px!important;border-width:2px!important;right:-1px!important;bottom:0!important}
+body[data-page="messages"] .chat-date-separator{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;clear:both!important;margin:8px 0 6px!important;grid-column:1/-1!important}
+body[data-page="messages"] .chat-date-separator span{display:inline-flex!important;align-items:center!important;min-height:25px!important;padding:4px 10px!important;border:1px solid var(--av-line)!important;border-radius:999px!important;background:color-mix(in srgb,var(--av-card) 94%,var(--av-muted))!important;color:var(--av-muted)!important;font-size:9px!important;font-weight:700!important;box-shadow:0 2px 8px rgba(0,0,0,.04)!important}
+body[data-page="messages"] .av-message-tools button{overflow:hidden!important;text-overflow:ellipsis!important}
+@media(max-width:480px){body[data-page="messages"] .av-message-tools{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:3px!important}body[data-page="messages"] .av-message-tools button{font-size:8px!important;padding:3px 1px!important;min-height:30px!important}}
+@media(max-width:800px){
+ body[data-page="messages"] .messages-shell{height:calc(100dvh - var(--av-header) - 96px - env(safe-area-inset-bottom))!important;min-height:0!important;margin-bottom:4px!important}
+ body[data-page="messages"] .chat-pane.open{padding-bottom:0!important}
+ body[data-page="messages"] #chatForm.chat-compose:not([hidden]){padding-bottom:max(8px,env(safe-area-inset-bottom))!important;position:relative!important;bottom:auto!important}
+ body[data-page="messages"] .chat-messages{padding-bottom:12px!important}
+}
+/* Every public page ends just above the fixed PWA navigation, with a small visual gap. */
+@media(max-width:900px){.page{padding-bottom:calc(82px + env(safe-area-inset-bottom))!important}.page>.container>*:last-child{margin-bottom:4px!important}}
