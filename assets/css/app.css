@@ -524,3 +524,10 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
   .story-social:not(.story-comments-open .story-social) .story-emoji-btn{left:5px!important;top:7px!important;width:30px!important;height:30px!important}
   .story-caption{bottom:max(118px,calc(108px + env(safe-area-inset-bottom)))!important}
 }
+
+/* AvtoVIP story viewer v48 — caption follows media bottom, not social panel */
+@media(max-width:760px){
+  .story-shell .story-card .story-caption{bottom:10px!important}
+  .story-shell .story-card:has(video.story-media) .story-caption{bottom:58px!important}
+  .story-comments-open .story-caption{display:none!important}
+}
