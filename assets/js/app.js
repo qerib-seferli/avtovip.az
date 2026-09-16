@@ -847,7 +847,7 @@
   }
 
   function initPWA(){
-    if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(console.warn)); window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('#installBanner')?.removeAttribute('hidden')});$('#installBtn')?.addEventListener('click',async()=>{if(!deferredInstallPrompt){toast('iPhone/iPad: Safari → Paylaş → Add to Home Screen.','info');return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('#installBanner')?.setAttribute('hidden','')});
+    if('serviceWorker'in navigator){window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('service-worker.js',{updateViaCache:'none'});await reg.update();let reloading=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloading)return;reloading=true;window.location.reload()})}catch(e){console.warn(e)}})}; window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('#installBanner')?.removeAttribute('hidden')});$('#installBtn')?.addEventListener('click',async()=>{if(!deferredInstallPrompt){toast('iPhone/iPad: Safari → Paylaş → Add to Home Screen.','info');return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('#installBanner')?.setAttribute('hidden','')});
   }
 
   async function boot(){

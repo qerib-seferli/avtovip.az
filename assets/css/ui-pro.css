@@ -174,3 +174,25 @@ body[data-page="create-listing"] #equipmentGrid .check-chip{
     box-shadow:0 0 0 1px rgba(127,127,127,.22)!important;
   }
 }
+
+/* AvtoVIP v28 — desktop header safe-right + PWA parity */
+@media (min-width:901px){
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header{
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    max-width:none!important;
+  }
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header>.container,
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .header-row{
+    width:100%!important;
+    max-width:none!important;
+    padding-left:8px!important;
+    padding-right:26px!important;
+  }
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .header-actions{
+    margin-left:auto!important;
+    margin-right:0!important;
+    padding-right:0!important;
+  }
+}
