@@ -531,3 +531,13 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
   .story-shell .story-card:has(video.story-media) .story-caption{bottom:58px!important}
   .story-comments-open .story-caption{display:none!important}
 }
+
+
+/* AvtoVIP story viewer v49 — portrait media fills card width; crop only top/bottom */
+.story-shell .story-card .story-media.story-media-fill-width{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  background:#000!important;
+}
