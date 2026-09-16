@@ -2,7 +2,7 @@
   "name": "AvtoVİP",
   "short_name": "AvtoVİP",
   "description": "Global smart automotive marketplace and PWA.",
-  "id": "./",
+  "id": "./index.html",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -10,9 +10,39 @@
   "background_color": "#0c0f14",
   "theme_color": "#9d111b",
   "lang": "az",
-  "categories": ["shopping", "automotive", "lifestyle"],
+  "categories": [
+    "shopping",
+    "automotive",
+    "lifestyle"
+  ],
   "icons": [
-    {"src":"assets/img/brand/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"assets/img/brand/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+    {
+      "src": "assets/img/brand/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/brand/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/img/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
   ]
 }

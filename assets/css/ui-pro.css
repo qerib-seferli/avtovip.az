@@ -312,3 +312,12 @@ body[data-page="messages"] .chat-messages{overscroll-behavior:contain!important;
  body[data-page="messages"] .bubble{font-size:11.5px!important;padding:7px 9px!important}
  body[data-page="messages"] .chat-media,body[data-page="messages"] .chat-video{max-height:48dvh!important}
 }
+
+/* v37 — messages-only polish: no pull refresh, compact delete action */
+body[data-page="messages"] .chat-head #chatBack{display:none!important}
+body[data-page="messages"] .chat-head{padding-left:10px!important}
+body[data-page="messages"] .conversation-item{position:relative!important;padding-right:38px!important}
+body[data-page="messages"] .conversation-delete{position:absolute!important;right:8px!important;bottom:7px!important;width:24px!important;height:24px!important;display:grid!important;place-items:center!important;border-radius:7px!important;color:var(--av-muted)!important;opacity:.78!important;z-index:3!important}
+body[data-page="messages"] .conversation-delete:hover{background:color-mix(in srgb,var(--av-red) 10%,transparent)!important;color:var(--av-text)!important;opacity:1!important}
+body[data-page="messages"] .conversation-meta{padding-right:0!important}
+body[data-page="messages"] .chat-messages{touch-action:pan-y!important;overscroll-behavior-y:contain!important}
