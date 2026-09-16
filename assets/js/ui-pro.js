@@ -38,6 +38,7 @@
  const t=k=>(TX[lang()]||TX.az)[k]||k;
  const setText=(el,value)=>{if(el&&el.textContent!==value)el.textContent=value};
  function localizeInjected(){
+   const railFlag=$('[data-av-rail-flag]'); if(railFlag){railFlag.src=`assets/img/flags/${lang()}.svg`;railFlag.alt=lang().toUpperCase();}
    const spans=document.querySelectorAll('.av-profile-stats span');
    ['followers','following','ads','likes'].forEach((k,i)=>setText(spans[i],t(k)));
    document.querySelectorAll('[data-av-rail-label]').forEach(x=>setText(x,t(x.dataset.avRailLabel)));
@@ -47,7 +48,7 @@
    if(!matchMedia('(min-width:901px)').matches)return;
    const nav=$('.bottom-nav'); if(!nav||$('.av-desktop-rail-tools'))return;
    const tools=document.createElement('div'); tools.className='av-desktop-rail-tools';
-   tools.innerHTML=`<a class="av-rail-action" href="ayarlar.html"><i class="fa-solid fa-gear"></i><span data-av-rail-label="settings">${t('settings')}</span></a><button class="av-rail-action" type="button" data-av-lang><i class="fa-solid fa-language"></i><span data-av-rail-label="language">${t('language')}</span></button><button class="av-rail-action" type="button" data-av-theme><i class="fa-solid fa-circle-half-stroke"></i><span data-av-rail-label="theme">${t('theme')}</span></button>`;
+   tools.innerHTML=`<a class="av-rail-action" href="ayarlar.html"><i class="fa-solid fa-gear"></i><span data-av-rail-label="settings">${t('settings')}</span></a><button class="av-rail-action" type="button" data-av-lang><img class="av-rail-flag" data-av-rail-flag src="assets/img/flags/${lang()}.svg" alt=""><span data-av-rail-label="language">${t('language')}</span></button><button class="av-rail-action" type="button" data-av-theme><i class="fa-solid fa-circle-half-stroke"></i><span data-av-rail-label="theme">${t('theme')}</span></button>`;
    nav.append(tools);
    tools.querySelector('[data-av-theme]').addEventListener('click',()=>$('#themeBtn')?.click());
    tools.querySelector('[data-av-lang]').addEventListener('click',()=>{const sel=$('#langSelect');if(!sel)return;const order=['az','en','ru','tr','ka'];const i=Math.max(0,order.indexOf(sel.value));sel.value=order[(i+1)%order.length];sel.dispatchEvent(new Event('change',{bubbles:true}))});
