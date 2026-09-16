@@ -82,3 +82,49 @@ body[data-page="create-listing"] .equipment-grid .check-chip,body[data-page="cre
  body[data-page="home"] #filterEquipmentGrid,body[data-page="create-listing"] .equipment-grid,body[data-page="create-listing"] .check-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .chat-compose{grid-template-columns:auto minmax(0,1fr) 38px!important}.chat-tool-btn{width:34px!important;height:38px!important}.square-btn{width:38px!important;min-width:38px!important}
 }
+
+/* AvtoVIP v25 — desktop geometry + genuinely compact option controls */
+@media(min-width:901px){
+  body:not([data-page="auth"]):not([data-page="reset"]){padding-left:var(--av-side)!important}
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header{
+    margin-left:calc(-1 * var(--av-side))!important;
+    width:calc(100% + var(--av-side))!important;
+  }
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .container{
+    width:100%!important;max-width:none!important;margin:0!important;
+    padding-left:calc(var(--av-side) + 10px)!important;padding-right:10px!important;
+  }
+  body:not([data-page="auth"]):not([data-page="reset"]) .page{
+    padding-left:38px!important;padding-right:38px!important;
+  }
+  body:not([data-page="auth"]):not([data-page="reset"]) .page>.container,
+  body:not([data-page="auth"]):not([data-page="reset"]) main>.container,
+  body:not([data-page="auth"]):not([data-page="reset"]) .explore-container{
+    width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;
+  }
+  .site-header .brand{margin:0!important}.site-header .header-actions{margin-left:auto!important;margin-right:0!important}
+}
+/* Checkboxes must not inherit the global 34/38px input height. */
+.check-chip input[type="checkbox"],.check-chip input[type="radio"]{
+  width:14px!important;min-width:14px!important;max-width:14px!important;
+  height:14px!important;min-height:14px!important;max-height:14px!important;
+  padding:0!important;margin:0!important;flex:0 0 14px!important;
+}
+body[data-page="home"] #filterPanel .filter-group .row-wrap{gap:5px!important;align-items:center!important}
+body[data-page="home"] #filterPanel .filter-group .row-wrap .check-chip,
+body[data-page="create-listing"] .row-wrap .check-chip{
+  min-width:0!important;width:auto!important;min-height:28px!important;height:28px!important;
+  padding:4px 8px!important;gap:6px!important;line-height:1!important;
+}
+body[data-page="home"] #filterEquipmentGrid,
+body[data-page="create-listing"] #equipmentGrid{
+  grid-template-columns:repeat(4,minmax(150px,1fr))!important;gap:5px!important;
+}
+body[data-page="home"] #filterEquipmentGrid .check-chip,
+body[data-page="create-listing"] #equipmentGrid .check-chip{
+  min-height:30px!important;height:30px!important;padding:4px 8px!important;gap:6px!important;line-height:1.05!important;
+}
+@media(max-width:900px){
+ body[data-page="home"] #filterEquipmentGrid,body[data-page="create-listing"] #equipmentGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body[data-page="home"] #filterEquipmentGrid .check-chip,body[data-page="create-listing"] #equipmentGrid .check-chip{height:auto!important;min-height:30px!important}
+}
