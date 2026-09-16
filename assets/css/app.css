@@ -384,3 +384,19 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
  .story-ring{width:86px;height:86px}
  .story-comments-open .story-comments{overflow-y:auto!important;overscroll-behavior:contain!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
 }
+
+
+/* AvtoVIP story viewer v42 — mobile story interaction containment */
+.story-view-action{cursor:default}
+.story-caption{left:50%;right:auto;bottom:86px;transform:translateX(-50%);width:min(86%,520px);max-height:96px;text-align:left;padding:10px 14px;background:rgba(0,0,0,.56);overflow-y:auto}
+@media(max-width:760px){
+ .stories-rail{gap:0}
+ .story-item{width:96px;flex-basis:96px}
+ .story-ring{width:90px;height:90px}
+ .story-caption{left:7%;right:7%;width:auto;transform:none;bottom:168px;max-height:92px;padding:10px 12px}
+ .story-comments-open .story-social{inset:0!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;padding-top:max(58px,env(safe-area-inset-top))!important;background:rgba(8,9,12,.985)!important;z-index:7!important}
+ .story-comments-open .story-social-head{display:none!important}
+ .story-comments-open .story-social-actions{top:max(10px,env(safe-area-inset-top))!important;right:58px!important}
+ .story-comments-open .story-comments{padding-top:12px!important;padding-bottom:92px!important}
+ .story-comments-open .story-comment-form{z-index:10!important}
+}
