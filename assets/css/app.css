@@ -367,3 +367,20 @@ html.av-preboot body{visibility:visible!important}
  .story-comments-open .story-comments{flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto!important;padding-bottom:82px;scrollbar-width:thin}
  .story-comments-open .story-comment-form{flex:0 0 auto}
 }
+
+
+/* AvtoVIP story viewer v41 — story-only polish and mobile scroll containment */
+.stories-rail{gap:3px}
+.story-item{width:88px;flex-basis:88px}
+.story-ring{width:82px;height:82px}
+.story-viewer{overscroll-behavior:none!important;touch-action:none!important}
+.story-shell,.story-card,.story-social{overscroll-behavior:none!important}
+.story-comments{overscroll-behavior:contain!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+.story-viewer .av-dialog-backdrop{z-index:2147483646!important}
+html.modal-open,html.modal-open body{overscroll-behavior:none!important}
+@media(max-width:760px){
+ .stories-rail{gap:1px}
+ .story-item{width:92px;flex-basis:92px}
+ .story-ring{width:86px;height:86px}
+ .story-comments-open .story-comments{overflow-y:auto!important;overscroll-behavior:contain!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+}

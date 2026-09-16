@@ -645,7 +645,10 @@
     const [{data,error},favs]=await Promise.all([q,favoriteSet()]); if(error){grid.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;return} $('#resultCount')&&($('#resultCount').textContent=`${(data||[]).length} ${lang==='ru'?'объявл.':lang==='en'?'ads':lang==='tr'?'ilan':lang==='ka'?'განცხადება':'elan'}`); grid.innerHTML=(data||[]).length?(data||[]).map(x=>listingCard(x,favs)).join(''):`<div class="empty-state">${t('empty')}</div>`;
   }
   async function loadStories(){
-    const rail=$('#storiesRail');if(!rail)return; const {data,error}=await sb.from('stories').select('*').eq('status','active').gt('expires_at',new Date().toISOString()).order('active_at',{ascending:false}).limit(50); if(error){console.warn(error.message);return}
+    const rail=$('#storiesRail');if(!rail)return;
+    /* Expired story rows + media are cleaned server-side. Failure must never block the home rail. */
+    try{await sb.functions.invoke('story-cleanup',{body:{reason:'home-load'}})}catch(e){console.warn('Story cleanup skipped:',e?.message||e)}
+    const {data,error}=await sb.from('stories').select('*').eq('status','active').gt('expires_at',new Date().toISOString()).order('active_at',{ascending:false}).limit(50); if(error){console.warn(error.message);return}
     const userIds=[...new Set((data||[]).map(x=>x.user_id))]; let profiles={}; if(userIds.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url').in('id',userIds);(p||[]).forEach(x=>profiles[x.id]=x)}
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
     rail.innerHTML=add+(data||[]).map(s=>{const p=profiles[s.user_id]||{};return `<button class="story-item" type="button" data-story="${s.id}"><div class="story-ring"><div class="story-ring-inner">${s.media_type==='video'?`<video src="${esc(s.media_url)}" muted></video>`:`<img src="${esc(s.media_url)}" alt="">`}</div></div><span>${esc(p.name||'AvtoVİP')}</span></button>`}).join(''); rail.onclick=e=>{const b=e.target.closest('[data-story]');if(b){const story=(data||[]).find(x=>x.id===b.dataset.story);if(story)openStory(story,profiles[story.user_id])}};
@@ -661,6 +664,17 @@
     const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;if(video){video.play().catch(()=>{})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
     const onStoryPop=()=>{if(!modal.isConnected){window.removeEventListener('popstate',onStoryPop);return}if(modal.classList.contains('story-comments-open')){closeComments();history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);return}storyHistoryActive=false;close(true);window.removeEventListener('popstate',onStoryPop)};window.addEventListener('popstate',onStoryPop);
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
+    /* A story is an app-like overlay: vertical swipes must never become browser pull-to-refresh.
+       The comments panel remains independently scrollable. */
+    let storyTouchY=0;
+    modal.addEventListener('touchstart',e=>{storyTouchY=e.touches?.[0]?.clientY||0},{passive:true});
+    modal.addEventListener('touchmove',e=>{
+      const scroller=e.target.closest?.('.story-comments');
+      if(!scroller){e.preventDefault();return}
+      const y=e.touches?.[0]?.clientY||storyTouchY,dy=y-storyTouchY;
+      const atTop=scroller.scrollTop<=0,atBottom=scroller.scrollTop+scroller.clientHeight>=scroller.scrollHeight-1;
+      if((atTop&&dy>0)||(atBottom&&dy<0))e.preventDefault();
+    },{passive:false});
     let storyInteraction=false,imageTimer=null;
     const holdStory=()=>{storyInteraction=true;if(imageTimer){clearTimeout(imageTimer);imageTimer=null}if(video&&!video.paused)video.pause();modal.classList.add('story-comments-open')};
     const video=modal.querySelector('video');if(video){video.muted=false;video.volume=1;video.play().catch(()=>{video.autoplay=false});video.addEventListener('ended',()=>{if(!storyInteraction&&modal.isConnected)close()})}else imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000);
