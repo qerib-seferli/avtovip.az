@@ -59,6 +59,7 @@
 
   function notificationText(n){
     const c=Number(n.group_count||1),type=n.type||'';
+    if(n.title==='Hekayə'){const sm={az:{listing_like:'hekayənizi bəyəndi.',listing_comment:'hekayənizə şərh yazdı.'},en:{listing_like:'liked your story.',listing_comment:'commented on your story.'},ru:{listing_like:'оценил(а) вашу историю.',listing_comment:'прокомментировал(а) вашу историю.'},tr:{listing_like:'hikayenizi beğendi.',listing_comment:'hikayenize yorum yaptı.'},ka:{listing_like:'მოიწონა თქვენი ისტორია.',listing_comment:'დააკომენტარა თქვენი ისტორია.'}}[lang()]||{};if(sm[type])return sm[type]}
     const map={
       az:{message:c>1?`${c} yeni mesaj göndərdi.`:'sizə yeni mesaj göndərdi.',follow:'sizi izləməyə başladı.',listing_like:'elanınızı bəyəndi.',listing_comment:'elanınıza şərh yazdı.'},
       en:{message:c>1?`sent you ${c} new messages.`:'sent you a new message.',follow:'started following you.',listing_like:'liked your listing.',listing_comment:'commented on your listing.'},
