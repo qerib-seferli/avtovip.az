@@ -839,6 +839,7 @@
   }
   async function openConversation(peer,listing=''){
     $('#messagesShell').classList.add('chat-selected');const pane=$('#chatPane');pane.classList.add('open');pane.dataset.peer=peer;pane.dataset.listing=listing||'';
+    const earlyForm=$('#chatForm');if(earlyForm)earlyForm.hidden=false;
     const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').eq('id',peer).maybeSingle();$('#chatPeerName').textContent=[p?.name,p?.surname].filter(Boolean).join(' ')||staticText('İstifadəçi');$('#chatPeerAvatar').src=p?.avatar_url||'assets/img/brand/icon-192.png';const peerLink=$('#chatPeerLink');if(peerLink)peerLink.href=`user.html?id=${encodeURIComponent(peer)}`;
     const avatar=$('#chatPeerAvatar');avatar?.classList.toggle('vip-avatar',p?.membership_tier==='vip');avatar?.classList.toggle('premium-avatar',p?.membership_tier==='premium');
     $('#chatBack')?.addEventListener('click',()=>$('#messagesShell').classList.remove('chat-selected'),{once:true});

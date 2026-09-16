@@ -165,3 +165,16 @@ html.av-preboot body{opacity:1!important;visibility:visible!important}
   body[data-page="messages"] .chat-compose{grid-template-columns:auto minmax(0,1fr) 42px!important;padding-left:6px!important;padding-right:6px!important}
   body[data-page="messages"] .chat-compose>.square-btn{width:42px!important;min-width:42px!important}
 }
+
+/* v34 — PWA messages: 4 filters in one row, reliable composer, unclipped peer avatar */
+@media(max-width:800px){
+ body[data-page="messages"] .av-message-tools{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important;margin:6px!important}
+ body[data-page="messages"] .av-message-tools button{min-width:0!important;min-height:32px!important;padding:5px 2px!important;font-size:9px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+ body[data-page="messages"] .chat-peer-link{overflow:visible!important;padding:6px 4px!important;gap:10px!important}
+ body[data-page="messages"] .chat-peer-link>.conversation-avatar{width:46px!important;height:46px!important;min-width:46px!important;margin:3px!important;object-fit:cover!important;border-radius:50%!important;overflow:visible!important}
+ body[data-page="messages"] .chat-head{overflow:visible!important}
+ body[data-page="messages"] .conversation-item .avatar-shell{width:52px!important;height:52px!important;overflow:visible!important}
+ body[data-page="messages"] .conversation-item{grid-template-columns:52px minmax(0,1fr) auto!important}
+ body[data-page="messages"] .conversation-item .conversation-avatar{width:46px!important;height:46px!important;object-fit:cover!important}
+}
+@media(max-width:390px){body[data-page="messages"] .av-message-tools button{font-size:8.2px!important;padding-inline:1px!important}}
