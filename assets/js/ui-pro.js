@@ -24,19 +24,43 @@
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 
-/* AvtoVIP UI correction v22: desktop rail controls + pull refresh + injected UI i18n */
+/* AvtoVIP UI hotfix v23 — removes the recursive DOM observer that could freeze browser/PWA. */
 (()=>{'use strict';
- const $=(s,p=document)=>p.querySelector(s); const lang=()=>localStorage.getItem('avtovip-lang')||'az';
+ const $=(s,p=document)=>p.querySelector(s);
+ const lang=()=>localStorage.getItem('avtovip-lang')||'az';
  const TX={
   az:{settings:'Tənzimləmələr',theme:'Tema',language:'Dil',followers:'Takipçi',following:'Takip',ads:'Elanlar',likes:'Bəyənilən',pull:'Yeniləmək üçün burax'},
   en:{settings:'Settings',theme:'Theme',language:'Language',followers:'Followers',following:'Following',ads:'Listings',likes:'Liked',pull:'Release to refresh'},
   ru:{settings:'Настройки',theme:'Тема',language:'Язык',followers:'Подписчики',following:'Подписки',ads:'Объявления',likes:'Понравившиеся',pull:'Отпустите для обновления'},
   tr:{settings:'Ayarlar',theme:'Tema',language:'Dil',followers:'Takipçiler',following:'Takip',ads:'İlanlar',likes:'Beğenilenler',pull:'Yenilemek için bırak'},
   ka:{settings:'პარამეტრები',theme:'თემა',language:'ენა',followers:'გამომწერები',following:'გამოწერები',ads:'განცხადებები',likes:'მოწონებული',pull:'გასაახლებლად გაუშვით'}
- }; const t=k=>(TX[lang()]||TX.az)[k]||k;
- function localizeInjected(){const s=document.querySelectorAll('.av-profile-stats span');['followers','following','ads','likes'].forEach((k,i)=>{if(s[i])s[i].textContent=t(k)});document.querySelectorAll('[data-av-rail-label]').forEach(x=>x.textContent=t(x.dataset.avRailLabel));const pi=$('.av-pull-indicator');if(pi)pi.textContent=t('pull')}
- function rail(){if(matchMedia('(max-width:900px)').matches)return;const nav=$('.bottom-nav');if(!nav||$('.av-desktop-rail-tools'))return;const tools=document.createElement('div');tools.className='av-desktop-rail-tools';tools.innerHTML=`<a class="av-rail-action" href="ayarlar.html"><i class="fa-solid fa-gear"></i><span data-av-rail-label="settings">${t('settings')}</span></a><button class="av-rail-action" type="button" data-av-lang><i class="fa-solid fa-language"></i><span data-av-rail-label="language">${t('language')}</span></button><button class="av-rail-action" type="button" data-av-theme><i class="fa-solid fa-circle-half-stroke"></i><span data-av-rail-label="theme">${t('theme')}</span></button>`;nav.append(tools);tools.querySelector('[data-av-theme]').onclick=()=>$('#themeBtn')?.click();tools.querySelector('[data-av-lang]').onclick=()=>{const sel=$('#langSelect');if(!sel)return;const order=['az','en','ru','tr','ka'],i=order.indexOf(sel.value);sel.value=order[(i+1)%order.length];sel.dispatchEvent(new Event('change',{bubbles:true}))}}
- function pullRefresh(){if(!matchMedia('(max-width:900px)').matches||$('.av-pull-indicator'))return;const el=document.createElement('div');el.className='av-pull-indicator';el.textContent=t('pull');document.body.append(el);let y=0,armed=false;addEventListener('touchstart',e=>{if(scrollY<=0&&e.touches.length===1)y=e.touches[0].clientY;else y=0},{passive:true});addEventListener('touchmove',e=>{if(!y)return;const d=e.touches[0].clientY-y;armed=d>78;el.classList.toggle('show',d>42)},{passive:true});addEventListener('touchend',()=>{el.classList.remove('show');if(armed)location.reload();y=0;armed=false},{passive:true})}
- function boot(){rail();pullRefresh();localizeInjected();addEventListener('avtovip:language',()=>setTimeout(localizeInjected,0));new MutationObserver(()=>localizeInjected()).observe(document.body,{childList:true,subtree:true})}
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+ };
+ const t=k=>(TX[lang()]||TX.az)[k]||k;
+ const setText=(el,value)=>{if(el&&el.textContent!==value)el.textContent=value};
+ function localizeInjected(){
+   const spans=document.querySelectorAll('.av-profile-stats span');
+   ['followers','following','ads','likes'].forEach((k,i)=>setText(spans[i],t(k)));
+   document.querySelectorAll('[data-av-rail-label]').forEach(x=>setText(x,t(x.dataset.avRailLabel)));
+   setText($('.av-pull-indicator'),t('pull'));
+ }
+ function rail(){
+   if(!matchMedia('(min-width:901px)').matches)return;
+   const nav=$('.bottom-nav'); if(!nav||$('.av-desktop-rail-tools'))return;
+   const tools=document.createElement('div'); tools.className='av-desktop-rail-tools';
+   tools.innerHTML=`<a class="av-rail-action" href="ayarlar.html"><i class="fa-solid fa-gear"></i><span data-av-rail-label="settings">${t('settings')}</span></a><button class="av-rail-action" type="button" data-av-lang><i class="fa-solid fa-language"></i><span data-av-rail-label="language">${t('language')}</span></button><button class="av-rail-action" type="button" data-av-theme><i class="fa-solid fa-circle-half-stroke"></i><span data-av-rail-label="theme">${t('theme')}</span></button>`;
+   nav.append(tools);
+   tools.querySelector('[data-av-theme]').addEventListener('click',()=>$('#themeBtn')?.click());
+   tools.querySelector('[data-av-lang]').addEventListener('click',()=>{const sel=$('#langSelect');if(!sel)return;const order=['az','en','ru','tr','ka'];const i=Math.max(0,order.indexOf(sel.value));sel.value=order[(i+1)%order.length];sel.dispatchEvent(new Event('change',{bubbles:true}))});
+ }
+ function pullRefresh(){
+   if(!matchMedia('(max-width:900px)').matches||$('.av-pull-indicator'))return;
+   const el=document.createElement('div');el.className='av-pull-indicator';el.textContent=t('pull');document.body.append(el);
+   let startY=null,armed=false;
+   document.addEventListener('touchstart',e=>{startY=(window.scrollY<=0&&e.touches.length===1)?e.touches[0].clientY:null;armed=false},{passive:true});
+   document.addEventListener('touchmove',e=>{if(startY===null)return;const d=e.touches[0].clientY-startY;armed=d>90;el.classList.toggle('show',d>50)},{passive:true});
+   document.addEventListener('touchend',()=>{el.classList.remove('show');const refresh=armed;startY=null;armed=false;if(refresh)setTimeout(()=>location.reload(),0)},{passive:true});
+   document.addEventListener('touchcancel',()=>{el.classList.remove('show');startY=null;armed=false},{passive:true});
+ }
+ function boot(){rail();pullRefresh();localizeInjected();setTimeout(localizeInjected,250);addEventListener('avtovip:language',()=>requestAnimationFrame(localizeInjected));}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
