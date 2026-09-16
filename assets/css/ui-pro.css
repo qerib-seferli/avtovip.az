@@ -337,3 +337,25 @@ body[data-page="messages"] .av-message-tools button{overflow:hidden!important;te
 }
 /* Every public page ends just above the fixed PWA navigation, with a small visual gap. */
 @media(max-width:900px){.page{padding-bottom:calc(82px + env(safe-area-inset-bottom))!important}.page>.container>*:last-child{margin-bottom:4px!important}}
+
+/* v39 — messages only: softer outgoing bubble + first-open mobile composer clearance */
+body[data-page="messages"] .bubble.mine{
+  background:color-mix(in srgb,var(--av-red) 42%,#2b3039)!important;
+  border-color:color-mix(in srgb,var(--av-red) 38%,var(--av-line))!important;
+}
+@media(max-width:800px){
+  body[data-page="messages"] .messages-shell{
+    height:calc(100dvh - var(--av-header) - 112px - env(safe-area-inset-bottom))!important;
+    max-height:calc(100dvh - var(--av-header) - 112px - env(safe-area-inset-bottom))!important;
+  }
+  body[data-page="messages"] .messages-shell.chat-selected .chat-pane{
+    height:100%!important;
+    min-height:0!important;
+    grid-template-rows:auto minmax(0,1fr) auto auto!important;
+  }
+  body[data-page="messages"] #chatForm.chat-compose:not([hidden]){
+    flex:0 0 auto!important;
+    margin:0!important;
+    transform:none!important;
+  }
+}
