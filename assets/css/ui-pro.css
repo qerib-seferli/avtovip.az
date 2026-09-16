@@ -196,3 +196,16 @@ body[data-page="create-listing"] #equipmentGrid .check-chip{
     padding-right:0!important;
   }
 }
+
+/* v29.1 — create listing color picker must render above following sections */
+body[data-page="create-listing"] .form-section:has(.color-picker-menu:not([hidden])){
+  position:relative!important;
+  z-index:220!important;
+}
+body[data-page="create-listing"] .color-picker{
+  position:relative!important;
+  z-index:1;
+}
+body[data-page="create-listing"] .color-picker-menu{
+  z-index:230!important;
+}
