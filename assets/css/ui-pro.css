@@ -209,3 +209,65 @@ body[data-page="create-listing"] .color-picker{
 body[data-page="create-listing"] .color-picker-menu{
   z-index:230!important;
 }
+
+/* v35 — PWA messages: peer avatar + composer only */
+@media (max-width:800px){
+  body[data-page="messages"] .chat-pane.open{
+    display:grid!important;
+    grid-template-rows:auto minmax(0,1fr) auto!important;
+    height:100%!important;
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+  body[data-page="messages"] .chat-head{
+    min-height:66px!important;
+    overflow:visible!important;
+  }
+  body[data-page="messages"] .chat-peer-link{
+    min-width:0!important;
+    overflow:visible!important;
+    align-items:center!important;
+  }
+  body[data-page="messages"] #chatPeerAvatar.conversation-avatar{
+    display:block!important;
+    box-sizing:border-box!important;
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    max-width:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    aspect-ratio:1/1!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    border-radius:50%!important;
+    overflow:hidden!important;
+    flex:0 0 48px!important;
+    margin:5px!important;
+  }
+  body[data-page="messages"] .chat-messages{
+    min-height:0!important;
+    overflow-y:auto!important;
+  }
+  body[data-page="messages"] #chatBlockedNotice[hidden]{display:none!important}
+  body[data-page="messages"] #chatForm.chat-compose:not([hidden]){
+    display:grid!important;
+    position:relative!important;
+    inset:auto!important;
+    grid-template-columns:auto minmax(0,1fr) 44px!important;
+    align-items:end!important;
+    gap:6px!important;
+    width:100%!important;
+    min-width:0!important;
+    flex:0 0 auto!important;
+    padding:7px!important;
+    padding-bottom:max(7px,env(safe-area-inset-bottom))!important;
+    border-top:1px solid var(--av-line)!important;
+    background:var(--av-card)!important;
+    z-index:20!important;
+  }
+  body[data-page="messages"] #chatForm .chat-tools{grid-column:1!important;display:flex!important;gap:3px!important}
+  body[data-page="messages"] #chatForm textarea{grid-column:2!important;width:100%!important;min-width:0!important;height:42px!important;min-height:42px!important;margin:0!important}
+  body[data-page="messages"] #chatForm>.square-btn{grid-column:3!important;width:44px!important;min-width:44px!important;height:42px!important;margin:0!important}
+  body[data-page="messages"] #chatForm .chat-media-preview{grid-column:1/-1!important}
+}
