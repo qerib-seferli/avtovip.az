@@ -1,5 +1,5 @@
 /* AvtoVİP PWA v20 — stale UI is never served while online. */
-const CACHE='avtovip-v26-20260916-layout-message-db';
+const CACHE='avtovip-v27-20260916-header-flag';
 const CORE=['./','index.html','assets/css/app.css?v=20','assets/css/patch11.css?v=20','assets/css/ui-pro.css?v=20','assets/js/supabase.js','assets/js/international.js','assets/js/app.js?v=20','assets/js/social.js?v=20','assets/js/patch11.js?v=20','assets/js/ui-pro.js?v=20','assets/img/brand/icon-192.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE).catch(()=>{})).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

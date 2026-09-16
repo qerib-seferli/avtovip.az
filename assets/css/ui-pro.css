@@ -128,4 +128,49 @@ body[data-page="create-listing"] #equipmentGrid .check-chip{
  body[data-page="home"] #filterEquipmentGrid,body[data-page="create-listing"] #equipmentGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  body[data-page="home"] #filterEquipmentGrid .check-chip,body[data-page="create-listing"] #equipmentGrid .check-chip{height:auto!important;min-height:30px!important}
 }
-\n\n/* AvtoVIP v26 — fixed desktop header edge-to-edge + live language flag */\n@media(min-width:901px){\n  body:not([data-page="auth"]):not([data-page="reset"]) .site-header{\n    position:fixed!important;top:0!important;left:0!important;right:0!important;\n    width:100%!important;margin:0!important;z-index:12000!important;\n  }\n  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .container{\n    width:100%!important;max-width:none!important;margin:0!important;\n    padding-left:10px!important;padding-right:10px!important;\n  }\n  body:not([data-page="auth"]):not([data-page="reset"]) .page{padding-top:calc(var(--av-header) + 10px)!important}\n  .site-header .brand{margin-left:0!important}\n  .site-header .header-actions{margin-left:auto!important;margin-right:0!important}\n}\n.av-desktop-rail-tools .av-rail-flag{width:22px!important;height:16px!important;min-width:22px!important;object-fit:cover!important;border-radius:2px!important;box-shadow:0 0 0 1px rgba(127,127,127,.22)}\n
+
+
+/* AvtoVIP v27 — desktop header truly fixed edge-to-edge + compact rail flag */
+@media (min-width:901px){
+  html,body{margin:0!important;padding-left:0!important;padding-right:0!important}
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header{
+    position:fixed!important;
+    inset:0 0 auto 0!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    height:var(--av-header)!important;
+    min-height:var(--av-header)!important;
+    margin:0!important;
+    transform:none!important;
+    z-index:30000!important;
+  }
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header>.container,
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .header-row{
+    box-sizing:border-box!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    height:var(--av-header)!important;
+    margin:0!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .brand{margin:0!important;padding:0!important}
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .header-actions{margin-left:auto!important;margin-right:0!important}
+  body:not([data-page="auth"]):not([data-page="reset"]) main.page{padding-top:calc(var(--av-header) + 10px)!important}
+
+  .av-desktop-rail-tools [data-av-lang]{overflow:hidden!important}
+  .av-desktop-rail-tools .av-rail-flag{
+    display:block!important;
+    width:18px!important;
+    min-width:18px!important;
+    max-width:18px!important;
+    height:13px!important;
+    min-height:13px!important;
+    max-height:13px!important;
+    object-fit:cover!important;
+    border-radius:2px!important;
+    margin:0 3px!important;
+    flex:0 0 18px!important;
+    box-shadow:0 0 0 1px rgba(127,127,127,.22)!important;
+  }
+}
