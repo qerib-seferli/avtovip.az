@@ -1,5 +1,5 @@
-const CACHE='avtovip-v32-20260916-story-mobile-fix';
-const CORE=['./','index.html','assets/css/app.css?v=32','assets/css/patch11.css?v=20','assets/css/ui-pro.css?v=29','assets/js/supabase.js','assets/js/international.js','assets/js/app.js?v=32','assets/js/social.js?v=31','assets/js/patch11.js?v=20','assets/js/ui-pro.js?v=21','assets/img/brand/icon-192.png'];
+const CACHE='avtovip-v33-20260916-pwa-messages-shell';
+const CORE=['./','index.html','assets/css/app.css?v=32','assets/css/patch11.css?v=33','assets/css/ui-pro.css?v=29','assets/js/supabase.js','assets/js/international.js','assets/js/app.js?v=32','assets/js/social.js?v=31','assets/js/patch11.js?v=20','assets/js/ui-pro.js?v=21','assets/img/brand/icon-192.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE).catch(()=>{})).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
