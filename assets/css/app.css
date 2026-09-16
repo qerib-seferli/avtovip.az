@@ -400,3 +400,15 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
  .story-comments-open .story-comments{padding-top:12px!important;padding-bottom:92px!important}
  .story-comments-open .story-comment-form{z-index:10!important}
 }
+
+/* AvtoVIP story viewer v43 — mobil media alt idarəetmələrin üstünə çıxmır */
+@media(max-width:760px){
+  .story-shell{position:relative!important;height:100dvh!important;overflow:hidden!important}
+  .story-shell .story-card{height:calc(100dvh - max(78px, calc(66px + env(safe-area-inset-bottom))))!important;max-height:calc(100dvh - max(78px, calc(66px + env(safe-area-inset-bottom))))!important;overflow:hidden!important}
+  .story-shell .story-media{display:block!important;width:100%!important;height:100%!important;max-height:100%!important;object-fit:contain!important;background:#000!important}
+  .story-social{bottom:0!important}
+  .story-comment-form{bottom:0!important}
+  .story-caption{bottom:24px!important}
+  .story-comments-open .story-card{height:100dvh!important;max-height:100dvh!important}
+  .story-comments-open .story-caption{display:none!important}
+}
