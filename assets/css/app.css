@@ -466,3 +466,31 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
   .story-comment-form>button{flex:0 0 48px!important}
   .story-comments-open .story-comment-form{left:12px!important;right:12px!important;width:auto!important}
 }
+
+/* AvtoVIP story viewer v46 — mobile controls use full-width rows */
+@media(max-width:760px){
+  .story-shell .story-card{inset:0 0 max(164px,calc(152px + env(safe-area-inset-bottom))) 0!important}
+  .story-social:not(.story-comments-open .story-social){
+    height:max(164px,calc(152px + env(safe-area-inset-bottom)))!important;
+    padding:8px 24px max(10px,env(safe-area-inset-bottom))!important;
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:8px!important;
+  }
+  .story-social:not(.story-comments-open .story-social) .story-social-actions{
+    position:static!important;width:100%!important;height:58px!important;flex:0 0 58px!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;gap:26px!important;padding:0!important;margin:0!important;
+  }
+  .story-social:not(.story-comments-open .story-social) .story-action{
+    width:58px!important;min-width:58px!important;height:56px!important;min-height:56px!important;padding:2px!important;background:transparent!important;
+  }
+  .story-social:not(.story-comments-open .story-social) .story-action i{font-size:25px!important}
+  .story-social:not(.story-comments-open .story-social) .story-action span{font-size:14px!important;font-weight:800!important}
+  .story-social:not(.story-comments-open .story-social) .story-comment-form{
+    position:static!important;left:auto!important;right:auto!important;bottom:auto!important;width:100%!important;height:54px!important;flex:0 0 54px!important;
+    display:flex!important;align-items:center!important;gap:10px!important;margin:0!important;padding:0!important;background:transparent!important;
+  }
+  .story-social:not(.story-comments-open .story-social) .story-comment-compose{flex:1 1 0!important;min-width:0!important;width:auto!important}
+  .story-social:not(.story-comments-open .story-social) .story-comment-compose input{width:100%!important;height:52px!important;min-width:0!important}
+  .story-social:not(.story-comments-open .story-social) .story-comment-form>button{width:52px!important;min-width:52px!important;height:52px!important;flex:0 0 52px!important}
+  .story-caption{bottom:max(164px,calc(152px + env(safe-area-inset-bottom)))!important}
+  .story-comments-open .story-card{inset:0!important;height:100dvh!important;max-height:100dvh!important}
+}

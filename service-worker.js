@@ -1,4 +1,4 @@
-const CACHE='avtovip-v45-20260917-story-layout-video-close';
+const CACHE='avtovip-v46-20260917-story-layout-video-close';
 const CORE=['./','index.html','assets/css/app.css?v=44','assets/css/patch11.css?v=34','assets/css/ui-pro.css?v=39','assets/js/supabase.js','assets/js/international.js','assets/js/app.js?v=42','assets/js/social.js?v=31','assets/js/patch11.js?v=20','assets/js/ui-pro.js?v=24','assets/img/brand/icon-192.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE).catch(()=>{})).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
