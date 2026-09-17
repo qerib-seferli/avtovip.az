@@ -805,28 +805,88 @@
   }
   function renderPreview(files,root,onRemove){if(!root)return;root.innerHTML=[...files].slice(0,15).map((f,i)=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt="">${onRemove?`<button type="button" class="upload-remove" data-remove-upload="${i}" aria-label="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}</div>`).join('');if(onRemove)root.onclick=e=>{const b=e.target.closest('[data-remove-upload]');if(b)onRemove(Number(b.dataset.removeUpload))}}
 
-  async function validateStoryVideo(file){
-    if(!file?.type?.startsWith('video/'))return;
+  let storyFfmpegLoader=null;
+  let storyFfmpegProgress=null;
+
+  async function storyVideoHasMarker(file,marker){
+    const max=2*1024*1024;
+    const parts=[file.slice(0,Math.min(file.size,max))];
+    if(file.size>max)parts.push(file.slice(Math.max(0,file.size-max)));
+    const needle=new TextEncoder().encode(marker);
+    for(const part of parts){
+      const bytes=new Uint8Array(await part.arrayBuffer());
+      outer:for(let i=0;i<=bytes.length-needle.length;i++){
+        for(let j=0;j<needle.length;j++)if(bytes[i+j]!==needle[j])continue outer;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  async function storyVideoPlayable(file){
+    const url=URL.createObjectURL(file);
+    try{
+      return await new Promise(resolve=>{
+        const v=document.createElement('video');let done=false;
+        const finish=value=>{if(done)return;done=true;clearTimeout(timer);v.removeAttribute('src');try{v.load()}catch{}resolve(value)};
+        const timer=setTimeout(()=>finish(false),5000);
+        v.preload='metadata';v.muted=true;v.playsInline=true;
+        v.onloadedmetadata=()=>finish(true);
+        v.onerror=()=>finish(false);
+        v.src=url;
+      });
+    }finally{URL.revokeObjectURL(url)}
+  }
+
+  async function loadStoryFfmpeg(){
+    if(window.FFmpeg?.createFFmpeg)return window.FFmpeg;
+    if(storyFfmpegLoader)return storyFfmpegLoader;
+    storyFfmpegLoader=new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      script.src='https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js';
+      script.async=true;
+      script.onload=()=>window.FFmpeg?.createFFmpeg?resolve(window.FFmpeg):reject(new Error('Video hazırlama modulu açıla bilmədi.'));
+      script.onerror=()=>reject(new Error('Video hazırlama modulu açıla bilmədi.'));
+      document.head.appendChild(script);
+    });
+    return storyFfmpegLoader;
+  }
+
+  async function normalizeStoryVideo(file){
+    if(!file?.type?.startsWith('video/'))return file;
     const ext=String(file.name||'').split('.').pop().toLowerCase();
-    if(!['mp4','webm'].includes(ext)&&!['video/mp4','video/webm'].includes(String(file.type||'').toLowerCase()))throw new Error('Hekayə videosu MP4 və ya WebM formatında olmalıdır.');
-    /* iPhone/Android can sometimes play HEVC/H.265 locally while Firefox cannot.
-       Detect the common MP4 codec markers before upload so new stories remain cross-browser. */
-    if(ext==='mp4'||String(file.type||'').toLowerCase()==='video/mp4'){
-      const max=2*1024*1024;
-      const parts=[file.slice(0,Math.min(file.size,max))];
-      if(file.size>max)parts.push(file.slice(Math.max(0,file.size-max)));
-      const hasMarker=async marker=>{
-        const needle=new TextEncoder().encode(marker);
-        for(const part of parts){
-          const bytes=new Uint8Array(await part.arrayBuffer());
-          outer:for(let i=0;i<=bytes.length-needle.length;i++){
-            for(let j=0;j<needle.length;j++)if(bytes[i+j]!==needle[j])continue outer;
-            return true;
-          }
-        }
-        return false;
-      };
-      if(await hasMarker('hvc1')||await hasMarker('hev1'))throw new Error('Bu video HEVC/H.265 kodekindədir və bəzi brauzerlərdə açılmır. H.264 kodekli MP4 və ya WebM seçin.');
+    const isHevc=(ext==='hevc'||ext==='h265'||await storyVideoHasMarker(file,'hvc1')||await storyVideoHasMarker(file,'hev1'));
+    const browserCanPlay=await storyVideoPlayable(file);
+    const alreadyUniversal=!isHevc&&browserCanPlay&&(['mp4','webm'].includes(ext)||['video/mp4','video/webm'].includes(String(file.type||'').toLowerCase()));
+    if(alreadyUniversal)return file;
+
+    setStatus('#storyStatus','Video hazırlanır... 0%');
+    const FF=await loadStoryFfmpeg();
+    const inputExt=(ext&&/^[a-z0-9]{2,5}$/.test(ext))?ext:'mp4';
+    const inputName=`story-input.${inputExt}`;
+    const outputName='story-ready.mp4';
+    const ffmpeg=FF.createFFmpeg({
+      log:false,
+      corePath:'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+      progress:({ratio})=>{
+        const pct=Math.max(0,Math.min(99,Math.round((Number(ratio)||0)*100)));
+        setStatus('#storyStatus',`Video hazırlanır... ${pct}%`);
+      }
+    });
+    try{
+      await ffmpeg.load();
+      ffmpeg.FS('writeFile',inputName,await FF.fetchFile(file));
+      await ffmpeg.run('-i',inputName,'-c:v','libx264','-preset','ultrafast','-crf','26','-pix_fmt','yuv420p','-c:a','aac','-b:a','128k','-movflags','+faststart',outputName);
+      const data=ffmpeg.FS('readFile',outputName);
+      setStatus('#storyStatus','Video hazırlandı. Yüklənir...');
+      return new File([data.buffer],`${String(file.name||'video').replace(/\.[^.]+$/,'')}.mp4`,{type:'video/mp4',lastModified:Date.now()});
+    }catch(err){
+      console.error('Story video conversion failed',err);
+      throw new Error('Video hazırlana bilmədi. Zəhmət olmasa videonu yenidən seçin.');
+    }finally{
+      try{ffmpeg.FS('unlink',inputName)}catch{}
+      try{ffmpeg.FS('unlink',outputName)}catch{}
+      try{ffmpeg.exit()}catch{}
     }
   }
 
@@ -841,7 +901,7 @@
       if(f.type.startsWith('video/')){
         const v=document.createElement('video');v.src=storyPreviewUrl;v.muted=true;v.playsInline=true;v.preload='metadata';v.autoplay=true;v.loop=true;v.setAttribute('playsinline','');box.append(v);
         v.addEventListener('loadedmetadata',()=>{v.play().catch(()=>{})},{once:true});
-        v.addEventListener('error',()=>{box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Bu video brauzerdə açıla bilmir. H.264 kodekli MP4 və ya WebM seçin.</div>'},{once:true});
+        v.addEventListener('error',()=>{box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Video seçildi. Paylaşarkən avtomatik hazırlanacaq.</div>'},{once:true});
       }else if(f.type.startsWith('image/')){
         const img=document.createElement('img');img.src=storyPreviewUrl;img.alt='Hekayə önbaxışı';box.append(img);
       }else box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Şəkil və ya video seçin.</div>';
@@ -850,29 +910,13 @@
       e.preventDefault();const btn=$('#storySubmit');btn.disabled=true;let uploaded=null,storyId=null;
       try{
         const original=media.files[0];if(!original)throw new Error('Şəkil və ya video seçin.');
-        if(original.type.startsWith('video/')){
-          if(original.size>30*1024*1024)throw new Error('Video maksimum 30 MB ola bilər.');
-          setStatus('#storyStatus','Video uyğunluğu yoxlanılır...');
-          await validateStoryVideo(original);
-          const testUrl=URL.createObjectURL(original);
-          try{
-            await new Promise((resolve,reject)=>{
-              const v=document.createElement('video');let done=false;
-              const finish=(fn,val)=>{if(done)return;done=true;v.removeAttribute('src');v.load();fn(val)};
-              const timer=setTimeout(()=>finish(reject,new Error('Video oxunmadı. H.264 kodekli MP4 və ya WebM seçin.')),8000);
-              v.preload='metadata';v.muted=true;v.playsInline=true;
-              v.onloadedmetadata=()=>{clearTimeout(timer);finish(resolve)};
-              v.onerror=()=>{clearTimeout(timer);finish(reject,new Error('Bu video bu cihazda uyğun formatda deyil. H.264 kodekli MP4 və ya WebM seçin.'))};
-              v.src=testUrl;
-            });
-          }finally{URL.revokeObjectURL(testUrl)}
-        }
-        const file=original.type.startsWith('image/')?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000}):original;
+        if(original.type.startsWith('video/')&&original.size>80*1024*1024)throw new Error('Video çox böyükdür. Daha qısa video seçin.');
+        const file=original.type.startsWith('image/')?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000}):await normalizeStoryVideo(original);
         uploaded=await db.upload('story-media',user.id,file,'stories');
         const {data:story,error}=await sb.from('stories').insert({user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:$('#storyCaption').value.trim(),status:'pending_payment'}).select().single();if(error)throw error;storyId=story.id;
         const amount=Number($('#storyAmount')?.dataset.amount||5);const {error:pe}=await sb.from('payment_requests').insert({user_id:user.id,target_type:'story',target_id:story.id,plan_code:'24h',amount,payment_method:$('#storyPaymentMethod').value,payer_note:$('#storyPaymentNote').value.trim()});if(pe)throw pe;
         toast('Hekayə yaradıldı. Ödəniş sorğusu admin təsdiqini gözləyir.','success');setStatus('#storyStatus','Admin ödənişi təsdiqlədikdən sonra hekayə 24 saatlıq aktiv olacaq.','success');form.reset();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
-      }catch(err){if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
+      }catch(err){if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus','')}finally{btn.disabled=false}
     });
     const {data:list}=await sb.from('elanlar').select('id,brand,model,year').eq('user_id',user.id).eq('status','approved').order('created_at',{ascending:false});const sel=$('#storyListing');if(sel)sel.innerHTML=`<option value="">${esc(staticText('Elana bağlama'))}</option>`+(list||[]).map(x=>`<option value="${x.id}">${esc(x.brand)} ${esc(x.model)} ${x.year}</option>`).join('');
   }
