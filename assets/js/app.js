@@ -805,88 +805,71 @@
   }
   function renderPreview(files,root,onRemove){if(!root)return;root.innerHTML=[...files].slice(0,15).map((f,i)=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt="">${onRemove?`<button type="button" class="upload-remove" data-remove-upload="${i}" aria-label="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}</div>`).join('');if(onRemove)root.onclick=e=>{const b=e.target.closest('[data-remove-upload]');if(b)onRemove(Number(b.dataset.removeUpload))}}
 
-  let storyFfmpegLoader=null;
-  let storyFfmpegProgress=null;
-
-  async function storyVideoHasMarker(file,marker){
-    const max=2*1024*1024;
-    const parts=[file.slice(0,Math.min(file.size,max))];
-    if(file.size>max)parts.push(file.slice(Math.max(0,file.size-max)));
-    const needle=new TextEncoder().encode(marker);
-    for(const part of parts){
-      const bytes=new Uint8Array(await part.arrayBuffer());
-      outer:for(let i=0;i<=bytes.length-needle.length;i++){
-        for(let j=0;j<needle.length;j++)if(bytes[i+j]!==needle[j])continue outer;
-        return true;
-      }
-    }
-    return false;
-  }
-
-  async function storyVideoPlayable(file){
-    const url=URL.createObjectURL(file);
-    try{
-      return await new Promise(resolve=>{
-        const v=document.createElement('video');let done=false;
-        const finish=value=>{if(done)return;done=true;clearTimeout(timer);v.removeAttribute('src');try{v.load()}catch{}resolve(value)};
-        const timer=setTimeout(()=>finish(false),5000);
-        v.preload='metadata';v.muted=true;v.playsInline=true;
-        v.onloadedmetadata=()=>finish(true);
-        v.onerror=()=>finish(false);
-        v.src=url;
-      });
-    }finally{URL.revokeObjectURL(url)}
-  }
-
-  async function loadStoryFfmpeg(){
+  let storyFFmpegLoader=null;
+  async function loadStoryFFmpeg(){
     if(window.FFmpeg?.createFFmpeg)return window.FFmpeg;
-    if(storyFfmpegLoader)return storyFfmpegLoader;
-    storyFfmpegLoader=new Promise((resolve,reject)=>{
+    if(storyFFmpegLoader)return storyFFmpegLoader;
+    storyFFmpegLoader=new Promise((resolve,reject)=>{
       const script=document.createElement('script');
-      script.src='https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js';
+      script.src='https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js';
       script.async=true;
       script.onload=()=>window.FFmpeg?.createFFmpeg?resolve(window.FFmpeg):reject(new Error('Video hazırlama modulu açıla bilmədi.'));
       script.onerror=()=>reject(new Error('Video hazırlama modulu açıla bilmədi.'));
-      document.head.appendChild(script);
-    });
-    return storyFfmpegLoader;
+      document.head.append(script);
+    }).catch(err=>{storyFFmpegLoader=null;throw err});
+    return storyFFmpegLoader;
+  }
+
+  async function storyVideoNeedsNormalize(file){
+    const ext=String(file?.name||'').split('.').pop().toLowerCase();
+    const type=String(file?.type||'').toLowerCase();
+    if(ext!=='mp4'&&type!=='video/mp4')return true;
+    const max=2*1024*1024,parts=[file.slice(0,Math.min(file.size,max))];
+    if(file.size>max)parts.push(file.slice(Math.max(0,file.size-max)));
+    const hasMarker=async marker=>{
+      const needle=new TextEncoder().encode(marker);
+      for(const part of parts){
+        const bytes=new Uint8Array(await part.arrayBuffer());
+        outer:for(let i=0;i<=bytes.length-needle.length;i++){
+          for(let j=0;j<needle.length;j++)if(bytes[i+j]!==needle[j])continue outer;
+          return true;
+        }
+      }
+      return false;
+    };
+    return await hasMarker('hvc1')||await hasMarker('hev1')||await hasMarker('av01');
   }
 
   async function normalizeStoryVideo(file){
-    if(!file?.type?.startsWith('video/'))return file;
-    const ext=String(file.name||'').split('.').pop().toLowerCase();
-    const isHevc=(ext==='hevc'||ext==='h265'||await storyVideoHasMarker(file,'hvc1')||await storyVideoHasMarker(file,'hev1'));
-    const browserCanPlay=await storyVideoPlayable(file);
-    const alreadyUniversal=!isHevc&&browserCanPlay&&(['mp4','webm'].includes(ext)||['video/mp4','video/webm'].includes(String(file.type||'').toLowerCase()));
-    if(alreadyUniversal)return file;
-
-    setStatus('#storyStatus','Video hazırlanır... 0%');
-    const FF=await loadStoryFfmpeg();
-    const inputExt=(ext&&/^[a-z0-9]{2,5}$/.test(ext))?ext:'mp4';
-    const inputName=`story-input.${inputExt}`;
-    const outputName='story-ready.mp4';
-    const ffmpeg=FF.createFFmpeg({
+    if(!file?.type?.startsWith('video/') && !/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(file?.name||''))return file;
+    if(!(await storyVideoNeedsNormalize(file)))return file;
+    setStatus('#storyStatus','Video hazırlanır...');
+    const lib=await loadStoryFFmpeg();
+    const inputExt=(String(file.name||'').split('.').pop()||'bin').replace(/[^a-z0-9]/gi,'').toLowerCase()||'bin';
+    const inputName=`story-input.${inputExt}`,outputName='story-ready.mp4';
+    const ffmpeg=lib.createFFmpeg({
       log:false,
-      corePath:'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
-      progress:({ratio})=>{
-        const pct=Math.max(0,Math.min(99,Math.round((Number(ratio)||0)*100)));
-        setStatus('#storyStatus',`Video hazırlanır... ${pct}%`);
-      }
+      corePath:'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+      progress:({ratio})=>{if(Number.isFinite(ratio)&&ratio>=0)setStatus('#storyStatus',`Video hazırlanır... ${Math.min(99,Math.max(1,Math.round(ratio*100)))}%`)}
     });
     try{
-      await ffmpeg.load();
-      ffmpeg.FS('writeFile',inputName,await FF.fetchFile(file));
-      await ffmpeg.run('-i',inputName,'-c:v','libx264','-preset','ultrafast','-crf','26','-pix_fmt','yuv420p','-c:a','aac','-b:a','128k','-movflags','+faststart',outputName);
+      if(!ffmpeg.isLoaded())await ffmpeg.load();
+      ffmpeg.FS('writeFile',inputName,await lib.fetchFile(file));
+      await ffmpeg.run(
+        '-i',inputName,
+        '-map','0:v:0','-map','0:a?',
+        '-vf','scale=trunc(iw/2)*2:trunc(ih/2)*2',
+        '-c:v','libx264','-preset','veryfast','-crf','23','-pix_fmt','yuv420p',
+        '-c:a','aac','-b:a','128k','-ar','44100',
+        '-movflags','+faststart',outputName
+      );
       const data=ffmpeg.FS('readFile',outputName);
-      setStatus('#storyStatus','Video hazırlandı. Yüklənir...');
       return new File([data.buffer],`${String(file.name||'video').replace(/\.[^.]+$/,'')}.mp4`,{type:'video/mp4',lastModified:Date.now()});
-    }catch(err){
-      console.error('Story video conversion failed',err);
+    }catch(e){
       throw new Error('Video hazırlana bilmədi. Zəhmət olmasa videonu yenidən seçin.');
     }finally{
       try{ffmpeg.FS('unlink',inputName)}catch{}
       try{ffmpeg.FS('unlink',outputName)}catch{}
-      try{ffmpeg.exit()}catch{}
     }
   }
 
@@ -898,10 +881,11 @@
     media?.addEventListener('change',async()=>{
       const f=media.files[0],box=$('#storyPreview');if(!box)return;clearStoryPreviewUrl();box.innerHTML='';if(!f)return;
       storyPreviewUrl=URL.createObjectURL(f);
-      if(f.type.startsWith('video/')){
+      const previewIsVideo=f.type.startsWith('video/')||/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(f.name||'');
+      if(previewIsVideo){
         const v=document.createElement('video');v.src=storyPreviewUrl;v.muted=true;v.playsInline=true;v.preload='metadata';v.autoplay=true;v.loop=true;v.setAttribute('playsinline','');box.append(v);
         v.addEventListener('loadedmetadata',()=>{v.play().catch(()=>{})},{once:true});
-        v.addEventListener('error',()=>{box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Video seçildi. Paylaşarkən avtomatik hazırlanacaq.</div>'},{once:true});
+        v.addEventListener('error',()=>{box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Video seçildi. Göndərilərkən avtomatik hazırlanacaq.</div>'},{once:true});
       }else if(f.type.startsWith('image/')){
         const img=document.createElement('img');img.src=storyPreviewUrl;img.alt='Hekayə önbaxışı';box.append(img);
       }else box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Şəkil və ya video seçin.</div>';
@@ -910,13 +894,17 @@
       e.preventDefault();const btn=$('#storySubmit');btn.disabled=true;let uploaded=null,storyId=null;
       try{
         const original=media.files[0];if(!original)throw new Error('Şəkil və ya video seçin.');
-        if(original.type.startsWith('video/')&&original.size>80*1024*1024)throw new Error('Video çox böyükdür. Daha qısa video seçin.');
-        const file=original.type.startsWith('image/')?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000}):await normalizeStoryVideo(original);
+        const looksVideo=original.type.startsWith('video/')||/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(original.name||'');
+        if(looksVideo&&original.size>80*1024*1024)throw new Error('Video faylı çox böyükdür. Daha qısa video seçin.');
+        const file=original.type.startsWith('image/')
+          ?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000})
+          :looksVideo?await normalizeStoryVideo(original):original;
+        if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))throw new Error('Şəkil və ya video seçin.');
         uploaded=await db.upload('story-media',user.id,file,'stories');
         const {data:story,error}=await sb.from('stories').insert({user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:$('#storyCaption').value.trim(),status:'pending_payment'}).select().single();if(error)throw error;storyId=story.id;
         const amount=Number($('#storyAmount')?.dataset.amount||5);const {error:pe}=await sb.from('payment_requests').insert({user_id:user.id,target_type:'story',target_id:story.id,plan_code:'24h',amount,payment_method:$('#storyPaymentMethod').value,payer_note:$('#storyPaymentNote').value.trim()});if(pe)throw pe;
         toast('Hekayə yaradıldı. Ödəniş sorğusu admin təsdiqini gözləyir.','success');setStatus('#storyStatus','Admin ödənişi təsdiqlədikdən sonra hekayə 24 saatlıq aktiv olacaq.','success');form.reset();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
-      }catch(err){if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus','')}finally{btn.disabled=false}
+      }catch(err){if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
     });
     const {data:list}=await sb.from('elanlar').select('id,brand,model,year').eq('user_id',user.id).eq('status','approved').order('created_at',{ascending:false});const sel=$('#storyListing');if(sel)sel.innerHTML=`<option value="">${esc(staticText('Elana bağlama'))}</option>`+(list||[]).map(x=>`<option value="${x.id}">${esc(x.brand)} ${esc(x.model)} ${x.year}</option>`).join('');
   }
