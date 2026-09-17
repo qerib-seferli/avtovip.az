@@ -833,18 +833,45 @@
   async function initCreateStory(){
     const user=await db.requireAuth();if(!user)return;
     const form=$('#storyForm'),media=$('#storyMedia');setupFriendlyFileInput(media,{kind:'media'});
-    media?.addEventListener('change',()=>{const f=media.files[0],box=$('#storyPreview');if(!f||!box)return;const u=URL.createObjectURL(f);box.innerHTML=f.type.startsWith('video/')?`<video src="${u}" controls></video>`:`<img src="${u}" alt="">`});
+    let storyPreviewUrl='';
+    const clearStoryPreviewUrl=()=>{if(storyPreviewUrl){URL.revokeObjectURL(storyPreviewUrl);storyPreviewUrl=''}};
+    media?.addEventListener('change',async()=>{
+      const f=media.files[0],box=$('#storyPreview');if(!box)return;clearStoryPreviewUrl();box.innerHTML='';if(!f)return;
+      storyPreviewUrl=URL.createObjectURL(f);
+      if(f.type.startsWith('video/')){
+        const v=document.createElement('video');v.src=storyPreviewUrl;v.muted=true;v.playsInline=true;v.preload='metadata';v.autoplay=true;v.loop=true;v.setAttribute('playsinline','');box.append(v);
+        v.addEventListener('loadedmetadata',()=>{v.play().catch(()=>{})},{once:true});
+        v.addEventListener('error',()=>{box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Bu video brauzerdə açıla bilmir. H.264 kodekli MP4 və ya WebM seçin.</div>'},{once:true});
+      }else if(f.type.startsWith('image/')){
+        const img=document.createElement('img');img.src=storyPreviewUrl;img.alt='Hekayə önbaxışı';box.append(img);
+      }else box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Şəkil və ya video seçin.</div>';
+    });
     form?.addEventListener('submit',async e=>{
       e.preventDefault();const btn=$('#storySubmit');btn.disabled=true;let uploaded=null,storyId=null;
       try{
         const original=media.files[0];if(!original)throw new Error('Şəkil və ya video seçin.');
-        if(original.type.startsWith('video/'))await validateStoryVideo(original);
-        if(original.type.startsWith('video/')&&original.size>30*1024*1024)throw new Error('Video maksimum 30 MB ola bilər.');
+        if(original.type.startsWith('video/')){
+          if(original.size>30*1024*1024)throw new Error('Video maksimum 30 MB ola bilər.');
+          setStatus('#storyStatus','Video uyğunluğu yoxlanılır...');
+          await validateStoryVideo(original);
+          const testUrl=URL.createObjectURL(original);
+          try{
+            await new Promise((resolve,reject)=>{
+              const v=document.createElement('video');let done=false;
+              const finish=(fn,val)=>{if(done)return;done=true;v.removeAttribute('src');v.load();fn(val)};
+              const timer=setTimeout(()=>finish(reject,new Error('Video oxunmadı. H.264 kodekli MP4 və ya WebM seçin.')),8000);
+              v.preload='metadata';v.muted=true;v.playsInline=true;
+              v.onloadedmetadata=()=>{clearTimeout(timer);finish(resolve)};
+              v.onerror=()=>{clearTimeout(timer);finish(reject,new Error('Bu video bu cihazda uyğun formatda deyil. H.264 kodekli MP4 və ya WebM seçin.'))};
+              v.src=testUrl;
+            });
+          }finally{URL.revokeObjectURL(testUrl)}
+        }
         const file=original.type.startsWith('image/')?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000}):original;
         uploaded=await db.upload('story-media',user.id,file,'stories');
         const {data:story,error}=await sb.from('stories').insert({user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:$('#storyCaption').value.trim(),status:'pending_payment'}).select().single();if(error)throw error;storyId=story.id;
         const amount=Number($('#storyAmount')?.dataset.amount||5);const {error:pe}=await sb.from('payment_requests').insert({user_id:user.id,target_type:'story',target_id:story.id,plan_code:'24h',amount,payment_method:$('#storyPaymentMethod').value,payer_note:$('#storyPaymentNote').value.trim()});if(pe)throw pe;
-        toast('Hekayə yaradıldı. Ödəniş sorğusu admin təsdiqini gözləyir.','success');setStatus('#storyStatus','Admin ödənişi təsdiqlədikdən sonra hekayə 24 saatlıq aktiv olacaq.','success');form.reset();$('#storyPreview').innerHTML='';
+        toast('Hekayə yaradıldı. Ödəniş sorğusu admin təsdiqini gözləyir.','success');setStatus('#storyStatus','Admin ödənişi təsdiqlədikdən sonra hekayə 24 saatlıq aktiv olacaq.','success');form.reset();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
       }catch(err){if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
     });
     const {data:list}=await sb.from('elanlar').select('id,brand,model,year').eq('user_id',user.id).eq('status','approved').order('created_at',{ascending:false});const sel=$('#storyListing');if(sel)sel.innerHTML=`<option value="">${esc(staticText('Elana bağlama'))}</option>`+(list||[]).map(x=>`<option value="${x.id}">${esc(x.brand)} ${esc(x.model)} ${x.year}</option>`).join('');
