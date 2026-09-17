@@ -709,7 +709,30 @@
     likeBtn.onclick=async()=>{if(!currentUser){toast('Bəyənmək üçün giriş edin.','info');return}const active=likeBtn.classList.contains('active');const q=active?sb.from('story_likes').delete().eq('story_id',s.id).eq('user_id',currentUser.id):sb.from('story_likes').insert({story_id:s.id,user_id:currentUser.id});const {error}=await q;if(error)toast(error.message,'error');else await loadSocial()};
     modal.querySelector('#storyCommentFocus').onclick=()=>{holdStory();commentInput.focus()};commentInput.addEventListener('focus',holdStory);modal.querySelector('.story-card')?.addEventListener('click',e=>{if(modal.classList.contains('story-comments-open')&&!e.target.closest('.story-top')){e.preventDefault();closeComments()}});if(video){video.addEventListener('click',e=>{if(modal.classList.contains('story-comments-open')){e.preventDefault();e.stopPropagation();closeComments();return}if(window.matchMedia('(max-width:760px)').matches){e.preventDefault();e.stopPropagation();if(video.paused)video.play().catch(()=>{});else video.pause()}},true);}modal.querySelector('.story-social')?.addEventListener('click',e=>{if(!modal.classList.contains('story-comments-open'))return;if(e.target.closest('.story-comments,.story-comment-form,.story-social-actions,.story-social-head'))return;e.preventDefault();closeComments()});
     const emojiBtn=modal.querySelector('#storyEmojiBtn'),emojiPicker=modal.querySelector('#storyEmojiPicker'),storyEmojis=['😀','😂','😍','🥰','😎','🤩','👍','👏','🔥','❤️','💯','🎉','😢','😮','🤔','🙏','🚗','🏁'];
-    if(emojiBtn&&emojiPicker){emojiPicker.innerHTML=storyEmojis.map(x=>`<button type="button" data-story-emoji="${x}">${x}</button>`).join('');emojiBtn.onclick=()=>{emojiPicker.hidden=!emojiPicker.hidden};emojiPicker.addEventListener('pointerdown',e=>{if(e.target.closest('[data-story-emoji]'))e.preventDefault()},{passive:false});emojiPicker.onclick=e=>{const b=e.target.closest('[data-story-emoji]');if(!b)return;const start=commentInput.selectionStart??commentInput.value.length,end=commentInput.selectionEnd??start;commentInput.value=commentInput.value.slice(0,start)+b.dataset.storyEmoji+commentInput.value.slice(end);const pos=start+b.dataset.storyEmoji.length;if(document.activeElement!==commentInput)commentInput.focus({preventScroll:true});commentInput.setSelectionRange(pos,pos);emojiPicker.hidden=false}}
+    if(emojiBtn&&emojiPicker){
+      let emojiSelStart=commentInput.value.length,emojiSelEnd=emojiSelStart;
+      const rememberEmojiSelection=()=>{emojiSelStart=commentInput.selectionStart??commentInput.value.length;emojiSelEnd=commentInput.selectionEnd??emojiSelStart};
+      ['click','keyup','select','input'].forEach(type=>commentInput.addEventListener(type,rememberEmojiSelection));
+      emojiPicker.innerHTML=storyEmojis.map(x=>`<button type="button" data-story-emoji="${x}">${x}</button>`).join('');
+      emojiBtn.addEventListener('pointerdown',e=>e.preventDefault(),{passive:false});
+      emojiBtn.onclick=()=>{
+        const opening=emojiPicker.hidden;
+        if(opening){
+          rememberEmojiSelection();
+          if(document.activeElement===commentInput)commentInput.blur();
+          emojiPicker.hidden=false;
+        }else emojiPicker.hidden=true;
+      };
+      emojiPicker.addEventListener('pointerdown',e=>{if(e.target.closest('[data-story-emoji]'))e.preventDefault()},{passive:false});
+      emojiPicker.onclick=e=>{
+        const b=e.target.closest('[data-story-emoji]');if(!b)return;
+        const start=Math.min(emojiSelStart,commentInput.value.length),end=Math.min(emojiSelEnd,commentInput.value.length);
+        commentInput.value=commentInput.value.slice(0,start)+b.dataset.storyEmoji+commentInput.value.slice(end);
+        const pos=start+b.dataset.storyEmoji.length;emojiSelStart=emojiSelEnd=pos;
+        try{commentInput.setSelectionRange(pos,pos)}catch{}
+        emojiPicker.hidden=false;
+      };
+    }
     modal.querySelector('#storyCommentForm').onsubmit=async e=>{e.preventDefault();if(!currentUser){toast('Şərh yazmaq üçün giriş edin.','info');return}const body=commentInput.value.trim();if(!body)return;const {error}=await sb.from('story_comments').insert({story_id:s.id,user_id:currentUser.id,body});if(error)toast(error.message,'error');else{commentInput.value='';if(emojiPicker)emojiPicker.hidden=true;await loadSocial();commentsRoot.scrollTop=commentsRoot.scrollHeight;holdStory()}};
     commentsRoot.onclick=async e=>{const del=e.target.closest('[data-story-delete]'),edit=e.target.closest('[data-story-edit]');if(del){const ok=await uiDialog({title:'Şərhi sil',message:'Bu şərh silinsin?',confirmText:'Sil'});if(!ok)return;const {error}=await sb.from('story_comments').delete().eq('id',del.dataset.storyDelete).eq('user_id',currentUser.id);if(error)toast(error.message,'error');else await loadSocial()}if(edit){const row=edit.closest('.story-comment'),old=row?.querySelector('p')?.textContent||'';const text=await uiDialog({title:'Şərhi redaktə et',message:'Şərhi dəyişin:',input:true,inputValue:old,confirmText:'Yadda saxla'});if(text===null||!String(text).trim())return;const {error}=await sb.from('story_comments').update({body:String(text).trim(),edited_at:new Date().toISOString()}).eq('id',edit.dataset.storyEdit).eq('user_id',currentUser.id);if(error)toast(error.message,'error');else await loadSocial()}};
     await loadSocial();
