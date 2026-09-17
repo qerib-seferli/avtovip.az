@@ -652,3 +652,37 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
     border-radius:0!important;
   }
 }
+
+/* AvtoVIP brand sizing: home header + auth only */
+body[data-page="home"] .site-header .brand{
+  flex:0 0 50px!important;
+  min-width:50px!important;
+  max-width:50px!important;
+}
+body[data-page="home"] .site-header .brand img{
+  width:50px!important;
+  height:50px!important;
+  flex:0 0 50px!important;
+  object-fit:contain!important;
+}
+body[data-page="auth"] .auth-logo{
+  width:176px!important;
+  height:70px!important;
+  object-fit:contain!important;
+}
+@media(max-width:480px){
+  body[data-page="home"] .site-header .brand{
+    flex-basis:48px!important;
+    min-width:48px!important;
+    max-width:48px!important;
+  }
+  body[data-page="home"] .site-header .brand img{
+    width:48px!important;
+    height:48px!important;
+    flex-basis:48px!important;
+  }
+  body[data-page="auth"] .auth-logo{
+    width:168px!important;
+    height:66px!important;
+  }
+}
