@@ -596,3 +596,209 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
   .story-shell .story-card .story-caption{left:7%!important;right:7%!important;bottom:64px!important;max-height:70px!important;padding:8px 11px!important;font-size:14px!important}
   .story-shell .story-card:has(video.story-media) .story-caption{bottom:64px!important}
 }
+
+/* AvtoVIP story viewer v52 — final compact story layout / desktop clean counters */
+@media (min-width:761px){
+  /* Desktop: one close button only; counters float cleanly on the media without a dark tile. */
+  .story-viewer .story-card .story-top .story-close{display:none!important}
+  .story-viewer .story-social{overflow:visible!important}
+  .story-viewer .story-social .story-social-actions{
+    position:absolute!important;
+    left:-50px!important;
+    right:auto!important;
+    top:82px!important;
+    bottom:auto!important;
+    width:42px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    gap:3px!important;
+    padding:0!important;
+    margin:0!important;
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    z-index:40!important;
+  }
+  .story-viewer .story-social .story-social-actions .story-action{
+    width:40px!important;
+    min-width:40px!important;
+    height:40px!important;
+    min-height:40px!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    color:#fff!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:22px 13px!important;
+    place-items:center!important;
+    gap:0!important;
+    text-shadow:0 1px 3px rgba(0,0,0,.9)!important;
+  }
+  .story-viewer .story-social .story-social-actions .story-action i{font-size:18px!important;line-height:22px!important}
+  .story-viewer .story-social .story-social-actions .story-action span{font-size:11px!important;line-height:13px!important;font-weight:800!important}
+  .story-viewer .story-social .story-social-actions .story-action.active{color:#ef3340!important}
+  .story-viewer .story-comments{padding-left:14px!important;padding-right:14px!important}
+  .story-viewer .story-comment-form{left:14px!important;right:12px!important}
+}
+
+@media (max-width:760px){
+  /* Normal PWA story view is a real two-row layout: media + compact controls.
+     This removes the accidental black gap and prevents counters/native video controls from colliding. */
+  .story-viewer:not(.story-comments-open) .story-shell{
+    width:100vw!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr) auto!important;
+    overflow:hidden!important;
+    background:#000!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-shell .story-card{
+    position:relative!important;
+    inset:auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:hidden!important;
+    background:#000!important;
+    z-index:1!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-shell .story-media{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    max-height:100%!important;
+    background:#000!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-shell .story-media.story-media-fill-width{
+    object-fit:cover!important;
+    object-position:center center!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social{
+    position:relative!important;
+    inset:auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:3px 12px max(6px,env(safe-area-inset-bottom))!important;
+    margin:0!important;
+    display:grid!important;
+    grid-template-rows:38px 42px!important;
+    gap:2px!important;
+    align-items:center!important;
+    background:#08090c!important;
+    border:0!important;
+    border-top:1px solid rgba(255,255,255,.07)!important;
+    overflow:visible!important;
+    pointer-events:auto!important;
+    z-index:20!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-head,
+  .story-viewer:not(.story-comments-open) .story-comments{display:none!important}
+  .story-viewer:not(.story-comments-open) .story-social-actions{
+    position:static!important;
+    left:auto!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:auto!important;
+    transform:none!important;
+    width:100%!important;
+    height:38px!important;
+    min-height:38px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:18px!important;
+    padding:0!important;
+    margin:0!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-actions .story-action{
+    width:42px!important;
+    min-width:42px!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    color:#fff!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:21px 13px!important;
+    place-items:center!important;
+    gap:0!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-actions .story-action i{font-size:19px!important;line-height:21px!important}
+  .story-viewer:not(.story-comments-open) .story-social-actions .story-action span{font-size:10.5px!important;line-height:13px!important;font-weight:800!important}
+  .story-viewer:not(.story-comments-open) .story-social-actions .story-action.active{color:#ef3340!important}
+  .story-viewer:not(.story-comments-open) .story-comment-form{
+    position:static!important;
+    inset:auto!important;
+    width:100%!important;
+    height:42px!important;
+    min-height:42px!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:7px!important;
+    padding:0!important;
+    margin:0!important;
+    border:0!important;
+    background:transparent!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-comment-compose{flex:1 1 0!important;min-width:0!important;width:auto!important}
+  .story-viewer:not(.story-comments-open) .story-comment-compose input{
+    width:100%!important;
+    height:40px!important;
+    min-height:40px!important;
+    padding:0 10px 0 39px!important;
+    border-radius:12px!important;
+    font-size:13px!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-emoji-btn{
+    left:5px!important;
+    top:5px!important;
+    width:30px!important;
+    height:30px!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-comment-form>button{
+    width:40px!important;
+    min-width:40px!important;
+    height:40px!important;
+    min-height:40px!important;
+    flex:0 0 40px!important;
+    border-radius:12px!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-card .story-caption{
+    left:7%!important;
+    right:7%!important;
+    bottom:8px!important;
+    width:auto!important;
+    max-height:64px!important;
+    padding:7px 10px!important;
+    border-radius:12px!important;
+    font-size:13px!important;
+    line-height:1.3!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-card:has(video.story-media) .story-caption{bottom:50px!important}
+}
+
+/* Branded fallback replaces the browser's oversized gray unsupported-video panel. */
+.story-video-error .story-media{visibility:hidden!important}
+.story-video-error-message{position:absolute;inset:0;z-index:2;display:grid;place-items:center;padding:24px;text-align:center;color:#fff;background:#171a20}
+.story-video-error-message>div{display:grid;gap:8px;max-width:320px}.story-video-error-message i{font-size:34px;color:var(--muted)}.story-video-error-message strong{font-size:14px}.story-video-error-message span{font-size:11px;color:var(--muted);line-height:1.45}
+

@@ -656,18 +656,17 @@
   async function openStory(s,p={}){
     const modal=document.createElement('div');modal.className='story-viewer';
     const ownerName=esc([p?.name,p?.surname].filter(Boolean).join(' ')||'AvtoVİP');
-    modal.innerHTML=`<div class="story-shell"><div class="story-card">${s.media_type==='video'?'':`<div class="story-progress"></div>`}${s.media_type==='video'?`<video class="story-media" src="${esc(s.media_url)}" autoplay playsinline controls></video>`:`<img class="story-media" src="${esc(s.media_url)}" alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}"><strong>${ownerName}</strong></a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${s.caption?`<div class="story-caption story-caption-media">${esc(s.caption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}"><strong>${ownerName}</strong></a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div>${s.caption?`<div class="story-caption-mobile">${esc(s.caption)}</div>`:''}<div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
+    modal.innerHTML=`<div class="story-shell"><div class="story-card">${s.media_type==='video'?'':`<div class="story-progress"></div>`}${s.media_type==='video'?`<video class="story-media" src="${esc(s.media_url)}" autoplay playsinline controls></video>`:`<img class="story-media" src="${esc(s.media_url)}" alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}"><strong>${ownerName}</strong></a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${s.caption?`<div class="story-caption">${esc(s.caption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}"><strong>${ownerName}</strong></a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
     document.body.append(modal);document.documentElement.classList.add('modal-open');
     /* Only portrait media that would leave black bars on the left/right is cropped vertically.
        Wider/shorter media keeps the existing contain behaviour unchanged. */
     const storyMedia=modal.querySelector('.story-media'),storyCard=modal.querySelector('.story-card');
-    let closedStoryCardRatio=0;
-    const fitStoryMedia=()=>{if(!storyMedia||!storyCard)return;const mw=storyMedia.videoWidth||storyMedia.naturalWidth||0,mh=storyMedia.videoHeight||storyMedia.naturalHeight||0;if(!mw||!mh)return;if(!modal.classList.contains('story-comments-open')||!closedStoryCardRatio)closedStoryCardRatio=storyCard.clientWidth/Math.max(1,storyCard.clientHeight);const mediaRatio=mw/mh;storyMedia.classList.toggle('story-media-fill-width',mediaRatio<closedStoryCardRatio-.01)};
-    if(storyMedia){storyMedia.addEventListener(storyMedia.tagName==='VIDEO'?'loadedmetadata':'load',fitStoryMedia,{once:true});requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));window.addEventListener('resize',fitStoryMedia,{passive:true});}
+    const fitStoryMedia=()=>{if(!storyMedia||!storyCard)return;const mw=storyMedia.videoWidth||storyMedia.naturalWidth||0,mh=storyMedia.videoHeight||storyMedia.naturalHeight||0;if(!mw||!mh)return;const cardRatio=storyCard.clientWidth/Math.max(1,storyCard.clientHeight),mediaRatio=mw/mh;storyMedia.classList.toggle('story-media-fill-width',mediaRatio<cardRatio-.01)};
+    if(storyMedia){storyMedia.addEventListener(storyMedia.tagName==='VIDEO'?'loadedmetadata':'load',fitStoryMedia,{once:true});requestAnimationFrame(fitStoryMedia);window.addEventListener('resize',fitStoryMedia,{passive:true});}
     const storyHistoryToken=`story-${s.id}-${Date.now()}`;let storyHistoryActive=true;
     history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
     const close=(fromHistory=false)=>{if(!modal.isConnected)return;modal.remove();document.documentElement.classList.remove('modal-open');if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
-    const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;requestAnimationFrame(()=>requestAnimationFrame(()=>{fitStoryMedia();setTimeout(fitStoryMedia,120)}));if(video){video.controls=true;requestAnimationFrame(()=>{fitStoryMedia();video.play().catch(()=>{})})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
+    const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));if(video){video.controls=true;requestAnimationFrame(()=>{fitStoryMedia();video.play().catch(()=>{})})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
     const onStoryPop=()=>{if(!modal.isConnected){window.removeEventListener('popstate',onStoryPop);return}if(modal.classList.contains('story-comments-open')){closeComments();history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);return}storyHistoryActive=false;close(true);window.removeEventListener('popstate',onStoryPop)};window.addEventListener('popstate',onStoryPop);
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
     /* A story is an app-like overlay: vertical swipes must never become browser pull-to-refresh.
@@ -683,14 +682,7 @@
     },{passive:false});
     let storyInteraction=false,imageTimer=null;
     const holdStory=()=>{storyInteraction=true;if(imageTimer){clearTimeout(imageTimer);imageTimer=null}if(video){if(!video.paused)video.pause();video.controls=false}modal.classList.add('story-comments-open')};
-    const video=modal.querySelector('video');if(video){
-      video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');
-      let recoveryObjectUrl='';
-      const waitForVideoLoad=(timeout=4500)=>new Promise(resolve=>{let done=false;const finish=ok=>{if(done)return;done=true;clearTimeout(timer);video.removeEventListener('loadedmetadata',okFn);video.removeEventListener('canplay',okFn);video.removeEventListener('error',errFn);resolve(ok)};const okFn=()=>finish(true),errFn=()=>finish(false),timer=setTimeout(()=>finish(false),timeout);video.addEventListener('loadedmetadata',okFn,{once:true});video.addEventListener('canplay',okFn,{once:true});video.addEventListener('error',errFn,{once:true})});
-      const recoverVideoSource=async()=>{if(video.dataset.recoveryTried==='1'||!modal.isConnected)return;video.dataset.recoveryTried='1';try{const response=await fetch(s.media_url,{cache:'no-store'});if(!response.ok)throw new Error('video fetch failed');const buffer=await response.arrayBuffer();const ext=(()=>{try{return new URL(s.media_url,location.href).pathname.split('.').pop()?.toLowerCase()||''}catch{return''}})();const baseTypes=[];if(ext==='webm')baseTypes.push('video/webm');else if(ext==='mp4'||ext==='m4v')baseTypes.push('video/mp4');else if(ext==='mov'||ext==='qt')baseTypes.push('video/mp4','video/quicktime');baseTypes.push('video/mp4','video/webm','video/quicktime');for(const type of [...new Set(baseTypes)]){if(type!=='video/quicktime'&&!video.canPlayType(type))continue;const objectUrl=URL.createObjectURL(new Blob([buffer],{type}));video.src=objectUrl;video.load();const ok=await waitForVideoLoad();if(ok){if(recoveryObjectUrl)URL.revokeObjectURL(recoveryObjectUrl);recoveryObjectUrl=objectUrl;video.dataset.recovered='1';fitStoryMedia();video.play().catch(()=>{});return}URL.revokeObjectURL(objectUrl)}video.src=s.media_url;video.load()}catch(err){console.warn('Story video fallback failed:',err?.message||err)}};
-      video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',fitStoryMedia);video.addEventListener('canplay',fitStoryMedia);video.addEventListener('error',recoverVideoSource,{once:true});video.addEventListener('ended',()=>{if(!storyInteraction&&modal.isConnected)close()});
-      modal.addEventListener('remove',()=>{if(recoveryObjectUrl)URL.revokeObjectURL(recoveryObjectUrl)},{once:true});
-    }else imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000);
+    const video=modal.querySelector('video');if(video){video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',fitStoryMedia);video.addEventListener('canplay',fitStoryMedia);video.addEventListener('error',()=>{storyCard?.classList.add('story-video-error');if(storyCard&&!storyCard.querySelector('.story-video-error-message'))storyCard.insertAdjacentHTML('beforeend','<div class="story-video-error-message"><div><i class="fa-regular fa-file-video"></i><strong>Video bu brauzerdə açılmır</strong><span>Bu köhnə video uyğun olmayan kodeklə yüklənib. Yeni hekayələrdə sistem H.264 MP4/WebM uyğunluğunu əvvəlcədən yoxlayır.</span></div></div>')},{once:true});video.addEventListener('ended',()=>{if(!storyInteraction&&modal.isConnected)close()})}else imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000);
     let key=localStorage.getItem('avtovip-viewer-key');if(!key){key=crypto.randomUUID?.()||Math.random().toString(36).slice(2);localStorage.setItem('avtovip-viewer-key',key)}
     const viewRow={story_id:s.id,viewer_id:currentUser?.id||null,viewer_key:currentUser?null:key};sb.from('story_views').insert(viewRow).then(()=>{});
 
@@ -778,6 +770,31 @@
   }
   function renderPreview(files,root,onRemove){if(!root)return;root.innerHTML=[...files].slice(0,15).map((f,i)=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt="">${onRemove?`<button type="button" class="upload-remove" data-remove-upload="${i}" aria-label="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}</div>`).join('');if(onRemove)root.onclick=e=>{const b=e.target.closest('[data-remove-upload]');if(b)onRemove(Number(b.dataset.removeUpload))}}
 
+  async function validateStoryVideo(file){
+    if(!file?.type?.startsWith('video/'))return;
+    const ext=String(file.name||'').split('.').pop().toLowerCase();
+    if(!['mp4','webm'].includes(ext)&&!['video/mp4','video/webm'].includes(String(file.type||'').toLowerCase()))throw new Error('Hekayə videosu MP4 və ya WebM formatında olmalıdır.');
+    /* iPhone/Android can sometimes play HEVC/H.265 locally while Firefox cannot.
+       Detect the common MP4 codec markers before upload so new stories remain cross-browser. */
+    if(ext==='mp4'||String(file.type||'').toLowerCase()==='video/mp4'){
+      const max=2*1024*1024;
+      const parts=[file.slice(0,Math.min(file.size,max))];
+      if(file.size>max)parts.push(file.slice(Math.max(0,file.size-max)));
+      const hasMarker=async marker=>{
+        const needle=new TextEncoder().encode(marker);
+        for(const part of parts){
+          const bytes=new Uint8Array(await part.arrayBuffer());
+          outer:for(let i=0;i<=bytes.length-needle.length;i++){
+            for(let j=0;j<needle.length;j++)if(bytes[i+j]!==needle[j])continue outer;
+            return true;
+          }
+        }
+        return false;
+      };
+      if(await hasMarker('hvc1')||await hasMarker('hev1'))throw new Error('Bu video HEVC/H.265 kodekindədir və bəzi brauzerlərdə açılmır. H.264 kodekli MP4 və ya WebM seçin.');
+    }
+  }
+
   async function initCreateStory(){
     const user=await db.requireAuth();if(!user)return;
     const form=$('#storyForm'),media=$('#storyMedia');setupFriendlyFileInput(media,{kind:'media'});
@@ -786,6 +803,7 @@
       e.preventDefault();const btn=$('#storySubmit');btn.disabled=true;let uploaded=null,storyId=null;
       try{
         const original=media.files[0];if(!original)throw new Error('Şəkil və ya video seçin.');
+        if(original.type.startsWith('video/'))await validateStoryVideo(original);
         if(original.type.startsWith('video/')&&original.size>30*1024*1024)throw new Error('Video maksimum 30 MB ola bilər.');
         const file=original.type.startsWith('image/')?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000}):original;
         uploaded=await db.upload('story-media',user.id,file,'stories');
