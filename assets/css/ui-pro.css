@@ -371,3 +371,11 @@ body[data-page="messages"] .bubble.mine{
   .quick-filters>#applyFilters{grid-column:1/-1!important;width:100%!important;min-width:0!important}
 }
 
+
+/* AvtoVIP v53 — requested ONLY: story spacing + AvtoVIP ring palette */
+.stories-rail{gap:8px!important}
+.story-ring{background:linear-gradient(135deg,#f3d57a 0%,#d4af37 38%,#9b7a1e 68%,#5d4610 100%)!important}
+.story-add .story-ring{background:var(--line)!important}
+@media(max-width:900px){
+  .stories-rail{gap:8px!important}
+}
