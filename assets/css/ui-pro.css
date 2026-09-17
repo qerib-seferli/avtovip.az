@@ -379,3 +379,291 @@ body[data-page="messages"] .bubble.mine{
 @media(max-width:900px){
   .stories-rail{gap:8px!important}
 }
+
+/* AvtoVIP v54 — PWA story viewer layout only.
+   Keeps story media full-width on app-sized screens and prevents desktop two-column rules leaking into PWA. */
+@media (max-width:900px){
+  .story-viewer{
+    inset:0!important;
+    width:100vw!important;
+    height:100dvh!important;
+    padding:0!important;
+    display:block!important;
+    overflow:hidden!important;
+    background:#000!important;
+  }
+  .story-viewer .story-shell{
+    position:fixed!important;
+    inset:0!important;
+    width:100vw!important;
+    height:100dvh!important;
+    max-width:none!important;
+    max-height:none!important;
+    display:block!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:0!important;
+    background:#000!important;
+    box-shadow:none!important;
+  }
+
+  /* Normal story view: media above, compact controls below — never side-by-side. */
+  .story-viewer:not(.story-comments-open) .story-card{
+    position:absolute!important;
+    inset:0 0 calc(92px + env(safe-area-inset-bottom)) 0!important;
+    width:100%!important;
+    height:auto!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:none!important;
+    max-height:none!important;
+    overflow:hidden!important;
+    border-radius:0!important;
+    background:#000!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-card .story-media{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-position:center center!important;
+    background:#000!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-card .story-media.story-media-fill-width{
+    object-fit:cover!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social{
+    position:absolute!important;
+    inset:auto 0 0 0!important;
+    width:100%!important;
+    height:calc(92px + env(safe-area-inset-bottom))!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:none!important;
+    max-height:none!important;
+    padding:3px 12px max(5px,env(safe-area-inset-bottom))!important;
+    margin:0!important;
+    display:grid!important;
+    grid-template-rows:38px 43px!important;
+    gap:1px!important;
+    align-items:center!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-top:1px solid rgba(255,255,255,.07)!important;
+    border-left:0!important;
+    border-radius:0!important;
+    background:#08090c!important;
+    color:#fff!important;
+    pointer-events:auto!important;
+    z-index:20!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-head,
+  .story-viewer:not(.story-comments-open) .story-comments{
+    display:none!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-actions{
+    position:static!important;
+    inset:auto!important;
+    transform:none!important;
+    width:100%!important;
+    height:38px!important;
+    min-height:38px!important;
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:20px!important;
+    padding:0!important;
+    margin:0!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-actions .story-action{
+    width:42px!important;
+    min-width:42px!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:0!important;
+    margin:0!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:21px 13px!important;
+    place-items:center!important;
+    gap:0!important;
+    color:#fff!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-actions .story-action i{
+    font-size:19px!important;
+    line-height:21px!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-social-actions .story-action span{
+    font-size:10.5px!important;
+    line-height:13px!important;
+    font-weight:800!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-comment-form{
+    position:static!important;
+    inset:auto!important;
+    width:100%!important;
+    height:43px!important;
+    min-width:0!important;
+    min-height:43px!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:7px!important;
+    padding:0!important;
+    margin:0!important;
+    background:transparent!important;
+    border:0!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-comment-compose{
+    position:relative!important;
+    flex:1 1 0!important;
+    width:auto!important;
+    min-width:0!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-comment-compose input{
+    width:100%!important;
+    height:40px!important;
+    min-width:0!important;
+    min-height:40px!important;
+    padding:0 10px 0 39px!important;
+    border-radius:12px!important;
+    font-size:13px!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-emoji-btn{
+    left:5px!important;
+    top:5px!important;
+    width:30px!important;
+    height:30px!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-comment-form>button{
+    width:40px!important;
+    min-width:40px!important;
+    height:40px!important;
+    min-height:40px!important;
+    flex:0 0 40px!important;
+    border-radius:12px!important;
+  }
+
+  /* Keep title/close inside the full-width media instead of the old desktop columns. */
+  .story-viewer .story-card .story-top{
+    top:max(18px,env(safe-area-inset-top))!important;
+    left:14px!important;
+    right:14px!important;
+    z-index:8!important;
+  }
+  .story-viewer .story-card .story-top .story-close{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  .story-viewer .story-social .story-close-side{
+    display:none!important;
+  }
+
+  /* Caption stays attached to the media, directly above the control strip. */
+  .story-viewer:not(.story-comments-open) .story-card .story-caption{
+    left:7%!important;
+    right:7%!important;
+    bottom:8px!important;
+    width:auto!important;
+    max-height:64px!important;
+    margin:0!important;
+    padding:7px 10px!important;
+    border-radius:12px!important;
+    font-size:13px!important;
+    line-height:1.3!important;
+  }
+  .story-viewer:not(.story-comments-open) .story-card:has(video.story-media) .story-caption{
+    bottom:50px!important;
+  }
+
+  /* If comments are opened on the same PWA-sized viewport, use the existing mobile bottom-sheet idea, not desktop side panel. */
+  .story-viewer.story-comments-open .story-card{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    filter:brightness(.42)!important;
+    border-radius:0!important;
+  }
+  .story-viewer.story-comments-open .story-social{
+    position:absolute!important;
+    inset:auto 0 0 0!important;
+    width:100%!important;
+    height:min(68dvh,680px)!important;
+    max-height:min(68dvh,680px)!important;
+    min-width:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+    padding:0 12px max(8px,env(safe-area-inset-bottom))!important;
+    border:0!important;
+    border-top:1px solid rgba(255,255,255,.12)!important;
+    border-radius:22px 22px 0 0!important;
+    background:#0d1016!important;
+    color:#fff!important;
+    z-index:30!important;
+    pointer-events:auto!important;
+  }
+  .story-viewer.story-comments-open .story-social-head{
+    display:none!important;
+  }
+  .story-viewer.story-comments-open .story-social-actions{
+    position:static!important;
+    transform:none!important;
+    width:100%!important;
+    flex:0 0 54px!important;
+    display:flex!important;
+    flex-direction:row!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:24px!important;
+    padding:5px 0 3px!important;
+    margin:0!important;
+    border:0!important;
+    background:transparent!important;
+  }
+  .story-viewer.story-comments-open .story-social-actions .story-action{
+    width:46px!important;
+    min-width:46px!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:0!important;
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+  .story-viewer.story-comments-open .story-comments{
+    display:block!important;
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    padding:4px 4px 8px!important;
+  }
+  .story-viewer.story-comments-open .story-comment-form{
+    position:static!important;
+    inset:auto!important;
+    width:100%!important;
+    flex:0 0 auto!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:6px 0 0!important;
+    display:flex!important;
+    gap:7px!important;
+    background:#0d1016!important;
+    border:0!important;
+  }
+}
