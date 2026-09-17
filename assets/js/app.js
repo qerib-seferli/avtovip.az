@@ -1034,7 +1034,33 @@
   }
 
   function initPWA(){
-    if('serviceWorker'in navigator){window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('service-worker.js?v=30',{updateViaCache:'none'});await reg.update();let reloading=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloading)return;reloading=true;console.info('AvtoVIP yeniləməsi növbəti keçiddə aktivdir.')})}catch(e){console.warn(e)}})}; window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('#installBanner')?.removeAttribute('hidden')});$('#installBtn')?.addEventListener('click',async()=>{if(!deferredInstallPrompt){toast('iPhone/iPad: Safari → Paylaş → Add to Home Screen.','info');return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('#installBanner')?.setAttribute('hidden','')});
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',async()=>{
+        try{
+          const reg=await navigator.serviceWorker.register('./service-worker.js?v=31',{scope:'./',updateViaCache:'none'});
+          await reg.update();
+          await navigator.serviceWorker.ready;
+          let reloading=false;
+          navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloading)return;reloading=true;console.info('AvtoVIP yeniləməsi aktivdir.')});
+        }catch(e){console.warn(e)}
+      });
+    }
+    window.addEventListener('beforeinstallprompt',e=>{
+      e.preventDefault();
+      deferredInstallPrompt=e;
+      $('#installBanner')?.removeAttribute('hidden');
+    });
+    window.addEventListener('appinstalled',()=>{
+      deferredInstallPrompt=null;
+      $('#installBanner')?.setAttribute('hidden','');
+    });
+    $('#installBtn')?.addEventListener('click',async()=>{
+      if(!deferredInstallPrompt){toast('Tətbiqi brauzerin menyusundakı quraşdırma seçimindən əlavə edin.','info');return}
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt=null;
+      $('#installBanner')?.setAttribute('hidden','');
+    });
   }
 
   async function boot(){
