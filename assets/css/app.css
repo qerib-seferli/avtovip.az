@@ -638,3 +638,17 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
     box-shadow:none!important;
   }
 }
+
+/* AvtoVIP story viewer v55 — requested interaction refinements only */
+/* Video stories use the same top progress line as photo stories, synced to playback time. */
+.story-card:has(video.story-media) .story-progress{display:block!important}
+.story-card:has(video.story-media) .story-progress::after{animation:none!important;width:var(--video-progress,0%)!important}
+
+@media(min-width:761px){
+  /* Desktop caption backdrop continues cleanly to the bottom edge of the media card. */
+  .story-shell .story-card .story-caption,
+  .story-shell .story-card:has(video.story-media) .story-caption{
+    bottom:0!important;
+    border-radius:0!important;
+  }
+}
