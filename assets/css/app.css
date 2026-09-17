@@ -541,3 +541,33 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
   object-position:center center!important;
   background:#000!important;
 }
+
+/* AvtoVIP story viewer v50 — requested 5-point mobile polish */
+.stories-rail{gap:0!important}
+.story-item{width:78px!important;flex-basis:78px!important}
+.story-ring{width:74px!important;height:74px!important}
+@media(max-width:760px){
+  .stories-rail{gap:0!important}
+  .story-item{width:78px!important;flex-basis:78px!important}
+  .story-ring{width:74px!important;height:74px!important}
+
+  /* Media always returns to the same fitted crop after comments close. */
+  .story-shell .story-card .story-media.story-media-fill-width{object-fit:cover!important;object-position:center center!important}
+
+  /* Compact social row first; caption sits directly below it. */
+  .story-social:not(.story-comments-open .story-social){height:max(112px,calc(102px + env(safe-area-inset-bottom)))!important;padding:3px 14px max(5px,env(safe-area-inset-bottom))!important;gap:2px!important}
+  .story-social:not(.story-comments-open .story-social) .story-social-actions{height:42px!important;flex:0 0 42px!important;gap:16px!important;order:1!important}
+  .story-social:not(.story-comments-open .story-social) .story-action{width:44px!important;min-width:44px!important;height:40px!important;min-height:40px!important;grid-template-rows:22px 14px!important}
+  .story-social:not(.story-comments-open .story-social) .story-action i{font-size:20px!important;line-height:22px!important}
+  .story-social:not(.story-comments-open .story-social) .story-action span{font-size:11px!important;line-height:14px!important}
+  .story-social:not(.story-comments-open .story-social) .story-comment-form{height:44px!important;flex:0 0 44px!important;order:3!important;gap:7px!important}
+  .story-social:not(.story-comments-open .story-social) .story-comment-compose input{height:42px!important;font-size:13px!important}
+  .story-social:not(.story-comments-open .story-social) .story-comment-form>button{width:42px!important;min-width:42px!important;height:42px!important;flex-basis:42px!important}
+  .story-shell .story-card{inset:0 0 max(112px,calc(102px + env(safe-area-inset-bottom))) 0!important}
+  .story-shell .story-card .story-caption{bottom:8px!important;left:7%!important;right:7%!important;max-height:68px!important;padding:8px 11px!important;font-size:14px!important}
+  .story-shell .story-card:has(video.story-media) .story-caption{bottom:52px!important}
+
+  /* Main filter search button fills the complete row on PWA/mobile. */
+  .quick-filters{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+  .quick-filters>.btn{grid-column:1/-1!important;width:100%!important;min-width:0!important}
+}

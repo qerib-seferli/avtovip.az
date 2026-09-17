@@ -666,7 +666,7 @@
     const storyHistoryToken=`story-${s.id}-${Date.now()}`;let storyHistoryActive=true;
     history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
     const close=(fromHistory=false)=>{if(!modal.isConnected)return;modal.remove();document.documentElement.classList.remove('modal-open');if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
-    const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;if(video){video.controls=true;video.play().catch(()=>{})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
+    const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));if(video){video.controls=true;video.load?.();requestAnimationFrame(()=>{fitStoryMedia();video.play().catch(()=>{})})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
     const onStoryPop=()=>{if(!modal.isConnected){window.removeEventListener('popstate',onStoryPop);return}if(modal.classList.contains('story-comments-open')){closeComments();history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);return}storyHistoryActive=false;close(true);window.removeEventListener('popstate',onStoryPop)};window.addEventListener('popstate',onStoryPop);
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
     /* A story is an app-like overlay: vertical swipes must never become browser pull-to-refresh.
@@ -682,7 +682,7 @@
     },{passive:false});
     let storyInteraction=false,imageTimer=null;
     const holdStory=()=>{storyInteraction=true;if(imageTimer){clearTimeout(imageTimer);imageTimer=null}if(video){if(!video.paused)video.pause();video.controls=false}modal.classList.add('story-comments-open')};
-    const video=modal.querySelector('video');if(video){video.muted=false;video.volume=1;video.play().catch(()=>{video.autoplay=false});video.addEventListener('ended',()=>{if(!storyInteraction&&modal.isConnected)close()})}else imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000);
+    const video=modal.querySelector('video');if(video){video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',fitStoryMedia);video.addEventListener('canplay',fitStoryMedia);video.addEventListener('ended',()=>{if(!storyInteraction&&modal.isConnected)close()})}else imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000);
     let key=localStorage.getItem('avtovip-viewer-key');if(!key){key=crypto.randomUUID?.()||Math.random().toString(36).slice(2);localStorage.setItem('avtovip-viewer-key',key)}
     const viewRow={story_id:s.id,viewer_id:currentUser?.id||null,viewer_key:currentUser?null:key};sb.from('story_views').insert(viewRow).then(()=>{});
 
