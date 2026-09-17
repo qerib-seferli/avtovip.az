@@ -601,3 +601,23 @@ html.modal-open,html.modal-open body{overscroll-behavior:none!important}
 .story-video-error .story-media{visibility:hidden!important}
 .story-video-error-message{position:absolute;inset:0;z-index:2;display:grid;place-items:center;padding:24px;text-align:center;color:#fff;background:#171a20}
 .story-video-error-message>div{display:grid;gap:8px;max-width:320px}.story-video-error-message i{font-size:34px;color:var(--muted)}.story-video-error-message strong{font-size:14px}.story-video-error-message span{font-size:11px;color:var(--muted);line-height:1.45}
+
+
+/* AvtoVIP story viewer v53 — requested controls cleanup only */
+.story-card video.story-media::-webkit-media-controls,
+.story-card video.story-media::-webkit-media-controls-enclosure{display:none!important}
+.story-card video.story-media{pointer-events:auto!important}
+@media(max-width:760px){
+  /* PWA: counters have no backdrop/panel. */
+  .story-social:not(.story-comments-open .story-social) .story-social-actions{
+    background:transparent!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+  /* Emoji panel must always open above the counters and compose controls. */
+  .story-social:not(.story-comments-open .story-social) .story-comment-form{z-index:50!important;overflow:visible!important}
+  .story-comment-compose{overflow:visible!important}
+  .story-emoji-picker{z-index:90!important}
+}
