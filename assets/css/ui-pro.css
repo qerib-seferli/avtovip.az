@@ -379,3 +379,79 @@ body[data-page="messages"] .bubble.mine{
 @media(max-width:900px){
   .stories-rail{gap:8px!important}
 }
+
+/* AvtoVIP 2026-09-18 — requested logo/auth PWA polish only */
+/* Slightly larger brand mark on the home header. */
+body[data-page="home"] .site-header .brand{
+  flex:0 0 56px!important;
+  min-width:56px!important;
+  max-width:56px!important;
+}
+body[data-page="home"] .site-header .brand img{
+  width:56px!important;
+  height:56px!important;
+  flex:0 0 56px!important;
+  object-fit:contain!important;
+}
+
+/* Auth/reset logo: larger but still compact and centered. */
+body[data-page="auth"] .auth-logo,
+body[data-page="reset"] .auth-logo{
+  width:84px!important;
+  height:84px!important;
+  object-fit:contain!important;
+  margin:0 auto 12px!important;
+}
+
+/* Remove the unnecessary “və ya / or” separator text. */
+body[data-page="auth"] .av-or,
+body[data-page="reset"] .av-or{
+  display:none!important;
+}
+
+/* In installed/mobile PWA the short auth pages stay fixed and centered;
+   no pointless vertical page scrolling. */
+@media(max-width:900px){
+  body[data-page="auth"],
+  body[data-page="reset"]{
+    height:100dvh!important;
+    min-height:100dvh!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+  }
+  body[data-page="auth"] .auth-page,
+  body[data-page="reset"] .auth-page{
+    height:100dvh!important;
+    min-height:100dvh!important;
+    padding:78px 12px 16px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+  }
+  body[data-page="auth"] .auth-card,
+  body[data-page="reset"] .auth-card{
+    margin:0 auto!important;
+    max-height:calc(100dvh - 94px)!important;
+    overflow:hidden!important;
+  }
+  body[data-page="auth"] .auth-logo,
+  body[data-page="reset"] .auth-logo{
+    width:90px!important;
+    height:90px!important;
+    margin-bottom:10px!important;
+  }
+}
+
+@media(max-width:480px){
+  body[data-page="home"] .site-header .brand{
+    flex-basis:54px!important;
+    min-width:54px!important;
+    max-width:54px!important;
+  }
+  body[data-page="home"] .site-header .brand img{
+    width:54px!important;
+    height:54px!important;
+    flex-basis:54px!important;
+  }
+}
