@@ -811,10 +811,11 @@
     if(storyFFmpegLoader)return storyFFmpegLoader;
     storyFFmpegLoader=new Promise((resolve,reject)=>{
       const script=document.createElement('script');
-      script.src='https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js';
+      script.src='https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js';
       script.async=true;
-      script.onload=()=>window.FFmpeg?.createFFmpeg?resolve(window.FFmpeg):reject(new Error('Video hazırlama modulu açıla bilmədi.'));
-      script.onerror=()=>reject(new Error('Video hazırlama modulu açıla bilmədi.'));
+      script.crossOrigin='anonymous';
+      script.onload=()=>window.FFmpeg?.createFFmpeg?resolve(window.FFmpeg):reject(new Error('Video emalı modulu açıla bilmədi.'));
+      script.onerror=()=>reject(new Error('Video emalı modulu açıla bilmədi.'));
       document.head.append(script);
     }).catch(err=>{storyFFmpegLoader=null;throw err});
     return storyFFmpegLoader;
@@ -845,32 +846,38 @@
     if(!(await storyVideoNeedsNormalize(file)))return file;
     setStatus('#storyStatus','Video hazırlanır...');
     const lib=await loadStoryFFmpeg();
-    const inputExt=(String(file.name||'').split('.').pop()||'bin').replace(/[^a-z0-9]/gi,'').toLowerCase()||'bin';
+    const inputExt=(String(file.name||'').split('.').pop()||'mp4').replace(/[^a-z0-9]/gi,'').toLowerCase()||'mp4';
     const inputName=`story-input.${inputExt}`,outputName='story-ready.mp4';
+    let lastLog='';
     const ffmpeg=lib.createFFmpeg({
       log:false,
-      corePath:'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
-      progress:({ratio})=>{if(Number.isFinite(ratio)&&ratio>=0)setStatus('#storyStatus',`Video hazırlanır... ${Math.min(99,Math.max(1,Math.round(ratio*100)))}%`)}
+      corePath:'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+      progress:({ratio})=>{if(Number.isFinite(ratio)&&ratio>=0)setStatus('#storyStatus',`Video hazırlanır... ${Math.min(99,Math.max(1,Math.round(ratio*100)))}%`)},
+      logger:({message})=>{lastLog=message||lastLog}
     });
+    const cleanup=()=>{
+      try{ffmpeg.FS('unlink',inputName)}catch{}
+      try{ffmpeg.FS('unlink',outputName)}catch{}
+    };
     try{
       if(!ffmpeg.isLoaded())await ffmpeg.load();
       ffmpeg.FS('writeFile',inputName,await lib.fetchFile(file));
-      await ffmpeg.run(
-        '-i',inputName,
-        '-map','0:v:0','-map','0:a?',
-        '-vf','scale=trunc(iw/2)*2:trunc(ih/2)*2',
-        '-c:v','libx264','-preset','veryfast','-crf','23','-pix_fmt','yuv420p',
-        '-c:a','aac','-b:a','128k','-ar','44100',
-        '-movflags','+faststart',outputName
-      );
+      const common=['-i',inputName,'-map','0:v:0','-map','0:a?','-vf','scale=w=720:h=1280:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2:(ow-iw)/2:(oh-ih)/2:black','-r','30','-c:v','libx264','-preset','ultrafast','-crf','25','-pix_fmt','yuv420p','-threads','1','-c:a','aac','-b:a','96k','-ar','44100','-ac','2','-movflags','+faststart',outputName];
+      try{
+        await ffmpeg.run(...common);
+      }catch(firstErr){
+        cleanup();
+        ffmpeg.FS('writeFile',inputName,await lib.fetchFile(file));
+        await ffmpeg.run('-i',inputName,'-map','0:v:0','-map','0:a?','-vf','scale=w=540:h=960:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2:(ow-iw)/2:(oh-ih)/2:black','-r','24','-c:v','libx264','-preset','ultrafast','-crf','28','-pix_fmt','yuv420p','-threads','1','-c:a','aac','-b:a','80k','-ar','44100','-ac','1','-movflags','+faststart',outputName);
+      }
       const data=ffmpeg.FS('readFile',outputName);
+      if(!data?.length)throw new Error('empty-output');
+      setStatus('#storyStatus','Video hazırdır.','success');
       return new File([data.buffer],`${String(file.name||'video').replace(/\.[^.]+$/,'')}.mp4`,{type:'video/mp4',lastModified:Date.now()});
     }catch(e){
-      throw new Error('Video hazırlana bilmədi. Zəhmət olmasa videonu yenidən seçin.');
-    }finally{
-      try{ffmpeg.FS('unlink',inputName)}catch{}
-      try{ffmpeg.FS('unlink',outputName)}catch{}
-    }
+      console.warn('[AvtoVIP story video]',e,lastLog);
+      throw new Error('Video emal edilə bilmədi. Zəhmət olmasa bir dəfə də göndərin.');
+    }finally{cleanup()}
   }
 
   async function initCreateStory(){
