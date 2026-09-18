@@ -673,3 +673,80 @@ html.gallery-lightbox-open,html.gallery-lightbox-open body{overflow:hidden!impor
   .gallery-status-action,.gallery-action-btn{width:29px!important;min-width:29px!important;padding:0!important;justify-content:center!important}
   .gallery-vin-code{max-width:155px!important}
 }
+
+
+/* AvtoVIP v60 — ONLY: fluid native PWA scroll + final detail-page layout polish */
+@media(max-width:900px){
+  html,body{
+    touch-action:pan-y pinch-zoom!important;
+    overscroll-behavior-y:auto!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body>.page,.page,.page>.container,.page .container{
+    touch-action:pan-y pinch-zoom!important;
+    overflow:visible!important;
+  }
+  /* Opened/scrollable controls keep the gesture inside themselves instead of dragging the page. */
+  .av-select-menu,.notification-popover,.lang-picker-menu,.social-modal-card,.comments-list,
+  .story-comments,.chat-messages,.conversation-list,.check-grid,.gallery-thumbs,[data-no-page-scroll]{
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  .av-select-menu,.notification-popover,.lang-picker-menu,.social-modal-card,.comments-list,
+  .story-comments,.chat-messages,.conversation-list,.check-grid{touch-action:pan-y!important}
+  .brands-rail,.brands-scroll,.gallery-thumbs{touch-action:pan-x!important;overscroll-behavior-inline:contain!important}
+  button,a,input,textarea,select,label{touch-action:manipulation!important}
+  body[data-page="detail"] .page{padding-bottom:calc(98px + env(safe-area-inset-bottom))!important}
+}
+
+/* Detail gallery must fill its column on desktop; the image itself crops only in-card. */
+body[data-page="detail"] .gallery{width:100%!important;min-width:0!important}
+body[data-page="detail"] .gallery-main{
+  width:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  aspect-ratio:16/10!important;
+}
+body[data-page="detail"] .gallery-main #mainPhoto{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
+body[data-page="detail"] .gallery-photo-actions:empty{display:none!important}
+
+/* Share belongs beside Compare; image keeps only VIN, favourite and zoom/fullscreen controls. */
+body[data-page="detail"] .detail-actions-compact{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(130px,220px))!important;
+  justify-content:start!important;
+  gap:7px!important;
+}
+
+/* Desktop seller/price/safety rail stays visible while the long specification column scrolls. */
+@media(min-width:901px){
+  body[data-page="detail"] .detail-sidebar{
+    position:sticky!important;
+    top:calc(var(--header-h,64px) + 10px)!important;
+    align-self:start!important;
+    z-index:2!important;
+  }
+}
+
+/* Trust bar uses all remaining room after the numeric score. */
+body[data-page="detail"] .seller-card .grow{min-width:0!important;width:100%!important}
+body[data-page="detail"] .trust{width:100%!important;display:flex!important;align-items:center!important;gap:8px!important}
+body[data-page="detail"] .trust>span:first-child{flex:0 0 auto!important;white-space:nowrap!important}
+body[data-page="detail"] .trust-bar{flex:1 1 auto!important;width:auto!important;min-width:72px!important;max-width:none!important}
+
+@media(max-width:900px){
+  body[data-page="detail"] .gallery-main{
+    width:100%!important;
+    max-width:100%!important;
+    aspect-ratio:4/3!important;
+    min-height:220px!important;
+    max-height:52dvh!important;
+  }
+  body[data-page="detail"] .detail-layout{width:100%!important;max-width:100%!important;overflow:visible!important}
+  body[data-page="detail"] .detail-layout>.stack,body[data-page="detail"] .detail-sidebar{width:100%!important;min-width:0!important}
+  body[data-page="detail"] .detail-actions-compact{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:480px){
+  body[data-page="detail"] .gallery-main{aspect-ratio:1/1!important;max-height:48dvh!important;min-height:205px!important}
+}
