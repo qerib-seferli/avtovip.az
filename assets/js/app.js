@@ -542,14 +542,18 @@
       if(e.pointerType==='touch'||e.button!==0)return;
       dragPointer=e.pointerId;dragStartX=e.clientX;dragStartScroll=container.scrollLeft;dragMoved=false;
       container.classList.add('is-mouse-dragging');
-      try{container.setPointerCapture(e.pointerId)}catch{}
+      /* Do not capture a normal desktop click. Pointer capture can retarget the
+         final click to the rail itself, which made brand cards look unclickable.
+         Capture only after the pointer has actually become a drag. */
     });
     container.addEventListener('pointermove',e=>{
       if(dragPointer!==e.pointerId)return;
       const dx=e.clientX-dragStartX;
-      if(Math.abs(dx)>9){dragMoved=true;e.preventDefault()}
-      container.scrollLeft=dragStartScroll-dx;
-      normalize();
+      if(Math.abs(dx)>9){
+        if(!dragMoved){dragMoved=true;try{container.setPointerCapture(e.pointerId)}catch{}}
+        e.preventDefault();
+      }
+      if(dragMoved){container.scrollLeft=dragStartScroll-dx;normalize()}
     },{passive:false});
     const finishDrag=e=>{
       if(dragPointer===null||(e.pointerId!=null&&e.pointerId!==dragPointer))return;
