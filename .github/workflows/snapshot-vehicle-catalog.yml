@@ -39,8 +39,24 @@ jobs:
           for k in sorted(by,key=lambda x:pretty(x).casefold()):
               name=pretty(k); old=current.get(k) or {}; logo=(old.get('logo') or {}) if isinstance(old.get('logo'),dict) else {}
               local=logo.get('local_url')
-              if not local or not Path(local).exists():
-                  initials=''.join(w[0] for w in re.split(r'[\\s/-]+',name) if w)[:3].upper() or '?'
+              # Download a real brand logo snapshot first. The old initials SVG remains only
+              # as a final fallback if the upstream dataset has no matching brand artwork.
+              remote_slug={'lada-vaz':'lada','mercedes-benz':'mercedes-benz','land-rover':'land-rover','rolls-royce':'rolls-royce','aston-martin':'aston-martin','alfa-romeo':'alfa-romeo','am-general':'am-general'}.get(k,k)
+              png=logo_dir/f'{k}.png'
+              if not png.exists():
+                  import urllib.request
+                  url=f'https://raw.githubusercontent.com/filippofilip95/car-logos-dataset/master/logos/optimized/{remote_slug}.png'
+                  try:
+                      req=urllib.request.Request(url,headers={'User-Agent':'AvtoVIP-catalog-snapshot/1.0'})
+                      data=urllib.request.urlopen(req,timeout=18).read()
+                      if data.startswith(b'\x89PNG') and len(data)>300:
+                          png.write_bytes(data)
+                  except Exception:
+                      pass
+              if png.exists():
+                  local=str(png)
+              elif not local or not Path(local).exists():
+                  initials=''.join(w[0] for w in re.split(r'[\s/-]+',name) if w)[:3].upper() or '?'
                   f=logo_dir/f'{k}.svg'; f.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72"><rect x="2" y="2" width="116" height="68" rx="18" fill="#151922" stroke="#303846" stroke-width="4"/><text x="60" y="45" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="28" fill="#e9edf3">{html.escape(initials)}</text></svg>',encoding='utf-8');local=str(f)
               makes.append({'id':k,'name':name,'logo':{'local_url':local}})
           (root/'vehicle-makes.json').write_text(json.dumps(makes,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
