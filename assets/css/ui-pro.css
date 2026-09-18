@@ -486,3 +486,18 @@ body[data-page="reset"] .av-or{
   .site-header .brand{flex-basis:54px!important;min-width:54px!important;max-width:54px!important}
   .site-header .brand img{width:54px!important;height:54px!important;flex-basis:54px!important}
 }
+
+
+/* AvtoVIP v56 — ONLY: restore one-finger PWA scrolling + desktop mouse drag foundation */
+@media(max-width:900px){
+  html,body{
+    touch-action:manipulation!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+}
+.brands-rail,.brands-scroll{
+  cursor:grab;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.brands-rail.is-mouse-dragging,.brands-scroll.is-mouse-dragging{cursor:grabbing}

@@ -523,6 +523,32 @@
     const resume=()=>{clearTimeout(resumeTimer);resumeTimer=setTimeout(()=>{paused=false;lastTs=performance.now()},850)};
     ['pointerdown','touchstart','wheel'].forEach(ev=>container.addEventListener(ev,pause,{passive:true}));
     ['pointerup','touchend','pointercancel','mouseleave'].forEach(ev=>container.addEventListener(ev,resume,{passive:true}));
+
+    /* Desktop browsers do not natively drag an overflow rail with the mouse.
+       Add mouse/pen drag only; touch stays fully native for smooth one-finger swiping. */
+    let dragPointer=null,dragStartX=0,dragStartScroll=0,dragMoved=false,suppressClick=false;
+    container.addEventListener('pointerdown',e=>{
+      if(e.pointerType==='touch'||e.button!==0)return;
+      dragPointer=e.pointerId;dragStartX=e.clientX;dragStartScroll=container.scrollLeft;dragMoved=false;
+      container.classList.add('is-mouse-dragging');
+      try{container.setPointerCapture(e.pointerId)}catch{}
+    });
+    container.addEventListener('pointermove',e=>{
+      if(dragPointer!==e.pointerId)return;
+      const dx=e.clientX-dragStartX;
+      if(Math.abs(dx)>4){dragMoved=true;e.preventDefault()}
+      container.scrollLeft=dragStartScroll-dx;
+      normalize();
+    },{passive:false});
+    const finishDrag=e=>{
+      if(dragPointer===null||(e.pointerId!=null&&e.pointerId!==dragPointer))return;
+      if(dragMoved){suppressClick=true;setTimeout(()=>{suppressClick=false},0)}
+      try{if(e.pointerId!=null)container.releasePointerCapture(e.pointerId)}catch{}
+      dragPointer=null;dragMoved=false;container.classList.remove('is-mouse-dragging');resume();
+    };
+    container.addEventListener('pointerup',finishDrag);
+    container.addEventListener('pointercancel',finishDrag);
+    container.addEventListener('click',e=>{if(suppressClick){e.preventDefault();e.stopPropagation();suppressClick=false}},true);
     container.addEventListener('scroll',()=>{if(paused)normalize()},{passive:true});
   }
   function fillSelectPairs(el,items,placeholder=t('all')){
