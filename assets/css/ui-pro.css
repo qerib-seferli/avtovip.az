@@ -1122,3 +1122,50 @@ body[data-page="detail"] #reportBtn:hover,
 body[data-page="detail"] #reportBtn:focus-visible{
   border-color:#ef3d48!important;
 }
+
+
+/* AvtoVIP v65 — ONLY: requested home brand/flag + detail trust/sticky corrections */
+body[data-page="detail"] .trust-v63 .trust-star{
+  font-size:18px!important;
+  line-height:1!important;
+}
+@media(max-width:900px){
+  body[data-page="detail"] .trust-v63 .trust-star{font-size:17px!important}
+}
+.listing-country-flag-img{
+  width:18px!important;
+  height:13px!important;
+  flex:0 0 18px!important;
+  object-fit:cover!important;
+  border-radius:2px!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.13)!important;
+  vertical-align:middle!important;
+}
+.listing-location{display:flex!important;align-items:center!important;gap:4px!important;min-width:0!important}
+
+/* overflow-x:hidden on an ancestor can become the sticky containing block in desktop
+   browsers. clip prevents horizontal bleed without breaking the detail seller rail. */
+@media(min-width:901px){
+  html:has(body[data-page="detail"]),body[data-page="detail"]{
+    overflow-x:clip!important;
+  }
+  body[data-page="detail"] main.page,
+  body[data-page="detail"] main.page>.container,
+  body[data-page="detail"] #detailRoot,
+  body[data-page="detail"] .detail-layout{
+    overflow:visible!important;
+  }
+  body[data-page="detail"] .detail-sidebar{
+    position:-webkit-sticky!important;
+    position:sticky!important;
+    top:calc(var(--av-header,64px) + 10px)!important;
+    align-self:start!important;
+    height:max-content!important;
+    max-height:calc(100dvh - var(--av-header,64px) - 20px)!important;
+    overflow-y:auto!important;
+    overflow-x:clip!important;
+    scrollbar-width:none!important;
+    z-index:40!important;
+  }
+  body[data-page="detail"] .detail-sidebar::-webkit-scrollbar{display:none!important}
+}

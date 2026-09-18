@@ -493,8 +493,19 @@
     const name=String(make?.name||'');
     const local=LOCAL_BRAND_LOGOS[name.toLowerCase()]||'';
     const snapshot=typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||'');
-    /* Brand artwork is snapshot-local. Never depend on a remote logo CDN at runtime. */
-    return [...new Set([local,snapshot].filter(Boolean))];
+    const rawId=String(make?.id||name).trim().toLowerCase();
+    const slug=rawId.replace(/_/g,'-').replace(/[^a-z0-9-]+/g,'-').replace(/^-+|-+$/g,'');
+    const logoSlugMap={
+      'lada-vaz':'lada','mercedes-benz':'mercedes-benz','mercedes_benz':'mercedes-benz',
+      'land-rover':'land-rover','land_rover':'land-rover','rolls-royce':'rolls-royce',
+      'rolls_royce':'rolls-royce','aston-martin':'aston-martin','aston_martin':'aston-martin',
+      'alfa-romeo':'alfa-romeo','alfa_romeo':'alfa-romeo','am-general':'am-general','am_general':'am-general'
+    };
+    const remoteSlug=logoSlugMap[rawId]||logoSlugMap[slug]||slug;
+    const remote=remoteSlug?`https://raw.githubusercontent.com/filippofilip95/car-logos-dataset/master/logos/optimized/${remoteSlug}.png`:'';
+    /* Prefer bundled artwork, then a real automotive-logo fallback, and only then the
+       old snapshot placeholder. This keeps desktop/browser logos visible as well. */
+    return [...new Set([local,remote,snapshot].filter(Boolean))];
   }
   async function brandRail(container){
     if(!container)return; await ensureCatalogs();
@@ -536,7 +547,7 @@
     container.addEventListener('pointermove',e=>{
       if(dragPointer!==e.pointerId)return;
       const dx=e.clientX-dragStartX;
-      if(Math.abs(dx)>4){dragMoved=true;e.preventDefault()}
+      if(Math.abs(dx)>9){dragMoved=true;e.preventDefault()}
       container.scrollLeft=dragStartScroll-dx;
       normalize();
     },{passive:false});
@@ -644,7 +655,7 @@
         <div class="listing-title">${esc(x.brand)} ${esc(x.model)}</div>
         ${variant?`<div class="listing-variant">${esc(variant)}</div>`:''}
         <div class="listing-meta">${specs.map(v=>`<span class="listing-meta-item">${esc(v)}</span>`).join('')}</div>
-        <div class="listing-footer"><span class="listing-location">${flag?`<span class="listing-country-flag" aria-label="${esc(x.country_code||'')}">${flag}</span>`:''}<span>${esc(place)}</span></span><span class="listing-age">${relative(x.published_at||x.created_at)}</span></div>
+        <div class="listing-footer"><span class="listing-location">${x.country_code?`<img class="listing-country-flag-img" src="https://flagcdn.com/24x18/${esc(String(x.country_code).toLowerCase())}.png" alt="${esc(x.country_code)}" width="24" height="18" loading="lazy" decoding="async">`:''}<span>${esc(place)}</span></span><span class="listing-age">${relative(x.published_at||x.created_at)}</span></div>
         <div class="listing-card-actions"><button class="btn btn-outline btn-sm grow" data-compare="${x.id}"><i class="fa-solid fa-code-compare"></i><span>${cids.includes(x.id)?'✓':t('compare')}</span></button></div>
       </div></article>`;
   }
@@ -689,7 +700,16 @@
     if($('#filterCountry'))$('#filterCountry').addEventListener('change',async()=>{const iso=$('#filterCountry').value;if($('#filterCountryAdvanced')){$('#filterCountryAdvanced').value=iso;$('#filterCountryAdvanced').dispatchEvent(new Event('change'))}const cities=iso&&intl?await intl.cities(iso,lang):CITIES;fillDatalist($('#filterCityList'),cities)});
     $('#filterCity')?.addEventListener('input',async()=>{const iso=$('#filterCountry')?.value;if(!iso)return;const cities=await intl.cities(iso,lang);const q=$('#filterCity').value.toLocaleLowerCase();fillDatalist($('#filterCityList'),cities.filter(x=>x.toLocaleLowerCase().includes(q)).slice(0,80))});
     await bindModelAutocomplete($('#filterBrand'),$('#filterModel'),$('#filterModelList'));
-    $('#brandsRail')?.addEventListener('click',e=>{const b=e.target.closest('[data-brand]');if(!b)return;if([...$('#filterBrand').options].some(o=>o.value===b.dataset.brand))$('#filterBrand').value=b.dataset.brand;$$('.brand-chip').forEach(x=>x.classList.toggle('active',x===b));$('#filterBrand').dispatchEvent(new Event('change'));loadHomeListings()});
+    $('#brandsRail')?.addEventListener('click',e=>{
+      const b=e.target.closest('[data-brand]'); if(!b)return;
+      const select=$('#filterBrand'); if(!select)return;
+      const brand=b.dataset.brand||'';
+      const same=select.value===brand;
+      select.value=same?'':([...select.options].some(o=>o.value===brand)?brand:'');
+      $$('.brand-chip').forEach(x=>x.classList.toggle('active',!same&&x.dataset.brand===brand));
+      select.dispatchEvent(new Event('change',{bubbles:true}));
+      loadHomeListings();
+    });
     const adv=$('#advancedFilters'),toggle=$('#toggleAdvanced');
     const savedOpen=localStorage.getItem('avtovip-filter-open')==='1'; if(adv)adv.classList.toggle('open',savedOpen); if(toggle)toggle.setAttribute('aria-expanded',String(savedOpen));
     toggle?.addEventListener('click',()=>{const open=!adv?.classList.contains('open');adv?.classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));localStorage.setItem('avtovip-filter-open',open?'1':'0')});
