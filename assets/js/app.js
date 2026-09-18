@@ -501,9 +501,29 @@
     const makes=vehicleMakes.length?vehicleMakes:BRANDS.map(([name,file])=>({name,logo:`assets/img/brands/${file}`}));
     container.innerHTML=''; const track=document.createElement('div');track.className='brands-track';container.append(track);
     for(const make of makes){const b=document.createElement('button');b.className='brand-chip';b.type='button';b.dataset.brand=make.name;const logos=brandLogoCandidates(make);const fallback=(make.name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();b.innerHTML=`<span class="brand-logo-box">${logos.length?`<img loading="lazy" decoding="async" src="${esc(logos[0])}" alt="${esc(make.name)}">`:''}<b>${esc(fallback)}</b></span><span>${esc(make.name)}</span>`;const img=b.querySelector('img');if(img){let i=0;img.addEventListener('error',()=>{i++;if(i<logos.length){img.src=logos[i]}else{img.remove();b.querySelector('.brand-logo-box')?.classList.add('fallback')}})}else b.querySelector('.brand-logo-box')?.classList.add('fallback');track.append(b)}
-    container.classList.add('brands-scroll');let paused=false,autoTimer=null;
-    const startAuto=()=>{if(autoTimer)return;autoTimer=setInterval(()=>{if(paused||document.hidden||!container.isConnected||container.scrollWidth<=container.clientWidth+4)return;container.scrollLeft+=1;if(container.scrollLeft>=container.scrollWidth-container.clientWidth-2)container.scrollLeft=0},42)};
-    startAuto();['pointerdown','touchstart','wheel'].forEach(ev=>container.addEventListener(ev,()=>paused=true,{passive:true}));['pointerup','touchend','pointercancel','mouseleave'].forEach(ev=>container.addEventListener(ev,()=>setTimeout(()=>paused=false,900),{passive:true}));
+    container.classList.add('brands-scroll');
+    /* Smooth, touch-friendly endless rail. A duplicated track removes the end jump,
+       while requestAnimationFrame avoids the interval + scroll-behavior jitter on phones. */
+    const original=[...track.children];
+    original.forEach(node=>track.append(node.cloneNode(true)));
+    let paused=false,resumeTimer=0,lastTs=0,rafId=0;
+    const halfWidth=()=>track.scrollWidth/2;
+    const normalize=()=>{const half=halfWidth();if(!half)return;if(container.scrollLeft>=half)container.scrollLeft-=half;else if(container.scrollLeft<0)container.scrollLeft+=half};
+    const tick=ts=>{
+      if(!lastTs)lastTs=ts;
+      const dt=Math.min(40,ts-lastTs);lastTs=ts;
+      if(!paused&&!document.hidden&&container.isConnected&&container.scrollWidth>container.clientWidth+4){
+        container.scrollLeft+=dt*0.024;
+        normalize();
+      }
+      rafId=requestAnimationFrame(tick);
+    };
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches)rafId=requestAnimationFrame(tick);
+    const pause=()=>{paused=true;clearTimeout(resumeTimer)};
+    const resume=()=>{clearTimeout(resumeTimer);resumeTimer=setTimeout(()=>{paused=false;lastTs=performance.now()},850)};
+    ['pointerdown','touchstart','wheel'].forEach(ev=>container.addEventListener(ev,pause,{passive:true}));
+    ['pointerup','touchend','pointercancel','mouseleave'].forEach(ev=>container.addEventListener(ev,resume,{passive:true}));
+    container.addEventListener('scroll',()=>{if(paused)normalize()},{passive:true});
   }
   function fillSelectPairs(el,items,placeholder=t('all')){
     if(!el)return; const sorted=[...items].sort((a,b)=>byLocale(a.label,b.label)); el.innerHTML=`<option value="">${esc(staticText(placeholder))}</option>`+sorted.map(x=>`<option value="${esc(x.value)}">${esc(x.label)}</option>`).join('');
@@ -605,6 +625,13 @@
     await populateCountries($('#filterCountry'),$('#filterCountryAdvanced'));
     const pref=localStorage.getItem('avtovip-country')||''; if(pref){if($('#filterCountry'))$('#filterCountry').value=pref;if($('#filterCountryAdvanced'))$('#filterCountryAdvanced').value=pref}
     await bindLocation($('#filterCountryAdvanced'),$('#filterState'),$('#filterCityAdvanced'),$('#filterCityAdvancedList'),{mirror:$('#filterCountry')});
+    /* Home must open with the complete approved marketplace on every device/browser.
+       A saved profile/location preference must not silently hide listings on desktop. */
+    if($('#filterCountry'))$('#filterCountry').value='';
+    if($('#filterCountryAdvanced'))$('#filterCountryAdvanced').value='';
+    if($('#filterState'))$('#filterState').value='';
+    if($('#filterCity'))$('#filterCity').value='';
+    if($('#filterCityAdvanced'))$('#filterCityAdvanced').value='';
     if($('#filterCountry'))$('#filterCountry').addEventListener('change',async()=>{const iso=$('#filterCountry').value;if($('#filterCountryAdvanced')){$('#filterCountryAdvanced').value=iso;$('#filterCountryAdvanced').dispatchEvent(new Event('change'))}const cities=iso&&intl?await intl.cities(iso,lang):CITIES;fillDatalist($('#filterCityList'),cities)});
     $('#filterCity')?.addEventListener('input',async()=>{const iso=$('#filterCountry')?.value;if(!iso)return;const cities=await intl.cities(iso,lang);const q=$('#filterCity').value.toLocaleLowerCase();fillDatalist($('#filterCityList'),cities.filter(x=>x.toLocaleLowerCase().includes(q)).slice(0,80))});
     await bindModelAutocomplete($('#filterBrand'),$('#filterModel'),$('#filterModelList'));
@@ -631,8 +658,13 @@
   async function loadHomeStats(){
     const {count}=await sb.from('elanlar').select('*',{count:'exact',head:true}).eq('status','approved'); $('#statListings') && ($('#statListings').textContent=count||0); if(currentUser){const {count:f}=await sb.from('favorites').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);$('#statFavorites')&&($('#statFavorites').textContent=f||0)}
   }
+  let homeListingsRequestId=0;
   async function loadHomeListings(){
-    const grid=$('#listingsGrid');if(!grid)return;grid.innerHTML='<div class="skeleton listing-card"></div><div class="skeleton listing-card"></div><div class="skeleton listing-card"></div>';
+    const grid=$('#listingsGrid');if(!grid)return;
+    const requestId=++homeListingsRequestId;
+    /* Keep already rendered cards in place during background/filter refreshes.
+       This removes the repeated card -> skeleton -> card flashing on PWA refresh. */
+    if(grid.dataset.ready!=='1')grid.innerHTML='<div class="skeleton listing-card"></div><div class="skeleton listing-card"></div><div class="skeleton listing-card"></div>';
     let q=sb.from('elanlar').select('*').eq('status','approved'); const v=id=>$(id)?.value?.trim()||'';
     const country=v('#filterCountry')||v('#filterCountryAdvanced'),city=v('#filterCity')||v('#filterCityAdvanced');
     if(v('#filterBrand'))q=q.eq('brand',v('#filterBrand')); if(v('#filterModel'))q=q.ilike('model',`%${v('#filterModel')}%`); if(country)q=q.eq('country_code',country); if(v('#filterState'))q=q.eq('state_name',v('#filterState')); if(city)q=q.ilike('city',city); if(v('#filterDistrict'))q=q.ilike('district',`%${v('#filterDistrict')}%`); if(v('#filterCurrency'))q=q.eq('currency',v('#filterCurrency'));
@@ -642,7 +674,12 @@
     if(v('#filterCondition')==='new')q=q.eq('is_new',true);if(v('#filterCondition')==='used')q=q.eq('is_new',false);if($('#filterCredit')?.checked)q=q.eq('is_credit',true);if($('#filterBarter')?.checked)q=q.eq('is_barter',true);if($('#filterDamage')?.checked)q=q.eq('has_accident',true);if($('#filterPainted')?.checked)q=q.eq('is_painted',true);if($('#vipOnly')?.dataset.on==='1')q=q.eq('is_vip',true);
     const selectedEq=$$('#filterEquipmentGrid input:checked').map(x=>x.value);if(selectedEq.length)q=q.contains('equipment',selectedEq);
     const sort=v('#sortListings'); if(sort==='price-asc')q=q.order('price',{ascending:true});else if(sort==='price-desc')q=q.order('price',{ascending:false});else if(sort==='year-desc')q=q.order('year',{ascending:false});else if(sort==='mileage-asc')q=q.order('mileage',{ascending:true});else q=q.order('is_premium',{ascending:false}).order('is_vip',{ascending:false}).order('published_at',{ascending:false}); q=q.limit(100);
-    const [{data,error},favs]=await Promise.all([q,favoriteSet()]); if(error){grid.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;return} $('#resultCount')&&($('#resultCount').textContent=`${(data||[]).length} ${lang==='ru'?'объявл.':lang==='en'?'ads':lang==='tr'?'ilan':lang==='ka'?'განცხადება':'elan'}`); grid.innerHTML=(data||[]).length?(data||[]).map(x=>listingCard(x,favs)).join(''):`<div class="empty-state">${t('empty')}</div>`;
+    const [{data,error},favs]=await Promise.all([q,favoriteSet()]);
+    if(requestId!==homeListingsRequestId)return;
+    if(error){grid.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;grid.dataset.ready='1';return}
+    $('#resultCount')&&($('#resultCount').textContent=`${(data||[]).length} ${lang==='ru'?'объявл.':lang==='en'?'ads':lang==='tr'?'ilan':lang==='ka'?'განცხადება':'elan'}`);
+    grid.innerHTML=(data||[]).length?(data||[]).map(x=>listingCard(x,favs)).join(''):`<div class="empty-state">${t('empty')}</div>`;
+    grid.dataset.ready='1';
   }
   async function loadStories(){
     const rail=$('#storiesRail');if(!rail)return;
@@ -1037,7 +1074,7 @@
     if('serviceWorker' in navigator){
       window.addEventListener('load',async()=>{
         try{
-          const reg=await navigator.serviceWorker.register('./service-worker.js?v=31',{scope:'./',updateViaCache:'none'});
+          const reg=await navigator.serviceWorker.register('./service-worker.js?v=32',{scope:'./',updateViaCache:'none'});
           await reg.update();
           await navigator.serviceWorker.ready;
           let reloading=false;

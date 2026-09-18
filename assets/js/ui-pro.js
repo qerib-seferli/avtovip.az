@@ -57,10 +57,13 @@
    if(document.body.dataset.page==='messages')return;
    if(!matchMedia('(max-width:900px)').matches||$('.av-pull-indicator'))return;
    const el=document.createElement('div');el.className='av-pull-indicator';el.textContent=t('pull');document.body.append(el);
-   let startY=null,armed=false;
-   document.addEventListener('touchstart',e=>{if(e.target.closest?.('.story-viewer')){startY=null;armed=false;el.classList.remove('show');return}startY=(window.scrollY<=0&&e.touches.length===1)?e.touches[0].clientY:null;armed=false},{passive:true});
-   document.addEventListener('touchmove',e=>{if(e.target.closest?.('.story-viewer')){startY=null;armed=false;el.classList.remove('show');return}if(startY===null)return;const d=e.touches[0].clientY-startY;armed=d>90;el.classList.toggle('show',d>50)},{passive:true});
-   document.addEventListener('touchend',()=>{el.classList.remove('show');const refresh=armed;startY=null;armed=false;if(refresh)setTimeout(()=>location.reload(),0)},{passive:true});
+   let startY=null,armed=false,refreshing=false;
+   document.addEventListener('touchstart',e=>{if(refreshing||e.target.closest?.('.story-viewer')){startY=null;armed=false;el.classList.remove('show');return}startY=(window.scrollY<=0&&e.touches.length===1)?e.touches[0].clientY:null;armed=false},{passive:true});
+   document.addEventListener('touchmove',e=>{if(refreshing||e.target.closest?.('.story-viewer')){startY=null;armed=false;el.classList.remove('show');return}if(startY===null)return;const d=e.touches[0].clientY-startY;armed=d>90;el.classList.toggle('show',d>50)},{passive:true});
+   document.addEventListener('touchend',()=>{
+     el.classList.remove('show');const refresh=armed;startY=null;armed=false;
+     if(refresh&&!refreshing){refreshing=true;document.documentElement.classList.add('av-refreshing');setTimeout(()=>location.reload(),40)}
+   },{passive:true});
    document.addEventListener('touchcancel',()=>{el.classList.remove('show');startY=null;armed=false},{passive:true});
  }
  function boot(){rail();pullRefresh();localizeInjected();setTimeout(localizeInjected,250);addEventListener('avtovip:language',()=>requestAnimationFrame(localizeInjected));}
