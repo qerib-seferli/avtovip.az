@@ -61,3 +61,33 @@
  function boot(){rail();pullRefresh();localizeInjected();setTimeout(localizeInjected,250);addEventListener('avtovip:language',()=>requestAnimationFrame(localizeInjected));}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
+
+
+/* AvtoVIP v59 — mobile one-finger scroll fallback.
+   Only activates when the browser/PWA fails to move the document natively. */
+(()=>{'use strict';
+  if(!matchMedia('(max-width:900px)').matches)return;
+  let startY=0,startScroll=0,lastY=0,manual=false,moved=false,target=null;
+  const blocked=el=>!!el?.closest?.('.brands-rail,.brands-scroll,.gallery-thumbs,.story-viewer,.chat-messages,.conversation-list,.comments-list,.social-modal,[data-no-page-scroll],input,textarea,select');
+  addEventListener('touchstart',e=>{
+    if(e.touches.length!==1||blocked(e.target)){target=null;return}
+    target=e.target;startY=lastY=e.touches[0].clientY;startScroll=window.scrollY||document.documentElement.scrollTop||0;manual=false;moved=false;
+  },{passive:true,capture:true});
+  addEventListener('touchmove',e=>{
+    if(!target||e.touches.length!==1)return;
+    const y=e.touches[0].clientY,dy=startY-y;
+    if(Math.abs(dy)<7)return;
+    moved=true;
+    const now=window.scrollY||document.documentElement.scrollTop||0;
+    if(!manual&&Math.abs(now-startScroll)<2)manual=true;
+    if(manual){
+      const max=Math.max(0,document.documentElement.scrollHeight-innerHeight);
+      const next=Math.max(0,Math.min(max,startScroll+dy));
+      if(next!==now)window.scrollTo(0,next);
+      e.preventDefault();
+    }
+    lastY=y;
+  },{passive:false,capture:true});
+  addEventListener('touchend',()=>{target=null;manual=false;moved=false},{passive:true,capture:true});
+  addEventListener('touchcancel',()=>{target=null;manual=false;moved=false},{passive:true,capture:true});
+})();
