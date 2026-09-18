@@ -1257,3 +1257,29 @@ body[data-page="explore"] .explore-user-result>i{font-size:10px!important;color:
 @media(max-width:1100px){body[data-page="explore"] .explore-user-results{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:820px){body[data-page="explore"] .explore-user-results{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:700px){body[data-page="explore"] .explore-user-results{grid-template-columns:1fr!important;gap:6px!important;margin-bottom:9px!important}body[data-page="explore"] .explore-follow{min-width:62px!important;max-width:74px!important;height:28px!important;padding:0 7px!important;font-size:9px!important}}
+
+
+/* v70 — Explore verified rosette + borderless compact follow action only */
+body[data-page="explore"] .explore-verified{
+  width:16px!important;height:16px!important;min-width:16px!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  background:none!important;border-radius:0!important;color:#1d9bf0!important;
+  box-shadow:none!important;flex:0 0 16px!important;
+}
+body[data-page="explore"] .explore-verified svg{display:block!important;width:16px!important;height:16px!important;overflow:visible!important}
+body[data-page="explore"] .explore-follow{
+  margin-left:auto!important;margin-right:6px!important;
+  width:auto!important;min-width:0!important;max-width:none!important;height:28px!important;
+  padding:0 2px!important;border:0!important;border-radius:0!important;
+  background:transparent!important;color:#aeb7c4!important;box-shadow:none!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  gap:4px!important;font-size:8.5px!important;font-weight:700!important;line-height:1!important;white-space:nowrap!important;
+}
+body[data-page="explore"] .explore-follow:hover{background:transparent!important;border:0!important;color:#e7ebf0!important}
+body[data-page="explore"] .explore-follow i{font-size:15px!important;line-height:1!important;width:15px!important;text-align:center!important}
+body[data-page="explore"] .explore-follow.active{background:transparent!important;border:0!important;color:#2bdc79!important;box-shadow:none!important}
+body[data-page="explore"] .explore-follow.active:hover{background:transparent!important;color:#2bdc79!important}
+@media(max-width:700px){
+  body[data-page="explore"] .explore-follow{margin-right:5px!important;height:30px!important;padding:0 1px!important;font-size:8.5px!important;gap:4px!important}
+  body[data-page="explore"] .explore-follow i{font-size:15px!important;width:15px!important}
+}
