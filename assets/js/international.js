@@ -72,7 +72,20 @@
     'aston-martin':['DB11','DB12','DBS','DBX','Rapide','Vanquish','Vantage'],
     'ferrari':['296 GTB','488','812','F8 Tributo','Purosangue','Roma','SF90'],
     'lamborghini':['Aventador','Gallardo','Huracan','Revuelto','Urus'],
-    'rolls-royce':['Cullinan','Dawn','Ghost','Phantom','Spectre','Wraith']
+    'rolls-royce':['Cullinan','Dawn','Ghost','Phantom','Spectre','Wraith'],
+    'baic':['BJ20','BJ30','BJ40','BJ60','BJ80','EU5','U5 Plus','X3','X5','X7'],
+    'bestune':['B70','B70S','B90','T55','T77','T90'],
+    'geely':['Atlas','Coolray','Emgrand','Galaxy E5','Geometry C','Monjaro','Okavango','Preface','Tugella'],
+    'genesis':['G70','G80','G90','GV60','GV70','GV80'],
+    'haval':['Dargo','F7','H5','H6','H9','Jolion','M6'],
+    'hongqi':['E-HS9','H5','H6','H9','HS3','HS5','HS7'],
+    'jetour':['Dashing','T1','T2','X70','X70 Plus','X90 Plus'],
+    'leapmotor':['B10','C01','C10','C11','T03'],
+    'nio':['EC6','EC7','EL6','EL7','EL8','EP9','ES6','ES7','ES8','ET5','ET7','ET9'],
+    'polestar':['1','2','3','4','5','6'],
+    'vinfast':['VF 3','VF 5','VF 6','VF 7','VF 8','VF 9'],
+    'xpeng':['G6','G9','Mona M03','P5','P7','X9'],
+    'zeekr':['001','007','009','7X','Mix','X']
   };
 
   const FALLBACK_MAKES = Object.keys(CORE_MODELS).map(id => ({

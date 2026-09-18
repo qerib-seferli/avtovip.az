@@ -35,10 +35,24 @@
     }
   },
   {
+    "id": "baic",
+    "name": "BAIC",
+    "logo": {
+      "local_url": "assets/data/brand-logos/baic.svg"
+    }
+  },
+  {
     "id": "bentley",
     "name": "Bentley",
     "logo": {
       "local_url": "assets/data/brand-logos/bentley.png"
+    }
+  },
+  {
+    "id": "bestune",
+    "name": "Bestune",
+    "logo": {
+      "local_url": "assets/data/brand-logos/bestune.svg"
     }
   },
   {
@@ -154,6 +168,20 @@
     }
   },
   {
+    "id": "geely",
+    "name": "Geely",
+    "logo": {
+      "local_url": "assets/data/brand-logos/geely.svg"
+    }
+  },
+  {
+    "id": "genesis",
+    "name": "Genesis",
+    "logo": {
+      "local_url": "assets/data/brand-logos/genesis.svg"
+    }
+  },
+  {
     "id": "geo",
     "name": "GEO",
     "logo": {
@@ -168,10 +196,24 @@
     }
   },
   {
+    "id": "haval",
+    "name": "Haval",
+    "logo": {
+      "local_url": "assets/data/brand-logos/haval.svg"
+    }
+  },
+  {
     "id": "honda",
     "name": "Honda",
     "logo": {
       "local_url": "assets/data/brand-logos/honda.png"
+    }
+  },
+  {
+    "id": "hongqi",
+    "name": "Hongqi",
+    "logo": {
+      "local_url": "assets/data/brand-logos/hongqi.svg"
     }
   },
   {
@@ -217,6 +259,13 @@
     }
   },
   {
+    "id": "jetour",
+    "name": "Jetour",
+    "logo": {
+      "local_url": "assets/data/brand-logos/jetour.svg"
+    }
+  },
+  {
     "id": "karma",
     "name": "Karma",
     "logo": {
@@ -242,6 +291,13 @@
     "name": "Land Rover",
     "logo": {
       "local_url": "assets/data/brand-logos/land_rover.svg"
+    }
+  },
+  {
+    "id": "leapmotor",
+    "name": "Leapmotor",
+    "logo": {
+      "local_url": "assets/data/brand-logos/leapmotor.svg"
     }
   },
   {
@@ -329,6 +385,13 @@
     }
   },
   {
+    "id": "nio",
+    "name": "NIO",
+    "logo": {
+      "local_url": "assets/data/brand-logos/nio.svg"
+    }
+  },
+  {
     "id": "nissan",
     "name": "Nissan",
     "logo": {
@@ -361,6 +424,13 @@
     "name": "Plymouth",
     "logo": {
       "local_url": "assets/data/brand-logos/plymouth.png"
+    }
+  },
+  {
+    "id": "polestar",
+    "name": "Polestar",
+    "logo": {
+      "local_url": "assets/data/brand-logos/polestar.svg"
     }
   },
   {
@@ -476,6 +546,13 @@
     }
   },
   {
+    "id": "vinfast",
+    "name": "VinFast",
+    "logo": {
+      "local_url": "assets/data/brand-logos/vinfast.svg"
+    }
+  },
+  {
     "id": "volvo",
     "name": "Volvo",
     "logo": {
@@ -483,10 +560,24 @@
     }
   },
   {
+    "id": "xpeng",
+    "name": "XPeng",
+    "logo": {
+      "local_url": "assets/data/brand-logos/xpeng.svg"
+    }
+  },
+  {
     "id": "yugo",
     "name": "Yugo",
     "logo": {
       "local_url": "assets/data/brand-logos/yugo.svg"
+    }
+  },
+  {
+    "id": "zeekr",
+    "name": "Zeekr",
+    "logo": {
+      "local_url": "assets/data/brand-logos/zeekr.svg"
     }
   }
 ]
