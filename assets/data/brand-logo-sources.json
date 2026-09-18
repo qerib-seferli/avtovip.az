@@ -1,7 +1,7 @@
 [
   {
     "make": "Acura",
-    "file": "assets/data/brand-logos/acura.svg",
+    "file": "assets/data/brand-logos/acura.png",
     "source": "local/snapshot"
   },
   {
@@ -21,62 +21,62 @@
   },
   {
     "make": "Audi",
-    "file": "assets/img/brands/audi_logo.png",
+    "file": "assets/data/brand-logos/audi.png",
     "source": "local/snapshot"
   },
   {
     "make": "Bentley",
-    "file": "assets/data/brand-logos/bentley.svg",
+    "file": "assets/data/brand-logos/bentley.png",
     "source": "local/snapshot"
   },
   {
     "make": "BMW",
-    "file": "assets/img/brands/bmw_logo.png",
+    "file": "assets/data/brand-logos/bmw.png",
     "source": "local/snapshot"
   },
   {
     "make": "Bugatti",
-    "file": "assets/data/brand-logos/bugatti.svg",
+    "file": "assets/data/brand-logos/bugatti.png",
     "source": "local/snapshot"
   },
   {
     "make": "Buick",
-    "file": "assets/data/brand-logos/buick.svg",
+    "file": "assets/data/brand-logos/buick.png",
     "source": "local/snapshot"
   },
   {
     "make": "Cadillac",
-    "file": "assets/data/brand-logos/cadillac.svg",
+    "file": "assets/data/brand-logos/cadillac.png",
     "source": "local/snapshot"
   },
   {
     "make": "Chevrolet",
-    "file": "assets/img/brands/chevrolet_logo.png",
+    "file": "assets/data/brand-logos/chevrolet.png",
     "source": "local/snapshot"
   },
   {
     "make": "Chrysler",
-    "file": "assets/data/brand-logos/chrysler.svg",
+    "file": "assets/data/brand-logos/chrysler.png",
     "source": "local/snapshot"
   },
   {
     "make": "Daewoo",
-    "file": "assets/data/brand-logos/daewoo.svg",
+    "file": "assets/data/brand-logos/daewoo.png",
     "source": "local/snapshot"
   },
   {
     "make": "Daihatsu",
-    "file": "assets/data/brand-logos/daihatsu.svg",
+    "file": "assets/data/brand-logos/daihatsu.png",
     "source": "local/snapshot"
   },
   {
     "make": "Daimler",
-    "file": "assets/data/brand-logos/daimler.svg",
+    "file": "assets/data/brand-logos/daimler.png",
     "source": "local/snapshot"
   },
   {
     "make": "Datsun",
-    "file": "assets/data/brand-logos/datsun.svg",
+    "file": "assets/data/brand-logos/datsun.png",
     "source": "local/snapshot"
   },
   {
@@ -86,87 +86,87 @@
   },
   {
     "make": "Dodge",
-    "file": "assets/data/brand-logos/dodge.svg",
+    "file": "assets/data/brand-logos/dodge.png",
     "source": "local/snapshot"
   },
   {
     "make": "Ferrari",
-    "file": "assets/data/brand-logos/ferrari.svg",
+    "file": "assets/data/brand-logos/ferrari.png",
     "source": "local/snapshot"
   },
   {
     "make": "Fiat",
-    "file": "assets/data/brand-logos/fiat.svg",
+    "file": "assets/data/brand-logos/fiat.png",
     "source": "local/snapshot"
   },
   {
     "make": "Fisker",
-    "file": "assets/data/brand-logos/fisker.svg",
+    "file": "assets/data/brand-logos/fisker.png",
     "source": "local/snapshot"
   },
   {
     "make": "Ford",
-    "file": "assets/img/brands/ford_logo.png",
+    "file": "assets/data/brand-logos/ford.png",
     "source": "local/snapshot"
   },
   {
     "make": "GEO",
-    "file": "assets/data/brand-logos/geo.svg",
+    "file": "assets/data/brand-logos/geo.png",
     "source": "local/snapshot"
   },
   {
     "make": "GMC",
-    "file": "assets/data/brand-logos/gmc.svg",
+    "file": "assets/data/brand-logos/gmc.png",
     "source": "local/snapshot"
   },
   {
     "make": "Honda",
-    "file": "assets/data/brand-logos/honda.svg",
+    "file": "assets/data/brand-logos/honda.png",
     "source": "local/snapshot"
   },
   {
     "make": "Hummer",
-    "file": "assets/data/brand-logos/hummer.svg",
+    "file": "assets/data/brand-logos/hummer.png",
     "source": "local/snapshot"
   },
   {
     "make": "Hyundai",
-    "file": "assets/img/brands/hyundai_logo.png",
+    "file": "assets/data/brand-logos/hyundai.png",
     "source": "local/snapshot"
   },
   {
     "make": "Infiniti",
-    "file": "assets/img/brands/infiniti_logo.png",
+    "file": "assets/data/brand-logos/infiniti.png",
     "source": "local/snapshot"
   },
   {
     "make": "Isuzu",
-    "file": "assets/data/brand-logos/isuzu.svg",
+    "file": "assets/data/brand-logos/isuzu.png",
     "source": "local/snapshot"
   },
   {
     "make": "Jaguar",
-    "file": "assets/data/brand-logos/jaguar.svg",
+    "file": "assets/data/brand-logos/jaguar.png",
     "source": "local/snapshot"
   },
   {
     "make": "Jeep",
-    "file": "assets/img/brands/jeep_logo.png",
+    "file": "assets/data/brand-logos/jeep.png",
     "source": "local/snapshot"
   },
   {
     "make": "Karma",
-    "file": "assets/data/brand-logos/karma.svg",
+    "file": "assets/data/brand-logos/karma.png",
     "source": "local/snapshot"
   },
   {
     "make": "KIA",
-    "file": "assets/img/brands/kia_logo.png",
+    "file": "assets/data/brand-logos/kia.png",
     "source": "local/snapshot"
   },
   {
     "make": "Lamborghini",
-    "file": "assets/data/brand-logos/lamborghini.svg",
+    "file": "assets/data/brand-logos/lamborghini.png",
     "source": "local/snapshot"
   },
   {
@@ -176,42 +176,42 @@
   },
   {
     "make": "Lexus",
-    "file": "assets/img/brands/lexus_logo.png",
+    "file": "assets/data/brand-logos/lexus.png",
     "source": "local/snapshot"
   },
   {
     "make": "Lincoln",
-    "file": "assets/data/brand-logos/lincoln.svg",
+    "file": "assets/data/brand-logos/lincoln.png",
     "source": "local/snapshot"
   },
   {
     "make": "Lotus",
-    "file": "assets/data/brand-logos/lotus.svg",
+    "file": "assets/data/brand-logos/lotus.png",
     "source": "local/snapshot"
   },
   {
     "make": "Lucid",
-    "file": "assets/data/brand-logos/lucid.svg",
+    "file": "assets/data/brand-logos/lucid.png",
     "source": "local/snapshot"
   },
   {
     "make": "Maserati",
-    "file": "assets/data/brand-logos/maserati.svg",
+    "file": "assets/data/brand-logos/maserati.png",
     "source": "local/snapshot"
   },
   {
     "make": "Maybach",
-    "file": "assets/data/brand-logos/maybach.svg",
+    "file": "assets/data/brand-logos/maybach.png",
     "source": "local/snapshot"
   },
   {
     "make": "Mazda",
-    "file": "assets/img/brands/mazda_logo.png",
+    "file": "assets/data/brand-logos/mazda.png",
     "source": "local/snapshot"
   },
   {
     "make": "Mclaren",
-    "file": "assets/data/brand-logos/mclaren.svg",
+    "file": "assets/data/brand-logos/mclaren.png",
     "source": "local/snapshot"
   },
   {
@@ -221,67 +221,67 @@
   },
   {
     "make": "Mercury",
-    "file": "assets/data/brand-logos/mercury.svg",
+    "file": "assets/data/brand-logos/mercury.png",
     "source": "local/snapshot"
   },
   {
     "make": "Mini",
-    "file": "assets/data/brand-logos/mini.svg",
+    "file": "assets/data/brand-logos/mini.png",
     "source": "local/snapshot"
   },
   {
     "make": "Mitsubishi",
-    "file": "assets/img/brands/mitsubishi_logo.png",
+    "file": "assets/data/brand-logos/mitsubishi.png",
     "source": "local/snapshot"
   },
   {
     "make": "Nissan",
-    "file": "assets/img/brands/nissan_logo.png",
+    "file": "assets/data/brand-logos/nissan.png",
     "source": "local/snapshot"
   },
   {
     "make": "Oldsmobile",
-    "file": "assets/data/brand-logos/oldsmobile.svg",
+    "file": "assets/data/brand-logos/oldsmobile.png",
     "source": "local/snapshot"
   },
   {
     "make": "Peterbilt",
-    "file": "assets/data/brand-logos/peterbilt.svg",
+    "file": "assets/data/brand-logos/peterbilt.png",
     "source": "local/snapshot"
   },
   {
     "make": "Peugeot",
-    "file": "assets/data/brand-logos/peugeot.svg",
+    "file": "assets/data/brand-logos/peugeot.png",
     "source": "local/snapshot"
   },
   {
     "make": "Plymouth",
-    "file": "assets/data/brand-logos/plymouth.svg",
+    "file": "assets/data/brand-logos/plymouth.png",
     "source": "local/snapshot"
   },
   {
     "make": "Pontiac",
-    "file": "assets/data/brand-logos/pontiac.svg",
+    "file": "assets/data/brand-logos/pontiac.png",
     "source": "local/snapshot"
   },
   {
     "make": "Porsche",
-    "file": "assets/img/brands/porsche_logo.png",
+    "file": "assets/data/brand-logos/porsche.png",
     "source": "local/snapshot"
   },
   {
     "make": "RAM",
-    "file": "assets/data/brand-logos/ram.svg",
+    "file": "assets/data/brand-logos/ram.png",
     "source": "local/snapshot"
   },
   {
     "make": "Renault",
-    "file": "assets/img/brands/renault_logo.png",
+    "file": "assets/data/brand-logos/renault.png",
     "source": "local/snapshot"
   },
   {
     "make": "Rivian",
-    "file": "assets/data/brand-logos/rivian.svg",
+    "file": "assets/data/brand-logos/rivian.png",
     "source": "local/snapshot"
   },
   {
@@ -291,12 +291,12 @@
   },
   {
     "make": "Saab",
-    "file": "assets/data/brand-logos/saab.svg",
+    "file": "assets/data/brand-logos/saab.png",
     "source": "local/snapshot"
   },
   {
     "make": "Saturn",
-    "file": "assets/data/brand-logos/saturn.svg",
+    "file": "assets/data/brand-logos/saturn.png",
     "source": "local/snapshot"
   },
   {
@@ -306,42 +306,42 @@
   },
   {
     "make": "Smart",
-    "file": "assets/data/brand-logos/smart.svg",
+    "file": "assets/data/brand-logos/smart.png",
     "source": "local/snapshot"
   },
   {
     "make": "Spyker",
-    "file": "assets/data/brand-logos/spyker.svg",
+    "file": "assets/data/brand-logos/spyker.png",
     "source": "local/snapshot"
   },
   {
     "make": "Subaru",
-    "file": "assets/data/brand-logos/subaru.svg",
+    "file": "assets/data/brand-logos/subaru.png",
     "source": "local/snapshot"
   },
   {
     "make": "Suzuki",
-    "file": "assets/data/brand-logos/suzuki.svg",
+    "file": "assets/data/brand-logos/suzuki.png",
     "source": "local/snapshot"
   },
   {
     "make": "Tesla",
-    "file": "assets/data/brand-logos/tesla.svg",
+    "file": "assets/data/brand-logos/tesla.png",
     "source": "local/snapshot"
   },
   {
     "make": "Toyota",
-    "file": "assets/img/brands/toyota_logo.png",
+    "file": "assets/data/brand-logos/toyota.png",
     "source": "local/snapshot"
   },
   {
     "make": "Triumph",
-    "file": "assets/data/brand-logos/triumph.svg",
+    "file": "assets/data/brand-logos/triumph.png",
     "source": "local/snapshot"
   },
   {
     "make": "Volvo",
-    "file": "assets/data/brand-logos/volvo.svg",
+    "file": "assets/data/brand-logos/volvo.png",
     "source": "local/snapshot"
   },
   {
