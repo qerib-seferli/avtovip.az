@@ -610,15 +610,32 @@
   function listingBadges(x){
     let out=''; if(x.is_premium)out+='<span class="badge premium"><i class="fa-solid fa-gem"></i> PREMIUM</span>'; else if(x.is_vip)out+='<span class="badge vip"><i class="fa-solid fa-crown"></i> VIP</span>'; if(x.is_verified)out+='<span class="badge verified"><i class="fa-solid fa-circle-check"></i> VERIFIED</span>'; if(x.is_credit)out+='<span class="badge">KREDİT</span>'; return out;
   }
+  function countryFlag(code){
+    const iso=String(code||'').trim().toUpperCase();
+    if(!/^[A-Z]{2}$/.test(iso))return '';
+    return String.fromCodePoint(...[...iso].map(ch=>127397+ch.charCodeAt(0)));
+  }
   function listingCard(x,favoriteSet=new Set()){
     const img=x.image_urls?.[0]||'assets/img/brand/icon-512.png'; const fav=favoriteSet.has(x.id); const cids=compareIds();
+    const flag=countryFlag(x.country_code);
+    const place=[x.city,x.state_name].filter(Boolean).join(', ')||x.country_code||'';
+    const specs=[
+      x.year||null,
+      Number.isFinite(Number(x.mileage))?`${Number(x.mileage||0).toLocaleString(locale())} km`:null,
+      x.engine_volume?`${x.engine_volume} L`:null,
+      x.fuel||null,
+      x.transmission||null
+    ].filter(Boolean);
     return `<article class="listing-card" data-listing="${x.id}">
       <a class="listing-photo" href="elan.html?id=${x.id}"><img loading="lazy" src="${esc(img)}" alt="${esc(x.title||`${x.brand} ${x.model}`)}"><div class="card-badges">${listingBadges(x)}</div></a>
       <button class="fav-btn ${fav?'active':''}" data-fav="${x.id}" title="${t('favorites')}"><i class="fa-${fav?'solid':'regular'} fa-heart"></i></button>
-      <div class="listing-body"><div class="listing-price">${money(x.price,x.currency)}</div><div class="listing-title">${esc(x.brand)} ${esc(x.model)}</div>
-      <div class="listing-meta">${x.year} • ${Number(x.mileage||0).toLocaleString()} km${x.engine_volume?` • ${x.engine_volume} L`:''}</div>
-      <div class="listing-footer"><span><i class="fa-solid fa-location-dot"></i> ${esc([x.city,x.state_name,x.country_code].filter(Boolean).join(', '))}</span><span>${relative(x.published_at||x.created_at)}</span></div>
-      <div class="row" style="margin-top:7px"><button class="btn btn-outline btn-sm grow" data-compare="${x.id}"><i class="fa-solid fa-code-compare"></i>${cids.includes(x.id)?'✓':t('compare')}</button></div></div></article>`;
+      <div class="listing-body">
+        <div class="listing-price-row"><div class="listing-price">${money(x.price,x.currency)}</div>${x.is_new?`<span class="listing-condition">${esc(staticText('Yeni'))}</span>`:''}</div>
+        <div class="listing-title">${esc(x.brand)} ${esc(x.model)}</div>
+        <div class="listing-meta">${specs.map(esc).join('<span class="listing-meta-dot">•</span>')}</div>
+        <div class="listing-footer"><span class="listing-location">${flag?`<span class="listing-country-flag" aria-label="${esc(x.country_code||'')}">${flag}</span>`:''}<span>${esc(place)}</span></span><span class="listing-age">${relative(x.published_at||x.created_at)}</span></div>
+        <div class="listing-card-actions"><button class="btn btn-outline btn-sm grow" data-compare="${x.id}"><i class="fa-solid fa-code-compare"></i><span>${cids.includes(x.id)?'✓':t('compare')}</span></button></div>
+      </div></article>`;
   }
   async function favoriteSet(){ if(!currentUser)return new Set(); const {data}=await sb.from('favorites').select('listing_id').eq('user_id',currentUser.id); return new Set((data||[]).map(x=>x.listing_id)); }
   async function toggleFavorite(id,btn){

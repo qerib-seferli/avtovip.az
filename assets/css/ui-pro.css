@@ -501,3 +501,43 @@ body[data-page="reset"] .av-or{
   -webkit-user-select:none;
 }
 .brands-rail.is-mouse-dragging,.brands-scroll.is-mouse-dragging{cursor:grabbing}
+
+/* AvtoVIP v57 — ONLY: reliable one-finger PWA scroll + professional home listing cards */
+@media(max-width:900px){
+  html,body{
+    touch-action:auto!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body>.page,.page,.page>.container,.page .container{
+    touch-action:pan-y pinch-zoom!important;
+  }
+  .brands-rail,.brands-scroll{
+    touch-action:pan-x pan-y!important;
+  }
+}
+
+/* Home/listing card content hierarchy: compact, collision-safe, country-aware. */
+.listing-card .listing-body{min-width:0!important;display:grid!important;gap:4px!important}
+.listing-price-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;min-width:0!important}
+.listing-price-row .listing-price{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.listing-condition{flex:0 0 auto!important;display:inline-flex!important;align-items:center!important;min-height:19px!important;padding:2px 6px!important;border:1px solid var(--av-line)!important;border-radius:999px!important;background:color-mix(in srgb,var(--av-card) 88%,var(--av-soft))!important;color:var(--av-muted)!important;font-size:8px!important;font-weight:800!important;line-height:1!important}
+.listing-card .listing-title{margin:0!important;line-height:1.3!important}
+.listing-card .listing-meta{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:2px 5px!important;white-space:normal!important;overflow:visible!important;line-height:1.35!important;min-height:14px!important}
+.listing-meta-dot{opacity:.55!important}
+.listing-card .listing-footer{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:7px!important;margin-top:2px!important;min-width:0!important}
+.listing-location{display:flex!important;align-items:center!important;gap:4px!important;min-width:0!important;overflow:hidden!important}
+.listing-location>span:last-child{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.listing-country-flag{flex:0 0 auto!important;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif!important;font-size:13px!important;line-height:1!important}
+.listing-age{flex:0 0 auto!important;white-space:nowrap!important}
+.listing-card-actions{margin-top:3px!important;min-width:0!important}
+.listing-card-actions .btn{width:100%!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;overflow:hidden!important}
+.listing-card-actions .btn span{overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+@media(max-width:480px){
+  .listing-card .listing-body{padding:7px!important;gap:3px!important}
+  .listing-card .listing-price{font-size:14px!important}
+  .listing-card .listing-title{font-size:11px!important}
+  .listing-card .listing-meta,.listing-card .listing-footer{font-size:9px!important}
+  .listing-country-flag{font-size:12px!important}
+  .listing-card-actions .btn{min-height:31px!important;padding:5px 8px!important;font-size:10px!important}
+}
