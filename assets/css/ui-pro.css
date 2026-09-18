@@ -1223,3 +1223,14 @@ body[data-page="explore"] .explore-location{display:none!important}
 @media (max-width:1100px){body[data-page="explore"] .explore-search-results>.explore-feed,body[data-page="explore"] .explore-search-feed{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media (max-width:820px){body[data-page="explore"] .explore-search-results>.explore-feed,body[data-page="explore"] .explore-search-feed{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media (max-width:700px){body[data-page="explore"] .explore-search-results>.explore-feed,body[data-page="explore"] .explore-search-feed{grid-template-columns:1fr!important;gap:10px!important}}
+
+
+/* v68 — Explore search visibility + compact follow action */
+body[data-page="explore"] #exploreFeed[hidden],
+body[data-page="explore"] #exploreSearchResults[hidden]{display:none!important}
+body[data-page="explore"] .explore-actions{display:flex!important;align-items:center!important;gap:2px!important;min-width:0!important}
+body[data-page="explore"] .explore-follow{margin-left:auto!important;width:auto!important;min-width:76px!important;height:30px!important;padding:0 8px!important;border:1px solid var(--line)!important;border-radius:9px!important;background:rgba(255,255,255,.035)!important;color:var(--muted)!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;font-size:10px!important;font-weight:800!important;white-space:nowrap!important}
+body[data-page="explore"] .explore-follow i{font-size:10px!important}
+body[data-page="explore"] .explore-follow.active{background:#1fa85b!important;border-color:#1fa85b!important;color:#fff!important}
+body[data-page="explore"] .explore-follow:disabled{opacity:.55!important}
+@media(max-width:700px){body[data-page="explore"] .explore-follow{width:auto!important;min-width:74px!important;height:34px!important;padding:0 8px!important;font-size:10px!important}body[data-page="explore"] .explore-follow i{font-size:11px!important}}
