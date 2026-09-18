@@ -541,3 +541,73 @@ body[data-page="reset"] .av-or{
   .listing-country-flag{font-size:12px!important}
   .listing-card-actions .btn{min-height:31px!important;padding:5px 8px!important;font-size:10px!important}
 }
+
+/* AvtoVIP v58 — ONLY: native one-finger page scroll + complete listing/detail presentation */
+@media(max-width:900px){
+  html,body{
+    touch-action:pan-y pinch-zoom!important;
+    overscroll-behavior-y:none!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body>.page,.page,.page>.container,.page .container,
+  .panel,.stack,section,main{
+    touch-action:pan-y pinch-zoom!important;
+  }
+  button,a,input,select,textarea,label{touch-action:manipulation!important}
+  .brands-rail,.brands-scroll,.gallery-thumbs{touch-action:pan-x pan-y!important}
+}
+.av-pull-indicator{display:none!important}
+
+/* Home cards: show the useful selected technical data without collisions. */
+.listing-icon-badge{width:22px!important;min-width:22px!important;padding:0!important;justify-content:center!important}
+.listing-variant{font-size:9px!important;color:var(--muted)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;line-height:1.3!important}
+.listing-card .listing-meta{display:flex!important;flex-wrap:wrap!important;gap:4px!important;margin-top:1px!important}
+.listing-meta-item{display:inline-flex!important;align-items:center!important;min-height:18px!important;padding:2px 5px!important;border:1px solid var(--line)!important;border-radius:6px!important;background:var(--surface-2)!important;white-space:nowrap!important;font-size:9px!important;line-height:1!important}
+.listing-card .listing-footer{margin-top:2px!important}
+
+/* Detail page gallery: compact crop, no black side gutters, swipe + zoom controls. */
+.gallery-main{
+  aspect-ratio:16/10!important;
+  max-height:min(64vh,720px)!important;
+  min-height:300px!important;
+  overflow:hidden!important;
+  background:var(--surface-2)!important;
+  position:relative!important;
+  touch-action:pan-y pinch-zoom!important;
+}
+.gallery-main #mainPhoto{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  transform-origin:center center!important;
+  transition:transform .16s ease!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+.gallery-main #mainPhoto.is-zoomed{transition:none!important;cursor:grab!important}
+.gallery-nav{position:absolute!important;top:50%!important;transform:translateY(-50%)!important;z-index:4!important;width:38px!important;height:38px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.45)!important;background:rgba(8,10,14,.48)!important;color:#fff!important;display:grid!important;place-items:center!important;cursor:pointer!important}
+.gallery-prev{left:10px!important}.gallery-next{right:10px!important}
+.gallery-zoom-tools{position:absolute!important;right:10px!important;bottom:10px!important;z-index:5!important;display:flex!important;gap:5px!important;padding:4px!important;border-radius:10px!important;background:rgba(8,10,14,.55)!important;backdrop-filter:blur(8px)!important}
+.gallery-zoom-tools button{width:32px!important;height:32px!important;border:0!important;border-radius:8px!important;background:rgba(255,255,255,.10)!important;color:#fff!important;display:grid!important;place-items:center!important;cursor:pointer!important}
+.gallery-thumbs{scroll-snap-type:x proximity!important;overscroll-behavior-inline:contain!important;-webkit-overflow-scrolling:touch!important}
+.gallery-thumb{scroll-snap-align:center!important}
+.detail-location-line{margin-top:4px!important;color:var(--muted)!important;font-size:11px!important;line-height:1.35!important;overflow-wrap:anywhere!important}
+.spec-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.spec strong{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere!important;line-height:1.3!important}
+.equipment-list{align-items:flex-start!important}
+
+@media(max-width:900px){
+  .gallery-main{aspect-ratio:4/3!important;min-height:0!important;max-height:52dvh!important}
+  .gallery-nav{display:none!important}
+  .gallery-zoom-tools{right:7px!important;bottom:7px!important}
+  .gallery-zoom-tools button{width:30px!important;height:30px!important}
+  .spec-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .detail-main{padding:11px!important}
+}
+@media(max-width:480px){
+  .listing-meta-item{font-size:8.5px!important;padding:2px 4px!important}
+  .gallery-main{aspect-ratio:1/1!important;max-height:48dvh!important}
+}
