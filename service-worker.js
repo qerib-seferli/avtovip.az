@@ -1,5 +1,5 @@
-const CACHE='avtovip-v72-20260920-comments-detail-messages';
-const CORE=['./','./index.html','./site.webmanifest','./assets/css/app.css?v=44','./assets/css/patch11.css?v=34','./assets/css/ui-pro.css?v=72','./assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js?v=68','./assets/js/social.js?v=38','./assets/js/patch11.js?v=20','./assets/js/ui-pro.js?v=60','./assets/img/brand/icon-192.png','./assets/img/brand/icon-512.png','./assets/img/brand/pwa-splash-192.png','./assets/img/brand/pwa-splash-512.png'];
+const CACHE='avtovip-v73-20260920-verified-messages-viewport';
+const CORE=['./','./index.html','./site.webmanifest','./assets/css/app.css?v=73','./assets/css/patch11.css?v=73','./assets/css/ui-pro.css?v=73','./assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js?v=73','./assets/js/social.js?v=73','./assets/js/patch11.js?v=73','./assets/js/ui-pro.js?v=73','./assets/img/brand/icon-192.png','./assets/img/brand/icon-512.png','./assets/img/brand/pwa-splash-192.png','./assets/img/brand/pwa-splash-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE).catch(()=>{})).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
