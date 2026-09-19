@@ -1486,3 +1486,65 @@ body[data-page="detail"] .seller-name-text{
   text-overflow:ellipsis!important;
   white-space:nowrap!important;
 }
+
+
+/* v75 — requested-only polish: verified mark, mobile messages lower edge, avatar crown clearance */
+/* One compact verified rosette everywhere: before the name, never stretched/cropped. */
+.verified-mark.verified-rosette,
+.verified-mark.verified-badge-pro,
+.verified-rosette.verified-badge-pro,
+.av-verified-left,
+.message-verified,
+.comment-verified,
+.seller-verified{
+  width:15px!important;height:15px!important;min-width:15px!important;min-height:15px!important;
+  max-width:15px!important;max-height:15px!important;flex:0 0 15px!important;
+  margin:0 4px 0 0!important;padding:0!important;
+  align-self:center!important;vertical-align:middle!important;
+  overflow:visible!important;box-sizing:border-box!important;
+  background:#1d9bf0!important;color:#fff!important;
+  clip-path:polygon(50% 0%,61% 8%,74% 5%,82% 16%,96% 21%,95% 35%,100% 47%,92% 58%,94% 72%,81% 78%,74% 92%,60% 91%,50% 100%,39% 91%,25% 94%,19% 80%,6% 74%,8% 60%,0% 50%,8% 39%,5% 25%,19% 19%,25% 6%,39% 9%)!important;
+}
+.verified-mark.verified-rosette::after,
+.verified-mark.verified-badge-pro::after,
+.verified-rosette.verified-badge-pro::after,
+.av-verified-left::after,
+.message-verified::after,
+.comment-verified::after,
+.seller-verified::after{
+  width:6px!important;height:3.5px!important;
+  border-left:1.8px solid #fff!important;border-bottom:1.8px solid #fff!important;
+  transform:translateY(-.8px) rotate(-45deg)!important;
+}
+body[data-page="explore"] .comment-meta strong,
+body[data-page="messages"] .conversation-copy strong,
+body[data-page="messages"] #chatPeerName,
+body[data-page="detail"] .seller-name-line{
+  align-items:center!important;line-height:1.2!important;overflow:visible!important;
+}
+/* Keep VIP/Premium marks inside the visible avatar area instead of clipping above it. */
+.avatar-shell,
+body[data-page="detail"] .seller-avatar-shell,
+body[data-page="explore"] .explore-avatar-shell,
+body[data-page="explore"] .comment-avatar-shell,
+body[data-page="messages"] .chat-peer-avatar-shell{overflow:visible!important}
+.avatar-shell .avatar-crown,.avatar-shell .avatar-gem,
+body[data-page="detail"] .seller-avatar-shell .avatar-crown,body[data-page="detail"] .seller-avatar-shell .avatar-gem,
+body[data-page="explore"] .explore-tier-mark,
+body[data-page="explore"] .comment-avatar-crown,body[data-page="explore"] .comment-avatar-gem,
+body[data-page="messages"] .chat-peer-avatar-shell .avatar-crown,body[data-page="messages"] .chat-peer-avatar-shell .avatar-gem{
+  top:-4px!important;right:-2px!important;z-index:12!important;
+}
+/* On phones leave a small clear gap above the fixed bottom navigation so the shell border is visible. */
+@media(max-width:800px){
+  body[data-page="messages"] .messages-shell{
+    height:calc(var(--av-visual-height,100dvh) - var(--av-header) - 74px - env(safe-area-inset-bottom))!important;
+    max-height:calc(var(--av-visual-height,100dvh) - var(--av-header) - 74px - env(safe-area-inset-bottom))!important;
+    margin-bottom:5px!important;
+  }
+  html.av-keyboard-open body[data-page="messages"] .messages-shell{
+    height:calc(var(--av-visual-height,100dvh) - var(--av-header) - 8px)!important;
+    max-height:calc(var(--av-visual-height,100dvh) - var(--av-header) - 8px)!important;
+    margin-bottom:0!important;
+  }
+}
