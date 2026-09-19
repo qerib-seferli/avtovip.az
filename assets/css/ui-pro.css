@@ -1548,3 +1548,31 @@ body[data-page="messages"] .chat-peer-avatar-shell .avatar-crown,body[data-page=
     margin-bottom:0!important;
   }
 }
+
+
+/* v76 — verified badge edge fix only: smooth vector rosette, no jagged CSS polygon edges */
+.verified-mark.verified-rosette,
+.verified-mark.verified-badge-pro,
+.verified-rosette.verified-badge-pro,
+.av-verified-left,
+.message-verified,
+.comment-verified,
+.seller-verified{
+  width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;
+  max-width:16px!important;max-height:16px!important;flex:0 0 16px!important;
+  margin:0 4px 0 0!important;padding:0!important;
+  background-color:transparent!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:16px 16px!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231D9BF0' d='M22.25 12c0-1.43-1.43-2.67-1.95-3.91-.54-1.29-.39-3.16-1.37-4.14-.98-.98-2.85-.83-4.14-1.37C13.55 2.06 12.31.63 10.88.63S8.21 2.06 6.97 2.58c-1.29.54-3.16.39-4.14 1.37-.98.98-.83 2.85-1.37 4.14C.94 9.33-.49 10.57-.49 12s1.43 2.67 1.95 3.91c.54 1.29.39 3.16 1.37 4.14.98.98 2.85.83 4.14 1.37 1.24.52 2.48 1.95 3.91 1.95s2.67-1.43 3.91-1.95c1.29-.54 3.16-.39 4.14-1.37.98-.98.83-2.85 1.37-4.14.52-1.24 1.95-2.48 1.95-3.91Z' transform='translate(1.12 0)'/%3E%3Cpath fill='white' d='m8.75 15.55-3.3-3.3 1.41-1.41 1.89 1.88 5.39-5.39 1.41 1.42-6.8 6.8Z' transform='translate(1.12 0)'/%3E%3C/svg%3E")!important;
+  clip-path:none!important;border-radius:0!important;
+  box-shadow:none!important;overflow:visible!important;
+}
+.verified-mark.verified-rosette::after,
+.verified-mark.verified-badge-pro::after,
+.verified-rosette.verified-badge-pro::after,
+.av-verified-left::after,
+.message-verified::after,
+.comment-verified::after,
+.seller-verified::after{content:none!important;display:none!important}
