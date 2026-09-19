@@ -1303,3 +1303,63 @@ body[data-page="explore"] .explore-follow.active{background:transparent!importan
 body[data-page="explore"] .explore-follow:hover{background:transparent!important;color:#e7ebf0!important}
 body[data-page="explore"] .explore-follow.active:hover{color:#2bdc79!important}
 @media(max-width:700px){body[data-page="explore"] .explore-follow{margin-right:7px!important;width:28px!important;min-width:28px!important;max-width:28px!important;height:28px!important;padding:0!important}body[data-page="explore"] .explore-follow i{font-size:15px!important}}
+
+
+/* v72 — requested-only Explore comments, detail verification/fullscreen, Messages polish */
+/* Explore comments: metadata, account status and story-style emoji compose */
+body[data-page="explore"] .explore-comments-card{max-width:560px!important}
+body[data-page="explore"] .comment-row{display:grid!important;grid-template-columns:38px minmax(0,1fr)!important;gap:10px!important;align-items:start!important;padding:10px 0!important}
+body[data-page="explore"] .comment-avatar-shell{position:relative!important;display:inline-flex!important;width:38px!important;height:38px!important;overflow:visible!important;border-radius:50%!important;flex:0 0 38px!important}
+body[data-page="explore"] .comment-avatar-shell>img{width:38px!important;height:38px!important;border-radius:50%!important;object-fit:cover!important}
+body[data-page="explore"] .comment-avatar-shell.vip>img{box-shadow:0 0 0 2px #e3b341,0 0 10px rgba(227,179,65,.25)!important}
+body[data-page="explore"] .comment-avatar-shell.premium>img{box-shadow:0 0 0 2px #ff4f91,0 0 10px rgba(255,79,145,.28)!important}
+body[data-page="explore"] .comment-avatar-crown,body[data-page="explore"] .comment-avatar-gem{position:absolute!important;right:-5px!important;top:-8px!important;z-index:3!important;font-size:12px!important;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))!important}
+body[data-page="explore"] .comment-avatar-crown{color:#ffd45b!important}body[data-page="explore"] .comment-avatar-gem{color:#ff65a3!important}
+body[data-page="explore"] .comment-main{min-width:0!important}
+body[data-page="explore"] .comment-meta{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-width:0!important}
+body[data-page="explore"] .comment-meta>a{min-width:0!important;color:inherit!important;text-decoration:none!important}
+body[data-page="explore"] .comment-meta strong{display:inline-flex!important;align-items:center!important;gap:5px!important;min-width:0!important}
+body[data-page="explore"] .comment-meta time{flex:0 0 auto!important;color:var(--muted)!important;font-size:9px!important;white-space:nowrap!important}
+body[data-page="explore"] .comment-verified{width:15px!important;height:15px!important;flex:0 0 15px!important;font-size:8px!important;vertical-align:0!important}
+body[data-page="explore"] .comment-row p{margin:4px 0 0!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important}
+body[data-page="explore"] .explore-comment-form{display:grid!important;grid-template-columns:minmax(0,1fr) 42px!important;gap:7px!important;align-items:center!important;position:relative!important}
+body[data-page="explore"] .explore-comment-compose{position:relative!important;min-width:0!important}
+body[data-page="explore"] .explore-comment-compose input{width:100%!important;padding-left:42px!important}
+body[data-page="explore"] .explore-comment-emoji-btn{position:absolute!important;left:6px!important;top:50%!important;transform:translateY(-50%)!important;width:30px!important;height:30px!important;border:0!important;background:transparent!important;color:var(--muted)!important;z-index:3!important}
+body[data-page="explore"] .explore-comment-emoji-picker{position:absolute!important;left:0!important;bottom:46px!important;z-index:50!important;width:248px!important;max-width:calc(100vw - 44px)!important;display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:4px!important;padding:8px!important;background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:12px!important;box-shadow:0 14px 38px rgba(0,0,0,.38)!important}
+body[data-page="explore"] .explore-comment-emoji-picker[hidden]{display:none!important}
+body[data-page="explore"] .explore-comment-emoji-picker button{width:32px!important;height:32px!important;border:0!important;border-radius:8px!important;background:transparent!important;font-size:18px!important;padding:0!important}
+body[data-page="explore"] .explore-comment-emoji-picker button:hover{background:var(--surface-2)!important}
+body[data-page="explore"] .explore-comment-send{width:42px!important;min-width:42px!important;height:40px!important;padding:0!important}
+
+/* Detail: use the same verified rosette as profile, directly after seller name. */
+body[data-page="detail"] .seller-name-line{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important}
+body[data-page="detail"] .seller-verified{width:15px!important;height:15px!important;flex:0 0 15px!important;font-size:8px!important;vertical-align:0!important}
+/* Desktop fullscreen must show the entire photo, not only its upper crop. */
+body[data-page="detail"] .gallery-lightbox{display:block!important;overflow:hidden!important;padding:0!important}
+body[data-page="detail"] .gallery-lightbox>img{position:absolute!important;inset:0!important;margin:auto!important;width:auto!important;height:auto!important;max-width:calc(100vw - 56px)!important;max-height:calc(100dvh - 40px)!important;object-fit:contain!important;object-position:center!important;transform:none!important}
+
+/* Messages: consistent VIP/Premium avatar + verified mark in list and open chat. */
+body[data-page="messages"] .conversation-copy strong{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important;white-space:nowrap!important}
+body[data-page="messages"] .conversation-name-text{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+body[data-page="messages"] .message-verified{width:15px!important;height:15px!important;flex:0 0 15px!important;font-size:8px!important;vertical-align:0!important}
+body[data-page="messages"] .chat-peer-avatar-shell{position:relative!important;display:inline-flex!important;width:48px!important;height:48px!important;flex:0 0 48px!important;border-radius:50%!important;overflow:visible!important;margin:3px!important}
+body[data-page="messages"] .chat-peer-avatar-shell>#chatPeerAvatar{width:48px!important;height:48px!important;min-width:48px!important;max-width:48px!important;min-height:48px!important;max-height:48px!important;margin:0!important;border-radius:50%!important;object-fit:cover!important}
+body[data-page="messages"] .chat-peer-avatar-shell.vip>#chatPeerAvatar{box-shadow:0 0 0 3px #e3b341,0 0 14px rgba(227,179,65,.28)!important}
+body[data-page="messages"] .chat-peer-avatar-shell.premium>#chatPeerAvatar{box-shadow:0 0 0 3px #ff4f91,0 0 0 5px rgba(117,72,255,.20),0 0 18px rgba(255,79,145,.28)!important}
+body[data-page="messages"] .chat-peer-avatar-shell .avatar-crown,body[data-page="messages"] .chat-peer-avatar-shell .avatar-gem{right:-4px!important;top:-7px!important;z-index:5!important}
+body[data-page="messages"] #chatPeerName{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important;max-width:100%!important}
+body[data-page="messages"] #chatPeerName>span:first-child{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+body[data-page="messages"] .chat-emoji-picker{z-index:120!important}
+body[data-page="messages"] .chat-emoji-picker button{cursor:pointer!important}
+@media(min-width:801px){
+  body[data-page="messages"] .messages-shell{grid-template-columns:310px minmax(0,1fr)!important}
+  body[data-page="messages"] .conversation-copy strong{font-size:11px!important}
+}
+/* PWA: the messages background ends immediately above the fixed bottom navigation. */
+@media(max-width:800px){
+  body[data-page="messages"] main.page{padding-bottom:calc(64px + env(safe-area-inset-bottom))!important;margin-bottom:0!important}
+  body[data-page="messages"] .messages-shell{height:calc(100dvh - var(--av-header) - 71px - env(safe-area-inset-bottom))!important;max-height:calc(100dvh - var(--av-header) - 71px - env(safe-area-inset-bottom))!important;margin-bottom:0!important}
+  body[data-page="messages"] .chat-peer-avatar-shell{width:46px!important;height:46px!important;flex-basis:46px!important;margin:3px!important}
+  body[data-page="messages"] .chat-peer-avatar-shell>#chatPeerAvatar{width:46px!important;height:46px!important;min-width:46px!important;max-width:46px!important;min-height:46px!important;max-height:46px!important}
+}
