@@ -112,28 +112,16 @@
   }
 
   function fixVerified(){
+    /* v81: visual identity is CSS-native. Do not rewrite badge DOM after render;
+       late DOM replacement caused the visible left/right jump on messages/explore. */
     $$('.verified-rosette,.verified-mark,.av-identity-verified,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified').forEach(el=>{
-      el.classList.add('av-identity-check');
-      /* The badge is drawn once by CSS. Clearing old SVG/font icons prevents mixed old/new shapes. */
-      if(el.childNodes.length) el.replaceChildren();
-      el.title=tr('verified');
-      el.setAttribute('aria-label',tr('verified'));
+      if(!el.title) el.title=tr('verified');
+      if(!el.getAttribute('aria-label')) el.setAttribute('aria-label',tr('verified'));
     });
   }
   function fixIdentityTierMarks(){
-    const wrappers=$$('.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell');
-    wrappers.forEach(w=>{
-      w.classList.add('av-identity-avatar');
-      const tier=w.classList.contains('premium')?'premium':w.classList.contains('vip')?'vip':'';
-      const marks=[...w.querySelectorAll(':scope > .avatar-crown,:scope > .avatar-gem,:scope > .comment-avatar-crown,:scope > .comment-avatar-gem,:scope > .explore-tier-mark')];
-      if(!tier){marks.forEach(m=>m.remove());return}
-      let keep=marks[0];
-      marks.slice(1).forEach(m=>m.remove());
-      if(!keep){keep=document.createElement('i');w.append(keep)}
-      keep.className=tier==='vip'?'fa-solid fa-crown av-tier-mark av-tier-vip':'fa-solid fa-gem av-tier-mark av-tier-premium';
-      keep.setAttribute('aria-label',tier==='vip'?'VIP':'Premium');
-      keep.setAttribute('aria-hidden','true');
-    });
+    /* v81: crown/gem is rendered in its original markup and styled canonically.
+       No post-render class replacement = no flash, shake or disappearing crown. */
   }
 
   function decorateTierCards(){
