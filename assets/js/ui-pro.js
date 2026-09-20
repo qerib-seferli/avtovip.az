@@ -20,14 +20,37 @@
  function createSteps(){const form=$('#listingForm');if(!form||$('.av-stepbar'))return;const bar=document.createElement('div');bar.className='av-stepbar';bar.innerHTML='<span class="active">1 · Növ</span><span>2 · Marka / Model</span><span>3 · Texniki</span><span>4 · Təchizat</span><span>5 · Foto / Video</span><span>6 · Məkan</span><span>7 · Önizləmə</span>';form.before(bar)}
  function oauth(){const card=$('.auth-card');if(!card||$('#googleAuthBtn'))return;const tabs=$('.auth-tabs');const box=document.createElement('div');box.className='av-oauth';box.innerHTML=`<button type="button" id="googleAuthBtn" class="btn btn-outline btn-block av-google"><i class="fa-brands fa-google"></i> ${t('google')}</button><div class="av-or">${t('or')}</div>`;tabs?.after(box);$('#googleAuthBtn').onclick=async()=>{const next=new URLSearchParams(location.search).get('next')||'profile.html';sessionStorage.setItem('avtovip-oauth-next',next);const redirect=new URL('login.html',location.href);redirect.searchParams.set('oauth','1');const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href,queryParams:{prompt:'select_account'}}});if(error)$('#authStatus').textContent=error.message};if(new URLSearchParams(location.search).get('oauth')==='1')sb.auth.getSession().then(({data})=>{if(data.session)location.replace(sessionStorage.getItem('avtovip-oauth-next')||'profile.html')});}
  function realtimeSounds(){if(!sb)return;sb.auth.getSession().then(({data})=>{const id=data.session?.user?.id;if(!id)return;const c=sb.channel(`av-sound-${id}-${Date.now()}`).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:`receiver_id=eq.${id}`},()=>sound('message')).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:`user_id=eq.${id}`},()=>sound('notification')).subscribe();addEventListener('pagehide',()=>sb.removeChannel(c).catch(()=>{}),{once:true})})}
- function socialShortcut(){const a=$('.header-actions');if(!a||$('#avSocialShortcut')||['auth','reset','feed','reels'].includes(page)||matchMedia('(min-width:901px)').matches)return;const x=document.createElement('a');x.id='avSocialShortcut';x.className='icon-btn';x.href='lent.html';x.setAttribute('aria-label','Avto Lent');x.innerHTML='<i class="fa-solid fa-bolt"></i>';a.insertBefore(x,a.firstChild)}
- function mobileSocialCross(){
-   const a=$('.header-actions');if(!a)return;const old=$('.av-mobile-social-cross');old?.remove();
-   if(!matchMedia('(max-width:900px)').matches||page!=='reels')return;
-   const x=document.createElement('a');x.className='icon-btn av-mobile-social-cross';
-   x.href='lent.html';x.setAttribute('aria-label','Avto Lent');x.innerHTML='<i class="fa-solid fa-bolt"></i>';
-   a.insertBefore(x,a.firstChild);
+ function syncMobileHeaderActions(){
+   const a=$('.header-actions');if(!a)return;
+   const mobile=matchMedia('(max-width:900px)').matches;
+   if(!mobile){
+     $$('.av-mobile-social-cross,#avSocialShortcut',a).forEach(x=>x.remove());
+     return;
+   }
+
+   /* PWA/mobile top bar has one deterministic layout. Theme stays in Settings. */
+   const theme=$('#themeBtn');if(theme){theme.hidden=true;theme.style.setProperty('display','none','important');theme.setAttribute('aria-hidden','true')}
+   const langHost=a.querySelector('.header-control,.lang-picker-host');if(langHost){langHost.style.setProperty('display','none','important');langHost.setAttribute('aria-hidden','true')}
+
+   /* Old implementations could leave a Reel/Lent shortcut behind. Remove all of them first. */
+   $$('.av-mobile-social-cross,#avSocialShortcut',a).forEach(x=>x.remove());
+
+   /* Lent is never duplicated on its own page. Reels is never placed in the top bar:
+      on mobile it already lives in the fixed bottom navigation. */
+   if(page!=='feed'){
+     const lent=document.createElement('a');lent.id='avSocialShortcut';lent.className='icon-btn';lent.href='lent.html';
+     lent.setAttribute('aria-label','Avto Lent');lent.title='Avto Lent';lent.innerHTML='<i class="fa-solid fa-bolt"></i>';
+     a.prepend(lent);
+   }
+
+   const lent=$('#avSocialShortcut'),fav=$('#headerFavorites'),notif=$('#notificationBtn'),account=$('#accountBtn'),close=$('#postClose');
+   const last=page==='create-post'?(close||account):(account||close);
+   [[lent,10],[fav,20],[notif,30],[last,40]].forEach(([el,n])=>{if(el)el.style.setProperty('order',String(n),'important')});
+   /* Any obsolete/duplicate Reels shortcut in the header must remain absent. */
+   $$('.header-actions a[href="reels.html"],.header-actions [aria-label="Reels"]',document).forEach(x=>x.remove());
  }
+ function socialShortcut(){syncMobileHeaderActions()}
+ function mobileSocialCross(){syncMobileHeaderActions()}
  function mobileNavReels(){
    const nav=$('.bottom-nav');if(!nav)return;const profileLink=nav.querySelector('a[data-nav="profile"],a[href="profile.html"]');if(!profileLink)return;
    const mobile=matchMedia('(max-width:800px)').matches;
@@ -35,9 +58,10 @@
    else if(profileLink.dataset.avOriginalHref){profileLink.href=profileLink.dataset.avOriginalHref;profileLink.dataset.nav='profile';profileLink.innerHTML=profileLink.dataset.avOriginalHtml||'<i class="fa-regular fa-user"></i><span>Profil</span>';profileLink.classList.toggle('active',page==='profile')}
  }
  function desktopSocialRail(){if(!matchMedia('(min-width:901px)').matches)return;const nav=$('.bottom-nav');if(!nav||nav.querySelector('[data-av-social-rail]'))return;const ref=nav.querySelector('a[href="mesajlar.html"]');const box=document.createElement('div');box.dataset.avSocialRail='1';box.className='av-social-rail-links';box.innerHTML='<a href="lent.html" class="'+(page==='feed'?'active':'')+'" aria-label="Avto Lent"><i class="fa-solid fa-bolt"></i><span>Avto Lent</span></a><a href="reels.html" class="'+(page==='reels'?'active':'')+'" aria-label="Reels"><i class="fa-solid fa-clapperboard"></i><span>Reels</span></a>';if(ref)ref.before(box);else nav.append(box)}
- function boot(){mobileNavReels();desktopSocialRail();socialShortcut();mobileSocialCross();if(page==='explore')explore();if(page==='messages')messages();if(page==='profile')profile();if(page==='create-listing')createSteps();if(page==='auth')oauth();realtimeSounds()}
+ function boot(){mobileNavReels();desktopSocialRail();syncMobileHeaderActions();setTimeout(syncMobileHeaderActions,60);setTimeout(syncMobileHeaderActions,260);if(page==='explore')explore();if(page==='messages')messages();if(page==='profile')profile();if(page==='create-listing')createSteps();if(page==='auth')oauth();realtimeSounds()}
  addEventListener('avtovip:language',()=>{ /* app.js + social.js own the full dynamic translation cycle */ });
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();addEventListener('resize',()=>{clearTimeout(window.__avNavResize);window.__avNavResize=setTimeout(()=>{mobileNavReels();mobileSocialCross()},120)},{passive:true});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();addEventListener('resize',()=>{clearTimeout(window.__avNavResize);window.__avNavResize=setTimeout(()=>{mobileNavReels();syncMobileHeaderActions()},120)},{passive:true});
+ const headerActions=$('.header-actions');if(headerActions){let headerSyncTimer=0;new MutationObserver(()=>{clearTimeout(headerSyncTimer);headerSyncTimer=setTimeout(syncMobileHeaderActions,0)}).observe(headerActions,{childList:true})}
 })();
 
 /* AvtoVIP UI hotfix v23 — removes the recursive DOM observer that could freeze browser/PWA. */
