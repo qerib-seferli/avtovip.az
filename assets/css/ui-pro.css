@@ -2348,3 +2348,31 @@ html.av-comments-open,html.av-comments-open body{overflow:hidden!important;overs
 video::-webkit-media-controls-airplay-button,
 video::-webkit-media-controls-cast-button,
 video::-internal-media-controls-cast-button{display:none!important}
+
+
+/* AvtoVIP v93 — requested comment parity, history shell and smoother social progress. */
+.av-media-progress>i,.av-reel-progress>i{
+  width:100%!important;
+  transform:scaleX(0);
+  transform-origin:left center;
+  will-change:transform;
+  transition:none!important;
+}
+/* Explore comments reuse the exact Lent/Reels card geometry. */
+.explore-post-comments .explore-comments-card{display:grid!important;grid-template-rows:auto minmax(0,1fr) auto!important;overflow:hidden!important}
+.explore-post-comments .comments-list{min-height:0!important;max-height:none!important;padding:10px!important;overflow:auto!important}
+.explore-post-comments .comment-row{display:grid!important;grid-template-columns:40px minmax(0,1fr)!important;gap:9px!important;padding:9px 0!important}
+.explore-post-comments .comment-avatar-shell img{width:40px!important;height:40px!important}
+.explore-post-comments .comment-main{min-width:0!important}
+.explore-post-comments .comment-meta{display:flex!important;align-items:center!important;gap:8px!important;min-width:0!important}
+.explore-post-comments .comment-meta>a{min-width:0!important;flex:1 1 auto!important}
+.explore-post-comments .comment-meta strong{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important}
+.explore-post-comments .comment-meta time{margin-left:auto!important;white-space:nowrap!important;color:var(--muted)!important;font-size:9px!important}
+.explore-post-comments .comment-main p{margin:4px 0 0!important}
+@media(max-width:800px){
+  .explore-post-comments{align-items:end!important;padding:0!important;touch-action:none!important;overscroll-behavior:contain!important}
+  .explore-post-comments .explore-comments-card{width:100%!important;max-width:none!important;max-height:min(76dvh,680px)!important;margin:0!important;border-radius:18px 18px 0 0!important;padding-bottom:env(safe-area-inset-bottom)!important;transform:none!important;transition:none!important}
+}
+/* Payments/history gets the same safe space above the fixed mobile bar. */
+body[data-page="payments"] main.page{padding-bottom:86px!important}
+@media(min-width:901px){body[data-page="payments"] main.page{padding-bottom:18px!important}}
