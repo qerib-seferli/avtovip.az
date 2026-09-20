@@ -1576,3 +1576,58 @@ body[data-page="messages"] .chat-peer-avatar-shell .avatar-crown,body[data-page=
 .message-verified::after,
 .comment-verified::after,
 .seller-verified::after{content:none!important;display:none!important}
+
+
+/* v77 — one identity system everywhere: verified rosette + VIP/Premium avatar tier mark */
+:where(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified){
+  display:inline-block!important;position:relative!important;inset:auto!important;transform:none!important;
+  width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;
+  max-width:16px!important;max-height:16px!important;flex:0 0 16px!important;
+  margin:0 5px 0 0!important;padding:0!important;vertical-align:middle!important;
+  background:transparent!important;border:0!important;border-radius:0!important;clip-path:none!important;
+  box-shadow:none!important;overflow:visible!important;line-height:16px!important;
+  background-repeat:no-repeat!important;background-position:center!important;background-size:16px 16px!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231D9BF0' d='M12 1.6l2.15 1.72 2.73-.36 1.16 2.5 2.55 1.03.13 2.75 1.86 2.03-1.35 2.4.72 2.65-2.36 1.42-.52 2.7-2.75.17L14.7 22.4 12 21.52 9.3 22.4l-1.72-2.19-2.75-.17-.52-2.7-2.36-1.42.72-2.65-1.35-2.4 1.86-2.03.13-2.75 2.55-1.03 1.16-2.5 2.73.36L12 1.6z'/%3E%3Cpath fill='%23fff' d='M10.35 16.3 6.25 12.2l1.58-1.58 2.52 2.52 5.82-5.82 1.58 1.58-7.4 7.4z'/%3E%3C/svg%3E")!important;
+}
+:where(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified)::before,
+:where(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified)::after{content:none!important;display:none!important}
+:where(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified)>i,
+:where(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified)>svg{display:none!important}
+
+/* Name rows: verified always comes first, then the user's name. */
+body[data-page="detail"] .seller-name-line,
+body[data-page="messages"] #chatPeerName,
+body[data-page="messages"] .conversation-copy strong,
+body[data-page="explore"] .explore-author-name,
+body[data-page="explore"] .comment-meta strong,
+.story-comment-user strong,
+.public-name-text,
+#profileName{display:flex!important;align-items:center!important;gap:0!important;min-width:0!important;overflow:visible!important}
+
+/* One crown/gem anchor rule for every avatar that carries membership status. */
+.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn{position:relative!important;overflow:visible!important}
+.avatar-shell>.avatar-crown,.seller-avatar-shell>.avatar-crown,.explore-avatar-shell>.avatar-crown,.comment-avatar-shell>.comment-avatar-crown,.chat-peer-avatar-shell>.avatar-crown,.story-comment-avatar>.avatar-crown,.public-avatar-btn>.avatar-crown{
+  position:absolute!important;top:-8px!important;right:-5px!important;left:auto!important;bottom:auto!important;
+  transform:none!important;z-index:30!important;color:#f5c33b!important;font-size:18px!important;line-height:1!important;
+  filter:drop-shadow(0 2px 5px rgba(245,195,59,.35))!important;pointer-events:none!important;
+}
+.avatar-shell>.avatar-gem,.seller-avatar-shell>.avatar-gem,.explore-avatar-shell>.avatar-gem,.comment-avatar-shell>.comment-avatar-gem,.chat-peer-avatar-shell>.avatar-gem,.story-comment-avatar>.avatar-gem,.public-avatar-btn>.avatar-gem{
+  position:absolute!important;top:-7px!important;right:-4px!important;left:auto!important;bottom:auto!important;
+  transform:none!important;z-index:30!important;font-size:16px!important;line-height:1!important;pointer-events:none!important;
+}
+/* Smaller avatars use the same relative placement, only a smaller tier icon. */
+body[data-page="explore"] .explore-avatar-shell>.avatar-crown,
+body[data-page="explore"] .comment-avatar-shell>.comment-avatar-crown,
+.story-comment-avatar>.avatar-crown,
+body[data-page="messages"] .conversation-item .avatar-shell>.avatar-crown{top:-6px!important;right:-4px!important;font-size:14px!important}
+body[data-page="explore"] .explore-avatar-shell>.avatar-gem,
+body[data-page="explore"] .comment-avatar-shell>.comment-avatar-gem,
+.story-comment-avatar>.avatar-gem,
+body[data-page="messages"] .conversation-item .avatar-shell>.avatar-gem{top:-5px!important;right:-3px!important;font-size:13px!important}
+.story-comment-avatar{display:inline-flex!important;width:38px!important;height:38px!important;flex:0 0 38px!important;border-radius:50%!important}
+.story-comment-avatar>img{width:38px!important;height:38px!important;border-radius:50%!important;object-fit:cover!important}
+.story-comment-avatar.vip>img{box-shadow:0 0 0 2px #e3b341,0 0 10px rgba(227,179,65,.25)!important}
+.story-comment-avatar.premium>img{box-shadow:0 0 0 2px #ff4f91,0 0 10px rgba(255,79,145,.28)!important}
+.story-comment-name-text{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.public-name-text{align-items:center!important}
+#profileName>.profile-verified{order:-1!important}
