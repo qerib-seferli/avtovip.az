@@ -419,19 +419,41 @@
     return dateText(v);
   }
 
+  function renderCachedAccountButton(){
+    const a=$('#accountBtn'); if(!a)return;
+    try{
+      const cached=JSON.parse(localStorage.getItem('avtovip-account-cache')||'null');
+      if(!cached?.avatar)return;
+      const name=String(cached.name||t('profile'));
+      a.href=pathFor('profile.html');
+      a.innerHTML=`<img class="header-profile-avatar" src="${esc(cached.avatar)}" alt="${esc(name)}"><span class="label">${esc(name)}</span>`;
+      a.classList.add('account-hydrated');
+    }catch{}
+  }
   async function loadCurrent(){
     const cur=await db.current(); currentUser=cur.user; currentProfile=cur.profile;
     renderAccountButton(); updateMessageBadge();
   }
   function renderAccountButton(){
     const a=$('#accountBtn'); if(!a)return;
-    if(!currentUser){a.href=pathFor('login.html');a.innerHTML=`<i class="fa-regular fa-user"></i><span class="label">${t('login')}</span>`;return}
+    if(!currentUser){
+      try{localStorage.removeItem('avtovip-account-cache')}catch{}
+      a.href=pathFor('login.html');a.innerHTML=`<i class="fa-regular fa-user"></i><span class="label">${t('login')}</span>`;a.classList.add('account-hydrated');return
+    }
     const name=(currentProfile?.name||currentUser.email?.split('@')[0]||t('profile')).split(' ')[0];
     /* Admin də daxil olmaqla bütün istifadəçilər əvvəlcə öz profilinə daxil olur.
        Admin panelinə keçid profil daxilində ayrıca göstərilir. */
     a.href=pathFor('profile.html');
     const avatar=String(currentProfile?.avatar_url||'').trim();
-    a.innerHTML=avatar?`<img class="header-profile-avatar" src="${esc(avatar)}" alt="${esc(name)}"><span class="label">${esc(name)}</span>`:`<i class="fa-regular fa-user"></i><span class="label">${esc(name)}</span>`;
+    if(avatar){
+      try{localStorage.setItem('avtovip-account-cache',JSON.stringify({avatar,name}))}catch{}
+      const oldImg=a.querySelector('.header-profile-avatar');
+      if(oldImg?.getAttribute('src')!==avatar)a.innerHTML=`<img class="header-profile-avatar" src="${esc(avatar)}" alt="${esc(name)}"><span class="label">${esc(name)}</span>`;
+    }else{
+      try{localStorage.removeItem('avtovip-account-cache')}catch{}
+      a.innerHTML=`<i class="fa-regular fa-user"></i><span class="label">${esc(name)}</span>`;
+    }
+    a.classList.add('account-hydrated');
   }
   function pathFor(file){ return page==='admin' ? `../${file}` : file; }
   function staticText(v){
@@ -1232,6 +1254,7 @@
 
   async function boot(){
     initThemeLang();observeDynamicI18n();initBottomNav();initPWA();
+    renderCachedAccountButton();
     /* Theme/language are now stable; reveal immediately and load data progressively. */
     document.documentElement.classList.remove('av-preboot');
     await loadCurrent();

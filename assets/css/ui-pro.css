@@ -2197,3 +2197,42 @@ html.av-comments-open,html.av-comments-open body{overflow:hidden!important;overs
   body[data-page="create-post"] main.page>.container{display:flex!important;flex:1 1 auto!important;min-height:calc(100dvh - var(--av-header,58px) - 76px - env(safe-area-inset-bottom))!important}
   body[data-page="create-post"] .av-post-create{width:100%!important;min-height:calc(100dvh - var(--av-header,58px) - 88px - env(safe-area-inset-bottom))!important;margin-bottom:0!important}
 }
+
+/* AvtoVIP v90 — requested profile-button fit + stable mobile comments keyboard. */
+.header-actions #accountBtn{overflow:hidden!important;position:relative!important}
+.header-actions #accountBtn .header-profile-avatar{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:8px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  display:block!important;
+}
+@media(max-width:480px){.header-actions #accountBtn .header-profile-avatar{border-radius:8px!important}}
+
+/* Keep the comments sheet pinned to the visual viewport when the phone keyboard opens.
+   No smooth scroll/scrollIntoView jump; the card simply remains above the keyboard. */
+@media(max-width:800px){
+  .av-post-comments-modal{
+    padding:0!important;
+    align-items:end!important;
+    overflow:hidden!important;
+    transition:none!important;
+  }
+  .av-post-comments-card{
+    width:100%!important;
+    max-height:min(76dvh,100%)!important;
+    margin:0!important;
+    transform:none!important;
+    transition:none!important;
+  }
+}
