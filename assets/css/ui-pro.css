@@ -2150,3 +2150,50 @@ body[data-page="create-post"] .av-post-create{min-height:calc(100dvh - var(--av-
   .header-actions .av-mobile-social-cross,
   .header-actions a[href="reels.html"]{display:none!important}
 }
+
+/* AvtoVIP v89 — requested header, comments and composer-only corrections. */
+/* Header buttons keep fixed slots so async auth/notification hydration cannot shift them. */
+@media (max-width:900px){
+  .header-actions{width:159px!important;min-width:159px!important;max-width:159px!important;justify-content:flex-end!important;gap:5px!important}
+  body[data-page="feed"] .header-actions{width:118px!important;min-width:118px!important;max-width:118px!important}
+  #avSocialShortcut{order:10!important}
+  #headerFavorites{order:20!important}
+  #notificationBtn{order:30!important}
+  #accountBtn{order:40!important}
+  body[data-page="feed"] #avSocialShortcut{display:none!important}
+  .header-actions .av-mobile-social-cross,.header-actions a[href="reels.html"]{display:none!important}
+}
+.header-profile-avatar{width:26px!important;height:26px!important;min-width:26px!important;min-height:26px!important;max-width:26px!important;max-height:26px!important;border-radius:50%!important;object-fit:cover!important;display:block!important}
+@media(max-width:480px){.header-profile-avatar{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important}}
+
+/* Settings uses the same shell/nav as the rest of the app. */
+body[data-page="settings"] main.page{padding-bottom:86px!important}
+@media(min-width:901px){body[data-page="settings"] main.page{padding-bottom:18px!important}}
+
+/* Lent/Reels comments: compact Story-style floating emoji palette; opening it does not reflow the list. */
+.av-post-comments-modal{position:fixed!important;inset:0!important;overscroll-behavior:contain!important;touch-action:none!important}
+.av-post-comments-card{touch-action:pan-y!important;overscroll-behavior:contain!important;contain:layout paint!important}
+.av-post-comments-list{overscroll-behavior:contain!important}
+.av-post-comments-form{position:relative!important;z-index:91!important}
+.av-comment-emoji-picker{
+  position:absolute!important;left:12px!important;bottom:58px!important;z-index:92!important;
+  width:218px!important;max-width:calc(100% - 24px)!important;padding:7px!important;
+  grid-template-columns:repeat(6,30px)!important;grid-auto-rows:30px!important;gap:4px!important;
+  justify-content:start!important;align-content:start!important;
+  background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:12px!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.36)!important;overflow:hidden!important;
+}
+.av-comment-emoji-picker[hidden]{display:none!important}
+.av-comment-emoji-picker button{width:30px!important;height:30px!important;min-height:30px!important;max-height:30px!important;aspect-ratio:auto!important;padding:0!important;margin:0!important;border:0!important;border-radius:7px!important;background:transparent!important;display:grid!important;place-items:center!important;font-size:17px!important;line-height:1!important}
+.av-comment-emoji-picker button:hover{background:var(--surface-2)!important}
+html.av-comments-open,html.av-comments-open body{overflow:hidden!important;overscroll-behavior:none!important}
+@media(max-width:800px){
+  .av-comment-emoji-picker{left:10px!important;bottom:calc(58px + env(safe-area-inset-bottom))!important;width:218px!important;grid-template-columns:repeat(6,30px)!important;max-height:none!important}
+}
+
+/* New share panel visually reaches the fixed bottom navigation. */
+@media(max-width:900px){
+  body[data-page="create-post"] main.page{padding-bottom:calc(72px + env(safe-area-inset-bottom))!important;min-height:calc(100dvh - var(--av-header,58px))!important}
+  body[data-page="create-post"] main.page>.container{display:flex!important;flex:1 1 auto!important;min-height:calc(100dvh - var(--av-header,58px) - 76px - env(safe-area-inset-bottom))!important}
+  body[data-page="create-post"] .av-post-create{width:100%!important;min-height:calc(100dvh - var(--av-header,58px) - 88px - env(safe-area-inset-bottom))!important;margin-bottom:0!important}
+}

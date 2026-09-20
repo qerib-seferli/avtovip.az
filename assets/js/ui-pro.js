@@ -35,17 +35,16 @@
    /* Old implementations could leave a Reel/Lent shortcut behind. Remove all of them first. */
    $$('.av-mobile-social-cross,#avSocialShortcut',a).forEach(x=>x.remove());
 
-   /* Lent is never duplicated on its own page. Reels is never placed in the top bar:
-      on mobile it already lives in the fixed bottom navigation. */
+   /* Mobile/PWA order is fixed: Lent → Favorites → Notifications → Profile.
+      Lent does not duplicate itself on the Lent page; Reels stays only in bottom navigation. */
    if(page!=='feed'){
      const lent=document.createElement('a');lent.id='avSocialShortcut';lent.className='icon-btn';lent.href='lent.html';
      lent.setAttribute('aria-label','Avto Lent');lent.title='Avto Lent';lent.innerHTML='<i class="fa-solid fa-bolt"></i>';
      a.prepend(lent);
    }
 
-   const lent=$('#avSocialShortcut'),fav=$('#headerFavorites'),notif=$('#notificationBtn'),account=$('#accountBtn'),close=$('#postClose');
-   const last=page==='create-post'?(close||account):(account||close);
-   [[lent,10],[fav,20],[notif,30],[last,40]].forEach(([el,n])=>{if(el)el.style.setProperty('order',String(n),'important')});
+   const lent=$('#avSocialShortcut'),fav=$('#headerFavorites'),notif=$('#notificationBtn'),account=$('#accountBtn');
+   [[lent,10],[fav,20],[notif,30],[account,40]].forEach(([el,n])=>{if(el)el.style.setProperty('order',String(n),'important')});
    /* Any obsolete/duplicate Reels shortcut in the header must remain absent. */
    $$('.header-actions a[href="reels.html"],.header-actions [aria-label="Reels"]',document).forEach(x=>x.remove());
  }

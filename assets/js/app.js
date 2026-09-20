@@ -430,7 +430,8 @@
     /* Admin də daxil olmaqla bütün istifadəçilər əvvəlcə öz profilinə daxil olur.
        Admin panelinə keçid profil daxilində ayrıca göstərilir. */
     a.href=pathFor('profile.html');
-    a.innerHTML=`<i class="fa-regular fa-user"></i><span class="label">${esc(name)}</span>`;
+    const avatar=String(currentProfile?.avatar_url||'').trim();
+    a.innerHTML=avatar?`<img class="header-profile-avatar" src="${esc(avatar)}" alt="${esc(name)}"><span class="label">${esc(name)}</span>`:`<i class="fa-regular fa-user"></i><span class="label">${esc(name)}</span>`;
   }
   function pathFor(file){ return page==='admin' ? `../${file}` : file; }
   function staticText(v){
