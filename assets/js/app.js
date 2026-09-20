@@ -427,8 +427,10 @@
     const a=$('#accountBtn'); if(!a)return;
     if(!currentUser){a.href=pathFor('login.html');a.innerHTML=`<i class="fa-regular fa-user"></i><span class="label">${t('login')}</span>`;return}
     const name=(currentProfile?.name||currentUser.email?.split('@')[0]||t('profile')).split(' ')[0];
-    a.href=currentProfile?.role==='admin'?pathFor('admin/index.html'):pathFor('profile.html');
-    a.innerHTML=`<i class="fa-${currentProfile?.role==='admin'?'solid fa-shield-halved':'regular fa-user'}"></i><span class="label">${esc(name)}</span>`;
+    /* Admin də daxil olmaqla bütün istifadəçilər əvvəlcə öz profilinə daxil olur.
+       Admin panelinə keçid profil daxilində ayrıca göstərilir. */
+    a.href=pathFor('profile.html');
+    a.innerHTML=`<i class="fa-regular fa-user"></i><span class="label">${esc(name)}</span>`;
   }
   function pathFor(file){ return page==='admin' ? `../${file}` : file; }
   function staticText(v){

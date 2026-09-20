@@ -1953,3 +1953,131 @@ body[data-page="create-post"] .container{max-width:720px!important}
   .av-comment-emoji-picker{grid-template-columns:repeat(6,1fr)!important}
   .av-post-kind span{min-height:64px!important;padding:9px!important}
 }
+
+/* AvtoVIP v85 — Lent / Reels / paylaşım son uyğunlaşdırma qatıdır. */
+body[data-page="feed"] .section-head{display:none!important}
+
+/* Mobil/PWA-da Lent <-> Reels keçidi yalnız bir dəfə yuxarı paneldə görünür. */
+@media(max-width:900px){
+  body[data-page="feed"] .header-actions .av-mobile-social-cross,
+  body[data-page="reels"] .header-actions .av-mobile-social-cross{
+    display:grid!important;
+  }
+}
+
+/* Desktop Reels viewer sabit header-in altından başlayır. */
+@media(min-width:901px){
+  .av-reel-viewer{
+    inset:var(--av-header) 0 0 0!important;
+    padding:10px!important;
+  }
+  .av-reel-stage{
+    height:min(calc(100dvh - var(--av-header) - 20px),860px)!important;
+    max-height:calc(100dvh - var(--av-header) - 20px)!important;
+  }
+  .av-desktop-rail-tools .av-rail-action{
+    box-sizing:border-box!important;
+    margin:0!important;
+    transform:none!important;
+    display:grid!important;
+    grid-template-columns:24px minmax(0,1fr)!important;
+    align-items:center!important;
+    justify-content:stretch!important;
+    gap:12px!important;
+    padding:0 13px!important;
+  }
+  .av-desktop-rail-tools .av-rail-action:hover{transform:none!important}
+  .av-desktop-rail-tools .av-rail-action>i,
+  .av-desktop-rail-tools .av-rail-action>.av-rail-flag{margin:0!important;justify-self:center!important}
+}
+
+/* Reels alt gradient/pərdə videonun dibinə qədər tam çatır. */
+.av-reel-overlay{
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  padding-right:68px!important;
+  padding-bottom:16px!important;
+  background:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.20) 32%,rgba(0,0,0,.86) 100%)!important;
+}
+.av-reel-caption button{
+  color:#ffcb55!important;
+  text-shadow:0 1px 4px rgba(0,0,0,.85)!important;
+}
+.av-reel-caption button:hover{color:#ffe49a!important}
+.av-reel-play-state{opacity:0!important}
+.av-reel-play-state.show{opacity:1!important}
+
+/* Lentdəki Takip et Reels ilə eyni vizual sistemdədir. */
+.av-feed-actions .av-post-follow{
+  border:1px solid color-mix(in srgb,var(--text) 46%,transparent)!important;
+  background:transparent!important;
+  color:var(--text)!important;
+  border-radius:8px!important;
+  min-height:30px!important;
+  height:30px!important;
+  padding:4px 8px!important;
+  max-width:140px!important;
+  gap:7px!important;
+}
+.av-feed-actions .av-post-follow.active{
+  color:#fff!important;
+  background:#1ea85d!important;
+  border-color:#1ea85d!important;
+}
+
+/* Lent media keçidi: köhnə şəkil itmədən yumşaq fade/slide. */
+.av-feed-slide{transition:opacity .22s ease,transform .22s ease!important;will-change:opacity,transform}
+.av-feed-media.is-changing .av-feed-slide.active.outgoing{position:relative!important;z-index:1!important;opacity:1!important;transform:translateX(0)!important}
+.av-feed-media.is-changing .av-feed-slide.active.outgoing.leave{opacity:0!important}
+.av-feed-media.is-changing.to-next .av-feed-slide.active.outgoing.leave{transform:translateX(-2.5%)!important}
+.av-feed-media.is-changing.to-prev .av-feed-slide.active.outgoing.leave{transform:translateX(2.5%)!important}
+.av-feed-media.is-changing .av-feed-slide.active:not(.outgoing){position:absolute!important;inset:0!important;z-index:2!important;display:block!important;opacity:1!important}
+.av-feed-media.is-changing.to-next .av-feed-slide.active.incoming{opacity:0!important;transform:translateX(2.5%)!important}
+.av-feed-media.is-changing.to-prev .av-feed-slide.active.incoming{opacity:0!important;transform:translateX(-2.5%)!important}
+
+/* Yeni paylaşım — native Browse yazısı əvəzinə AvtoVIP picker + seçilmiş media preview. */
+body[data-page="create-post"] .page{padding-bottom:86px!important}
+body[data-page="create-post"] .panel.av-post-create{margin-bottom:0!important}
+.av-native-file{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.av-file-picker{
+  min-height:46px;
+  border:1px dashed var(--line);
+  border-radius:12px;
+  background:var(--surface-2);
+  color:var(--text);
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  font-weight:800;
+  cursor:pointer;
+  padding:10px 12px;
+}
+.av-file-picker i{font-size:18px;color:var(--accent)}
+.av-post-media-preview{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:8px}
+.av-post-preview-item{position:relative;aspect-ratio:1/1;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#050608}
+.av-post-preview-item img,.av-post-preview-item video{width:100%;height:100%;object-fit:cover;display:block}
+.av-post-preview-item>button{position:absolute;right:5px;top:5px;width:25px;height:25px;border:0;border-radius:50%;background:rgba(0,0,0,.72);color:#fff;display:grid;place-items:center}
+.av-post-preview-item>small{position:absolute;left:5px;right:34px;bottom:5px;color:#fff;background:rgba(0,0,0,.52);border-radius:5px;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:8px}
+.av-post-notice{position:fixed;z-index:22000;left:50%;top:calc(var(--av-header) + 12px);transform:translate(-50%,-18px);opacity:0;pointer-events:none;min-width:min(420px,calc(100vw - 24px));max-width:calc(100vw - 24px);padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--surface) 96%,transparent);box-shadow:0 12px 34px rgba(0,0,0,.28);display:flex;align-items:center;gap:9px;color:var(--text);transition:.2s ease}
+.av-post-notice.show{opacity:1;transform:translate(-50%,0)}
+.av-post-notice.success i{color:#25c86b}.av-post-notice.error i{color:#ff4858}.av-post-notice.info i{color:#4da3ff}
+
+/* Admin öz profilinə daxil olur; admin panel profil daxilindən ayrıca açılır. */
+.av-profile-actions.has-admin{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+.av-admin-panel-entry{border-color:color-mix(in srgb,var(--brand) 55%,var(--line))!important;color:var(--accent)!important}
+
+@media(max-width:800px){
+  .av-reel-overlay{bottom:0!important;padding-bottom:calc(14px + env(safe-area-inset-bottom))!important}
+  .av-post-media-preview{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .av-profile-actions.has-admin{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  body[data-page="create-post"] .container{width:calc(100% - 12px)!important}
+  body[data-page="create-post"] .av-post-create{padding-bottom:12px!important}
+}
