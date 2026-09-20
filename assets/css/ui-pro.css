@@ -1631,3 +1631,63 @@ body[data-page="messages"] .conversation-item .avatar-shell>.avatar-gem{top:-5px
 .story-comment-name-text{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 .public-name-text{align-items:center!important}
 #profileName>.profile-verified{order:-1!important}
+
+/* v78 — AvtoVIP unified identity presentation (verified + membership) */
+:root{--av-verified-size:15px;--av-tier-gold:#f6c53f;--av-tier-premium:#ff5d9a}
+:is(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified,.av-identity-verified){
+  display:inline-block!important;position:relative!important;inset:auto!important;transform:none!important;
+  width:var(--av-verified-size)!important;height:var(--av-verified-size)!important;min-width:var(--av-verified-size)!important;min-height:var(--av-verified-size)!important;
+  max-width:var(--av-verified-size)!important;max-height:var(--av-verified-size)!important;flex:0 0 var(--av-verified-size)!important;
+  margin:0 5px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;clip-path:none!important;
+  background-color:transparent!important;background-repeat:no-repeat!important;background-position:center!important;background-size:100% 100%!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231d9bf0' d='M12 1.8l2.1 1.55 2.58-.23 1.28 2.26 2.5.7.18 2.59 1.93 1.75-.96 2.41.96 2.41-1.93 1.75-.18 2.59-2.5.7-1.28 2.26-2.58-.23L12 22.2l-2.1-1.55-2.58.23-1.28-2.26-2.5-.7-.18-2.59-1.93-1.75.96-2.41-.96-2.41 1.93-1.75.18-2.59 2.5-.7 1.28-2.26 2.58.23L12 1.8z'/%3E%3Cpath fill='white' d='M10.25 16.35 6.1 12.2l1.5-1.5 2.65 2.65 6.15-6.15 1.5 1.5-7.65 7.65z'/%3E%3C/svg%3E")!important;
+  box-shadow:none!important;overflow:visible!important;vertical-align:-2px!important;line-height:1!important;pointer-events:none!important;
+}
+:is(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified,.av-identity-verified)::before,
+:is(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified,.av-identity-verified)::after,
+:is(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified,.av-identity-verified)>i,
+:is(.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified,.av-identity-verified)>svg{content:none!important;display:none!important}
+
+:is(.seller-name-line,#chatPeerName,.conversation-copy strong,.explore-seller-name,.comment-meta strong,.story-comment-user strong,.story-owner-name,.public-name-text,#profileName,.notification-person,.feed-author-name){
+  display:inline-flex!important;align-items:center!important;gap:0!important;min-width:0!important;max-width:100%!important;overflow:visible!important;vertical-align:middle!important;
+}
+:is(.seller-name-text,.conversation-name-text,.comment-name-text,.story-comment-name-text,.public-name-label,.feed-author-label,.notification-person-label){min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+
+/* Membership badge is anchored to the avatar, never to page coordinates. */
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell){
+  --av-tier-size:16px;position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;flex:0 0 auto!important;
+}
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>img{display:block!important;border-radius:50%!important;object-fit:cover!important}
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>.avatar-crown,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>.explore-tier-mark.vip,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>.comment-avatar-crown{
+  position:absolute!important;top:calc(var(--av-tier-size) * -.42)!important;right:calc(var(--av-tier-size) * -.20)!important;left:auto!important;bottom:auto!important;
+  transform:none!important;margin:0!important;padding:0!important;z-index:50!important;width:auto!important;height:auto!important;
+  font-size:var(--av-tier-size)!important;line-height:1!important;color:var(--av-tier-gold)!important;filter:drop-shadow(0 2px 4px rgba(246,197,63,.4))!important;pointer-events:none!important;
+}
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>.avatar-gem,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>.explore-tier-mark.premium,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>.comment-avatar-gem{
+  position:absolute!important;top:calc(var(--av-tier-size) * -.34)!important;right:calc(var(--av-tier-size) * -.14)!important;left:auto!important;bottom:auto!important;
+  transform:none!important;margin:0!important;padding:0!important;z-index:50!important;font-size:calc(var(--av-tier-size) * .9)!important;line-height:1!important;color:var(--av-tier-premium)!important;pointer-events:none!important;
+}
+/* Consistent sizes by avatar role. */
+.profile-avatar-shell{--av-tier-size:20px}.profile-avatar-shell>img{width:72px!important;height:72px!important}
+.seller-avatar-shell,.chat-peer-avatar-shell,.public-avatar-btn{--av-tier-size:18px}
+.explore-avatar-shell,.comment-avatar-shell,.story-comment-avatar,.conversation-item .avatar-shell,.notification-avatar-shell,.feed-avatar-shell{--av-tier-size:14px}
+
+/* Profile identity: verified before flag/name, crown attached to the profile photo. */
+.profile-head>label.profile-avatar-shell{overflow:visible!important;margin:3px!important}
+#profileName{white-space:nowrap!important}
+#profileName>.profile-verified{order:-3!important}
+#profileName>.profile-country-flag{order:-2!important;margin-right:5px!important}
+
+/* User identity in notifications and social feed. */
+.notification-avatar-shell{width:38px;height:38px;flex:0 0 38px}.notification-avatar-shell>img{width:38px!important;height:38px!important}
+.notification-row{overflow:visible!important}.notification-row>div{min-width:0!important}.notification-person{font-weight:800!important}
+.feed-avatar-shell{width:42px;height:42px;flex:0 0 42px}.feed-avatar-shell>img{width:42px!important;height:42px!important}
+.feed-author-name{font-weight:800!important}
+
+/* Keep identity decorations clear of clipping containers. */
+.story-comment,.comment-row,.conversation-item,.explore-seller,.seller-card,.profile-head,.notification-row,.av-post>.row-wrap{overflow:visible!important}
+.story-owner-side{display:flex!important;align-items:center!important;gap:8px!important}.story-owner-avatar{--av-tier-size:14px;width:32px;height:32px;flex:0 0 32px}.story-owner-avatar>img{width:32px!important;height:32px!important}.story-top .story-owner-name{color:#fff!important}
