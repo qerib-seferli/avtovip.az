@@ -2376,3 +2376,120 @@ video::-internal-media-controls-cast-button{display:none!important}
 /* Payments/history gets the same safe space above the fixed mobile bar. */
 body[data-page="payments"] main.page{padding-bottom:86px!important}
 @media(min-width:901px){body[data-page="payments"] main.page{padding-bottom:18px!important}}
+
+/* AvtoVIP v94 — Explore comments: stable composer, usable emoji palette, no accidental page submit. */
+body[data-page="explore"] .explore-post-comments .explore-comments-card{
+  position:relative!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+}
+body[data-page="explore"] .explore-post-comments .explore-comment-form{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 48px!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:60px!important;
+  padding:7px 10px!important;
+  border-top:1px solid var(--line)!important;
+  background:var(--surface)!important;
+  position:relative!important;
+  z-index:95!important;
+}
+body[data-page="explore"] .explore-post-comments .explore-comment-compose{
+  position:relative!important;
+  display:block!important;
+  min-width:0!important;
+}
+body[data-page="explore"] .explore-post-comments .explore-comment-compose input{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  height:46px!important;
+  padding:0 12px 0 45px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+body[data-page="explore"] .explore-post-comments .explore-comment-emoji-btn{
+  position:absolute!important;
+  left:7px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:32px!important;
+  min-width:32px!important;
+  height:32px!important;
+  min-height:32px!important;
+  padding:0!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  z-index:97!important;
+  border:0!important;
+  background:transparent!important;
+}
+body[data-page="explore"] .explore-post-comments .explore-comment-send{
+  width:48px!important;
+  min-width:48px!important;
+  height:46px!important;
+  min-height:46px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-page="explore"] .explore-post-comments .explore-comment-emoji-picker{
+  position:absolute!important;
+  left:10px!important;
+  bottom:67px!important;
+  z-index:110!important;
+  width:218px!important;
+  max-width:calc(100% - 20px)!important;
+  padding:7px!important;
+  display:grid!important;
+  grid-template-columns:repeat(6,30px)!important;
+  grid-auto-rows:30px!important;
+  justify-content:start!important;
+  gap:4px!important;
+  border:1px solid var(--line)!important;
+  border-radius:12px!important;
+  background:var(--surface)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.36)!important;
+  overflow:hidden!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+body[data-page="explore"] .explore-post-comments .explore-comment-emoji-picker[hidden]{display:none!important}
+body[data-page="explore"] .explore-post-comments .explore-comment-emoji-picker button{
+  display:grid!important;
+  place-items:center!important;
+  width:30px!important;
+  min-width:30px!important;
+  height:30px!important;
+  min-height:30px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:7px!important;
+  background:transparent!important;
+  font-size:17px!important;
+  line-height:1!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+@media(max-width:800px){
+  body[data-page="explore"] .explore-post-comments .explore-comments-card{
+    height:min(68dvh,680px)!important;
+    max-height:min(68dvh,680px)!important;
+    padding-bottom:env(safe-area-inset-bottom)!important;
+  }
+  body[data-page="explore"] .explore-post-comments .comments-list{
+    padding:8px 14px!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-y!important;
+  }
+  body[data-page="explore"] .explore-post-comments .explore-comment-form{
+    padding-bottom:max(7px,env(safe-area-inset-bottom))!important;
+  }
+  body[data-page="explore"] .explore-post-comments .explore-comment-emoji-picker{
+    bottom:calc(67px + env(safe-area-inset-bottom))!important;
+  }
+}
