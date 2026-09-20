@@ -2314,3 +2314,37 @@ html.av-comments-open,html.av-comments-open body{overflow:hidden!important;overs
     max-height:34px!important;
   }
 }
+
+
+/* AvtoVIP v92 — requested-only header stability + no remote-playback affordance. */
+.site-header .header-actions .icon-btn,
+.site-header .header-actions .header-mini-action,
+.site-header .header-actions #accountBtn{
+  transform:none!important;
+  backface-visibility:visible!important;
+  contain:none!important;
+  will-change:auto!important;
+}
+.site-header .header-actions #accountBtn{
+  padding:0!important;
+  overflow:hidden!important;
+}
+.site-header .header-actions #accountBtn .header-profile-avatar{
+  display:block!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:inherit!important;
+  transform:none!important;
+  backface-visibility:visible!important;
+}
+/* Hide browser/TV remote playback controls; Lent/Reels manage sound inside AvtoVIP UI. */
+video::-webkit-media-controls-airplay-button,
+video::-webkit-media-controls-cast-button,
+video::-internal-media-controls-cast-button{display:none!important}

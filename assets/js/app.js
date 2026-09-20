@@ -430,6 +430,11 @@
       a.classList.add('account-hydrated');
     }catch{}
   }
+  /* Hydrate the cached profile image as soon as this bottom-of-page script is parsed,
+     instead of waiting for DOMContentLoaded/auth. The button box is already fixed by CSS,
+     so this avoids the small icon->photo jump during page changes. */
+  renderCachedAccountButton();
+
   async function loadCurrent(){
     const cur=await db.current(); currentUser=cur.user; currentProfile=cur.profile;
     renderAccountButton(); updateMessageBadge();
@@ -1254,11 +1259,11 @@
 
   async function boot(){
     initThemeLang();observeDynamicI18n();initBottomNav();initPWA();
-    renderCachedAccountButton();
     /* Theme/language are now stable; reveal immediately and load data progressively. */
     document.documentElement.classList.remove('av-preboot');
     await loadCurrent();
-    await initPresence();
+    /* Presence is useful, but it must never block the first usable paint/page init. */
+    initPresence().catch(err=>console.warn('[AvtoVIP presence]',err));
     window.AvtoVIPUI=Object.assign(window.AvtoVIPUI||{},{updateMessageBadge,renderConversations,renderThread,openConversation,loadOwnListings,loadOwnPayments,loadWalletTransactions});
   const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};
     try{await handlers[page]?.()}catch(err){console.error(err);toast(err.message||'Gözlənilməz xəta baş verdi.','error')}
