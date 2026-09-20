@@ -1807,3 +1807,122 @@ body[data-page="explore"] .explore-seller-name .explore-verified,
 
 /* Explicitly keep identity rows unclipped in the places shown in the screenshots. */
 :is(.story-social-head,.story-comment,.notification-row,.explore-seller,.conversation-item,.chat-peer,.seller-card,.public-profile-head,.profile-head,.av-post .row-wrap){overflow:visible!important}
+
+/* v80 — ONE identity standard everywhere.
+   Scope: verified badge + VIP/Premium avatar decoration only. */
+:root{
+  --av-identity-check-size:15px;
+  --av-identity-check-blue:#1d9bf0;
+  --av-identity-gold:#f6c43d;
+  --av-identity-premium:#ff5d9a;
+}
+
+/* One badge, one SVG, one geometry. */
+.av-identity-check,
+:is(.av-identity-verified,.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified){
+  display:inline-block!important;
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+  width:var(--av-identity-check-size)!important;
+  height:var(--av-identity-check-size)!important;
+  min-width:var(--av-identity-check-size)!important;
+  min-height:var(--av-identity-check-size)!important;
+  max-width:var(--av-identity-check-size)!important;
+  max-height:var(--av-identity-check-size)!important;
+  flex:0 0 var(--av-identity-check-size)!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+  background-color:transparent!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:100% 100%!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231D9BF0' d='M12 1.6l2.1 1.7 2.7-.3 1.2 2.5 2.6 1 .1 2.8 1.9 2-1.4 2.4.7 2.7-2.4 1.5-.5 2.8-2.8.1-1.7 2.2-2.7-.9-2.7.9-1.7-2.2-2.8-.1-.5-2.8-2.4-1.5.7-2.7-1.4-2.4 1.9-2 .1-2.8 2.6-1 1.2-2.5 2.7.3L12 1.6z'/%3E%3Cpath fill='white' d='M10.45 16.1 6.55 12.2l1.5-1.5 2.4 2.4 5.5-5.5 1.5 1.5-7 7z'/%3E%3C/svg%3E")!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:none!important;
+}
+.av-identity-check::before,.av-identity-check::after,
+:is(.av-identity-verified,.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified)::before,
+:is(.av-identity-verified,.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified)::after{
+  content:none!important;display:none!important;
+}
+.av-identity-check>*,
+:is(.av-identity-verified,.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified)>*{display:none!important}
+
+/* Every identity line: check first, then name, with the same 5px gap. */
+:is(.story-owner-name,.story-comment-user strong,.notification-person,.explore-seller-name,.comment-meta strong,.conversation-copy strong,#chatPeerName,.seller-name-line,.public-name-text,#profileName,.feed-author-name){
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:5px!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:visible!important;
+  line-height:1.2!important;
+  vertical-align:middle!important;
+}
+:is(.story-owner-name,.story-comment-user strong,.notification-person,.explore-seller-name,.comment-meta strong,.conversation-copy strong,#chatPeerName,.seller-name-line,.public-name-text,#profileName,.feed-author-name)>.av-identity-check,
+:is(.story-owner-name,.story-comment-user strong,.notification-person,.explore-seller-name,.comment-meta strong,.conversation-copy strong,#chatPeerName,.seller-name-line,.public-name-text,#profileName,.feed-author-name)>:is(.av-identity-verified,.verified-mark,.verified-rosette,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified){
+  order:-100!important;
+  flex:0 0 var(--av-identity-check-size)!important;
+}
+
+/* One tier decoration anchor for every avatar. */
+.av-identity-avatar,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell){
+  position:relative!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+}
+.av-identity-avatar>img,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>img{
+  display:block!important;
+  border-radius:50%!important;
+  object-fit:cover!important;
+}
+
+/* Same VIP/Premium ring everywhere. */
+.av-identity-avatar.vip>img{box-shadow:0 0 0 2px #d9aa20,0 0 8px rgba(217,170,32,.22)!important}
+.av-identity-avatar.premium>img{box-shadow:0 0 0 2px #ff5d9a,0 0 8px rgba(255,93,154,.24)!important}
+
+/* Same crown/gem size and the same relative position on every avatar. */
+.av-identity-avatar>.av-tier-mark{
+  position:absolute!important;
+  top:-4px!important;
+  right:-3px!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  margin:0!important;
+  padding:0!important;
+  width:15px!important;
+  height:15px!important;
+  min-width:15px!important;
+  min-height:15px!important;
+  max-width:15px!important;
+  max-height:15px!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:15px!important;
+  line-height:15px!important;
+  z-index:80!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+}
+.av-identity-avatar>.av-tier-vip{color:var(--av-identity-gold)!important;filter:drop-shadow(0 1px 3px rgba(246,196,61,.45))!important}
+.av-identity-avatar>.av-tier-premium{color:var(--av-identity-premium)!important;filter:drop-shadow(0 1px 3px rgba(255,93,154,.38))!important}
+
+/* Old tier marks can never fight the canonical mark after the normalizer runs. */
+.av-identity-avatar>:is(.avatar-crown,.avatar-gem,.comment-avatar-crown,.comment-avatar-gem,.explore-tier-mark):not(.av-tier-mark){display:none!important}
+
+/* The exact surfaces shown in the screenshots must never clip identity decoration. */
+:is(.story-social-head,.story-owner-side,.story-comment,.story-comment-meta,.notification-row,.explore-seller,.conversation-item,.chat-peer-link,.seller-card,.public-profile-head,.profile-head,.av-post>.row-wrap){overflow:visible!important}

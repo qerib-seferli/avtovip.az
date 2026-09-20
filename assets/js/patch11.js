@@ -111,9 +111,29 @@
     $$('.public-profile-head .profile-country-flag-img').forEach(img=>{img.style.objectFit='cover'});
   }
 
-  const verifiedSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.7l2.2 1.7 2.8-.3 1.2 2.5 2.6 1 .1 2.8 1.9 2-1.4 2.4.7 2.7-2.4 1.5-.5 2.8-2.8.1-1.7 2.2-2.7-.9-2.7.9-1.7-2.2-2.8-.1-.5-2.8-2.4-1.5.7-2.7-1.4-2.4 1.9-2 .1-2.8 2.6-1 1.2-2.5 2.8.3L12 1.7z"/><path fill="#fff" d="M10.55 15.95L6.8 12.2l1.45-1.45 2.3 2.3 5.15-5.15 1.45 1.45-6.6 6.6z"/></svg>';
   function fixVerified(){
-    $$('.verified-rosette,.verified-mark').forEach(el=>{el.classList.add('verified-badge-pro');el.innerHTML=verifiedSvg;el.title=tr('verified');el.setAttribute('aria-label',tr('verified'))});
+    $$('.verified-rosette,.verified-mark,.av-identity-verified,.verified-badge-pro,.av-verified-left,.message-verified,.comment-verified,.seller-verified,.explore-verified,.story-verified,.profile-verified,.public-verified').forEach(el=>{
+      el.classList.add('av-identity-check');
+      /* The badge is drawn once by CSS. Clearing old SVG/font icons prevents mixed old/new shapes. */
+      if(el.childNodes.length) el.replaceChildren();
+      el.title=tr('verified');
+      el.setAttribute('aria-label',tr('verified'));
+    });
+  }
+  function fixIdentityTierMarks(){
+    const wrappers=$$('.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell');
+    wrappers.forEach(w=>{
+      w.classList.add('av-identity-avatar');
+      const tier=w.classList.contains('premium')?'premium':w.classList.contains('vip')?'vip':'';
+      const marks=[...w.querySelectorAll(':scope > .avatar-crown,:scope > .avatar-gem,:scope > .comment-avatar-crown,:scope > .comment-avatar-gem,:scope > .explore-tier-mark')];
+      if(!tier){marks.forEach(m=>m.remove());return}
+      let keep=marks[0];
+      marks.slice(1).forEach(m=>m.remove());
+      if(!keep){keep=document.createElement('i');w.append(keep)}
+      keep.className=tier==='vip'?'fa-solid fa-crown av-tier-mark av-tier-vip':'fa-solid fa-gem av-tier-mark av-tier-premium';
+      keep.setAttribute('aria-label',tier==='vip'?'VIP':'Premium');
+      keep.setAttribute('aria-hidden','true');
+    });
   }
 
   function decorateTierCards(){
@@ -196,7 +216,7 @@
   }
 
   function patchAll(){
-    localizeKnownText();fixCountryFlags();fixVerified();decorateTierCards();fixMessagesUI();fixFinanceLanguage();syncCountrySelectFlags();
+    localizeKnownText();fixCountryFlags();fixVerified();fixIdentityTierMarks();decorateTierCards();fixMessagesUI();fixFinanceLanguage();syncCountrySelectFlags();
     const trust=$('.status-pill.approved');if(trust&&/Etibar|Trust|Доверие|Güven|ნდობა/.test(trust.textContent))trust.childNodes.forEach(n=>{if(n.nodeType===3&&n.nodeValue.trim())n.nodeValue=' '+tr('trust')+' '});
     const chatSub=$('#chatPeerLink .muted.tiny');if(chatSub)chatSub.textContent=tr('chatService');
   }
