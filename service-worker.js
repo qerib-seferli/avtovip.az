@@ -1,4 +1,4 @@
-const CACHE='avtovip-v78';
+const CACHE='avtovip-v79';
 const CORE=['./','./index.html','./site.webmanifest','./assets/css/app.css?v=74','./assets/css/patch11.css?v=74','./assets/css/ui-pro.css?v=78','./assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js?v=78','./assets/js/social.js?v=78','./assets/js/patch11.js?v=74','./assets/js/ui-pro.js?v=74','./assets/img/brand/icon-192.png','./assets/img/brand/icon-512.png','./assets/img/brand/pwa-splash-192.png','./assets/img/brand/pwa-splash-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE).catch(()=>{})).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
