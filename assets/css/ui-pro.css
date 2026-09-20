@@ -2236,3 +2236,81 @@ html.av-comments-open,html.av-comments-open body{overflow:hidden!important;overs
     transition:none!important;
   }
 }
+
+/* AvtoVIP v91 — header micro-jitter lock only. */
+.site-header .header-row,
+.site-header .header-actions{
+  min-height:var(--av-header,58px)!important;
+}
+.site-header .header-actions .icon-btn,
+.site-header .header-actions .header-mini-action,
+.site-header .header-actions #accountBtn{
+  flex:0 0 36px!important;
+  width:36px!important;
+  min-width:36px!important;
+  max-width:36px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  box-sizing:border-box!important;
+  line-height:1!important;
+  transform:translateZ(0)!important;
+  backface-visibility:hidden!important;
+  transition:none!important;
+  animation:none!important;
+  contain:layout paint!important;
+}
+.site-header .header-actions .icon-btn>i,
+.site-header .header-actions .header-mini-action>i,
+.site-header .header-actions #accountBtn>i{
+  width:18px!important;
+  min-width:18px!important;
+  max-width:18px!important;
+  height:18px!important;
+  min-height:18px!important;
+  max-height:18px!important;
+  line-height:18px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  flex:0 0 18px!important;
+  transform:none!important;
+  transition:none!important;
+}
+.site-header .header-actions #accountBtn .header-profile-avatar{
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:cover!important;
+  object-position:50% 50%!important;
+  transform:translateZ(0)!important;
+  backface-visibility:hidden!important;
+  transition:none!important;
+  animation:none!important;
+  will-change:auto!important;
+}
+@media(max-width:900px){
+  .site-header .header-actions .icon-btn,
+  .site-header .header-actions .header-mini-action,
+  .site-header .header-actions #accountBtn{
+    flex-basis:36px!important;
+  }
+}
+@media(max-width:480px){
+  .site-header .header-actions .icon-btn,
+  .site-header .header-actions .header-mini-action,
+  .site-header .header-actions #accountBtn{
+    flex:0 0 34px!important;
+    width:34px!important;
+    min-width:34px!important;
+    max-width:34px!important;
+    height:34px!important;
+    min-height:34px!important;
+    max-height:34px!important;
+  }
+}
