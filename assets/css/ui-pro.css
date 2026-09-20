@@ -1872,3 +1872,84 @@ body[data-page="reels"] main .container{max-width:1180px!important}body[data-pag
   .av-reel-follow span{margin-left:0!important}
 }
 @media(min-width:901px){.header-actions .av-mobile-social-cross{display:none!important}}
+
+/* AvtoVIP v84 — authoritative Lent/Reels interaction + composer layer. */
+@media(min-width:901px){
+  .av-social-rail-links{display:contents!important}
+  .av-social-rail-links>a{width:100%!important;height:46px!important;min-height:46px!important;flex:0 0 46px!important;border-radius:10px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;padding:0 13px!important;color:var(--av-muted)!important;text-decoration:none!important;overflow:hidden!important;white-space:nowrap!important}
+  .av-social-rail-links>a i{width:24px!important;min-width:24px!important;text-align:center!important;font-size:18px!important}
+  .av-social-rail-links>a span{font-size:12px!important;line-height:1!important;white-space:nowrap!important;opacity:0!important;transition:opacity .12s ease!important}
+  .bottom-nav:hover .av-social-rail-links>a span{opacity:1!important}
+  .av-social-rail-links>a:hover,.av-social-rail-links>a.active{background:color-mix(in srgb,var(--brand) 15%,transparent)!important;color:var(--accent)!important}
+}
+body[data-page="feed"] .header-actions .av-mobile-social-cross,body[data-page="reels"] .header-actions .av-mobile-social-cross{display:none!important}
+
+/* Lent cards */
+.av-feed-card{overflow:hidden!important}
+.av-feed-media{position:relative!important;overflow:hidden!important;background:#050608!important}
+.av-feed-slide{display:none!important;position:relative!important;width:100%!important;min-height:0!important}
+.av-feed-slide.active{display:block!important}
+.av-feed-slide img,.av-feed-slide video{display:block!important;width:100%!important;height:auto!important;max-height:72vh!important;object-fit:contain!important;background:#050608!important}
+.av-carousel-prev,.av-carousel-next{position:absolute;z-index:8;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;border-radius:50%;background:rgba(0,0,0,.46);color:#fff;display:grid;place-items:center;cursor:pointer}
+.av-carousel-prev{left:8px}.av-carousel-next{right:8px}
+.av-carousel-dots{position:absolute;z-index:8;left:50%;bottom:8px;transform:translateX(-50%);display:flex;gap:4px;padding:4px 6px;border-radius:999px;background:rgba(0,0,0,.22)}
+.av-carousel-dots i{display:block;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.42);transition:.18s}
+.av-carousel-dots i.active{width:13px;border-radius:6px;background:#fff}
+.av-feed-actions{gap:2px!important}
+.av-feed-actions .av-post-follow{margin-left:auto!important;display:inline-flex!important;align-items:center!important;gap:6px!important;width:auto!important;max-width:132px!important;padding-inline:8px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important}
+.av-feed-actions .av-post-follow i{font-size:16px!important;flex:0 0 auto!important}
+.av-feed-actions .av-post-follow span{overflow:hidden;text-overflow:ellipsis}
+.av-feed-caption{display:block!important;padding:2px 12px 12px!important;font-size:12px!important;line-height:1.42!important}
+.av-feed-caption>strong{display:block!important;margin-bottom:3px!important;white-space:normal!important}
+.av-feed-caption-text{display:flex!important;align-items:flex-end!important;gap:5px!important;min-width:0!important}
+.av-feed-caption-text>span{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;overflow-wrap:anywhere!important;min-width:0!important}
+.av-feed-caption-text.expanded{display:block!important}.av-feed-caption-text.expanded>span{display:block!important;overflow:visible!important}
+.av-feed-caption-text button{border:0;background:transparent;color:var(--muted);font-size:11px;font-weight:800;padding:0;white-space:nowrap;cursor:pointer}
+.av-feed-video{cursor:pointer}
+.av-media-sound{z-index:9!important}
+
+/* Reels viewer */
+.av-reel-overlay{right:0!important;padding-right:68px!important;background:linear-gradient(transparent,rgba(0,0,0,.78))!important}
+.av-reel-actions{background:transparent!important}
+.av-reel-actions button{background:transparent!important;border:0!important;box-shadow:none!important}
+.av-reel-follow{display:inline-flex!important;align-items:center!important;gap:7px!important;padding:6px 9px!important}
+.av-reel-follow i{flex:0 0 auto!important;margin:0!important}.av-reel-follow span{margin:0!important}
+.av-reel-play-state{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.38);color:#fff;font-size:23px;opacity:0;pointer-events:none;transition:.16s;z-index:7}
+.av-reel-play-state.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.av-reel-media video{cursor:pointer}
+
+/* Comments: use the same stable emoji grid pattern as stories/explore. */
+.av-post-comments-card{grid-template-rows:auto minmax(0,1fr) auto auto!important}
+.av-comment-emoji-picker{display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:4px!important;padding:8px!important;border-top:1px solid var(--line)!important;background:var(--surface)!important;font-size:initial!important;letter-spacing:0!important}
+.av-comment-emoji-picker[hidden]{display:none!important}
+.av-comment-emoji-picker button{width:34px!important;height:34px!important;border:0!important;border-radius:8px!important;background:transparent!important;font-size:19px!important;padding:0!important;cursor:pointer!important}
+.av-comment-emoji-picker button:hover{background:var(--surface-2)!important}
+.av-post-comments-form{grid-template-columns:40px minmax(0,1fr) 44px!important}
+.av-post-comments-form .av-comment-emoji{border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface-2)!important;color:var(--text)!important}
+
+/* New share composer: only Lent/Reels, with explicit media rules. */
+body[data-page="create-post"] .container{max-width:720px!important}
+.av-post-create{overflow:visible!important}
+.av-post-kind{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.av-post-kind label{display:block;cursor:pointer;min-width:0}.av-post-kind input{position:absolute;opacity:0;pointer-events:none}
+.av-post-kind span{min-height:70px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);display:grid;grid-template-columns:28px minmax(0,1fr);grid-template-rows:auto auto;align-items:center;column-gap:8px;padding:10px 12px;transition:.16s}
+.av-post-kind i{grid-row:1/3;font-size:20px;text-align:center}.av-post-kind b{font-size:13px}.av-post-kind small{font-size:10px;color:var(--muted)}
+.av-post-kind input:checked+span{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,var(--surface));box-shadow:inset 0 0 0 1px var(--brand)}
+#postMedia{height:auto!important;min-height:42px!important;padding:7px!important}
+
+@media(max-width:800px){
+  body[data-page="feed"] .section-head{padding:0 12px!important}
+  .av-feed-slide img,.av-feed-slide video{width:100%!important;max-height:none!important;object-fit:contain!important}
+  .av-carousel-prev,.av-carousel-next{width:30px;height:30px}
+  .av-feed-actions .av-post-follow{max-width:116px!important;font-size:10px!important;padding-inline:6px!important;gap:5px!important}
+  .av-feed-caption{font-size:12px!important;padding-inline:12px!important}
+  .av-reel-stage{height:100dvh!important;min-height:100dvh!important}
+  .av-reel-media{position:absolute!important;inset:0!important;background:#000!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important}
+  .av-reel-media video{width:100%!important;height:100%!important;object-fit:cover!important;background:#000!important}
+  .av-reel-overlay{left:0!important;right:0!important;bottom:calc(18px + env(safe-area-inset-bottom))!important;padding:76px 66px 14px 12px!important}
+  .av-reel-caption{max-width:100%!important}
+  .av-post-comments-modal{align-items:end!important;padding:0!important}
+  .av-post-comments-card{width:100%!important;max-height:min(76dvh,680px)!important;border-radius:18px 18px 0 0!important;padding-bottom:env(safe-area-inset-bottom)!important}
+  .av-comment-emoji-picker{grid-template-columns:repeat(6,1fr)!important}
+  .av-post-kind span{min-height:64px!important;padding:9px!important}
+}
