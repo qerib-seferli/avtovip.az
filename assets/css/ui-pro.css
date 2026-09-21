@@ -2493,3 +2493,101 @@ body[data-page="explore"] .explore-post-comments .explore-comment-emoji-picker b
     bottom:calc(67px + env(safe-area-inset-bottom))!important;
   }
 }
+
+
+/* AvtoVIP v95 — requested-only compact header, Explore keyboard fit, Reels views/controls, rail flag cleanup. */
+.site-header .brand{
+  flex:0 0 36px!important;
+  min-width:36px!important;
+  max-width:36px!important;
+}
+.site-header .brand img{
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  max-width:36px!important;
+  object-fit:contain!important;
+}
+@media(max-width:480px){
+  .site-header .brand{flex-basis:34px!important;min-width:34px!important;max-width:34px!important}
+  .site-header .brand img{width:34px!important;height:34px!important;min-width:34px!important;max-width:34px!important}
+}
+
+/* Explore comments stay inside the visual viewport when the phone keyboard opens. */
+@media(max-width:800px){
+  body[data-page="explore"] .explore-post-comments.keyboard-open{
+    align-items:end!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+  }
+  body[data-page="explore"] .explore-post-comments.keyboard-open .explore-comments-card{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    border-radius:18px 18px 0 0!important;
+    padding-bottom:0!important;
+  }
+  body[data-page="explore"] .explore-post-comments.keyboard-open .comments-list{
+    min-height:0!important;
+    overflow:auto!important;
+  }
+  body[data-page="explore"] .explore-post-comments.keyboard-open .explore-comment-form{
+    position:relative!important;
+    bottom:auto!important;
+    padding-bottom:max(7px,env(safe-area-inset-bottom))!important;
+    flex:0 0 auto!important;
+  }
+}
+
+/* Reels grid: previews are already auto-playing, so no play badge; show compact real view count instead. */
+.av-reel-kind{display:none!important}
+.av-reel-view-count{
+  position:absolute!important;
+  left:50%!important;
+  bottom:8px!important;
+  transform:translateX(-50%)!important;
+  z-index:4!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:4px!important;
+  min-width:0!important;
+  padding:4px 7px!important;
+  border-radius:999px!important;
+  background:rgba(0,0,0,.38)!important;
+  color:#fff!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  pointer-events:none!important;
+  white-space:nowrap!important;
+}
+.av-reel-view-count i{font-size:10px!important}
+.av-reel-view-count b{font:inherit!important;color:inherit!important}
+
+/* Desktop rail country button has no extra curtain/background. */
+@media(min-width:901px){
+  .av-desktop-rail-tools [data-av-lang],
+  .av-desktop-rail-tools [data-av-lang]:hover,
+  .av-desktop-rail-tools [data-av-lang]:focus{
+    background:transparent!important;
+    box-shadow:none!important;
+    border-color:transparent!important;
+    outline:none!important;
+  }
+  .av-desktop-rail-tools [data-av-lang] .av-rail-flag{
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+}
+
+/* Open Reels viewer: X and sound stay visible without circular dark curtains. */
+.av-reel-close,.av-reel-sound,
+.av-reel-close:hover,.av-reel-sound:hover,
+.av-reel-close:focus,.av-reel-sound:focus{
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+  outline:none!important;
+  backdrop-filter:none!important;
+}
