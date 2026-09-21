@@ -1314,7 +1314,7 @@
     if('serviceWorker' in navigator){
       window.addEventListener('load',async()=>{
         try{
-          const reg=await navigator.serviceWorker.register('./service-worker.js?v=73',{scope:'./',updateViaCache:'none'});
+          const reg=await navigator.serviceWorker.register('./service-worker.js?v=99',{scope:'./',updateViaCache:'none'});
           await reg.update();
           await navigator.serviceWorker.ready;
           let reloading=false;
@@ -1348,7 +1348,7 @@
     /* Presence is useful, but it must never block the first usable paint/page init. */
     initPresence().catch(err=>console.warn('[AvtoVIP presence]',err));
     window.AvtoVIPUI=Object.assign(window.AvtoVIPUI||{},{updateMessageBadge,renderConversations,renderThread,openConversation,loadOwnListings,loadOwnPayments,loadWalletTransactions});
-  const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:initProfile,messages:initMessages,auth:initAuth,reset:initReset};
+  const handlers={home:initHome,detail:initListingDetail,'create-listing':initCreateListing,'create-story':initCreateStory,favorites:initFavorites,compare:initCompare,profile:async()=>{},messages:initMessages,auth:initAuth,reset:initReset};
     try{await handlers[page]?.()}catch(err){console.error(err);toast(err.message||'Gözlənilməz xəta baş verdi.','error')}
     requestAnimationFrame(()=>window.dispatchEvent(new CustomEvent('avtovip:language',{detail:{lang,initial:true}})));
   }
