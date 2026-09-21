@@ -103,3 +103,83 @@ body[data-page="profile"] #pfTrust .trust-v63 .trust-crown.is-earned{color:#ffd8
 body[data-page="profile"] #pfTrust .trust-v63 .trust-score-label{white-space:nowrap!important;color:var(--text)!important;font-weight:800!important;font-size:10.5px!important;line-height:1.1!important}
 .pf-section-head>.btn,.pf-section-head>a.btn{margin-right:34px}
 #pfAdminBtn[hidden]+#logoutBtn{grid-column:1/-1}
+
+/* AvtoVİP profile final v3 — 2026-09-22 */
+body[data-page="profile"] .profile-final-shell{min-height:0!important;padding-bottom:12px!important}
+body[data-page="profile"] main.page{min-height:0!important}
+body[data-page="profile"] .profile-head{grid-template-columns:auto minmax(0,1fr) auto!important;position:relative!important}
+body[data-page="profile"] .profile-head.tier-vip,
+body[data-page="profile"] .profile-head.tier-premium{
+  background:linear-gradient(145deg,color-mix(in srgb,var(--surface) 94%,white 6%),color-mix(in srgb,var(--surface-2) 96%,transparent))!important;
+  backdrop-filter:blur(10px) saturate(112%)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(112%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 8px 24px rgba(0,0,0,.10)!important
+}
+.pf-admin-profile{align-self:start!important;min-width:112px!important;height:38px!important;padding:0 12px!important;justify-content:center!important;gap:7px!important;font-size:10px!important}
+.pf-admin-profile[hidden]{display:none!important}
+.pf-account-actions{display:none!important}
+body[data-page="profile"] #profileName{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:wrap!important}
+body[data-page="profile"] #profileName .av-user-verified{flex:0 0 auto!important;position:relative!important;z-index:5!important}
+body[data-page="profile"] .profile-name-label{order:2}.pf-flag{order:3!important;margin:0!important;font-size:17px!important;line-height:1!important}.pf-tier{order:4!important;margin:0!important}
+body[data-page="profile"] #profileName>.av-user-verified{order:1!important}
+
+/* Exact trust meter geometry used on elan.html. */
+body[data-page="profile"] #pfTrust .trust-v63{display:block!important;width:100%!important;margin-top:4px!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-meter-row{display:grid!important;grid-template-columns:minmax(110px,1fr) auto!important;align-items:end!important;gap:10px!important;width:100%!important;min-height:36px!important;max-width:520px!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-bar{position:relative!important;display:block!important;width:100%!important;min-width:0!important;max-width:none!important;height:7px!important;margin:0 0 4px!important;overflow:visible!important;border-radius:999px!important;background:var(--surface-3)!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-bar>i{position:absolute!important;inset:0 auto 0 0!important;display:block!important;height:100%!important;border-radius:999px!important;background:linear-gradient(90deg,#158f62,#58c977)!important;z-index:1!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-milestones{position:absolute!important;inset:0!important;display:block!important;pointer-events:none!important;z-index:3!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-star{position:absolute!important;top:50%!important;transform:translate(-50%,-50%)!important;width:18px!important;height:18px!important;display:grid!important;place-items:center!important;font-size:12px!important;line-height:1!important;color:#5e6664!important;background:var(--surface)!important;border-radius:50%!important;text-shadow:none!important;filter:none!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-star-20{left:20%!important}body[data-page="profile"] #pfTrust .trust-v63 .trust-star-40{left:40%!important}body[data-page="profile"] #pfTrust .trust-v63 .trust-star-60{left:60%!important}body[data-page="profile"] #pfTrust .trust-v63 .trust-star-80{left:80%!important}body[data-page="profile"] #pfTrust .trust-v63 .trust-star-100{left:100%!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-star.is-earned{color:#f6c945!important;text-shadow:0 0 5px rgba(246,201,69,.9),0 0 11px rgba(246,201,69,.45)!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-score-wrap{min-width:82px!important;display:grid!important;grid-template-rows:22px auto!important;justify-items:center!important;align-items:end!important;line-height:1!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-crown{position:static!important;inset:auto!important;transform:none!important;width:auto!important;height:auto!important;display:grid!important;place-items:center!important;font-size:23px!important;line-height:1!important;color:#69706f!important;background:transparent!important;text-shadow:none!important;filter:none!important;pointer-events:none!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-crown.is-earned{color:#ffd84d!important;animation:avTrustCrownGlowV62 1.35s ease-in-out infinite alternate!important;filter:drop-shadow(0 0 4px rgba(255,216,77,.95)) drop-shadow(0 0 11px rgba(255,184,0,.72))!important}
+body[data-page="profile"] #pfTrust .trust-v63 .trust-score-label{white-space:nowrap!important;color:var(--text)!important;font-weight:800!important;font-size:10.5px!important;line-height:1.1!important}
+
+/* Saved / liked columns start at the same height and their surfaces extend evenly. */
+.pf-saved-grid,.pf-liked-grid{align-items:stretch!important}
+.pf-saved-grid>section,.pf-liked-grid>section{height:100%!important;align-self:stretch!important}
+.pf-saved-grid .pf-section-head,.pf-liked-grid .pf-section-head{min-height:48px!important;align-items:center!important}
+
+/* Profile form: address and biography use the full available width. */
+body[data-page="profile"] #profileForm .field-wide{grid-column:1/-1!important}
+body[data-page="profile"] #profileForm textarea{width:100%!important}
+
+/* Numeric wallet amount field. */
+.pf-dialog-input{width:100%!important;height:46px!important;margin:8px 0 12px!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface-2)!important;color:var(--text)!important;padding:0 12px!important;font:inherit!important;outline:none!important}
+.pf-dialog-input:focus{border-color:var(--accent)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)!important}
+
+/* Do not create artificial empty scroll areas. */
+body[data-page="profile"] .pf-panel{min-height:0!important;margin-bottom:0!important;padding-bottom:0!important}
+body[data-page="profile"] .pf-section:last-child{margin-bottom:0!important}
+body[data-page="profile"] .pf-empty{min-height:72px!important}
+
+@media(min-width:901px){
+  body[data-page="profile"] .pf-stats{width:100%!important;float:none!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  body[data-page="profile"] .pf-nav{clear:none!important;margin-top:0!important}
+  body[data-page="profile"] .pf-admin-profile{margin-top:2px!important}
+}
+
+@media(max-width:900px){
+  body[data-page="profile"] main.page{padding-bottom:calc(72px + env(safe-area-inset-bottom))!important}
+  body[data-page="profile"] .profile-final-shell{padding-bottom:4px!important}
+  body[data-page="profile"] .profile-head{grid-template-columns:58px minmax(0,1fr) 38px!important;padding:10px!important;gap:8px!important}
+  body[data-page="profile"] #pfProfileAvatarShell{z-index:2!important}
+  body[data-page="profile"] #profileName{font-size:18px!important;gap:5px!important;line-height:1.15!important}
+  body[data-page="profile"] #profileName .av-user-verified{margin:0!important;transform:none!important}
+  body[data-page="profile"] .pf-flag{font-size:16px!important}
+  body[data-page="profile"] .pf-tier{font-size:8px!important;padding:2px 6px!important}
+  body[data-page="profile"] #pfProfileAvatarShell .avatar-crown{right:-1px!important;top:-6px!important;z-index:4!important}
+  body[data-page="profile"] .pf-admin-profile{width:38px!important;min-width:38px!important;height:38px!important;padding:0!important;border-radius:10px!important;font-size:0!important;align-self:start!important}
+  body[data-page="profile"] .pf-admin-profile i{font-size:15px!important}
+  body[data-page="profile"] #pfTrust .trust-v63 .trust-meter-row{grid-template-columns:minmax(96px,1fr) 82px!important;gap:8px!important;max-width:none!important}
+  body[data-page="profile"] #pfTrust .trust-v63 .trust-star{background:var(--surface)!important}
+  body[data-page="profile"] .pf-nav{margin-top:0!important}
+  body[data-page="profile"] .pf-section-head{min-height:70px!important;padding:10px 48px 10px 12px!important}
+  body[data-page="profile"] .pf-section.collapsed>.pf-section-head{min-height:70px!important}
+  body[data-page="profile"] .pf-dialog-backdrop{padding-bottom:calc(8px + env(safe-area-inset-bottom))!important}
+  body[data-page="profile"] .profile-header-logout .label{display:none!important}
+  body[data-page="profile"] .profile-header-logout i{font-size:16px!important}
+  body[data-page="profile"] .pf-saved-grid>section,body[data-page="profile"] .pf-liked-grid>section{height:auto!important}
+}
