@@ -686,3 +686,5 @@ body[data-page="auth"] .auth-logo{
     height:66px!important;
   }
 }
+/* v98: price history shows previous -> current price without changing detail layout. */
+.price-history-values{display:inline-flex;align-items:center;justify-content:flex-end;gap:7px;white-space:nowrap}.price-history-values del{color:var(--danger);opacity:.85;font-size:.88em;text-decoration-thickness:2px}.price-history-values strong{color:var(--text)}
