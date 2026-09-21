@@ -707,19 +707,54 @@
     root.addEventListener('click',e=>{const f=e.target.closest('[data-fav]');if(f){e.preventDefault();toggleFavorite(f.dataset.fav,f);return} const c=e.target.closest('[data-compare]');if(c){e.preventDefault();toggleCompare(c.dataset.compare);c.innerHTML=`<i class="fa-solid fa-code-compare"></i>${compareIds().includes(c.dataset.compare)?'✓':t('compare')}`}});
   }
 
+  let smartSearchText='';
+  let smartSearchTimer=0;
+  const SMART_STOPWORDS=new Set([
+    'bir','ve','və','ile','ilə','ucun','üçün','olan','olsun','istəyirəm','isteyirem','axtarıram','axtariram','tap','goster','göstər','mene','mənə',
+    'car','vehicle','with','for','the','a','an','show','find','want','looking','please',
+    'машина','авто','автомобиль','с','для','и','покажи','найди','хочу',
+    'araba','araç','otomobil','ve','ile','için','göster','bul','istiyorum',
+    'მანქანა','ავტომობილი','და','მინდა','მაჩვენე'
+  ]);
+  function smartFold(v){return String(v||'').toLocaleLowerCase('az').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ə/g,'e').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g').replace(/ş/g,'s').replace(/ç/g,'c')}
+  function smartNum(raw,unit=''){
+    let n=Number(String(raw||'').replace(/\s/g,'').replace(',','.'));if(!Number.isFinite(n))return 0;
+    if(/^(?:k|min|тыс|тысяч|bin)$/i.test(unit)||(/^[0-9]+(?:[.,][0-9]+)?$/.test(String(raw||''))&&n>0&&n<1000))n*=1000;
+    return Math.round(n);
+  }
   function parseSmart(text){
-    const s=text.toLocaleLowerCase('az'); const f={};
-    const brand=(vehicleMakes.length?vehicleMakes.map(x=>x.name):BRANDS.map(x=>x[0])).find(b=>s.includes(String(b).toLocaleLowerCase('az').replace('mercedes-benz','mercedes'))); if(brand)f.brand=brand;
-    let m=s.match(/(?:maks(?:imum)?|qədər|altı|under|до)\s*([0-9]+)[\s,.]*(min|k)?/i) || s.match(/([0-9]+)\s*(min|k)\s*(?:manat|azn|₼)?\s*(?:qədər|altı|under|до)/i); if(m){let n=Number(m[1]);if(m[2]||n<1000)n*=1000;f.priceMax=n}
-    m=s.match(/(19\d{2}|20\d{2})\s*(?:-?dən|-?dan|sonra|yuxarı|\+|after|от)/i); if(m)f.yearMin=Number(m[1]);
-    if(/avtomat|automatic|автомат/i.test(s))f.transmission='Avtomat'; if(/mexanik|manual|механик/i.test(s))f.transmission='Mexaniki';
-    if(/ağ|white|бел/i.test(s))f.color='Ağ'; if(/qara|black|черн/i.test(s))f.color='Qara'; if(/boz|gray|grey|сер/i.test(s))f.color='Boz';
-    if(/suv|cip|jeep|offroad|кроссов|внедорож/i.test(s))f.body='SUV'; if(/sedan|седан/i.test(s))f.body='Sedan';
-    if(/kredit|credit|кредит/i.test(s))f.credit=true; if(/barter|обмен|trade/i.test(s))f.barter=true;
-    if(/elektr|electric|электр/i.test(s))f.fuel='Elektro'; else if(/hibrid|hybrid|гибрид/i.test(s))f.fuel='Hibrid'; else if(/dizel|diesel|дизел/i.test(s))f.fuel='Dizel';
+    const raw=String(text||'').trim(); const s=smartFold(raw); const f={};
+    const makes=(vehicleMakes.length?vehicleMakes.map(x=>x.name):BRANDS.map(x=>x[0]));
+    const brand=makes.find(b=>{const n=smartFold(b).replace('mercedes-benz','mercedes');return n&&s.includes(n)}); if(brand)f.brand=brand;
+    let m=s.match(/(?:maks(?:imum)?|max|qeder|qədər|alti|altı|under|up to|до|altinda|altında|kadar)\s*([0-9]+(?:[.,][0-9]+)?)\s*(min|k|тыс|тысяч|bin)?/i)
+      ||s.match(/([0-9]+(?:[.,][0-9]+)?)\s*(min|k|тыс|тысяч|bin)?\s*(?:manat|azn|₼|usd|dollar|eur|euro|руб|rubl|tl|try|gel)?\s*(?:qeder|qədər|alti|altı|under|up to|до|altinda|altında|kadar)/i);
+    if(m)f.priceMax=smartNum(m[1],m[2]);
+    m=s.match(/(?:minimum|min|en azi|ən azı|from|от|ustunde|üstündə|yuxari|yuxarı)\s*([0-9]+(?:[.,][0-9]+)?)\s*(min|k|тыс|тысяч|bin)?/i);
+    if(m)f.priceMin=smartNum(m[1],m[2]);
+    m=s.match(/(19\d{2}|20\d{2})\s*(?:-?den|-?dan|sonra|yuxari|yuxarı|\+|after|newer|от|sonrasi|sonrası)/i); if(m)f.yearMin=Number(m[1]);
+    m=s.match(/(?:qeder|qədər|before|до)\s*(19\d{2}|20\d{2})/i)||s.match(/(19\d{2}|20\d{2})\s*(?:-?e|-?a|qeder|qədər|before|до)/i); if(m)f.yearMax=Number(m[1]);
+    m=s.match(/(?:yurus|yürüş|km|kilometr|mileage|пробег)\D{0,12}([0-9]+(?:[.,][0-9]+)?)\s*(min|k|тыс|bin)?\s*(?:qeder|qədər|alti|altı|under|до)?/i);if(m)f.mileageMax=smartNum(m[1],m[2]);
+    if(/avtomat|automatic|auto transmission|автомат|otomatik/.test(s))f.transmission='Avtomat'; else if(/mexanik|manual|механик|manuel/.test(s))f.transmission='Mexaniki';
+    const colors=[['Ağ',/\b(ag|white|beyaz|бел(?:ый|ая)?|თეთრი)\b/],['Qara',/\b(qara|black|siyah|черн\w*|შავი)\b/],['Boz',/\b(boz|gray|grey|gri|сер\w*|ნაცრისფერი)\b/],['Qırmızı',/\b(qirmizi|red|kirmizi|красн\w*|წითელი)\b/],['Göy',/\b(goy|blue|mavi|син\w*|ლურჯი)\b/],['Yaşıl',/\b(yasil|green|yesil|зелен\w*|მწვანე)\b/],['Gümüşü',/\b(gumusu|silver|gumus|серебр\w*|ვერცხლისფერი)\b/]];
+    for(const [val,re] of colors)if(re.test(s)){f.color=val;break}
+    if(/suv|cip|jeep|offroad|crossover|кроссов|внедорож|джип/.test(s))f.body='SUV'; else if(/sedan|седан/.test(s))f.body='Sedan'; else if(/hetc|hatch|хэтч/.test(s))f.body='Hetçbek'; else if(/kupe|coupe|купе/.test(s))f.body='Kupe'; else if(/pikap|pickup|пикап/.test(s))f.body='Pikap';
+    if(/kredit|credit|кредит/.test(s))f.credit=true; if(/barter|trade[ -]?in|обмен|takas/.test(s))f.barter=true;
+    if(/elektr|electric|ev\b|электр/.test(s))f.fuel='Elektro'; else if(/plug[ -]?in|phev/.test(s))f.fuel='Plug-in Hibrid'; else if(/hibrid|hybrid|гибрид/.test(s))f.fuel='Hibrid'; else if(/dizel|diesel|дизел/.test(s))f.fuel='Dizel'; else if(/benzin|petrol|gasoline|бензин/.test(s))f.fuel='Benzin';
+    if(/tam oturucu|tam cekis|awd|4wd|4x4|полный привод/.test(s))f.drivetrain='Tam'; else if(/on oturucu|front wheel|fwd|передний привод/.test(s))f.drivetrain='Ön'; else if(/arxa oturucu|rear wheel|rwd|задний привод/.test(s))f.drivetrain='Arxa';
+    if(/yeni|new|нов(?:ый|ая)|sifir|sıfır/.test(s))f.condition='new'; else if(/islenmis|işlənmiş|used|б\/у|подержан/.test(s))f.condition='used';
+    const consumed=[];
+    if(brand)consumed.push(smartFold(brand),smartFold(brand).replace('mercedes-benz','mercedes'));
+    const genericPatterns=[/\b(avtomat|automatic|auto transmission|автомат|otomatik|mexanik|manual|механик|manuel)\b/g,/\b(kredit|credit|кредит|barter|trade[ -]?in|обмен|takas)\b/g,/\b(elektr\w*|electric|ev|hibrid\w*|hybrid|plug[ -]?in|phev|dizel|diesel|benzin|petrol|gasoline)\b/g,/\b(suv|cip|jeep|offroad|crossover|sedan|hetc\w*|hatch\w*|kupe|coupe|pikap|pickup)\b/g,/\b(ag|white|beyaz|qara|black|siyah|boz|gray|grey|gri|qirmizi|red|kirmizi|goy|blue|mavi|yasil|green|yesil|gumusu|silver|gumus)\b/g,/\b(azn|manat|usd|dollar|eur|euro|rub|rubl|try|tl|gel|min|bin|k)\b/g,/\b(19\d{2}|20\d{2}|\d+(?:[.,]\d+)?)\b/g];
+    let free=s;for(const c of consumed)if(c)free=free.replaceAll(c,' ');for(const re of genericPatterns)free=free.replace(re,' ');
+    f.tokens=[...new Set(free.split(/[^a-z0-9\p{L}]+/u).map(x=>x.trim()).filter(x=>x.length>1&&!SMART_STOPWORDS.has(x)))].slice(0,6);
     return f;
   }
-
+  function smartMessage(f){
+    const n=Object.entries(f).filter(([k,v])=>k!=='tokens'&&(Array.isArray(v)?v.length:v!==undefined&&v!==null&&v!==false&&v!=='')).length+(f.tokens?.length||0);
+    const msgs={az:n?`${n} axtarış şərti tanındı. Nəticələr avtomatik süzülür.`:'Yazdıqca elanlar avtomatik süzülür.',en:n?`${n} search conditions recognized. Results are filtering automatically.`:'Listings filter automatically as you type.',ru:n?`Распознано условий: ${n}. Результаты фильтруются автоматически.`:'Объявления фильтруются по мере ввода.',tr:n?`${n} arama koşulu tanındı. Sonuçlar otomatik filtreleniyor.`:'Yazdıkça ilanlar otomatik filtrelenir.',ka:n?`ამოცნობილია ${n} საძიებო პირობა. შედეგები ავტომატურად იფილტრება.`:'ჩანაწერისას განცხადებები ავტომატურად იფილტრება.'};
+    return msgs[lang]||msgs.en;
+  }
+  function scheduleSmartSearch(immediate=false){clearTimeout(smartSearchTimer);const run=()=>{smartSearchText=$('#smartSearchInput')?.value?.trim()||'';const out=$('#smartSearchResult');if(out)out.textContent=smartSearchText?smartMessage(parseSmart(smartSearchText)):'';loadHomeListings()};if(immediate)run();else smartSearchTimer=setTimeout(run,220)}
   async function initHome(){
     await brandRail($('#brandsRail')); await ensureCatalogs(); await populateMakes($('#filterBrand')); await populateCurrencies($('#filterCurrency'),''); fillSelect($('#filterFuel'),FUELS); fillSelect($('#filterTransmission'),TRANSMISSIONS); fillSelect($('#filterDrivetrain'),DRIVETRAINS); fillColorSelect($('#filterColor'),'Hamısı'); fillSelect($('#filterBody'),BODY_TYPES);
     const eq=$('#filterEquipmentGrid'); renderEquipment(eq,'');
@@ -753,17 +788,26 @@
     $('#vipOnly')?.addEventListener('click',e=>{e.currentTarget.classList.toggle('btn-gold');e.currentTarget.dataset.on=e.currentTarget.dataset.on==='1'?'0':'1';loadHomeListings()});
     let filterTimer=0;const scheduleFilter=()=>{clearTimeout(filterTimer);filterTimer=setTimeout(loadHomeListings,260)};$('#filterPanel')?.addEventListener('change',e=>{if(e.target.closest('#toggleAdvanced,#applyFilters,#resetFilters,#vipOnly'))return;scheduleFilter()});$('#filterPanel')?.addEventListener('input',e=>{if(['INPUT'].includes(e.target.tagName)&&['search','number','text'].includes(e.target.type))scheduleFilter()});
     $('#sortListings')?.addEventListener('change',loadHomeListings);
-    $('#smartSearchBtn')?.addEventListener('click',()=>applySmartSearch($('#smartSearchInput')?.value||'')); $('#smartSearchInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')applySmartSearch(e.target.value)}); initVoice();
+    $('#smartSearchBtn')?.addEventListener('click',()=>scheduleSmartSearch(true));
+    $('#smartSearchInput')?.addEventListener('input',()=>scheduleSmartSearch(false));
+    $('#smartSearchInput')?.addEventListener('search',()=>scheduleSmartSearch(true));
+    $('#smartSearchInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();scheduleSmartSearch(true)}}); initVoice();
     bindCardActions($('#listingsGrid')||document); await loadStories(); await loadHomeListings();
   }
   function applySmartSearch(text){
-    if(!text.trim())return; const f=parseSmart(text); if(f.brand)$('#filterBrand').value=f.brand;if(f.priceMax)$('#filterPriceMax').value=f.priceMax;if(f.yearMin)$('#filterYearMin').value=f.yearMin;if(f.color)$('#filterColor').value=f.color;if(f.fuel)$('#filterFuel').value=f.fuel;if(f.credit)$('#filterCredit').checked=true;if(f.barter)$('#filterBarter').checked=true;
-    if(f.transmission){const opts=[...$('#filterTransmission').options];const found=opts.find(o=>o.value.startsWith(f.transmission));if(found)$('#filterTransmission').value=found.value} if(f.body){const opts=[...$('#filterBody').options];const found=opts.find(o=>o.value.includes(f.body));if(found)$('#filterBody').value=found.value}
-    const smartMsgs={az:`${Object.keys(f).length} parametr tanındı. Filtrlər tətbiq edildi.`,en:`${Object.keys(f).length} parameters recognized. Filters applied.`,ru:`Распознано параметров: ${Object.keys(f).length}. Фильтры применены.`,tr:`${Object.keys(f).length} parametre tanındı. Filtreler uygulandı.`,ka:`ამოცნობილია ${Object.keys(f).length} პარამეტრი. ფილტრები გამოყენებულია.`}; $('#smartSearchResult').textContent=smartMsgs[lang]||smartMsgs.en; loadHomeListings();
+    const input=$('#smartSearchInput');if(input&&input.value!==text)input.value=text||'';smartSearchText=String(text||'').trim();
+    const out=$('#smartSearchResult');if(out)out.textContent=smartSearchText?smartMessage(parseSmart(smartSearchText)):'';loadHomeListings();
   }
   function initVoice(){
-    const btn=$('#voiceBtn'); if(!btn)return; const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){btn.disabled=true;btn.title=runtimeText('Bu brauzerdə səsli axtarış dəstəklənmir');return}
-    const rec=new SR();rec.interimResults=false;rec.maxAlternatives=1;rec.lang=({az:'az-AZ',en:'en-US',ru:'ru-RU',tr:'tr-TR',ka:'ka-GE'})[lang]||'en-US'; btn.addEventListener('click',()=>{try{rec.start();btn.classList.add('is-listening')}catch{}}); rec.onresult=e=>{$('#smartSearchInput').value=e.results[0][0].transcript;applySmartSearch(e.results[0][0].transcript)}; rec.onend=()=>btn.classList.remove('is-listening'); rec.onerror=()=>{btn.classList.remove('is-listening');toast('Səs tanınmadı. Yenidən cəhd edin.','error')};
+    const btn=$('#voiceBtn'); if(!btn)return; const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){btn.disabled=true;btn.title=runtimeText('Bu brauzerdə səsli axtarış dəstəklənmir');return}
+    const rec=new SR();rec.interimResults=true;rec.continuous=false;rec.maxAlternatives=3;
+    const setRecognitionLanguage=()=>{rec.lang=({az:'az-AZ',en:'en-US',ru:'ru-RU',tr:'tr-TR',ka:'ka-GE'})[lang]||navigator.language||'az-AZ'};setRecognitionLanguage();
+    window.addEventListener('avtovip:language',setRecognitionLanguage);
+    btn.addEventListener('click',()=>{try{setRecognitionLanguage();rec.start();btn.classList.add('is-listening')}catch{}});
+    rec.onresult=e=>{let transcript='';let finalText='';for(let i=e.resultIndex;i<e.results.length;i++){const part=e.results[i][0]?.transcript||'';transcript+=part;if(e.results[i].isFinal)finalText+=part}const input=$('#smartSearchInput');if(input)input.value=(finalText||transcript).trim();if(finalText.trim())applySmartSearch(finalText.trim())};
+    rec.onend=()=>{btn.classList.remove('is-listening');const val=$('#smartSearchInput')?.value?.trim();if(val)applySmartSearch(val)};
+    rec.onerror=e=>{btn.classList.remove('is-listening');if(e.error!=='aborted'&&e.error!=='no-speech')toast(runtimeText('Səs tanınmadı. Yenidən cəhd edin.'),'error')};
   }
   async function loadHomeStats(){
     const {count}=await sb.from('elanlar').select('*',{count:'exact',head:true}).eq('status','approved'); $('#statListings') && ($('#statListings').textContent=count||0); if(currentUser){const {count:f}=await sb.from('favorites').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);$('#statFavorites')&&($('#statFavorites').textContent=f||0)}
@@ -776,7 +820,15 @@
        This removes the repeated card -> skeleton -> card flashing on PWA refresh. */
     if(grid.dataset.ready!=='1')grid.innerHTML='<div class="skeleton listing-card"></div><div class="skeleton listing-card"></div><div class="skeleton listing-card"></div>';
     let q=sb.from('elanlar').select('*').eq('status','approved'); const v=id=>$(id)?.value?.trim()||'';
+    const smart=smartSearchText?parseSmart(smartSearchText):null;
     const country=v('#filterCountry')||v('#filterCountryAdvanced'),city=v('#filterCity')||v('#filterCityAdvanced');
+    if(smart){
+      if(smart.brand)q=q.eq('brand',smart.brand);if(smart.priceMin)q=q.gte('price',smart.priceMin);if(smart.priceMax)q=q.lte('price',smart.priceMax);if(smart.yearMin)q=q.gte('year',smart.yearMin);if(smart.yearMax)q=q.lte('year',smart.yearMax);if(smart.mileageMax)q=q.lte('mileage',smart.mileageMax);
+      if(smart.color)q=q.eq('color',smart.color);if(smart.fuel)q=q.eq('fuel',smart.fuel);if(smart.drivetrain)q=q.eq('drivetrain',smart.drivetrain);if(smart.credit)q=q.eq('is_credit',true);if(smart.barter)q=q.eq('is_barter',true);if(smart.condition==='new')q=q.eq('is_new',true);if(smart.condition==='used')q=q.eq('is_new',false);
+      if(smart.transmission)q=q.ilike('transmission',`${smart.transmission}%`);if(smart.body)q=q.ilike('body_type',`%${smart.body}%`);
+      const searchable=['brand','model','generation','trim','city','state_name','district','market_origin','vin','description','fuel','transmission','drivetrain','body_type','color'];
+      for(const token of smart.tokens||[]){const safe=String(token).replace(/[(),.*%]/g,'').trim();if(safe)q=q.or(searchable.map(col=>`${col}.ilike.%${safe}%`).join(','))}
+    }
     if(v('#filterBrand'))q=q.eq('brand',v('#filterBrand')); if(v('#filterModel'))q=q.ilike('model',`%${v('#filterModel')}%`); if(country)q=q.eq('country_code',country); if(v('#filterState'))q=q.eq('state_name',v('#filterState')); if(city)q=q.ilike('city',city); if(v('#filterDistrict'))q=q.ilike('district',`%${v('#filterDistrict')}%`); if(v('#filterCurrency'))q=q.eq('currency',v('#filterCurrency'));
     if(v('#filterFuel'))q=q.eq('fuel',v('#filterFuel')); if(v('#filterTransmission'))q=q.eq('transmission',v('#filterTransmission')); if(v('#filterDrivetrain'))q=q.eq('drivetrain',v('#filterDrivetrain')); if(v('#filterColor'))q=q.eq('color',v('#filterColor')); if(v('#filterBody'))q=q.eq('body_type',v('#filterBody'));
     if(v('#filterGeneration'))q=q.ilike('generation',`%${v('#filterGeneration')}%`);if(v('#filterTrim'))q=q.ilike('trim',`%${v('#filterTrim')}%`);if(v('#filterMarketOrigin'))q=q.ilike('market_origin',`%${v('#filterMarketOrigin')}%`);if(v('#filterVin'))q=q.ilike('vin',`%${v('#filterVin').toUpperCase()}%`);
