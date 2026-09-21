@@ -2591,3 +2591,56 @@ body[data-page="explore"] .explore-post-comments .explore-comment-emoji-picker b
   outline:none!important;
   backdrop-filter:none!important;
 }
+
+
+/* AvtoVIP v96 — requested-only rail logo alignment, clean Reels views, Explore/detail contact actions. */
+@media(min-width:901px){
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .header-row{position:relative!important}
+  body:not([data-page="auth"]):not([data-page="reset"]) .site-header .brand{
+    position:absolute!important;
+    left:calc((var(--av-side) - 36px)/2)!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    margin:0!important;
+    width:36px!important;
+    height:36px!important;
+    z-index:2!important;
+  }
+}
+
+/* Reels grid view counter: eye + number only, no pill/curtain. */
+.av-reel-view-count{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  border-radius:0!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
+}
+
+/* Explore listing contact shortcuts: WhatsApp -> call -> in-app DM. */
+body[data-page="explore"] .explore-actions .explore-call{color:#3b82f6!important}
+body[data-page="explore"] .explore-actions .explore-call:hover{background:rgba(59,130,246,.11)!important;color:#60a5fa!important}
+body[data-page="explore"] .explore-actions .explore-message{color:#ef4456!important}
+body[data-page="explore"] .explore-actions .explore-message:hover{background:rgba(239,68,86,.11)!important;color:#ff5a6b!important}
+
+/* Listing detail: call / WhatsApp / DM stay in one equal row on desktop and PWA. */
+.seller-card .contact-grid.contact-grid-three{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;
+}
+.seller-card .contact-grid.contact-grid-three .btn{
+  min-width:0!important;
+  width:100%!important;
+  padding:0 8px!important;
+  gap:6px!important;
+  font-size:11px!important;
+}
+.seller-card .contact-grid.contact-grid-three .contact-call{background:var(--brand)!important;color:#fff!important}
+.seller-card .contact-grid.contact-grid-three .contact-whatsapp{background:#20c96b!important;color:#fff!important;border-color:#20c96b!important}
+.seller-card .contact-grid.contact-grid-three .contact-message{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important;text-decoration:none!important}
+.seller-card .contact-grid.contact-grid-three .contact-message:disabled{background:var(--surface-3)!important;color:var(--muted)!important;border-color:var(--line)!important}
+@media(max-width:480px){
+  .seller-card .contact-grid.contact-grid-three{gap:5px!important}
+  .seller-card .contact-grid.contact-grid-three .btn{height:40px!important;padding:0 5px!important;font-size:10px!important;gap:4px!important}
+}
