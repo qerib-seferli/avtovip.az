@@ -2774,3 +2774,13 @@ body[data-page="detail"] .detail-trust-circle b{position:relative;z-index:1;font
 body[data-page="detail"] .detail-trust-copy{display:grid;gap:1px;line-height:1.05}
 body[data-page="detail"] .detail-trust-copy strong{font-size:10px}.detail-trust-copy small{font-size:8px;color:var(--muted)}
 @media(max-width:700px){body[data-page="detail"] .detail-trust-circle{width:46px;height:46px;flex-basis:46px}}
+
+
+/* AvtoVIP v122 — listing detail trust stars + circle */
+body[data-page="detail"] .detail-trust-inline{display:flex;align-items:center;gap:9px;margin-top:7px;flex-wrap:wrap}
+body[data-page="detail"] .detail-trust-stars{display:flex;align-items:center;gap:3px}
+body[data-page="detail"] .detail-trust-stars i{font-size:13px;color:#47505d}
+body[data-page="detail"] .detail-trust-stars i.earned{color:#ffc735;filter:drop-shadow(0 0 4px rgba(255,199,53,.32))}
+body[data-page="detail"] .detail-trust-inline .detail-trust-circle-wrap{margin:0!important}
+body[data-page="detail"] .detail-trust-inline .detail-trust-circle{width:43px!important;height:43px!important;flex-basis:43px!important}
+body[data-page="detail"] .detail-trust-inline .detail-trust-circle b{font-size:10px!important}
