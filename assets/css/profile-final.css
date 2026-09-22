@@ -183,3 +183,8 @@ body[data-page="profile"] .pf-empty{min-height:72px!important}
   body[data-page="profile"] .profile-header-logout i{font-size:16px!important}
   body[data-page="profile"] .pf-saved-grid>section,body[data-page="profile"] .pf-liked-grid>section{height:auto!important}
 }
+
+/* v101 profile identity */
+body[data-page="profile"] #profileName{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:wrap!important}
+body[data-page="profile"] #profileName .av-user-verified{margin:0!important}
+body[data-page="profile"] #pfProfileAvatarShell.is-verified::after{width:26px!important;height:26px!important;background-image:url('../img/identity/mavi-tik-32x32.svg')!important}

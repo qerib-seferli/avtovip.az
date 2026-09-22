@@ -2,8 +2,9 @@
 html,body{max-width:100%;overflow-x:hidden}.site-header,.page,.container{min-width:0}
 /* Stable language picker: local flags only, no native horizontal scroll arrows */
 .lang-picker-host{position:relative}.lang-picker-menu{overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;scrollbar-width:none!important;padding:6px!important;border-radius:14px!important}.lang-picker-menu::-webkit-scrollbar{display:none!important}.lang-choice{width:100%!important;min-width:0!important;height:44px!important;display:grid!important;place-items:center!important;padding:0!important;border:0!important;background:transparent!important}.lang-choice:hover,.lang-choice.active{background:var(--surface-2)!important}.lang-flag-img{width:28px!important;height:19px!important;object-fit:cover!important;border-radius:3px!important}
-/* Proper verified rosette, fixed geometry. */
-.verified-badge-pro{display:inline-flex!important;width:19px!important;height:19px!important;flex:0 0 19px!important;align-items:center!important;justify-content:center!important;vertical-align:-3px!important;background:none!important;clip-path:none!important;color:#1d9bf0!important}.verified-badge-pro svg{display:block!important;width:19px!important;height:19px!important;overflow:visible!important}
+/* Exact uploaded blue-check SVG support. */
+.verified-badge-pro,.av-user-verified{background:none!important;clip-path:none!important;color:inherit!important}
+.verified-badge-pro img,.av-user-verified img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}
 /* Country flag assets */
 .profile-country-flag{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:25px;height:18px;vertical-align:-3px}.profile-country-flag-img{display:block!important;width:25px!important;height:18px!important;object-fit:cover!important;border-radius:3px!important;margin:0!important}
 /* Membership identity applies to the full profile card, not avatar only. */
