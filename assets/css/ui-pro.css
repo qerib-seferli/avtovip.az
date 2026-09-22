@@ -2765,3 +2765,12 @@ body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{r
   .story-owner-side .story-owner-avatar{width:36px!important;height:36px!important;flex-basis:36px!important}
   .story-social-head>div>span:last-child{margin-left:44px!important}
 }
+
+/* AvtoVİP v120 — circular seller trust indicator (detail page only). */
+body[data-page="detail"] .detail-trust-circle-wrap{display:flex;align-items:center;gap:9px;margin-top:8px}
+body[data-page="detail"] .detail-trust-circle{--score:50;--trust:#e2b83c;position:relative;width:48px;height:48px;flex:0 0 48px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--trust) calc(var(--score)*1%),rgba(105,112,122,.22) 0);box-shadow:0 0 15px rgba(226,184,60,.2)}
+body[data-page="detail"] .detail-trust-circle::before{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+body[data-page="detail"] .detail-trust-circle b{position:relative;z-index:1;font-size:11px;color:var(--text)}
+body[data-page="detail"] .detail-trust-copy{display:grid;gap:1px;line-height:1.05}
+body[data-page="detail"] .detail-trust-copy strong{font-size:10px}.detail-trust-copy small{font-size:8px;color:var(--muted)}
+@media(max-width:700px){body[data-page="detail"] .detail-trust-circle{width:46px;height:46px;flex-basis:46px}}
