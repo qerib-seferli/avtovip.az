@@ -119,9 +119,7 @@ body[data-page="profile"] .profile-head.tier-premium{
 .pf-admin-profile[hidden]{display:none!important}
 .pf-account-actions{display:none!important}
 body[data-page="profile"] #profileName{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:wrap!important}
-body[data-page="profile"] #profileName .av-user-verified{flex:0 0 auto!important;position:relative!important;z-index:5!important}
 body[data-page="profile"] .profile-name-label{order:2}.pf-flag{order:3!important;margin:0!important;font-size:17px!important;line-height:1!important}.pf-tier{order:4!important;margin:0!important}
-body[data-page="profile"] #profileName>.av-user-verified{order:1!important}
 
 /* Exact trust meter geometry used on elan.html. */
 body[data-page="profile"] #pfTrust .trust-v63{display:block!important;width:100%!important;margin-top:4px!important}
@@ -167,7 +165,6 @@ body[data-page="profile"] .pf-empty{min-height:72px!important}
   body[data-page="profile"] .profile-head{grid-template-columns:58px minmax(0,1fr) 38px!important;padding:10px!important;gap:8px!important}
   body[data-page="profile"] #pfProfileAvatarShell{z-index:2!important}
   body[data-page="profile"] #profileName{font-size:18px!important;gap:5px!important;line-height:1.15!important}
-  body[data-page="profile"] #profileName .av-user-verified{margin:0!important;transform:none!important}
   body[data-page="profile"] .pf-flag{font-size:16px!important}
   body[data-page="profile"] .pf-tier{font-size:8px!important;padding:2px 6px!important}
   body[data-page="profile"] #pfProfileAvatarShell .avatar-crown{right:-1px!important;top:-6px!important;z-index:4!important}
@@ -186,5 +183,5 @@ body[data-page="profile"] .pf-empty{min-height:72px!important}
 
 /* v101 profile identity */
 body[data-page="profile"] #profileName{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:wrap!important}
-body[data-page="profile"] #profileName .av-user-verified{margin:0!important}
-body[data-page="profile"] #pfProfileAvatarShell.is-verified::after{width:26px!important;height:26px!important;background-image:url('../img/identity/mavi-tik-32x32.svg')!important}
+/* v102 — profile uses the single avatar-side verified badge only. */
+body[data-page="profile"] #profileName>.av-user-verified{display:none!important}

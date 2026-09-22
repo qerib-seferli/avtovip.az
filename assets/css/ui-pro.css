@@ -2781,47 +2781,42 @@ body[data-page="explore"] .explore-actions .explore-message:hover{background:rgb
   overflow:visible!important;
   isolation:isolate!important;
 }
+/* v102 — verified badge placement cleanup.
+   Name-line badge stays as the single canonical badge everywhere.
+   Avatar overlay is disabled globally; only the signed-in profile header
+   intentionally shows the badge on the avatar (bottom-right). */
 :is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).is-verified::after{
+  content:none!important;
+  display:none!important;
+}
+body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
   content:""!important;
+  display:block!important;
   position:absolute!important;
-  left:var(--av-verified-offset)!important;
-  bottom:var(--av-verified-offset)!important;
-  width:18px!important;
-  height:18px!important;
-  border-radius:50%!important;
-  background:center/contain no-repeat url('../img/identity/mavi-tik-24x24.svg')!important;
-  z-index:70!important;
-  pointer-events:none!important;
-}
-.explore-avatar-shell.is-verified::after,
-.comment-avatar-shell.is-verified::after,
-.story-comment-avatar.is-verified::after,
-.story-owner-avatar.is-verified::after{
-  width:16px!important;
-  height:16px!important;
-  background-image:url('../img/identity/mavi-tik-16x16.svg')!important;
-}
-.notification-avatar-shell.is-verified::after,
-.feed-avatar-shell.is-verified::after,
-.seller-avatar-shell.is-verified::after,
-.chat-peer-avatar-shell.is-verified::after,
-.conversation-item .avatar-shell.is-verified::after{
-  width:18px!important;
-  height:18px!important;
-  background-image:url('../img/identity/mavi-tik-24x24.svg')!important;
-}
-.profile-avatar-shell.is-verified::after,
-.public-avatar-btn.is-verified::after{
+  right:-4px!important;
+  bottom:-4px!important;
+  left:auto!important;
+  top:auto!important;
   width:24px!important;
   height:24px!important;
-  left:-3px!important;
-  bottom:-3px!important;
-  background-image:url('../img/identity/mavi-tik-32x32.svg')!important;
+  border-radius:0!important;
+  background:center/contain no-repeat url('../img/identity/mavi-tik-32x32.svg')!important;
+  z-index:85!important;
+  pointer-events:none!important;
 }
-#pfProfileAvatarShell.is-verified::after,
-#chatPeerAvatarShell.is-verified::after{
-  background-image:url('../img/identity/mavi-tik-32x32.svg')!important;
+
+/* Keep the secondary identity text aligned after removing avatar-side duplicates. */
+.story-social-head>div>span:last-child{
+  display:block!important;
+  margin-left:52px!important;
+  margin-top:-2px!important;
 }
+body[data-page="detail"] .seller-card .grow>.muted.small{
+  margin-top:1px!important;
+  padding-left:0!important;
+  line-height:1.2!important;
+}
+
 :is(.avatar-crown,.comment-avatar-crown,.story-avatar-tier,.explore-tier-mark.vip){
   position:absolute!important;
   top:-5px!important;
