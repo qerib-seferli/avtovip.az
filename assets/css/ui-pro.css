@@ -1108,12 +1108,6 @@ body[data-page="detail"] .seller-avatar-shell>.seller-avatar{
   height:46px!important;
   display:block!important;
 }
-body[data-page="detail"] .seller-avatar-shell .avatar-crown,
-body[data-page="detail"] .seller-avatar-shell .avatar-gem{
-  right:-5px!important;
-  top:-8px!important;
-  font-size:13px!important;
-}
 body[data-page="detail"] #reportBtn{
   border-color:#d51f2b!important;
   box-shadow:inset 0 0 0 1px rgba(213,31,43,.12)!important;
@@ -1209,12 +1203,7 @@ body[data-page="explore"] .explore-search-feed{display:grid!important;grid-templ
 body[data-page="explore"] .explore-seller{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
 body[data-page="explore"] .explore-seller>a{display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important}
 body[data-page="explore"] .explore-avatar-shell{position:relative!important;display:inline-flex!important;flex:0 0 auto!important;border-radius:50%!important;padding:2px!important}
-body[data-page="explore"] .explore-avatar-shell.vip{box-shadow:0 0 0 2px #d6a91f,0 0 10px rgba(214,169,31,.28)!important}
-body[data-page="explore"] .explore-avatar-shell.premium{box-shadow:0 0 0 2px #ff4b9b,0 0 10px rgba(255,75,155,.28)!important}
 body[data-page="explore"] .explore-avatar-shell>img{width:32px!important;height:32px!important;border-radius:50%!important;object-fit:cover!important}
-body[data-page="explore"] .explore-tier-mark{position:absolute!important;right:-5px!important;top:-7px!important;font-size:10px!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))!important}
-body[data-page="explore"] .explore-tier-mark.vip{color:#ffd33d!important}
-body[data-page="explore"] .explore-tier-mark.premium{color:#ff5aa7!important}
 body[data-page="explore"] .explore-trust-stars{display:flex!important;align-items:center!important;gap:2px!important;flex:0 0 auto!important;font-size:11px!important}
 body[data-page="explore"] .explore-trust-stars i{color:#59616d!important;opacity:.55!important}
 body[data-page="explore"] .explore-trust-stars i.earned{color:#ffd23f!important;opacity:1!important;filter:drop-shadow(0 0 4px rgba(255,210,63,.34))!important}
@@ -1287,9 +1276,6 @@ body[data-page="explore"] .explore-follow.active:hover{background:transparent!im
 
 /* v71 — requested-only Explore follow icon + tier crown visibility */
 body[data-page="explore"] .explore-avatar-shell{overflow:visible!important}
-body[data-page="explore"] .explore-tier-mark{right:-4px!important;top:-3px!important;z-index:5!important}
-body[data-page="explore"] .explore-tier-mark.vip{font-size:11px!important}
-body[data-page="explore"] .explore-tier-mark.premium{font-size:10px!important}
 body[data-page="explore"] .explore-follow{
   margin-left:auto!important;margin-right:8px!important;
   width:28px!important;min-width:28px!important;max-width:28px!important;height:28px!important;
@@ -1311,10 +1297,7 @@ body[data-page="explore"] .explore-comments-card{max-width:560px!important}
 body[data-page="explore"] .comment-row{display:grid!important;grid-template-columns:38px minmax(0,1fr)!important;gap:10px!important;align-items:start!important;padding:10px 0!important}
 body[data-page="explore"] .comment-avatar-shell{position:relative!important;display:inline-flex!important;width:38px!important;height:38px!important;overflow:visible!important;border-radius:50%!important;flex:0 0 38px!important}
 body[data-page="explore"] .comment-avatar-shell>img{width:38px!important;height:38px!important;border-radius:50%!important;object-fit:cover!important}
-body[data-page="explore"] .comment-avatar-shell.vip>img{box-shadow:0 0 0 2px #e3b341,0 0 10px rgba(227,179,65,.25)!important}
-body[data-page="explore"] .comment-avatar-shell.premium>img{box-shadow:0 0 0 2px #ff4f91,0 0 10px rgba(255,79,145,.28)!important}
-body[data-page="explore"] .comment-avatar-crown,body[data-page="explore"] .comment-avatar-gem{position:absolute!important;right:-5px!important;top:-8px!important;z-index:3!important;font-size:12px!important;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))!important}
-body[data-page="explore"] .comment-avatar-crown{color:#ffd45b!important}body[data-page="explore"] .comment-avatar-gem{color:#ff65a3!important}
+
 body[data-page="explore"] .comment-main{min-width:0!important}
 body[data-page="explore"] .comment-meta{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-width:0!important}
 body[data-page="explore"] .comment-meta>a{min-width:0!important;color:inherit!important;text-decoration:none!important}
@@ -1345,9 +1328,6 @@ body[data-page="messages"] .conversation-name-text{min-width:0!important;overflo
 body[data-page="messages"] .message-verified{width:15px!important;height:15px!important;flex:0 0 15px!important;font-size:8px!important;vertical-align:0!important}
 body[data-page="messages"] .chat-peer-avatar-shell{position:relative!important;display:inline-flex!important;width:48px!important;height:48px!important;flex:0 0 48px!important;border-radius:50%!important;overflow:visible!important;margin:3px!important}
 body[data-page="messages"] .chat-peer-avatar-shell>#chatPeerAvatar{width:48px!important;height:48px!important;min-width:48px!important;max-width:48px!important;min-height:48px!important;max-height:48px!important;margin:0!important;border-radius:50%!important;object-fit:cover!important}
-body[data-page="messages"] .chat-peer-avatar-shell.vip>#chatPeerAvatar{box-shadow:0 0 0 3px #e3b341,0 0 14px rgba(227,179,65,.28)!important}
-body[data-page="messages"] .chat-peer-avatar-shell.premium>#chatPeerAvatar{box-shadow:0 0 0 3px #ff4f91,0 0 0 5px rgba(117,72,255,.20),0 0 18px rgba(255,79,145,.28)!important}
-body[data-page="messages"] .chat-peer-avatar-shell .avatar-crown,body[data-page="messages"] .chat-peer-avatar-shell .avatar-gem{right:-4px!important;top:-7px!important;z-index:5!important}
 body[data-page="messages"] #chatPeerName{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important;max-width:100%!important}
 body[data-page="messages"] #chatPeerName>span:first-child{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 body[data-page="messages"] .chat-emoji-picker{z-index:120!important}
@@ -1528,13 +1508,6 @@ body[data-page="detail"] .seller-avatar-shell,
 body[data-page="explore"] .explore-avatar-shell,
 body[data-page="explore"] .comment-avatar-shell,
 body[data-page="messages"] .chat-peer-avatar-shell{overflow:visible!important}
-.avatar-shell .avatar-crown,.avatar-shell .avatar-gem,
-body[data-page="detail"] .seller-avatar-shell .avatar-crown,body[data-page="detail"] .seller-avatar-shell .avatar-gem,
-body[data-page="explore"] .explore-tier-mark,
-body[data-page="explore"] .comment-avatar-crown,body[data-page="explore"] .comment-avatar-gem,
-body[data-page="messages"] .chat-peer-avatar-shell .avatar-crown,body[data-page="messages"] .chat-peer-avatar-shell .avatar-gem{
-  top:-4px!important;right:-2px!important;z-index:12!important;
-}
 /* On phones leave a small clear gap above the fixed bottom navigation so the shell border is visible. */
 @media(max-width:800px){
   body[data-page="messages"] .messages-shell{
@@ -1606,28 +1579,9 @@ body[data-page="explore"] .comment-meta strong,
 
 /* One crown/gem anchor rule for every avatar that carries membership status. */
 .avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.public-avatar-btn{position:relative!important;overflow:visible!important}
-.avatar-shell>.avatar-crown,.seller-avatar-shell>.avatar-crown,.explore-avatar-shell>.avatar-crown,.comment-avatar-shell>.comment-avatar-crown,.chat-peer-avatar-shell>.avatar-crown,.story-comment-avatar>.avatar-crown,.public-avatar-btn>.avatar-crown{
-  position:absolute!important;top:-8px!important;right:-5px!important;left:auto!important;bottom:auto!important;
-  transform:none!important;z-index:30!important;color:#f5c33b!important;font-size:18px!important;line-height:1!important;
-  filter:drop-shadow(0 2px 5px rgba(245,195,59,.35))!important;pointer-events:none!important;
-}
-.avatar-shell>.avatar-gem,.seller-avatar-shell>.avatar-gem,.explore-avatar-shell>.avatar-gem,.comment-avatar-shell>.comment-avatar-gem,.chat-peer-avatar-shell>.avatar-gem,.story-comment-avatar>.avatar-gem,.public-avatar-btn>.avatar-gem{
-  position:absolute!important;top:-7px!important;right:-4px!important;left:auto!important;bottom:auto!important;
-  transform:none!important;z-index:30!important;font-size:16px!important;line-height:1!important;pointer-events:none!important;
-}
 /* Smaller avatars use the same relative placement, only a smaller tier icon. */
-body[data-page="explore"] .explore-avatar-shell>.avatar-crown,
-body[data-page="explore"] .comment-avatar-shell>.comment-avatar-crown,
-.story-comment-avatar>.avatar-crown,
-body[data-page="messages"] .conversation-item .avatar-shell>.avatar-crown{top:-6px!important;right:-4px!important;font-size:14px!important}
-body[data-page="explore"] .explore-avatar-shell>.avatar-gem,
-body[data-page="explore"] .comment-avatar-shell>.comment-avatar-gem,
-.story-comment-avatar>.avatar-gem,
-body[data-page="messages"] .conversation-item .avatar-shell>.avatar-gem{top:-5px!important;right:-3px!important;font-size:13px!important}
 .story-comment-avatar{display:inline-flex!important;width:38px!important;height:38px!important;flex:0 0 38px!important;border-radius:50%!important}
 .story-comment-avatar>img{width:38px!important;height:38px!important;border-radius:50%!important;object-fit:cover!important}
-.story-comment-avatar.vip>img{box-shadow:0 0 0 2px #e3b341,0 0 10px rgba(227,179,65,.25)!important}
-.story-comment-avatar.premium>img{box-shadow:0 0 0 2px #ff4f91,0 0 10px rgba(255,79,145,.28)!important}
 .story-comment-name-text{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 .public-name-text{align-items:center!important}
 #profileName>.profile-verified{order:-1!important}
@@ -1722,49 +1676,7 @@ body[data-page="messages"] .conversation-item .avatar-shell>.avatar-gem{top:-5px
   border-radius:50%!important;
   object-fit:cover!important;
 }
-:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).vip>img{
-  box-shadow:0 0 0 2px #d9aa20,0 0 7px rgba(217,170,32,.16)!important;
-}
-:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium>img{
-  box-shadow:0 0 0 2px #ff5d9a,0 0 7px rgba(255,93,154,.18)!important;
-}
-
 /* Raw and normalized crown/gem classes deliberately share one geometry. */
-:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell) > :is(.avatar-crown,.comment-avatar-crown,.explore-tier-mark.vip,.av-tier-vip),
-:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell) > :is(.avatar-gem,.comment-avatar-gem,.explore-tier-mark.premium,.av-tier-premium){
-  position:absolute!important;
-  top:-4px!important;
-  right:-3px!important;
-  left:auto!important;
-  bottom:auto!important;
-  transform:none!important;
-  margin:0!important;
-  padding:0!important;
-  width:15px!important;
-  height:15px!important;
-  min-width:15px!important;
-  min-height:15px!important;
-  max-width:15px!important;
-  max-height:15px!important;
-  display:grid!important;
-  place-items:center!important;
-  font-size:15px!important;
-  line-height:15px!important;
-  z-index:80!important;
-  pointer-events:none!important;
-  overflow:visible!important;
-  animation:none!important;
-  transition:none!important;
-}
-:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell) > :is(.avatar-crown,.comment-avatar-crown,.explore-tier-mark.vip,.av-tier-vip){
-  color:var(--av-id-gold)!important;
-  filter:drop-shadow(0 1px 3px rgba(246,196,61,.38))!important;
-}
-:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell) > :is(.avatar-gem,.comment-avatar-gem,.explore-tier-mark.premium,.av-tier-premium){
-  color:var(--av-id-premium)!important;
-  filter:drop-shadow(0 1px 3px rgba(255,93,154,.32))!important;
-}
-
 /* Exact avatar roles used by Explore, notifications, messages, story, profile, feed/reels. */
 .explore-avatar-shell{width:32px!important;height:32px!important;flex:0 0 32px!important}.explore-avatar-shell>img{width:32px!important;height:32px!important}
 .notification-avatar-shell{width:38px!important;height:38px!important;flex:0 0 38px!important}.notification-avatar-shell>img{width:38px!important;height:38px!important}
@@ -1777,12 +1689,6 @@ body[data-page="messages"] .conversation-item .avatar-shell>.avatar-gem{top:-5px
 }
 
 /* No identity shimmer/scale animation. It was the source of the Lent/Reels crown flash. */
-:is(.avatar-crown,.comment-avatar-crown,.explore-tier-mark,.av-tier-mark,.av-tier-vip,.av-tier-premium){
-  animation:none!important;
-  transition:none!important;
-}
-
-
 /* v82 — FINAL canonical identity + social feed/reels UI. */
 :root{--av-verified-size:16px;--av-vip:#f4c21f;--av-premium:#ff5b9d}
 .av-user-verified{display:inline-grid!important;place-items:center!important;width:var(--av-verified-size)!important;height:var(--av-verified-size)!important;min-width:var(--av-verified-size)!important;min-height:var(--av-verified-size)!important;max-width:var(--av-verified-size)!important;max-height:var(--av-verified-size)!important;flex:0 0 var(--av-verified-size)!important;margin:0!important;padding:0!important;position:static!important;transform:none!important;vertical-align:middle!important;overflow:visible!important;line-height:1!important;background:none!important;border:0!important;box-shadow:none!important;clip-path:none!important}
@@ -1790,10 +1696,6 @@ body[data-page="messages"] .conversation-item .avatar-shell>.avatar-gem{top:-5px
 :is(.explore-seller-name,.notification-person,.story-owner-name,.story-comment-user strong,.comment-meta strong,.conversation-copy strong,#chatPeerName,.seller-name-line,.public-name-text,#profileName,.feed-author-name,.av-social-author-copy strong)>.av-user-verified{order:-20!important}
 :is(.explore-avatar-shell,.notification-avatar-shell,.story-comment-avatar,.story-owner-avatar,.avatar-shell,.seller-avatar-shell,.chat-peer-avatar-shell,.profile-avatar-shell,.feed-avatar-shell,.public-avatar-btn){padding:0!important;box-shadow:none!important;border:0!important;background:transparent!important;overflow:visible!important;position:relative!important;isolation:isolate!important}
 :is(.explore-avatar-shell,.notification-avatar-shell,.story-comment-avatar,.story-owner-avatar,.avatar-shell,.seller-avatar-shell,.chat-peer-avatar-shell,.profile-avatar-shell,.feed-avatar-shell,.public-avatar-btn)>img{border-radius:50%!important;object-fit:cover!important;display:block!important;border:0!important}
-:is(.explore-avatar-shell,.notification-avatar-shell,.story-comment-avatar,.story-owner-avatar,.avatar-shell,.seller-avatar-shell,.chat-peer-avatar-shell,.profile-avatar-shell,.feed-avatar-shell,.public-avatar-btn).vip>img{box-shadow:0 0 0 2px #d7a91d!important}
-:is(.explore-avatar-shell,.notification-avatar-shell,.story-comment-avatar,.story-owner-avatar,.avatar-shell,.seller-avatar-shell,.chat-peer-avatar-shell,.profile-avatar-shell,.feed-avatar-shell,.public-avatar-btn).premium>img{box-shadow:0 0 0 2px var(--av-premium)!important}
-:is(.avatar-crown,.comment-avatar-crown,.story-avatar-tier,.explore-tier-mark.vip){position:absolute!important;top:-5px!important;right:-4px!important;left:auto!important;bottom:auto!important;width:16px!important;height:16px!important;min-width:16px!important;max-width:16px!important;display:grid!important;place-items:center!important;font-size:16px!important;line-height:16px!important;color:var(--av-vip)!important;z-index:30!important;transform:none!important;animation:none!important;transition:none!important;filter:drop-shadow(0 1px 2px rgba(244,194,31,.35))!important;pointer-events:none!important}
-:is(.avatar-gem,.comment-avatar-gem,.explore-tier-mark.premium){position:absolute!important;top:-5px!important;right:-4px!important;left:auto!important;bottom:auto!important;width:15px!important;height:15px!important;display:grid!important;place-items:center!important;font-size:15px!important;line-height:15px!important;color:var(--av-premium)!important;z-index:30!important;transform:none!important;animation:none!important;transition:none!important;filter:drop-shadow(0 1px 2px rgba(255,91,157,.3))!important;pointer-events:none!important}
 /* smaller identities keep exactly the same proportions */
 .explore-avatar-shell{width:34px!important;height:34px!important;flex:0 0 34px!important}.explore-avatar-shell>img{width:34px!important;height:34px!important}.notification-avatar-shell{width:38px!important;height:38px!important;flex:0 0 38px!important}.notification-avatar-shell>img{width:38px!important;height:38px!important}.story-comment-avatar,.story-owner-avatar{width:36px!important;height:36px!important;flex:0 0 36px!important}.story-comment-avatar>img,.story-owner-avatar>img{width:36px!important;height:36px!important}.feed-avatar-shell{width:40px!important;height:40px!important;flex:0 0 40px!important}.feed-avatar-shell>img{width:40px!important;height:40px!important}
 /* Explore: identity header never clips or shifts. */
@@ -2805,51 +2707,61 @@ body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
   pointer-events:none!important;
 }
 
-/* Keep the secondary identity text aligned after removing avatar-side duplicates. */
-.story-social-head>div>span:last-child{
-  display:block!important;
-  margin-left:52px!important;
-  margin-top:-2px!important;
-}
 body[data-page="detail"] .seller-card .grow>.muted.small{
   margin-top:1px!important;
   padding-left:0!important;
   line-height:1.2!important;
 }
 
-:is(.avatar-crown,.comment-avatar-crown,.story-avatar-tier,.explore-tier-mark.vip){
-  position:absolute!important;
-  top:-5px!important;
-  right:-4px!important;
-  left:auto!important;
-  bottom:auto!important;
-  width:16px!important;
-  height:16px!important;
-  display:grid!important;
-  place-items:center!important;
-  font-size:16px!important;
-  line-height:16px!important;
-  color:var(--av-vip)!important;
-  z-index:80!important;
-  transform:none!important;
-  filter:drop-shadow(0 1px 2px rgba(244,194,31,.35))!important;
-  pointer-events:none!important;
+
+
+/* ============================================================
+   AvtoVIP v103 — vahid istifadəçi identikası
+   Normal / Verified / VIP / Premium / VIP+Verified / Premium+Verified
+   Supplied SVG frames are the single canonical VIP/Premium avatar frames.
+   ============================================================ */
+:root{--av-avatar-line:#788391;--av-vip-text:#ffd45c;--av-premium-text:#fff0d0}
+
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell){
+  position:relative!important;overflow:visible!important;isolation:isolate!important;box-shadow:none!important;border:0!important;background:transparent!important;padding:0!important;
 }
-:is(.avatar-gem,.comment-avatar-gem,.explore-tier-mark.premium){
-  position:absolute!important;
-  top:-5px!important;
-  right:-4px!important;
-  left:auto!important;
-  bottom:auto!important;
-  width:15px!important;
-  height:15px!important;
-  display:grid!important;
-  place-items:center!important;
-  font-size:15px!important;
-  line-height:15px!important;
-  color:var(--av-premium)!important;
-  z-index:80!important;
-  transform:none!important;
-  filter:drop-shadow(0 1px 2px rgba(255,91,157,.3))!important;
-  pointer-events:none!important;
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell)>img{
+  position:relative!important;z-index:1!important;display:block!important;width:100%!important;height:100%!important;border-radius:50%!important;object-fit:cover!important;border:0!important;box-shadow:0 0 0 1.5px var(--av-avatar-line)!important;
+}
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).vip>img,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium>img{box-shadow:none!important}
+
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).vip::before,
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium::before{
+  content:""!important;position:absolute!important;inset:-12%!important;z-index:4!important;display:block!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important;pointer-events:none!important;transform:translateZ(0)!important;
+}
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).vip::before{background-image:url('../img/identity/vip-frame.svg')!important;filter:drop-shadow(0 0 3px rgba(255,190,36,.34))}
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium::before{background-image:url('../img/identity/premium-frame.svg')!important;filter:drop-shadow(0 0 3px rgba(74,143,255,.36))}
+
+/* The frame SVG already carries its own crown/gem ornaments: old Font Awesome tier ornaments must not duplicate it. */
+:is(.avatar-crown,.avatar-gem,.comment-avatar-crown,.comment-avatar-gem,.story-avatar-tier,.explore-tier-mark.vip,.explore-tier-mark.premium){display:none!important}
+
+/* One verified mark only. Name-line verified mark remains canonical everywhere except own profile header, where v102 keeps it on avatar bottom-right. */
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).is-verified::after{content:none!important;display:none!important}
+body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{right:-5px!important;bottom:-5px!important;z-index:9!important}
+
+/* Unified VIP / PREMIUM textual pills wherever membership text is already shown. */
+.pf-tier,.member-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:22px!important;padding:0 10px!important;margin:0!important;border-radius:999px!important;font-size:10px!important;line-height:1!important;font-weight:900!important;letter-spacing:.055em!important;text-transform:uppercase!important;background:rgba(8,9,12,.82)!important}
+.pf-tier-vip,.member-badge.vip{color:var(--av-vip-text)!important;border:1px solid #dba827!important;box-shadow:inset 0 0 0 1px rgba(255,222,117,.18),0 0 8px rgba(255,174,0,.16)!important}
+.pf-tier-premium,.member-badge.premium{color:var(--av-premium-text)!important;border:1px solid #ff6d35!important;background:linear-gradient(180deg,rgba(91,8,8,.92),rgba(32,7,13,.92))!important;box-shadow:inset 0 0 0 1px rgba(255,205,125,.22),0 0 8px rgba(255,69,0,.18)!important}
+
+/* Story side identity: compact, vertically balanced, no floating avatar. */
+.story-social-head{padding:0 14px!important}
+.story-social-head>div{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;gap:1px!important;min-width:0!important}
+.story-owner-side{display:flex!important;align-items:center!important;gap:8px!important;min-height:40px!important;min-width:0!important;line-height:1!important}
+.story-owner-side .story-owner-avatar{width:38px!important;height:38px!important;flex:0 0 38px!important;align-self:center!important}
+.story-owner-side .story-owner-name{font-size:12px!important;line-height:1.15!important;min-width:0!important}
+.story-social-head>div>span:last-child{display:block!important;margin:-5px 0 0 46px!important;font-size:10px!important;line-height:1.1!important;color:var(--muted)!important;white-space:nowrap!important}
+
+/* Keep the supplied ornate frame from being clipped in compact rows/cards. */
+:is(.story-comment,.notification-row,.conversation-item,.explore-seller,.seller-card .row,.av-post .row-wrap,.pf-person,.public-profile-head){overflow:visible!important}
+@media(max-width:700px){
+  .pf-tier,.member-badge{height:20px!important;padding:0 8px!important;font-size:9px!important}
+  .story-owner-side .story-owner-avatar{width:36px!important;height:36px!important;flex-basis:36px!important}
+  .story-social-head>div>span:last-child{margin-left:44px!important}
 }
