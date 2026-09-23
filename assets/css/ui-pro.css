@@ -2729,11 +2729,15 @@ body[data-page="detail"] .seller-card .grow>.muted.small{
   position:relative!important;z-index:1!important;display:block!important;width:100%!important;height:100%!important;border-radius:50%!important;object-fit:cover!important;border:0!important;box-shadow:0 0 0 1.5px var(--av-avatar-line)!important;
 }
 :is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).vip>img,
-:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium>img{box-shadow:none!important}
+:is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium>img{
+  position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;
+  width:72%!important;height:72%!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;
+  border-radius:50%!important;object-fit:cover!important;object-position:center!important;box-shadow:none!important;z-index:2!important;
+}
 
 :is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).vip::before,
 :is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium::before{
-  content:""!important;position:absolute!important;inset:-12%!important;z-index:4!important;display:block!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important;pointer-events:none!important;transform:translateZ(0)!important;
+  content:""!important;position:absolute!important;inset:0!important;z-index:4!important;display:block!important;background-position:center!important;background-repeat:no-repeat!important;background-size:100% 100%!important;pointer-events:none!important;transform:none!important;
 }
 :is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).vip::before{background-image:url('../img/identity/vip-frame.svg')!important;filter:drop-shadow(0 0 3px rgba(255,190,36,.34))}
 :is(.avatar-shell,.seller-avatar-shell,.explore-avatar-shell,.comment-avatar-shell,.chat-peer-avatar-shell,.story-comment-avatar,.story-owner-avatar,.public-avatar-btn,.profile-avatar-shell,.notification-avatar-shell,.feed-avatar-shell).premium::before{background-image:url('../img/identity/premium-frame.svg')!important;filter:drop-shadow(0 0 3px rgba(74,143,255,.36))}
