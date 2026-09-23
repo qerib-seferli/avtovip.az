@@ -857,13 +857,17 @@
     grid.innerHTML=(data||[]).length?(data||[]).map(x=>listingCard(x,favs)).join(''):`<div class="empty-state">${t('empty')}</div>`;
     grid.dataset.ready='1';
   }
+  async function getStoryViewCount(storyId){
+    try{const r=await sb.rpc('get_story_view_count',{p_story_id:storyId});if(!r.error&&Number.isFinite(Number(r.data)))return Number(r.data)}catch{}
+    try{const r=await sb.from('story_views').select('id',{count:'exact',head:true}).eq('story_id',storyId);return Number(r.count||0)}catch{return 0}
+  }
   async function loadStories(){
     const rail=$('#storiesRail');if(!rail)return;
     /* Expired story rows + media are cleaned server-side. Failure must never block the home rail. */
     try{await sb.functions.invoke('story-cleanup',{body:{reason:'home-load'}})}catch(e){console.warn('Story cleanup skipped:',e?.message||e)}
     const {data,error}=await sb.from('stories').select('*').eq('status','active').gt('expires_at',new Date().toISOString()).order('active_at',{ascending:false}).limit(50); if(error){console.warn(error.message);return}
     const userIds=[...new Set((data||[]).map(x=>x.user_id))]; let profiles={}; if(userIds.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').in('id',userIds);(p||[]).forEach(x=>profiles[x.id]=x)}
-    const storyIds=(data||[]).map(x=>x.id);let viewMap={};if(storyIds.length){const {data:v}=await sb.from('story_views').select('story_id').in('story_id',storyIds);for(const x of v||[])viewMap[x.story_id]=(viewMap[x.story_id]||0)+1}
+    const storyIds=(data||[]).map(x=>x.id);let viewMap={};if(storyIds.length){const counts=await Promise.all(storyIds.map(getStoryViewCount));storyIds.forEach((id,i)=>viewMap[id]=Number(counts[i]||0))}
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
     rail.innerHTML=add+(data||[]).map(s=>{const p=profiles[s.user_id]||{},vc=Number(viewMap[s.id]||0);s.view_count=vc;return `<button class="story-item" type="button" data-story="${s.id}"><div class="story-ring"><div class="story-ring-inner">${s.media_type==='video'?`<video src="${esc(s.media_url)}" muted></video>`:`<img src="${esc(s.media_url)}" alt="">`}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i>${vc}</span></div><span>${esc(p.name||'AvtoVİP')}</span></button>`}).join(''); rail.onclick=e=>{const b=e.target.closest('[data-story]');if(b){const story=(data||[]).find(x=>x.id===b.dataset.story);if(story)openStory(story,profiles[story.user_id],data||[],profiles)}};
   }
@@ -919,18 +923,12 @@
     try{
       const vr=await sb.rpc('register_story_view',{p_story_id:s.id,p_viewer_key:currentUser?null:key});
       if(!vr.error&&Number.isFinite(Number(vr.data)))registeredStoryViews=Number(vr.data);
-      else{
-        const viewRow={story_id:s.id,viewer_id:currentUser?.id||null,viewer_key:currentUser?null:key};
-        const ins=await sb.from('story_views').insert(viewRow);
-        if(ins.error&&!/duplicate|unique/i.test(ins.error.message||''))console.warn('[AvtoVIP] story view insert:',ins.error.message);
-      }
-      const {count}=await sb.from('story_views').select('id',{count:'exact',head:true}).eq('story_id',s.id);
-      if(Number.isFinite(Number(count)))registeredStoryViews=Number(count);
-    }catch(e){console.warn('[AvtoVIP] story view registration skipped:',e?.message||e)}
+      else registeredStoryViews=await getStoryViewCount(s.id);
+    }catch(e){console.warn('[AvtoVIP] story view registration skipped:',e?.message||e);registeredStoryViews=await getStoryViewCount(s.id)}
 
     const commentsRoot=modal.querySelector('#storyComments'),likeBtn=modal.querySelector('#storyLikeBtn'),likeCount=modal.querySelector('#storyLikeCount'),commentCount=modal.querySelector('#storyCommentCount'),viewCount=modal.querySelector('#storyViewCount'),commentInput=modal.querySelector('#storyCommentInput');
     const loadSocial=async()=>{
-      const [{data:likes,error:likeErr},{data:comments,error:commentErr},{count:views,error:viewErr}]=await Promise.all([sb.from('story_likes').select('user_id').eq('story_id',s.id),sb.from('story_comments').select('id,user_id,body,created_at,edited_at').eq('story_id',s.id).order('created_at',{ascending:true}).limit(200),sb.from('story_views').select('id',{count:'exact',head:true}).eq('story_id',s.id)]);
+      const [{data:likes,error:likeErr},{data:comments,error:commentErr},views]=await Promise.all([sb.from('story_likes').select('user_id').eq('story_id',s.id),sb.from('story_comments').select('id,user_id,body,created_at,edited_at').eq('story_id',s.id).order('created_at',{ascending:true}).limit(200),getStoryViewCount(s.id)]);
       if(likeErr||commentErr){commentsRoot.innerHTML='<div class="story-social-empty">Bəyənmə və şərhlər üçün verilənlər bazası əlavəsini işə salın.</div>';return}
       likeCount.textContent=(likes||[]).length;commentCount.textContent=(comments||[]).length;if(viewCount){const live=Number.isFinite(Number(views))?Number(views):registeredStoryViews;viewCount.textContent=String(live??s.view_count??0);s.view_count=Number(viewCount.textContent)||0;const railBadge=document.querySelector(`[data-story="${CSS.escape(String(s.id))}"] .story-rail-views`);if(railBadge)railBadge.innerHTML=`<i class="fa-regular fa-eye"></i>${s.view_count}`;}const mine=(likes||[]).some(x=>x.user_id===currentUser?.id);likeBtn.classList.toggle('active',mine);likeBtn.querySelector('i').className=`fa-${mine?'solid':'regular'} fa-heart`;
       const ids=[...new Set((comments||[]).map(x=>x.user_id))];let users={};if(ids.length){const {data:u}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').in('id',ids);(u||[]).forEach(x=>users[x.id]=x)}

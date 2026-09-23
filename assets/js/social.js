@@ -13,6 +13,7 @@
   const lang=()=>localStorage.getItem('avtovip-lang')||'az'; const L=()=>LANGS[lang()]||LANGS.en;
   const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const money=(n,c='AZN')=>{try{return new Intl.NumberFormat(lang()==='ka'?'ka-GE':lang()==='ru'?'ru-RU':lang()==='tr'?'tr-TR':lang()==='en'?'en-US':'az-AZ',{style:'currency',currency:c,maximumFractionDigits:0}).format(Number(n||0))}catch{return `${n} ${c}`}};
+  const fmtDate=v=>{try{const d=new Date(v);if(!Number.isFinite(d.getTime()))return'';return new Intl.DateTimeFormat(lang()==='ru'?'ru-RU':lang()==='tr'?'tr-TR':lang()==='en'?'en-GB':lang()==='ka'?'ka-GE':'az-AZ',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d)}catch{return''}};
   let me=null, profile=null;
   let exploreFollowing=new Set();
 
@@ -229,22 +230,22 @@
     ]);
     const followers=fc||0,followingN=fn||0;
     const flag=u.country_code?String.fromCodePoint(...u.country_code.toUpperCase().split('').map(c=>127397+c.charCodeAt())):'';
-    const verified=verifiedIcon(u);
     const tier=u.membership_tier==='premium'?'<span class="member-badge premium">PREMIUM</span>':u.membership_tier==='vip'?'<span class="member-badge vip">VIP</span>':'';
     const score=Math.max(0,Math.min(100,Math.round(Number(u.trust_score??50)))),stars=Math.max(0,Math.min(5,Math.floor(score/20)));
-    const trust=`<div class="public-trust"><span class="public-trust-stars">${Array.from({length:5},(_,i)=>`<i class="fa-solid fa-star ${i<stars?'earned':''}"></i>`).join('')}</span><span class="public-trust-score">Etibar ${score}/100</span></div>`;
+    const trustTone=score>=80?'#37d38a':score>=60?'#e2b83c':score>=40?'#ff9f43':'#ef4d56';
+    const trust=`<div class="public-trust"><span class="public-trust-circle" style="--score:${score};--trust:${trustTone}"><b>${score}%</b></span><span class="public-trust-copy"><strong>Etibar göstəricisi</strong><span>${score}/100</span><span class="public-trust-stars">${Array.from({length:5},(_,i)=>`<i class="fa-solid fa-star ${i<stars?'earned':''}"></i>`).join('')}</span></span></div>`;
     const phone=String(u.phone||''),wa=String(u.whatsapp_phone||u.phone||'').replace(/\D/g,'');
-    const identityHtml=`<button class="public-avatar-btn avatar-shell ${u.membership_tier||'free'}"><img src="${esc(u.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${u.is_verified?`<span class="public-avatar-check">${verifiedIcon(u)}</span>`:''}</button>`;
-    const nameHtml=`<div class="grow"><h1><span class="public-name-text">${verified}<span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span></span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}<small>${esc(u.country_code||'')}</small></span>`:''}</h1>${tier}<div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`<p>${esc(u.bio||'')}</p><p class="muted">${esc([u.city,u.address].filter(Boolean).join(' · '))}</p>`}</div>`;
+    const identityHtml=`<button class="public-avatar-btn avatar-shell ${u.membership_tier||'free'}${u.is_verified?' is-verified':''}"><img src="${esc(u.avatar_url||'assets/img/brand/icon-192.png')}" alt=""></button>`;
+    const nameHtml=`<div class="grow public-profile-copy"><div class="public-name-row"><h1><span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}</span>`:''}</h1>${tier}</div><div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`<p class="public-bio">${esc(u.bio||'')}</p><p class="muted public-location"><i class="fa-solid fa-location-dot"></i>${esc([u.state_name,u.city,u.address].filter(Boolean).join(' · '))}</p>`}</div>`;
     let actionHtml='';
     if(me){
       if(!restricted)actionHtml+=`<button class="btn btn-sm fixed-action" id="followBtn">${following?L().following:L().follow}</button>`;
       actionHtml+=`<button class="btn btn-outline btn-sm danger-block-btn fixed-action" id="blockBtn"><i class="fa-solid fa-user-slash"></i> ${blockedByMe?L().unblock:L().block}</button>`;
     }
     if(!restricted){
-      const call=phone?`<a class="btn btn-outline btn-sm" href="tel:${esc(phone)}"><i class="fa-solid fa-phone"></i> Zəng</a>`:'<button class="btn btn-outline btn-sm" disabled><i class="fa-solid fa-phone"></i> Zəng</button>';
-      const wat=wa?`<a class="btn btn-outline btn-sm public-wa" target="_blank" rel="noopener" href="https://wa.me/${wa}"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`:'<button class="btn btn-outline btn-sm" disabled>WhatsApp</button>';
-      actionHtml+=`<div class="public-contact-actions">${call}${wat}<a class="btn btn-outline btn-sm" id="publicMessageBtn" href="mesajlar.html?with=${id}"><i class="fa-regular fa-comment"></i>${L().message}</a></div>`;
+      const call=phone?`<a class="btn btn-sm public-call" href="tel:${esc(phone)}"><i class="fa-solid fa-phone"></i> Zəng</a>`:'<button class="btn btn-outline btn-sm" disabled><i class="fa-solid fa-phone"></i> Zəng</button>';
+      const wat=wa?`<a class="btn btn-sm public-wa" target="_blank" rel="noopener" href="https://wa.me/${wa}"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`:'<button class="btn btn-outline btn-sm" disabled>WhatsApp</button>';
+      actionHtml+=`<div class="public-contact-actions">${call}${wat}<a class="btn btn-sm public-message" id="publicMessageBtn" href="mesajlar.html?with=${id}"><i class="fa-regular fa-comment"></i>${L().message}</a></div>`;
     }
     const actions=`<div class="public-profile-actions">${actionHtml}</div>`;
     const content=restricted?'':`<section class="panel panel-pad"><div class="public-content-tabs"><button class="active" data-public-tab="ads">Elanlar</button><button data-public-tab="feed">Lent</button><button data-public-tab="reels">Reels</button></div><div id="publicListings" class="listing-grid" data-public-pane="ads"></div><div id="publicFeed" class="public-social-grid" data-public-pane="feed" hidden></div><div id="publicReels" class="public-social-grid" data-public-pane="reels" hidden></div></section><section class="panel panel-pad public-safe-buy"><div class="section-head"><h3>Təhlükəsiz alış</h3></div><p class="muted small">Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli hallarda platformadakı şikayət funksiyasından istifadə edin.</p></section>`;
@@ -268,11 +269,11 @@
     $('#blockBtn')?.addEventListener('click',async()=>{if(blockedByMe)await sb.from('user_blocks').delete().eq('blocker_id',me.id).eq('blocked_id',id);else await sb.from('user_blocks').insert({blocker_id:me.id,blocked_id:id});location.reload()});
     if(!restricted){
       const [lr,pr]=await Promise.all([
-        sb.from('elanlar').select('*').eq('user_id',id).eq('status','approved').order('created_at',{ascending:false}).limit(60),
+        sb.from('elanlar').select('*').eq('user_id',id).in('status',['approved','sold']).order('created_at',{ascending:false}).limit(60),
         sb.from('posts').select('*').eq('user_id',id).order('created_at',{ascending:false}).limit(60)
       ]);
       const list=lr.data||[],posts=pr.data||[];
-      $('#publicListings').innerHTML=list.length?list.map(x=>`<a class="mini-listing" href="elan.html?id=${x.id}"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}"><div><strong>${esc(x.brand)} ${esc(x.model)}</strong><span>${money(x.price,x.currency)}</span></div></a>`).join(''):`<div class="empty-state">${L().notFound}</div>`;
+      $('#publicListings').innerHTML=list.length?list.map(x=>`<a class="mini-listing ${String(x.status)==='sold'?'is-sold':''}" href="elan.html?id=${x.id}"><div class="mini-listing-media"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}" alt="">${String(x.status)==='sold'?'<span class="mini-sold">SATILDI</span>':''}</div><div class="mini-listing-copy"><strong>${esc(x.brand)} ${esc(x.model)}</strong><span>${money(x.price,x.currency)}</span><time><i class="fa-regular fa-calendar"></i>${fmtDate(x.published_at||x.created_at)}</time></div></a>`).join(''):`<div class="empty-state">${L().notFound}</div>`;
       const card=p=>{const url=p.media_urls?.[0]||'assets/img/brand/icon-512.png',isVideo=String(p.media_types?.[0]||'').startsWith('video'),href=`${p.is_reel?'reels.html':'lent.html'}#post=${encodeURIComponent(p.id)}`;return `<a class="public-social-card" href="${href}">${isVideo?`<video src="${esc(url)}" muted playsinline preload="metadata"></video>`:`<img src="${esc(url)}" alt="">`}<span><i class="fa-solid ${p.is_reel?'fa-clapperboard':'fa-layer-group'}"></i></span></a>`};
       $('#publicFeed').innerHTML=posts.filter(p=>!p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
       $('#publicReels').innerHTML=posts.filter(p=>p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
