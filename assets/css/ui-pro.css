@@ -2848,3 +2848,29 @@ body[data-page="public-user"] .public-contact-actions .public-call{background:#e
 body[data-page="public-user"] #publicListings.listing-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:8px!important}
 body[data-page="public-user"] .mini-listing{border-radius:10px!important;min-width:0!important}.mini-listing-media{position:relative;overflow:hidden}.mini-listing-media img{width:100%;aspect-ratio:4/3;object-fit:cover}.mini-listing-copy{padding:7px!important;display:grid!important;gap:3px!important}.mini-listing-copy strong{font-size:10px;line-height:1.2}.mini-listing-copy>span{font-size:10px}.mini-listing-copy time{display:flex;align-items:center;gap:4px;color:var(--muted);font-size:8px;margin-top:2px}.mini-sold{position:absolute;left:50%;top:50%;width:140%;transform:translate(-50%,-50%) rotate(-28deg);padding:4px 0;text-align:center;background:linear-gradient(180deg,#eb1627,#9a000f);color:#fff;font-size:8px;font-weight:1000;letter-spacing:.13em;box-shadow:0 3px 10px rgba(0,0,0,.35)}
 @media(max-width:900px){body[data-page="public-user"] #publicListings.listing-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}body[data-page="public-user"] .public-profile-head{min-height:216px!important}body[data-page="public-user"] .public-profile-main{grid-template-columns:72px minmax(0,1fr)!important}body[data-page="public-user"] .public-avatar-btn{width:66px!important;height:66px!important;min-width:66px!important;min-height:66px!important}body[data-page="public-user"] .public-name-row h1{font-size:16px!important}body[data-page="public-user"] .public-profile-head>.public-profile-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}.public-contact-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+
+
+/* 2026-09-24 public-user map/status parity hardening — scoped only to user.html */
+body[data-page="public-user"] .public-profile-head{position:relative!important;isolation:isolate!important;overflow:hidden!important;background:var(--surface)!important}
+body[data-page="public-user"] .public-profile-map{display:block!important;position:absolute!important;inset:0!important;z-index:0!important;overflow:hidden!important;background:#111821!important;pointer-events:none!important}
+body[data-page="public-user"] #publicProfileMapCanvas{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;opacity:.74!important;filter:none!important;background:#111821!important}
+body[data-page="public-user"] #publicProfileMapCanvas.leaflet-container{width:100%!important;height:100%!important;background:#111821!important}
+body[data-page="public-user"] #publicProfileMapCanvas .leaflet-tile-pane{filter:grayscale(.9) brightness(.45) contrast(1.14)!important;opacity:.88!important}
+body[data-page="public-user"] #publicProfileMapCanvas .leaflet-tile{max-width:none!important;max-height:none!important;width:256px;height:256px}
+body[data-page="public-user"] #publicProfileMapCanvas .leaflet-control-container{display:none!important}
+body[data-page="public-user"] .public-profile-map::after{z-index:1!important;background:linear-gradient(90deg,rgba(16,21,28,.97) 0%,rgba(16,21,28,.82) 36%,rgba(16,21,28,.42) 68%,rgba(16,21,28,.2) 100%)!important}
+body[data-page="public-user"] .public-map-label{z-index:2!important}
+body[data-page="public-user"] .public-profile-main,body[data-page="public-user"] .public-profile-head>.public-profile-actions{position:relative!important;z-index:3!important}
+body[data-page="public-user"] .public-profile-main{max-width:760px!important}
+body[data-page="public-user"] .public-profile-head>.public-profile-actions{max-width:760px!important}
+body[data-page="public-user"] .public-name-row{align-items:center!important}
+body[data-page="public-user"] .public-name-row h1{white-space:normal!important}
+body[data-page="public-user"] .public-location{max-width:620px!important}
+body[data-page="public-user"] .public-contact-actions .public-call{background:#ef4650!important;color:#fff!important}
+body[data-page="public-user"] .public-contact-actions .public-wa{background:#25d366!important;color:#fff!important}
+body[data-page="public-user"] .public-contact-actions .public-message{background:#3478f6!important;color:#fff!important}
+@media(max-width:700px){
+ body[data-page="public-user"] #publicProfileMapCanvas{opacity:.58!important}
+ body[data-page="public-user"] .public-profile-map::after{background:linear-gradient(180deg,rgba(16,21,28,.72) 0%,rgba(16,21,28,.9) 72%,rgba(16,21,28,.96) 100%)!important}
+ body[data-page="public-user"] .public-profile-main{max-width:none!important}
+}

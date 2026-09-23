@@ -252,16 +252,30 @@
     root.innerHTML=`<section class="public-profile-head panel ${u.membership_tier||'free'}"><div class="public-profile-map" aria-hidden="true"><div id="publicProfileMapCanvas"></div><span class="public-map-label">${esc([u.state_name,u.city].filter(Boolean).join(' · '))}</span></div><div class="public-profile-main">${identityHtml}${nameHtml}</div>${actions}</section>${content}`;
     try{
       const node=$('#publicProfileMapCanvas');
-      if(node&&window.L){
-        const country=String(u.country_code||'AZ').toUpperCase(),countryView={AZ:[40.35,47.7,6],RU:[61.5,90,3],TR:[39,35,5],GE:[42.1,43.5,6],US:[39,-98,4],GB:[54.5,-3,5],DE:[51,10,5],FR:[46.4,2.3,5],IT:[42.5,12.5,5],ES:[40.2,-3.7,5],AE:[24.4,54.4,7]};
-        let pos=countryView[country]||[20,0,2.25];
-        const intl=window.AvtoVIPInternational;
-        if(intl?.countryHierarchy){
-          const h=await intl.countryHierarchy(country,document.documentElement.lang||'az').catch(()=>null),fold=v=>String(v||'').toLocaleLowerCase('az').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ə/g,'e').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g').replace(/ş/g,'s').replace(/ç/g,'c');
-          const states=h?.states||[],st=states.find(x=>fold(x.name)===fold(u.state_name)||fold(x.native)===fold(u.state_name))||states.find(x=>(x.cities||[]).some(c=>fold(c.name)===fold(u.city)||fold(c.native)===fold(u.city))),cities=st?.cities||states.flatMap(x=>x.cities||[]),ct=cities.find(c=>fold(c.name)===fold(u.city)||fold(c.native)===fold(u.city));
-          const coords=x=>{const lat=Number(x?.latitude??x?.lat),lng=Number(x?.longitude??x?.lng??x?.lon);return Number.isFinite(lat)&&Number.isFinite(lng)?[lat,lng]:null};const c=coords(ct)||coords(st)||coords(h?.country);if(c)pos=[c[0],c[1],ct?11:st?7:5];
+      if(node){
+        const waitLeaflet=async()=>{for(let i=0;i<30&&!window.L;i++)await new Promise(r=>setTimeout(r,50));return window.L};
+        const Leaflet=await waitLeaflet();
+        if(Leaflet){
+          const country=String(u.country_code||'AZ').toUpperCase(),countryView={AZ:[40.35,47.7,6],RU:[61.5,90,3],TR:[39,35,5],GE:[42.1,43.5,6],US:[39,-98,4],GB:[54.5,-3,5],DE:[51,10,5],FR:[46.4,2.3,5],IT:[42.5,12.5,5],ES:[40.2,-3.7,5],AE:[24.4,54.4,7]};
+          let pos=countryView[country]||[20,0,2.25];
+          const intl=window.AvtoVIPInternational;
+          const fold=v=>String(v||'').toLocaleLowerCase('az').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\b(rayonu|şəhəri|seheri|province|state|region|oblast|krai|republic)\b/g,'').replace(/ə/g,'e').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g').replace(/ş/g,'s').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,' ').trim();
+          if(intl?.countryHierarchy){
+            const h=await intl.countryHierarchy(country,document.documentElement.lang||'az').catch(()=>null),states=h?.states||[],stateKey=fold(u.state_name),cityKey=fold(u.city);
+            const same=(a,b)=>!!a&&!!b&&(fold(a)===fold(b)||fold(a).includes(fold(b))||fold(b).includes(fold(a)));
+            let st=states.find(x=>same(x.name,u.state_name)||same(x.native,u.state_name));
+            if(!st&&cityKey)st=states.find(x=>(x.cities||[]).some(c=>same(c.name,u.city)||same(c.native,u.city)));
+            const cities=st?.cities||states.flatMap(x=>x.cities||[]),ct=cities.find(c=>same(c.name,u.city)||same(c.native,u.city));
+            const coords=x=>{const lat=Number(x?.latitude??x?.lat),lng=Number(x?.longitude??x?.lng??x?.lon);return Number.isFinite(lat)&&Number.isFinite(lng)?[lat,lng]:null};
+            const c=coords(ct)||coords(st)||coords(h?.country);if(c)pos=[c[0],c[1],ct?11:st?7:5];
+          }
+          const map=Leaflet.map(node,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,zoomSnap:.25,fadeAnimation:false,markerZoomAnimation:false});
+          Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,updateWhenIdle:true,keepBuffer:1}).addTo(map);
+          map.setView([pos[0],pos[1]],pos[2],{animate:false});
+          Leaflet.circleMarker([pos[0],pos[1]],{radius:5,color:'#ffdc63',weight:2,fillColor:'#ffdc63',fillOpacity:1}).addTo(map);
+          requestAnimationFrame(()=>map.invalidateSize(false));setTimeout(()=>map.invalidateSize(false),180);setTimeout(()=>map.invalidateSize(false),600);
+          node.dataset.mapReady='1';
         }
-        const map=L.map(node,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,zoomSnap:.25,fadeAnimation:false,markerZoomAnimation:false});L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,updateWhenIdle:true,keepBuffer:1}).addTo(map);map.setView([pos[0],pos[1]],pos[2],{animate:false});L.circleMarker([pos[0],pos[1]],{radius:5,color:'#ffdc63',weight:2,fillColor:'#ffdc63',fillOpacity:1}).addTo(map);requestAnimationFrame(()=>map.invalidateSize(false));
       }
     }catch(e){console.warn('[public-profile-map]',e?.message||e)}
     root.querySelector('.public-avatar-btn').onclick=()=>avatarViewer(u.avatar_url||'assets/img/brand/icon-192.png');
