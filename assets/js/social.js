@@ -207,16 +207,62 @@
     input?.addEventListener('focus',()=>{requestAnimationFrame(fitKeyboard);setTimeout(fitKeyboard,80)});input?.addEventListener('blur',()=>{m.classList.remove('keyboard-open');const card=m.querySelector('.explore-comments-card');if(card){card.style.removeProperty('height');card.style.removeProperty('max-height')}});
   }
   async function initPublicUser(){
-    const root=$('#publicProfile');if(!root)return;await auth();const id=new URLSearchParams(location.search).get('id');if(!id)return root.innerHTML=`<div class="empty-state">${L().notFound}</div>`;if(me?.id===id){location.replace('profile.html');return}
-    const {data:u,error}=await sb.from('users').select('*').eq('id',id).maybeSingle();if(error||!u)return root.innerHTML=`<div class="empty-state">${L().notFound}</div>`;
-    let following=false,blockedByMe=false,blockedMe=false;if(me){const [f,b1,b2]=await Promise.all([sb.from('user_follows').select('following_id').eq('follower_id',me.id).eq('following_id',id).maybeSingle(),sb.from('user_blocks').select('blocked_id').eq('blocker_id',me.id).eq('blocked_id',id).maybeSingle(),sb.from('user_blocks').select('blocker_id').eq('blocker_id',id).eq('blocked_id',me.id).maybeSingle()]);following=!!f.data;blockedByMe=!!b1.data;blockedMe=!!b2.data}
-    const restricted=blockedByMe||blockedMe;const [{count:fc},{count:fn}]=await Promise.all([sb.from('user_follows').select('*',{count:'exact',head:true}).eq('following_id',id),sb.from('user_follows').select('*',{count:'exact',head:true}).eq('follower_id',id)]);const followers=fc||0,followingN=fn||0,flag=u.country_code?String.fromCodePoint(...u.country_code.toUpperCase().split('').map(c=>127397+c.charCodeAt())):'';
-    const verified=verifiedIcon(u),tier=u.membership_tier==='premium'?'<span class="member-badge premium">PREMIUM</span>':u.membership_tier==='vip'?'<span class="member-badge vip">VIP</span>':'';
-    root.innerHTML=`<section class="public-profile-head panel ${u.membership_tier||'free'}"><button class="public-avatar-btn avatar-shell ${u.membership_tier||'free'}${avatarVerifiedClass(u?.is_verified)}"><img src="${esc(u.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${u.membership_tier==='vip'?'<i class="fa-solid fa-crown avatar-crown"></i>':u.membership_tier==='premium'?'<i class="fa-solid fa-gem avatar-gem"></i>':''}</button><div class="grow"><h1><span class="public-name-text">${verified}<span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span></span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}<small>${esc(u.country_code||'')}</small></span>`:''}</h1>${tier}<div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${restricted?'':`<p>${esc(u.bio||'')}</p><p class="muted">${esc([u.city,u.address].filter(Boolean).join(' · '))}</p>`}</div><div class="public-profile-actions">${me?`${restricted?'':`<button class="btn btn-sm fixed-action" id="followBtn">${following?L().following:L().follow}</button>`}<button class="btn btn-outline btn-sm danger-block-btn fixed-action" id="blockBtn"><i class="fa-solid fa-user-slash"></i> ${blockedByMe?L().unblock:L().block}</button>${restricted?'':`<a class="btn btn-outline btn-sm fixed-action" id="publicMessageBtn" href="mesajlar.html?with=${id}"><i class="fa-regular fa-comment"></i>${L().message}</a>`}`:''}</div></section>${restricted?'':`<section class="panel panel-pad"><div class="section-head"><h3>${L().ads}</h3></div><div id="publicListings" class="listing-grid"></div></section>`}`;
+    const root=$('#publicProfile');if(!root)return;await auth();
+    const id=new URLSearchParams(location.search).get('id');
+    if(!id)return root.innerHTML=`<div class="empty-state">${L().notFound}</div>`;
+    if(me?.id===id){location.replace('profile.html');return}
+    const {data:u,error}=await sb.from('users').select('*').eq('id',id).maybeSingle();
+    if(error||!u)return root.innerHTML=`<div class="empty-state">${L().notFound}</div>`;
+    let following=false,blockedByMe=false,blockedMe=false;
+    if(me){
+      const [f,b1,b2]=await Promise.all([
+        sb.from('user_follows').select('following_id').eq('follower_id',me.id).eq('following_id',id).maybeSingle(),
+        sb.from('user_blocks').select('blocked_id').eq('blocker_id',me.id).eq('blocked_id',id).maybeSingle(),
+        sb.from('user_blocks').select('blocker_id').eq('blocker_id',id).eq('blocked_id',me.id).maybeSingle()
+      ]);following=!!f.data;blockedByMe=!!b1.data;blockedMe=!!b2.data;
+    }
+    const restricted=blockedByMe||blockedMe;
+    const [{count:fc},{count:fn}]=await Promise.all([
+      sb.from('user_follows').select('*',{count:'exact',head:true}).eq('following_id',id),
+      sb.from('user_follows').select('*',{count:'exact',head:true}).eq('follower_id',id)
+    ]);
+    const followers=fc||0,followingN=fn||0;
+    const flag=u.country_code?String.fromCodePoint(...u.country_code.toUpperCase().split('').map(c=>127397+c.charCodeAt())):'';
+    const verified=verifiedIcon(u);
+    const tier=u.membership_tier==='premium'?'<span class="member-badge premium">PREMIUM</span>':u.membership_tier==='vip'?'<span class="member-badge vip">VIP</span>':'';
+    const score=Math.max(0,Math.min(100,Math.round(Number(u.trust_score??50)))),stars=Math.max(0,Math.min(5,Math.floor(score/20)));
+    const trust=`<div class="public-trust"><span class="public-trust-stars">${Array.from({length:5},(_,i)=>`<i class="fa-solid fa-star ${i<stars?'earned':''}"></i>`).join('')}</span><span class="public-trust-score">Etibar ${score}/100</span></div>`;
+    const phone=String(u.phone||''),wa=String(u.whatsapp_phone||u.phone||'').replace(/\D/g,'');
+    const identityHtml=`<button class="public-avatar-btn avatar-shell ${u.membership_tier||'free'}${avatarVerifiedClass(u?.is_verified)}"><img src="${esc(u.avatar_url||'assets/img/brand/icon-192.png')}" alt=""></button>`;
+    const nameHtml=`<div class="grow"><h1><span class="public-name-text">${verified}<span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span></span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}<small>${esc(u.country_code||'')}</small></span>`:''}</h1>${tier}<div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`<p>${esc(u.bio||'')}</p><p class="muted">${esc([u.city,u.address].filter(Boolean).join(' · '))}</p>`}</div>`;
+    let actionHtml='';
+    if(me){
+      if(!restricted)actionHtml+=`<button class="btn btn-sm fixed-action" id="followBtn">${following?L().following:L().follow}</button>`;
+      actionHtml+=`<button class="btn btn-outline btn-sm danger-block-btn fixed-action" id="blockBtn"><i class="fa-solid fa-user-slash"></i> ${blockedByMe?L().unblock:L().block}</button>`;
+    }
+    if(!restricted){
+      const call=phone?`<a class="btn btn-outline btn-sm" href="tel:${esc(phone)}"><i class="fa-solid fa-phone"></i> Zəng</a>`:'<button class="btn btn-outline btn-sm" disabled><i class="fa-solid fa-phone"></i> Zəng</button>';
+      const wat=wa?`<a class="btn btn-outline btn-sm public-wa" target="_blank" rel="noopener" href="https://wa.me/${wa}"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>`:'<button class="btn btn-outline btn-sm" disabled>WhatsApp</button>';
+      actionHtml+=`<div class="public-contact-actions">${call}${wat}<a class="btn btn-outline btn-sm" id="publicMessageBtn" href="mesajlar.html?with=${id}"><i class="fa-regular fa-comment"></i>${L().message}</a></div>`;
+    }
+    const actions=`<div class="public-profile-actions">${actionHtml}</div>`;
+    const content=restricted?'':`<section class="panel panel-pad"><div class="public-content-tabs"><button class="active" data-public-tab="ads">Elanlar</button><button data-public-tab="feed">Lent</button><button data-public-tab="reels">Reels</button></div><div id="publicListings" class="listing-grid" data-public-pane="ads"></div><div id="publicFeed" class="public-social-grid" data-public-pane="feed" hidden></div><div id="publicReels" class="public-social-grid" data-public-pane="reels" hidden></div></section><section class="panel panel-pad public-safe-buy"><div class="section-head"><h3>Təhlükəsiz alış</h3></div><p class="muted small">Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli hallarda platformadakı şikayət funksiyasından istifadə edin.</p></section>`;
+    root.innerHTML=`<section class="public-profile-head panel ${u.membership_tier||'free'}">${identityHtml}${nameHtml}${actions}</section>${content}`;
     root.querySelector('.public-avatar-btn').onclick=()=>avatarViewer(u.avatar_url||'assets/img/brand/icon-192.png');
     $('#followBtn')?.addEventListener('click',async()=>{if(following)await sb.from('user_follows').delete().eq('follower_id',me.id).eq('following_id',id);else await sb.from('user_follows').insert({follower_id:me.id,following_id:id});following=!following;$('#followBtn').textContent=following?L().following:L().follow;$('#followerCount').textContent=Math.max(0,Number($('#followerCount').textContent)+(following?1:-1))});
     $('#blockBtn')?.addEventListener('click',async()=>{if(blockedByMe)await sb.from('user_blocks').delete().eq('blocker_id',me.id).eq('blocked_id',id);else await sb.from('user_blocks').insert({blocker_id:me.id,blocked_id:id});location.reload()});
-    if(!restricted){const {data:list}=await sb.from('elanlar').select('*').eq('user_id',id).eq('status','approved').order('created_at',{ascending:false}).limit(60);$('#publicListings').innerHTML=(list||[]).map(x=>`<a class="mini-listing" href="elan.html?id=${x.id}"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}"><div><strong>${esc(x.brand)} ${esc(x.model)}</strong><span>${money(x.price,x.currency)}</span></div></a>`).join('')}
+    if(!restricted){
+      const [lr,pr]=await Promise.all([
+        sb.from('elanlar').select('*').eq('user_id',id).eq('status','approved').order('created_at',{ascending:false}).limit(60),
+        sb.from('posts').select('*').eq('user_id',id).order('created_at',{ascending:false}).limit(60)
+      ]);
+      const list=lr.data||[],posts=pr.data||[];
+      $('#publicListings').innerHTML=list.length?list.map(x=>`<a class="mini-listing" href="elan.html?id=${x.id}"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}"><div><strong>${esc(x.brand)} ${esc(x.model)}</strong><span>${money(x.price,x.currency)}</span></div></a>`).join(''):`<div class="empty-state">${L().notFound}</div>`;
+      const card=p=>{const url=p.media_urls?.[0]||'assets/img/brand/icon-512.png',isVideo=String(p.media_types?.[0]||'').startsWith('video'),href=`${p.is_reel?'reels.html':'lent.html'}#post=${encodeURIComponent(p.id)}`;return `<a class="public-social-card" href="${href}">${isVideo?`<video src="${esc(url)}" muted playsinline preload="metadata"></video>`:`<img src="${esc(url)}" alt="">`}<span><i class="fa-solid ${p.is_reel?'fa-clapperboard':'fa-layer-group'}"></i></span></a>`};
+      $('#publicFeed').innerHTML=posts.filter(p=>!p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
+      $('#publicReels').innerHTML=posts.filter(p=>p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
+      root.querySelectorAll('[data-public-tab]').forEach(b=>b.onclick=()=>{root.querySelectorAll('[data-public-tab]').forEach(x=>x.classList.toggle('active',x===b));root.querySelectorAll('[data-public-pane]').forEach(x=>x.hidden=x.dataset.publicPane!==b.dataset.publicTab)})
+    }
   }
   function avatarViewer(url){const d=document.createElement('div');d.className='avatar-viewer';d.innerHTML=`<button aria-label="${esc(L().close)}">×</button><img src="${esc(url)}" alt="">`;document.body.append(d);document.documentElement.classList.add('modal-open');const close=()=>{d.remove();document.documentElement.classList.remove('modal-open')};d.onclick=e=>{if(e.target===d||e.target.tagName==='BUTTON')close()}}
 
