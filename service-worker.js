@@ -1,4 +1,4 @@
-const CACHE='avtovip-v122-profile-map-and-listings';
+const CACHE='avtovip-v123-profile-map-detail-fix';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
