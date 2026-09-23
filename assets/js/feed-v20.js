@@ -48,8 +48,8 @@ async function load(){
  }
  if(me&&uids.length){const fr=await sb.from('user_follows').select('following_id').eq('follower_id',me.id).in('following_id',uids);following=new Set((fr.data||[]).map(x=>x.following_id))}
  reels?renderReels(root):renderFeed(root);
- const hash=new URLSearchParams(location.hash.replace(/^#/,'')),pid=hash.get('post');
- if(pid){const i=posts.findIndex(p=>String(p.id)===pid);if(i>=0){if(reels)openViewer(i);else requestAnimationFrame(()=>root.querySelector(`[data-post="${CSS.escape(pid)}"]`)?.scrollIntoView({block:'center'}))}}
+ const hash=new URLSearchParams(location.hash.replace(/^#/,'')),pid=hash.get('post'),openComments=hash.get('comments')==='1';
+ if(pid){const i=posts.findIndex(p=>String(p.id)===pid);if(i>=0){if(reels){openViewer(i);if(openComments)requestAnimationFrame(()=>openPostComments(pid))}else{requestAnimationFrame(()=>{root.querySelector(`[data-post="${CSS.escape(pid)}"]`)?.scrollIntoView({block:'center'});if(openComments)openPostComments(pid)})}}}
 }
 
 function feedMedia(p){

@@ -176,3 +176,66 @@ body[data-page="profile"] .profile-info-panel #profileCountry.av-native-select,b
  body[data-page="profile"] #pfOwnStories{gap:10px!important;padding:10px!important}
  body[data-page="profile"] #pfOwnStories>.pf-story-card{flex-basis:82px;min-width:82px}.pf-story-circle{width:72px!important;height:72px!important}.pf-story-caption{width:82px!important}
 }
+
+/* Profile content rail alignment — stable override */
+body[data-page="profile"] .pf-own-listings-rail{
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:10px!important;
+  scroll-snap-type:x proximity!important;
+  overscroll-behavior-inline:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+body[data-page="profile"] .pf-own-listings-rail>.pf-item{
+  flex:0 0 250px!important;
+  width:250px!important;
+  min-width:250px!important;
+  max-width:250px!important;
+  align-self:stretch!important;
+  scroll-snap-align:start!important;
+}
+body[data-page="profile"] .pf-own-listings-rail>.pf-more-wrap{
+  flex:0 0 auto!important;
+  min-width:120px!important;
+  align-self:center!important;
+}
+
+/* Keep like / comment / share / save visually centered on every profile media card. */
+body[data-page="profile"] .pf-media-grid .pf-social-metrics{
+  width:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+  margin:6px auto 0!important;
+  text-align:center!important;
+}
+body[data-page="profile"] .pf-media-grid .pf-social-metrics>a{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  min-width:0!important;
+  color:var(--muted)!important;
+  text-decoration:none!important;
+  line-height:1!important;
+}
+body[data-page="profile"] .pf-media-grid .pf-social-metrics>a:hover{color:var(--text)!important}
+body[data-page="profile"] .pf-media-grid .pf-social-metrics b{font:inherit!important;font-weight:700!important}
+
+@media(max-width:900px){
+  body[data-page="profile"] .pf-own-listings-rail>.pf-item{
+    flex-basis:min(74vw,286px)!important;
+    width:min(74vw,286px)!important;
+    min-width:min(74vw,286px)!important;
+    max-width:286px!important;
+  }
+  body[data-page="profile"] .pf-media-grid .pf-social-metrics{gap:7px!important}
+}
