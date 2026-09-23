@@ -457,3 +457,65 @@ body[data-page="profile"] [data-pf-collapse-key="stories"].collapsed>#pfOwnStori
 .pf-story-socialbar{display:flex;align-items:center;justify-content:center;gap:26px;padding:9px 12px;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}.pf-story-socialbar button{border:0;background:transparent;color:#d9e0ea;display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px}.pf-story-socialbar b{font:inherit}
 .pf-story-owner-comments{display:flex;flex-direction:column;min-height:0}.pf-story-owner-comments-list{max-height:220px;overflow:auto;padding:0 12px;overscroll-behavior:contain}
 @media(max-width:700px){.pf-story-preview{align-items:center!important}.pf-story-viewer{width:min(94vw,430px)!important;max-height:calc(100dvh - 20px)!important}.pf-story-stage{max-height:56dvh!important}.pf-story-stage img,.pf-story-stage video{max-height:56dvh!important}.pf-story-owner-comments-list{max-height:22dvh!important}.pf-comment-emoji-picker{grid-template-columns:repeat(7,1fr)!important}}
+
+/* === Profile social/comment polish — same visual language as Explore, scoped to profile === */
+body[data-page="profile"] .pf-media-kind{display:none!important}
+
+/* Profile detail people: keep avatar true-size and let the shared VIP/Premium frame system do the framing. */
+body[data-page="profile"] .pf-detail-avatar.vip>img,
+body[data-page="profile"] .pf-detail-avatar.premium>img{width:100%!important;height:100%!important}
+
+/* Comment modal mirrors Explore instead of looking like a separate component. */
+body[data-page="profile"] .pf-comments-modal{position:fixed!important;inset:0!important;z-index:2147483200!important;background:rgba(0,0,0,.72)!important;display:grid!important;place-items:center!important;padding:14px!important;overscroll-behavior:contain!important}
+body[data-page="profile"] .pf-comments-modal .pf-detail-dialog{width:min(560px,100%)!important;max-height:min(78dvh,680px)!important;background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:16px!important;overflow:hidden!important;display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;box-shadow:0 22px 70px rgba(0,0,0,.5)!important}
+body[data-page="profile"] .pf-comments-modal .pf-detail-dialog>header{height:auto!important;min-height:52px!important;padding:12px 14px!important;border-bottom:1px solid var(--line)!important}
+body[data-page="profile"] .pf-comments-modal .pf-detail-body{min-height:0!important;display:grid!important;grid-template-rows:minmax(0,1fr) auto auto!important;overflow:visible!important;position:relative!important}
+body[data-page="profile"] .pf-comments-modal .pf-owner-comments{min-height:0!important;max-height:none!important;padding:10px 14px!important;overflow:auto!important;overscroll-behavior:contain!important}
+body[data-page="profile"] .pf-owner-comment{position:relative!important;display:grid!important;grid-template-columns:40px minmax(0,1fr)!important;gap:9px!important;align-items:start!important;padding:9px 0!important;border-bottom:1px solid var(--line)!important}
+body[data-page="profile"] .pf-owner-comment .comment-avatar-shell{position:relative!important;display:inline-flex!important;width:40px!important;height:40px!important;min-width:40px!important;border-radius:50%!important;overflow:visible!important;background:transparent!important}
+body[data-page="profile"] .pf-owner-comment .comment-avatar-shell>img{width:40px!important;height:40px!important;border-radius:50%!important;object-fit:cover!important;display:block!important}
+body[data-page="profile"] .pf-owner-comment .comment-main{min-width:0!important;padding-right:34px!important}
+body[data-page="profile"] .pf-owner-comment-head{display:flex!important;align-items:center!important;gap:8px!important;min-width:0!important}
+body[data-page="profile"] .pf-owner-comment-head>a{min-width:0!important;flex:1 1 auto!important}
+body[data-page="profile"] .pf-owner-comment-head strong{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important;font-size:12px!important}
+body[data-page="profile"] .pf-owner-comment-head time{margin-left:auto!important;white-space:nowrap!important;color:var(--muted)!important;font-size:9px!important}
+body[data-page="profile"] .pf-owner-comment p{margin:4px 0 0!important;font-size:12px!important;line-height:1.4!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important}
+body[data-page="profile"] .pf-owner-comment-actions{position:absolute!important;right:2px!important;top:30px!important;margin:0!important;z-index:2!important}
+body[data-page="profile"] .pf-owner-comment-actions button{width:28px!important;height:28px!important;border:1px solid color-mix(in srgb,var(--danger) 48%,var(--line))!important;border-radius:8px!important;background:transparent!important;color:var(--danger)!important;display:grid!important;place-items:center!important;font-size:10px!important;padding:0!important}
+
+/* Emoji popover behaves like Explore: compact floating panel, not a full-width row. */
+body[data-page="profile"] .pf-comment-emoji-picker{position:absolute!important;left:10px!important;bottom:58px!important;z-index:95!important;width:248px!important;max-width:calc(100vw - 44px)!important;display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:4px!important;padding:8px!important;background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:12px!important;box-shadow:0 14px 38px rgba(0,0,0,.4)!important}
+body[data-page="profile"] .pf-comment-emoji-picker[hidden]{display:none!important}
+body[data-page="profile"] .pf-comment-emoji-picker button{width:32px!important;height:32px!important;border:0!important;border-radius:8px!important;background:transparent!important;font-size:18px!important;line-height:1!important;padding:0!important;display:grid!important;place-items:center!important}
+body[data-page="profile"] .pf-comment-emoji-picker button:hover{background:var(--surface-2)!important}
+body[data-page="profile"] .pf-owner-comment-form{position:relative!important;z-index:91!important;display:grid!important;grid-template-columns:40px minmax(0,1fr) 44px!important;gap:7px!important;align-items:center!important;padding:9px!important;border-top:1px solid var(--line)!important;background:var(--surface)!important}
+body[data-page="profile"] .pf-owner-comment-form input{min-width:0!important;width:100%!important;height:40px!important;min-height:40px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface-2)!important;color:var(--text)!important;padding:0 11px!important;outline:0!important}
+body[data-page="profile"] .pf-owner-comment-form button{width:40px!important;height:40px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface-2)!important;color:var(--text)!important;display:grid!important;place-items:center!important;padding:0!important}
+body[data-page="profile"] .pf-owner-comment-form button[type="submit"]{width:44px!important;background:var(--brand)!important;border-color:var(--brand)!important;color:#fff!important}
+
+/* App-native confirmation; never fall back to browser alert styling. */
+.pf-confirm-backdrop{position:fixed;inset:0;z-index:2147483646;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:16px}
+.pf-confirm-card{width:min(360px,calc(100vw - 28px));background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 22px 70px rgba(0,0,0,.52);text-align:center}
+.pf-confirm-icon{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px;background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger);font-size:17px}
+.pf-confirm-card h3{margin:0 0 6px;font-size:16px}.pf-confirm-card p{margin:0;color:var(--muted);font-size:12px}.pf-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.pf-confirm-actions button{height:40px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--text);font-weight:800}.pf-confirm-actions .danger{background:var(--danger);border-color:var(--danger);color:#fff}
+
+/* Branded scrollbars for profile-owned panels only. */
+body[data-page="profile"] :is(.pf-owner-comments,.pf-story-owner-comments-list,.pf-detail-body,.pf-own-listings-rail,#pfOwnStories,.pf-library-viewport){scrollbar-width:thin;scrollbar-color:var(--brand) var(--surface-2)}
+body[data-page="profile"] :is(.pf-owner-comments,.pf-story-owner-comments-list,.pf-detail-body,.pf-own-listings-rail,#pfOwnStories,.pf-library-viewport)::-webkit-scrollbar{width:7px;height:7px}
+body[data-page="profile"] :is(.pf-owner-comments,.pf-story-owner-comments-list,.pf-detail-body,.pf-own-listings-rail,#pfOwnStories,.pf-library-viewport)::-webkit-scrollbar-track{background:var(--surface-2);border-radius:999px}
+body[data-page="profile"] :is(.pf-owner-comments,.pf-story-owner-comments-list,.pf-detail-body,.pf-own-listings-rail,#pfOwnStories,.pf-library-viewport)::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--brand),#7e0e16);border-radius:999px;border:1px solid var(--surface-2)}
+
+/* Story comments get the same avatar / delete / emoji treatment. */
+body[data-page="profile"] .pf-story-owner-comments{position:relative!important;min-height:0!important}
+body[data-page="profile"] .pf-story-owner-comments-list{min-height:0!important;overflow:auto!important}
+body[data-page="profile"] .pf-story-owner-comments .pf-comment-emoji-picker{bottom:58px!important}
+
+@media(max-width:800px){
+  body[data-page="profile"] .pf-comments-modal{place-items:end center!important;padding:0!important;top:var(--pf-vv-top,0px)!important;height:var(--pf-vv-height,100dvh)!important;bottom:auto!important}
+  body[data-page="profile"] .pf-comments-modal .pf-detail-dialog{width:100%!important;max-width:none!important;max-height:min(76dvh,680px)!important;border-radius:18px 18px 0 0!important;margin:0!important;padding-bottom:env(safe-area-inset-bottom)!important}
+  body[data-page="profile"] .pf-comments-modal.keyboard-open .pf-detail-dialog{max-height:calc(var(--pf-vv-height,100dvh) - 4px)!important;height:calc(var(--pf-vv-height,100dvh) - 4px)!important;border-radius:14px 14px 0 0!important}
+  body[data-page="profile"] .pf-comments-modal.keyboard-open .pf-owner-comments{min-height:100px!important}
+  body[data-page="profile"] .pf-comment-emoji-picker{left:8px!important;bottom:58px!important;grid-template-columns:repeat(6,1fr)!important}
+  body[data-page="profile"] .pf-story-preview.keyboard-open{top:var(--pf-story-vv-top,0px)!important;height:var(--pf-story-vv-height,100dvh)!important;bottom:auto!important;padding:4px!important;place-items:center!important}
+  body[data-page="profile"] .pf-story-preview.keyboard-open .pf-story-viewer{max-height:calc(var(--pf-story-vv-height,100dvh) - 8px)!important}
+}
