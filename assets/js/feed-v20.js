@@ -25,6 +25,11 @@ async function load(){
  q=reels?q.eq('is_reel',true):q.or('is_reel.eq.false,is_reel.is.null');
  const {data,error}=await q;if(error){root.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;return}
  posts=(data||[]).filter(p=>!reels||mediaFor(p).some(m=>m.video));
+ const requestedHash=new URLSearchParams(location.hash.replace(/^#/,'')),requestedPid=requestedHash.get('post');
+ if(requestedPid&&!posts.some(p=>String(p.id)===String(requestedPid))){
+   const exact=await sb.from('posts').select('*').eq('id',requestedPid).eq('status','active').maybeSingle();
+   const row=exact.data;if(row&&((reels&&row.is_reel===true)||(!reels&&row.is_reel!==true)))posts.unshift(row);
+ }
  for(const p of posts)viewsCount.set(p.id,Number(p.view_count||0)||0);
  if(reels){for(let i=posts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[posts[i],posts[j]]=[posts[j],posts[i]]}if(matchMedia('(min-width:901px)').matches)posts=posts.slice(0,8)}
  if(!posts.length){root.innerHTML='<div class="empty-state">Hələ paylaşım yoxdur.</div>';return}
@@ -49,7 +54,7 @@ async function load(){
  if(me&&uids.length){const fr=await sb.from('user_follows').select('following_id').eq('follower_id',me.id).in('following_id',uids);following=new Set((fr.data||[]).map(x=>x.following_id))}
  reels?renderReels(root):renderFeed(root);
  const hash=new URLSearchParams(location.hash.replace(/^#/,'')),pid=hash.get('post'),openComments=hash.get('comments')==='1';
- if(pid){const i=posts.findIndex(p=>String(p.id)===pid);if(i>=0){if(reels){openViewer(i);if(openComments)requestAnimationFrame(()=>openPostComments(pid))}else{requestAnimationFrame(()=>{root.querySelector(`[data-post="${CSS.escape(pid)}"]`)?.scrollIntoView({block:'center'});if(openComments)openPostComments(pid)})}}}
+ if(pid){const i=posts.findIndex(p=>String(p.id)===pid);if(i>=0){if(reels){openViewer(i);if(openComments)requestAnimationFrame(()=>openPostComments(pid))}else{const focusPost=()=>{const card=root.querySelector(`[data-post="${CSS.escape(pid)}"]`);if(!card)return;card.scrollIntoView({block:'center',inline:'nearest'});card.classList.add('av-profile-focused-post');setTimeout(()=>card.classList.remove('av-profile-focused-post'),1800)};requestAnimationFrame(focusPost);setTimeout(focusPost,180);setTimeout(focusPost,650);setTimeout(focusPost,1200);if(openComments)setTimeout(()=>openPostComments(pid),220)}}}
 }
 
 function feedMedia(p){

@@ -688,3 +688,13 @@ body[data-page="auth"] .auth-logo{
 }
 /* v98: price history shows previous -> current price without changing detail layout. */
 .price-history-values{display:inline-flex;align-items:center;justify-content:flex-end;gap:7px;white-space:nowrap}.price-history-values del{color:var(--danger);opacity:.85;font-size:.88em;text-decoration-thickness:2px}.price-history-values strong{color:var(--text)}
+
+
+/* AvtoVIP profile->feed exact focus + shared story viewer stabilization */
+.av-feed-card.av-profile-focused-post{scroll-margin-block:96px;outline:1px solid color-mix(in srgb,var(--brand) 55%,transparent);outline-offset:2px}
+.story-viewer,.story-shell,.story-card,.story-social{overscroll-behavior:none!important}
+.story-comments{overscroll-behavior:contain!important}
+@media(max-width:760px){
+  .story-viewer{height:100dvh!important;max-height:100dvh!important}
+  .story-comments-open .story-comments{scrollbar-width:thin;scrollbar-color:var(--brand) #15181e}
+}
