@@ -1,7 +1,7 @@
-const CACHE='avtovip-v125-profile-public-geo-fix';
+const CACHE='avtovip-profile-stable-126';
 const STATIC=[
-  './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final-v125.css','./assets/css/detail-final-v124.css',
-  './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final-v125.js',
+  './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
+  './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
   './assets/img/brand/logo.png','./assets/img/brand/icon-192.png','./assets/img/brand/icon-512.png','./assets/img/identity/vip-frame.svg','./assets/img/identity/premium-frame.svg','./site.webmanifest'
 ];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC).catch(()=>{})).then(()=>self.skipWaiting())));
