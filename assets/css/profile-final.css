@@ -319,3 +319,91 @@ body[data-page="profile"] #pfOwnListings>.pf-more-wrap{width:120px!important;min
   body[data-page="profile"] #pfOwnListings.pf-own-listings-rail{grid-auto-columns:min(78vw,280px)!important;gap:8px!important;padding:8px!important}
   body[data-page="profile"] #pfOwnListings .pf-listing-social{gap:10px!important;font-size:9px!important}
 }
+
+/* === 2026-09-23 profile owner cards/details refinement (kept in stable stylesheet) === */
+body[data-page="profile"] #pfOwnListings.pf-own-listings-rail{
+  display:grid!important;
+  grid-auto-flow:column!important;
+  grid-auto-columns:calc((100% - 50px)/6)!important;
+  grid-template-rows:1fr!important;
+  gap:10px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:10px!important;
+  scroll-snap-type:x proximity!important;
+  scrollbar-width:thin!important;
+}
+body[data-page="profile"] #pfOwnListings.pf-own-listings-rail>.pf-item{
+  width:100%!important;min-width:0!important;max-width:none!important;
+  display:flex!important;flex-direction:column!important;
+  border-radius:11px!important;overflow:hidden!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-thumb{aspect-ratio:16/10!important;height:auto!important}
+body[data-page="profile"] #pfOwnListings .pf-item-main{padding:8px!important;gap:0!important}
+body[data-page="profile"] #pfOwnListings .pf-item-title strong{font-size:11px!important;line-height:1.2!important}
+body[data-page="profile"] #pfOwnListings .status-pill{font-size:7px!important;padding:3px 6px!important}
+body[data-page="profile"] #pfOwnListings .pf-meta{font-size:8.5px!important;margin-top:3px!important}
+body[data-page="profile"] #pfOwnListings .pf-view-overlay{
+  position:absolute!important;left:7px!important;top:7px!important;z-index:7!important;
+  display:inline-flex!important;align-items:center!important;gap:4px!important;
+  padding:0!important;border:0!important;background:transparent!important;
+  color:#fff!important;font-size:9px!important;font-weight:800!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-view-overlay b{font:inherit!important}
+body[data-page="profile"] #pfOwnListings .pf-listing-social{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:10px!important;margin:7px auto 5px!important;font-size:8.5px!important;min-height:18px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-listing-social>button{
+  border:0!important;background:transparent!important;padding:2px!important;margin:0!important;
+  color:var(--muted)!important;display:inline-flex!important;align-items:center!important;gap:3px!important;
+  font:inherit!important;cursor:pointer!important;min-width:0!important;min-height:0!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-listing-social>button:hover{color:var(--text)!important}
+body[data-page="profile"] #pfOwnListings .pf-actions{
+  display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:5px!important;
+  margin-top:auto!important;padding-top:4px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-icon-action{
+  width:100%!important;min-width:0!important;height:28px!important;min-height:28px!important;
+  border-radius:8px!important;font-size:9px!important;padding:0!important;display:grid!important;place-items:center!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-view-count{display:none!important}
+body[data-page="profile"] #pfOwnListings .pf-listing-sold>.pf-thumb>.pf-sold-stamp::before{height:24px!important;width:142%!important}
+body[data-page="profile"] #pfOwnListings .pf-listing-sold>.pf-thumb>.pf-sold-stamp b{font-size:8px!important;letter-spacing:.14em!important}
+
+/* Profile feed/reels owner cards: metrics first, then caption, then admin controls. */
+body[data-page="profile"] .pf-media-grid .pf-social-metrics{
+  width:100%!important;display:flex!important;justify-content:center!important;align-items:center!important;
+  gap:10px!important;margin:6px auto 4px!important;text-align:center!important;
+}
+body[data-page="profile"] .pf-media-grid .pf-social-metrics>button{
+  border:0!important;background:transparent!important;padding:2px!important;margin:0!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;
+  color:var(--muted)!important;font:inherit!important;line-height:1!important;cursor:pointer!important;
+}
+body[data-page="profile"] .pf-media-grid .pf-social-metrics>button:hover{color:var(--text)!important}
+body[data-page="profile"] .pf-media-grid .pf-social-metrics b{font:inherit!important;font-weight:800!important}
+body[data-page="profile"] .pf-media-grid .pf-caption{margin:3px 0 5px!important;min-height:0!important}
+body[data-page="profile"] .pf-media-grid .pf-media-admin{margin-top:4px!important}
+
+/* Owner detail / comment modal. Kept separate from Explore comment UI so listing/post data never mix. */
+.pf-detail-backdrop{position:fixed;inset:0;z-index:10050;background:rgba(2,5,9,.72);display:grid;place-items:center;padding:18px;backdrop-filter:blur(3px)}
+.pf-detail-dialog{width:min(520px,96vw);max-height:min(720px,88vh);display:flex;flex-direction:column;background:var(--surface,#11161e);border:1px solid var(--line,#2b3440);border-radius:15px;box-shadow:0 22px 60px rgba(0,0,0,.5);overflow:hidden}
+.pf-detail-dialog>header{height:52px;min-height:52px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:14px}
+.pf-detail-close{width:34px;height:34px;border:0;border-radius:9px;background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer}
+.pf-detail-body{min-height:140px;display:flex;flex-direction:column;overflow:hidden}
+.pf-detail-loading,.pf-detail-empty{min-height:150px;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted);font-size:12px}
+.pf-detail-person{display:grid;grid-template-columns:42px minmax(0,1fr) 18px;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text);text-decoration:none}
+.pf-detail-person>span:nth-child(2){min-width:0;display:grid;gap:2px}.pf-detail-person strong{display:flex;align-items:center;gap:5px;font-size:12px}.pf-detail-person small{font-size:9px;color:var(--muted)}.pf-detail-person>i{font-size:9px;color:var(--muted)}
+.pf-detail-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;border:1px solid var(--line);display:block;flex:0 0 auto}.pf-detail-avatar img{width:100%;height:100%;object-fit:cover;display:block}.pf-detail-avatar.vip{border-color:#d8b24a}.pf-detail-avatar.premium{border-color:#ff8a35}.pf-detail-avatar.is-verified{box-shadow:0 0 0 1px #2ca9ff}
+.pf-owner-comments{overflow:auto;max-height:520px;padding:4px 12px;overscroll-behavior:contain}
+.pf-owner-comment{display:grid;grid-template-columns:38px minmax(0,1fr);gap:9px;padding:10px 0;border-bottom:1px solid var(--line)}
+.pf-owner-comment>div{min-width:0}.pf-owner-comment-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.pf-owner-comment-head a{color:var(--text);text-decoration:none;min-width:0}.pf-owner-comment-head strong{display:flex;align-items:center;gap:4px;font-size:11px}.pf-owner-comment-head time{font-size:8px;color:var(--muted);white-space:nowrap}.pf-owner-comment p{margin:4px 0 0;font-size:11px;line-height:1.4;white-space:pre-wrap;word-break:break-word}
+.pf-owner-comment-form{display:grid;grid-template-columns:36px minmax(0,1fr) 42px;gap:7px;padding:10px;border-top:1px solid var(--line);background:var(--surface-2)}
+.pf-owner-comment-form input{width:100%;height:38px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);padding:0 11px;outline:0}
+.pf-owner-comment-form button{height:38px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer}.pf-owner-comment-form button[type="submit"]{background:var(--accent);border-color:var(--accent);color:#fff}
+
+@media(max-width:1200px){body[data-page="profile"] #pfOwnListings.pf-own-listings-rail{grid-auto-columns:calc((100% - 30px)/4)!important}}
+@media(max-width:900px){body[data-page="profile"] #pfOwnListings.pf-own-listings-rail{grid-auto-columns:calc((100% - 16px)/3)!important;gap:8px!important;padding:8px!important}.pf-detail-backdrop{padding:8px}.pf-detail-dialog{width:min(500px,100%);max-height:88dvh}.pf-owner-comments{max-height:60dvh}}
