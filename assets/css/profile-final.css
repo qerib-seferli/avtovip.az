@@ -239,3 +239,83 @@ body[data-page="profile"] .pf-media-grid .pf-social-metrics b{font:inherit!impor
   }
   body[data-page="profile"] .pf-media-grid .pf-social-metrics{gap:7px!important}
 }
+
+/* Own listings — one horizontal rail, social figures centered inside each card. */
+body[data-page="profile"] #pfOwnListings.pf-own-listings-rail{
+  display:grid!important;
+  grid-auto-flow:column!important;
+  grid-template-rows:1fr!important;
+  grid-auto-columns:calc((100% - 40px)/5)!important;
+  align-items:stretch!important;
+  justify-content:start!important;
+  gap:10px!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:10px!important;
+  scroll-snap-type:x proximity!important;
+  overscroll-behavior-inline:contain!important;
+  scrollbar-width:thin!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+body[data-page="profile"] #pfOwnListings.pf-own-listings-rail>.pf-item{
+  display:flex!important;
+  flex-direction:column!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:100%!important;
+  padding:0!important;
+  margin:0!important;
+  border:1px solid var(--line)!important;
+  border-radius:12px!important;
+  overflow:hidden!important;
+  background:var(--surface-2)!important;
+  scroll-snap-align:start!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-thumb{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:16/10!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-thumb>img,
+body[data-page="profile"] #pfOwnListings .pf-thumb>video{width:100%!important;height:100%!important;object-fit:cover!important}
+body[data-page="profile"] #pfOwnListings .pf-item-main{display:flex!important;flex-direction:column!important;flex:1!important;padding:9px!important}
+body[data-page="profile"] #pfOwnListings .pf-listing-social{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+  width:100%!important;
+  margin:8px auto 2px!important;
+  color:var(--muted)!important;
+  font-size:9px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-listing-social>span,
+body[data-page="profile"] #pfOwnListings .pf-listing-social>button{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:inherit!important;
+  font:inherit!important;
+  line-height:1!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-listing-social>button{cursor:pointer!important}
+body[data-page="profile"] #pfOwnListings .pf-listing-social>button:hover{color:var(--text)!important}
+body[data-page="profile"] #pfOwnListings .pf-listing-social b{font:inherit!important;font-weight:800!important}
+body[data-page="profile"] #pfOwnListings .pf-actions{margin-top:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;flex-wrap:nowrap!important}
+body[data-page="profile"] #pfOwnListings>.pf-more-wrap{width:120px!important;min-width:120px!important;align-self:center!important}
+@media(max-width:1200px){body[data-page="profile"] #pfOwnListings.pf-own-listings-rail{grid-auto-columns:calc((100% - 20px)/3)!important}}
+@media(max-width:700px){
+  body[data-page="profile"] #pfOwnListings.pf-own-listings-rail{grid-auto-columns:min(78vw,280px)!important;gap:8px!important;padding:8px!important}
+  body[data-page="profile"] #pfOwnListings .pf-listing-social{gap:10px!important;font-size:9px!important}
+}
