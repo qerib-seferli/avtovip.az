@@ -519,3 +519,10 @@ body[data-page="profile"] .pf-story-owner-comments .pf-comment-emoji-picker{bott
   body[data-page="profile"] .pf-story-preview.keyboard-open{top:var(--pf-story-vv-top,0px)!important;height:var(--pf-story-vv-height,100dvh)!important;bottom:auto!important;padding:4px!important;place-items:center!important}
   body[data-page="profile"] .pf-story-preview.keyboard-open .pf-story-viewer{max-height:calc(var(--pf-story-vv-height,100dvh) - 8px)!important}
 }
+
+
+/* 2026-09-24 targeted stability fixes */
+body[data-page="profile"] #pfAdminBtn[hidden]{display:none!important}
+body[data-page="profile"] .pf-story-circle{position:relative}
+body[data-page="profile"] .pf-story-views{position:absolute;left:50%;bottom:-1px;transform:translate(-50%,50%);display:inline-flex;align-items:center;gap:3px;min-width:28px;justify-content:center;padding:2px 5px;border-radius:999px;background:rgba(10,14,20,.88);border:1px solid var(--line);color:#fff;font-size:8px;line-height:1;z-index:3}
+body[data-page="profile"] .pf-story-caption{margin-top:8px}

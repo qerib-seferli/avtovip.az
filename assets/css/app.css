@@ -698,3 +698,9 @@ body[data-page="auth"] .auth-logo{
   .story-viewer{height:100dvh!important;max-height:100dvh!important}
   .story-comments-open .story-comments{scrollbar-width:thin;scrollbar-color:var(--brand) #15181e}
 }
+
+
+/* Story rail view count: real count under the ring, compact on desktop/PWA. */
+.story-ring{position:relative}
+.story-rail-views{position:absolute!important;right:-2px;bottom:-3px;display:inline-flex!important;align-items:center;gap:3px;min-width:25px;height:16px;padding:0 5px;margin:0!important;border-radius:999px;background:rgba(9,13,19,.92);border:1px solid var(--line);color:#fff!important;font-size:8px!important;font-weight:800;line-height:1;z-index:5;overflow:visible!important}
+.story-rail-views i{font-size:8px}
