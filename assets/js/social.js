@@ -277,8 +277,9 @@
           map.setView([pos[0],pos[1]],pos[2],{animate:false});
           const pinIcon=Leaflet.divIcon({className:'public-location-pin-wrap',html:'<span class="public-location-pin"><i></i></span>',iconSize:[22,30],iconAnchor:[11,28]});
           Leaflet.marker([pos[0],pos[1]],{icon:pinIcon,interactive:false,keyboard:false}).addTo(map);
-          const positionPin=()=>{map.invalidateSize(false);const w=node.clientWidth||0,h=node.clientHeight||0;if(!w||!h)return;const mobile=matchMedia('(max-width:700px)').matches;map.panBy([-(w*(mobile?.26:.18)),h*(mobile?.02:.00)],{animate:false})};
-          requestAnimationFrame(positionPin);setTimeout(positionPin,180);setTimeout(positionPin,600);
+          let pinPositioned=false;
+          const positionPin=()=>{if(pinPositioned)return;map.invalidateSize(false);const w=node.clientWidth||0,h=node.clientHeight||0;if(!w||!h)return;pinPositioned=true;const mobile=matchMedia('(max-width:700px)').matches;map.panBy([-(w*(mobile?.26:.18)),h*(mobile?.02:.00)],{animate:false})};
+          requestAnimationFrame(()=>requestAnimationFrame(positionPin));
           node.dataset.mapReady='1';
         }
       }

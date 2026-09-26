@@ -2927,3 +2927,53 @@ body[data-page="public-user"] .public-location-pin>i{position:absolute;left:50%;
 body[data-page="public-user"] #publicProfileMapCanvas .leaflet-marker-pane{z-index:650!important;opacity:1!important;display:block!important}
 body[data-page="public-user"] .public-location-pin-wrap{display:block!important;opacity:1!important;visibility:visible!important}
 body[data-page="public-user"] .public-location-pin{display:block!important;opacity:1!important;visibility:visible!important}
+
+
+/* 2026-09-27 — requested-only public profile pin/flag stability */
+body[data-page="public-user"] .profile-country-wave{
+  animation:none!important;
+  transform:none!important;
+  transform-origin:center!important;
+}
+body[data-page="public-user"] .public-location-pin-wrap{
+  background:none!important;
+  border:0!important;
+}
+body[data-page="public-user"] .public-location-pin{
+  position:relative!important;
+  display:block!important;
+  width:18px!important;
+  height:18px!important;
+  border-radius:50%!important;
+  background:#f1c84b!important;
+  transform:none!important;
+  box-shadow:0 0 0 2px rgba(255,255,255,.18),0 0 12px rgba(241,200,75,.66)!important;
+  animation:av-public-pin-pulse-stable 1.5s ease-in-out infinite!important;
+}
+body[data-page="public-user"] .public-location-pin::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:14px;
+  width:0;
+  height:0;
+  transform:translateX(-50%);
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:9px solid #f1c84b;
+  filter:drop-shadow(0 3px 2px rgba(0,0,0,.18));
+}
+body[data-page="public-user"] .public-location-pin>i{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:6px!important;
+  height:6px!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  transform:translate(-50%,-50%)!important;
+}
+@keyframes av-public-pin-pulse-stable{
+  0%,100%{filter:brightness(1);box-shadow:0 0 0 2px rgba(255,255,255,.16),0 0 8px rgba(241,200,75,.4)}
+  50%{filter:brightness(1.14);box-shadow:0 0 0 4px rgba(241,200,75,.12),0 0 16px rgba(241,200,75,.78)}
+}
