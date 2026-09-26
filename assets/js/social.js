@@ -277,9 +277,10 @@
           map.setView([pos[0],pos[1]],pos[2],{animate:false});
           const pinIcon=Leaflet.divIcon({className:'public-location-pin-wrap',html:'<span class="public-location-pin"><i></i></span>',iconSize:[22,30],iconAnchor:[11,28]});
           Leaflet.marker([pos[0],pos[1]],{icon:pinIcon,interactive:false,keyboard:false}).addTo(map);
-          let pinPositioned=false;
-          const positionPin=()=>{if(pinPositioned)return;map.invalidateSize(false);const w=node.clientWidth||0,h=node.clientHeight||0;if(!w||!h)return;pinPositioned=true;const mobile=matchMedia('(max-width:700px)').matches;map.panBy([-(w*(mobile?.26:.18)),h*(mobile?.02:.00)],{animate:false})};
+          const positionPin=()=>{map.invalidateSize(false);const w=node.clientWidth||0,h=node.clientHeight||0;if(!w||!h)return;const mobile=matchMedia('(max-width:700px)').matches,target=Leaflet.point(w*(mobile?.78:.68),h*(mobile?.24:.48)),current=map.latLngToContainerPoint([pos[0],pos[1]]),dx=current.x-target.x,dy=current.y-target.y;if(Math.abs(dx)>.5||Math.abs(dy)>.5)map.panBy([dx,dy],{animate:false})};
           requestAnimationFrame(()=>requestAnimationFrame(positionPin));
+          setTimeout(positionPin,140);
+          setTimeout(positionPin,420);
           node.dataset.mapReady='1';
         }
       }
