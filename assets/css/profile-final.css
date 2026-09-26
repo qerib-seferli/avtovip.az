@@ -592,3 +592,21 @@ body[data-page="profile"] .pf-profile-map::after{
   body[data-page="profile"] .pf-profile-map-canvas{opacity:.9!important}
   body[data-page="profile"] .pf-profile-map::after{background:linear-gradient(180deg,rgba(16,21,28,.32) 0%,rgba(16,21,28,.48) 58%,rgba(16,21,28,.62) 100%)!important}
 }
+
+
+/* 2026-09-26 targeted owner avatar verified placement only */
+body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
+  right:8px!important;
+  bottom:8px!important;
+  width:20px!important;
+  height:20px!important;
+  transform:none!important;
+}
+@media(max-width:700px){
+  body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
+    right:6px!important;
+    bottom:6px!important;
+    width:19px!important;
+    height:19px!important;
+  }
+}
