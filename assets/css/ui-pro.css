@@ -2922,3 +2922,8 @@ body[data-page="public-user"] .public-location-pin>i{position:absolute;left:50%;
   body[data-page="public-user"] .public-bio{margin:5px 0 0!important;text-align:left!important}
   body[data-page="public-user"] .public-location{justify-content:flex-start!important;text-align:left!important;width:100%!important}
 }
+
+/* 2026-09-27 — public profile map pin visibility parity only */
+body[data-page="public-user"] #publicProfileMapCanvas .leaflet-marker-pane{z-index:650!important;opacity:1!important;display:block!important}
+body[data-page="public-user"] .public-location-pin-wrap{display:block!important;opacity:1!important;visibility:visible!important}
+body[data-page="public-user"] .public-location-pin{display:block!important;opacity:1!important;visibility:visible!important}
