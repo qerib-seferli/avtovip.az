@@ -561,3 +561,34 @@ body[data-page="profile"] .pf-story-views i{font-size:8px!important}
 body[data-page="profile"] .pf-profile-map{opacity:.9!important;filter:saturate(.82) brightness(.92)!important}
 body[data-page="profile"] .pf-profile-map .leaflet-tile-pane{filter:grayscale(.55) brightness(.78) contrast(1.05)!important;opacity:.94!important}
 @media(max-width:700px){body[data-page="profile"] .pf-story-views{top:54px!important;right:-1px!important}}
+
+
+/* 2026-09-26 targeted owner-profile parity: verified badge + map glass only */
+body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
+  right:4px!important;
+  bottom:4px!important;
+  width:20px!important;
+  height:20px!important;
+  transform:none!important;
+}
+body[data-page="profile"] .pf-profile-map{
+  inset:0!important;
+  opacity:1!important;
+  filter:none!important;
+  mask-image:none!important;
+  -webkit-mask-image:none!important;
+}
+body[data-page="profile"] .pf-profile-map-canvas{opacity:.94!important;background:#151d25!important}
+body[data-page="profile"] .pf-profile-map .leaflet-tile-pane{
+  filter:grayscale(.48) brightness(.8) contrast(1.04)!important;
+  opacity:.96!important;
+}
+body[data-page="profile"] .pf-profile-map::after{
+  content:"";position:absolute;inset:0;z-index:500;pointer-events:none;
+  background:linear-gradient(90deg,rgba(16,21,28,.62) 0%,rgba(16,21,28,.44) 34%,rgba(16,21,28,.18) 68%,rgba(16,21,28,.08) 100%)!important;
+  backdrop-filter:blur(.35px)!important;-webkit-backdrop-filter:blur(.35px)!important;
+}
+@media(max-width:700px){
+  body[data-page="profile"] .pf-profile-map-canvas{opacity:.9!important}
+  body[data-page="profile"] .pf-profile-map::after{background:linear-gradient(180deg,rgba(16,21,28,.32) 0%,rgba(16,21,28,.48) 58%,rgba(16,21,28,.62) 100%)!important}
+}
