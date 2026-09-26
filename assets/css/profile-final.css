@@ -526,3 +526,38 @@ body[data-page="profile"] #pfAdminBtn[hidden]{display:none!important}
 body[data-page="profile"] .pf-story-circle{position:relative}
 body[data-page="profile"] .pf-story-views{position:absolute;left:50%;bottom:-1px;transform:translate(-50%,50%);display:inline-flex;align-items:center;gap:3px;min-width:28px;justify-content:center;padding:2px 5px;border-radius:999px;background:rgba(10,14,20,.88);border:1px solid var(--line);color:#fff;font-size:8px;line-height:1;z-index:3}
 body[data-page="profile"] .pf-story-caption{margin-top:8px}
+
+/* 2026-09-26 — requested-only profile fixes: story view badge, verified mark, clearer map glass */
+body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
+  right:1px!important;
+  bottom:1px!important;
+  width:20px!important;
+  height:20px!important;
+}
+body[data-page="profile"] #pfOwnStories>.pf-story-card{position:relative!important;overflow:visible!important}
+body[data-page="profile"] .pf-story-circle{overflow:hidden!important}
+body[data-page="profile"] .pf-story-views{
+  position:absolute!important;
+  right:0!important;
+  top:58px!important;
+  z-index:12!important;
+  min-width:27px!important;
+  height:17px!important;
+  padding:0 5px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  border-radius:999px!important;
+  background:rgba(7,10,14,.82)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  color:#fff!important;
+  font-size:8px!important;
+  line-height:1!important;
+  pointer-events:none!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.24)!important;
+}
+body[data-page="profile"] .pf-story-views i{font-size:8px!important}
+body[data-page="profile"] .pf-profile-map{opacity:.9!important;filter:saturate(.82) brightness(.92)!important}
+body[data-page="profile"] .pf-profile-map .leaflet-tile-pane{filter:grayscale(.55) brightness(.78) contrast(1.05)!important;opacity:.94!important}
+@media(max-width:700px){body[data-page="profile"] .pf-story-views{top:54px!important;right:-1px!important}}

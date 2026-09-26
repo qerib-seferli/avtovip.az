@@ -2874,3 +2874,27 @@ body[data-page="public-user"] .public-contact-actions .public-message{background
  body[data-page="public-user"] .public-profile-map::after{background:linear-gradient(180deg,rgba(16,21,28,.72) 0%,rgba(16,21,28,.9) 72%,rgba(16,21,28,.96) 100%)!important}
  body[data-page="public-user"] .public-profile-main{max-width:none!important}
 }
+
+/* 2026-09-26 — requested-only identity/explore/public-map polish */
+body[data-page="explore"] .explore-avatar-shell{
+  width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;max-width:34px!important;max-height:34px!important;
+  flex:0 0 34px!important;aspect-ratio:1/1!important;border-radius:50%!important;overflow:visible!important;
+}
+body[data-page="explore"] .explore-avatar-shell>img{
+  width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;max-width:34px!important;max-height:34px!important;
+  aspect-ratio:1/1!important;border-radius:50%!important;object-fit:cover!important;object-position:center!important;
+}
+body[data-page="explore"] .explore-avatar-shell.vip>img,
+body[data-page="explore"] .explore-avatar-shell.premium>img{
+  width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;max-width:25px!important;max-height:25px!important;
+}
+body[data-page="public-user"] #publicProfileMapCanvas{opacity:.94!important;background:#151d25!important}
+body[data-page="public-user"] #publicProfileMapCanvas .leaflet-tile-pane{filter:grayscale(.48) brightness(.8) contrast(1.04)!important;opacity:.96!important}
+body[data-page="public-user"] .public-profile-map::after{
+  background:linear-gradient(90deg,rgba(16,21,28,.62) 0%,rgba(16,21,28,.44) 34%,rgba(16,21,28,.18) 68%,rgba(16,21,28,.08) 100%)!important;
+  backdrop-filter:blur(.35px)!important;-webkit-backdrop-filter:blur(.35px)!important;
+}
+@media(max-width:700px){
+ body[data-page="public-user"] #publicProfileMapCanvas{opacity:.9!important}
+ body[data-page="public-user"] .public-profile-map::after{background:linear-gradient(180deg,rgba(16,21,28,.32) 0%,rgba(16,21,28,.48) 58%,rgba(16,21,28,.62) 100%)!important}
+}

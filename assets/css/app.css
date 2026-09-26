@@ -704,3 +704,7 @@ body[data-page="auth"] .auth-logo{
 .story-ring{position:relative}
 .story-rail-views{position:absolute!important;right:-2px;bottom:-3px;display:inline-flex!important;align-items:center;gap:3px;min-width:25px;height:16px;padding:0 5px;margin:0!important;border-radius:999px;background:rgba(9,13,19,.92);border:1px solid var(--line);color:#fff!important;font-size:8px!important;font-weight:800;line-height:1;z-index:5;overflow:visible!important}
 .story-rail-views i{font-size:8px}
+
+/* 2026-09-26 — story rail view badge must stay visible outside the circular ring */
+.story-ring{overflow:visible!important}
+.story-rail-views{z-index:12!important;right:-5px!important;bottom:-5px!important}
