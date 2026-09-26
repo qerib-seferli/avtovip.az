@@ -236,7 +236,8 @@
     const trust=`<div class="public-trust"><span class="public-trust-circle" style="--score:${score};--trust:${trustTone}"><b>${score}%</b></span><span class="public-trust-copy"><strong>Etibar göstəricisi</strong><span>${score}/100</span><span class="public-trust-stars">${Array.from({length:5},(_,i)=>`<i class="fa-solid fa-star ${i<stars?'earned':''}"></i>`).join('')}</span></span></div>`;
     const phone=String(u.phone||''),wa=String(u.whatsapp_phone||u.phone||'').replace(/\D/g,'');
     const identityHtml=`<button class="public-avatar-btn avatar-shell ${u.membership_tier||'free'}${u.is_verified?' is-verified':''}"><img src="${esc(u.avatar_url||'assets/img/brand/icon-192.png')}" alt=""></button>`;
-    const nameHtml=`<div class="grow public-profile-copy"><div class="public-name-row"><h1><span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}</span>`:''}</h1>${tier}</div><div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`<p class="public-bio">${esc(u.bio||'')}</p><p class="muted public-location"><i class="fa-solid fa-location-dot"></i>${esc([u.state_name,u.city,u.address].filter(Boolean).join(' · '))}</p>`}</div>`;
+    const bioText=String(u.bio||'').trim();
+    const nameHtml=`<div class="grow public-profile-copy"><div class="public-name-row"><h1><span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}</span>`:''}</h1>${tier}</div><div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`${bioText?`<div class="public-bio-wrap"><p class="public-bio">${esc(bioText)}</p><button type="button" class="public-bio-more" hidden>Davamına bax</button></div>`:''}<p class="muted public-location"><i class="fa-solid fa-location-dot"></i>${esc([u.state_name,u.city,u.address].filter(Boolean).join(' · '))}</p>`}</div>`;
     let actionHtml='';
     if(me){
       if(!restricted)actionHtml+=`<button class="btn btn-sm fixed-action" id="followBtn">${following?L().following:L().follow}</button>`;
@@ -250,6 +251,8 @@
     const actions=`<div class="public-profile-actions">${actionHtml}</div>`;
     const content=restricted?'':`<section class="panel panel-pad"><div class="public-content-tabs"><button class="active" data-public-tab="ads">Elanlar</button><button data-public-tab="feed">Lent</button><button data-public-tab="reels">Reels</button></div><div id="publicListings" class="listing-grid" data-public-pane="ads"></div><div id="publicFeed" class="public-social-grid" data-public-pane="feed" hidden></div><div id="publicReels" class="public-social-grid" data-public-pane="reels" hidden></div></section><section class="panel panel-pad public-safe-buy"><div class="section-head"><h3>Təhlükəsiz alış</h3></div><p class="muted small">Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli hallarda platformadakı şikayət funksiyasından istifadə edin.</p></section>`;
     root.innerHTML=`<section class="public-profile-head panel ${u.membership_tier||'free'}"><div class="public-profile-map" aria-hidden="true"><div id="publicProfileMapCanvas"></div><span class="public-map-label">${esc([u.state_name,u.city].filter(Boolean).join(' · '))}</span></div><div class="public-profile-main">${identityHtml}${nameHtml}</div>${actions}</section>${content}`;
+    const bioEl=root.querySelector('.public-bio'),bioMore=root.querySelector('.public-bio-more');
+    if(bioEl&&bioMore){requestAnimationFrame(()=>{const clipped=bioEl.scrollHeight>bioEl.clientHeight+2;if(clipped)bioMore.hidden=false});bioMore.onclick=()=>{const expanded=bioEl.classList.toggle('expanded');bioMore.textContent=expanded?'Gizlət':'Davamına bax'}}
     try{
       const node=$('#publicProfileMapCanvas');
       if(node){
@@ -272,8 +275,10 @@
           const map=Leaflet.map(node,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,zoomSnap:.25,fadeAnimation:false,markerZoomAnimation:false});
           Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,updateWhenIdle:true,keepBuffer:1}).addTo(map);
           map.setView([pos[0],pos[1]],pos[2],{animate:false});
-          Leaflet.circleMarker([pos[0],pos[1]],{radius:5,color:'#ffdc63',weight:2,fillColor:'#ffdc63',fillOpacity:1}).addTo(map);
-          requestAnimationFrame(()=>map.invalidateSize(false));setTimeout(()=>map.invalidateSize(false),180);setTimeout(()=>map.invalidateSize(false),600);
+          const pinIcon=Leaflet.divIcon({className:'public-location-pin-wrap',html:'<span class="public-location-pin"><i></i></span>',iconSize:[22,30],iconAnchor:[11,28]});
+          Leaflet.marker([pos[0],pos[1]],{icon:pinIcon,interactive:false,keyboard:false}).addTo(map);
+          const positionPin=()=>{map.invalidateSize(false);const w=node.clientWidth||0,h=node.clientHeight||0;if(!w||!h)return;const mobile=matchMedia('(max-width:700px)').matches;map.panBy([-(w*(mobile?.25:.18)),h*(mobile?.14:.08)],{animate:false})};
+          requestAnimationFrame(positionPin);setTimeout(positionPin,180);setTimeout(positionPin,600);
           node.dataset.mapReady='1';
         }
       }

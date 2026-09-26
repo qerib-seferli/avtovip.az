@@ -610,3 +610,18 @@ body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
     height:19px!important;
   }
 }
+
+
+/* 2026-09-27 targeted owner-avatar parity only */
+body[data-page="profile"] #pfProfileAvatarShell>.profile-avatar{
+  width:82px!important;height:82px!important;min-width:82px!important;min-height:82px!important;max-width:82px!important;max-height:82px!important;
+}
+body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{
+  right:1px!important;bottom:1px!important;width:20px!important;height:20px!important;
+}
+@media(max-width:700px){
+  body[data-page="profile"] #pfProfileAvatarShell>.profile-avatar{
+    width:70px!important;height:70px!important;min-width:70px!important;min-height:70px!important;max-width:70px!important;max-height:70px!important;
+  }
+  body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{right:0!important;bottom:0!important;width:19px!important;height:19px!important}
+}
