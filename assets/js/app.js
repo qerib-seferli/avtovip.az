@@ -1054,7 +1054,7 @@
       preview.innerHTML=old+fresh;
     };
     const syncListingFiles=()=>{const dt=new DataTransfer();selectedListingFiles.slice(0,Math.max(0,15-existingUrls.length)).forEach(f=>dt.items.add(f));files.files=dt.files;selectedListingFiles=[...dt.files];if(editId)drawEditPreview();else renderPreview(files.files,preview,index=>{selectedListingFiles.splice(index,1);syncListingFiles()})};
-    files?.addEventListener('change',()=>{for(const f of [...files.files]){if(!selectedListingFiles.some(x=>x.name===f.name&&x.size===f.size&&x.lastModified===f.lastModified))selectedListingFiles.push(f)}selectedListingFiles=selectedListingFiles.slice(0,Math.max(0,15-existingUrls.length));syncListingFiles()});
+    files?.addEventListener('change',async()=>{const incoming=[...files.files];if(!incoming.length)return;try{for(const original of incoming){if(selectedListingFiles.length>=Math.max(0,15-existingUrls.length))break;const key=original.name+'|'+original.size+'|'+original.lastModified;if(selectedListingFiles.some(x=>(x.__avOriginalKey||`${x.name}|${x.size}|${x.lastModified}`)===key))continue;const f=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.82,maxBytes:2500000,progressTitle:'Şəkil hazırlanır...'});Object.defineProperty(f,'__avOriginalKey',{value:key,enumerable:false});selectedListingFiles.push(f)}syncListingFiles();db.mediaProgressHide()}catch(err){db.mediaProgressHide();toast(err.message,'error')}});
     if(editId){
       document.body.classList.add('av-edit-listing');if(files)files.required=false;
       const {data,error}=await sb.from('elanlar').select('*').eq('id',editId).eq('user_id',user.id).maybeSingle();
@@ -1086,7 +1086,7 @@
         for(const original of imageFiles){
           if(original.size>10*1024*1024)throw new Error(`${original.name} 10 MB-dan böyükdür.`);
           const file=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.82,maxBytes:2_500_000});
-          const up=await db.upload('elan-images',user.id,file,'listings');uploadedPaths.push(up.path);newUrls.push(up.url);
+          db.mediaProgress('Yüklənir...',97,'Şəkil AvtoVİP-ə əlavə olunur...');const up=await db.upload('elan-images',user.id,file,'listings');uploadedPaths.push(up.path);newUrls.push(up.url);
         }
         const fd=new FormData(form);
         const payload={brand:fd.get('brand'),model:fd.get('model')?.trim(),generation:fd.get('generation')?.trim(),trim:fd.get('trim')?.trim(),year:Number(fd.get('year')),price:Number(fd.get('price')),currency:fd.get('currency'),country_code:fd.get('country_code')||'AZ',state_name:fd.get('state_name')||null,city:fd.get('city'),district:fd.get('district')?.trim()||null,body_type:fd.get('body_type'),color:fd.get('color'),fuel:fd.get('fuel'),transmission:fd.get('transmission'),drivetrain:fd.get('drivetrain'),engine_volume:fd.get('engine_volume')?Number(fd.get('engine_volume')):null,engine_power:fd.get('engine_power')?Number(fd.get('engine_power')):null,mileage:Number(fd.get('mileage')||0),seats:fd.get('seats')?Number(fd.get('seats')):null,owners_count:fd.get('owners_count')?Number(fd.get('owners_count')):null,market_origin:fd.get('market_origin')?.trim(),vin:fd.get('vin')?.trim().toUpperCase(),description:fd.get('description')?.trim(),phone:fd.get('phone')?.trim(),whatsapp_phone:fd.get('whatsapp_phone')?.trim(),is_new:fd.get('condition')==='new',is_credit:fd.get('is_credit')==='on',is_barter:fd.get('is_barter')==='on',has_accident:fd.get('has_accident')==='on',is_painted:fd.get('is_painted')==='on',equipment:fd.getAll('equipment'),image_urls:[...existingUrls,...newUrls]};
@@ -1095,13 +1095,14 @@
         if(editId){
           const {error}=await sb.from('elanlar').update(payload).eq('id',editId).eq('user_id',user.id);if(error)throw error;
           if(removedExisting.length)await db.removeUrls('elan-images',removedExisting).catch(()=>{});
-          localStorage.removeItem('avtovip-listing-draft-v2');setStatus('#listingStatus','Elan yeniləndi.','success');toast('Elan məlumatları yeniləndi.','success');setTimeout(()=>location.href=`elan.html?id=${editId}`,700)
+          db.mediaProgressHide();localStorage.removeItem('avtovip-listing-draft-v2');setStatus('#listingStatus','Elan yeniləndi.','success');toast('Elan məlumatları yeniləndi.','success');setTimeout(()=>location.href=`elan.html?id=${editId}`,700)
         }else{
           const createPayload={...payload,user_id:user.id,status:'approved',published_at:new Date().toISOString()};
           const {data,error}=await sb.from('elanlar').insert(createPayload).select('id').single();if(error)throw error;
-          localStorage.removeItem('avtovip-listing-draft-v2');setStatus('#listingStatus','Elan uğurla yerləşdirildi.','success');toast('Elan yayımlandı.','success');setTimeout(()=>location.href=`profile.html?created=${data.id}`,900)
+          db.mediaProgressHide();localStorage.removeItem('avtovip-listing-draft-v2');setStatus('#listingStatus','Elan uğurla yerləşdirildi.','success');toast('Elan yayımlandı.','success');setTimeout(()=>location.href=`profile.html?created=${data.id}`,900)
         }
       }catch(err){
+        db.mediaProgressHide();
         if(uploadedPaths.length)await db.removePaths('elan-images',uploadedPaths).catch(()=>{});
         setStatus('#listingStatus',err.message,'error');toast(err.message,'error')
       }finally{btn.disabled=false}
@@ -1109,79 +1110,8 @@
   }
   function renderPreview(files,root,onRemove){if(!root)return;root.innerHTML=[...files].slice(0,15).map((f,i)=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt="">${onRemove?`<button type="button" class="upload-remove" data-remove-upload="${i}" aria-label="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}</div>`).join('');if(onRemove)root.onclick=e=>{const b=e.target.closest('[data-remove-upload]');if(b)onRemove(Number(b.dataset.removeUpload))}}
 
-  let storyFFmpegLoader=null;
-  async function loadStoryFFmpeg(){
-    if(window.FFmpeg?.createFFmpeg)return window.FFmpeg;
-    if(storyFFmpegLoader)return storyFFmpegLoader;
-    storyFFmpegLoader=new Promise((resolve,reject)=>{
-      const script=document.createElement('script');
-      script.src='https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js';
-      script.async=true;
-      script.crossOrigin='anonymous';
-      script.onload=()=>window.FFmpeg?.createFFmpeg?resolve(window.FFmpeg):reject(new Error('Video emalı modulu açıla bilmədi.'));
-      script.onerror=()=>reject(new Error('Video emalı modulu açıla bilmədi.'));
-      document.head.append(script);
-    }).catch(err=>{storyFFmpegLoader=null;throw err});
-    return storyFFmpegLoader;
-  }
-
-  async function storyVideoNeedsNormalize(file){
-    const ext=String(file?.name||'').split('.').pop().toLowerCase();
-    const type=String(file?.type||'').toLowerCase();
-    if(ext!=='mp4'&&type!=='video/mp4')return true;
-    const max=2*1024*1024,parts=[file.slice(0,Math.min(file.size,max))];
-    if(file.size>max)parts.push(file.slice(Math.max(0,file.size-max)));
-    const hasMarker=async marker=>{
-      const needle=new TextEncoder().encode(marker);
-      for(const part of parts){
-        const bytes=new Uint8Array(await part.arrayBuffer());
-        outer:for(let i=0;i<=bytes.length-needle.length;i++){
-          for(let j=0;j<needle.length;j++)if(bytes[i+j]!==needle[j])continue outer;
-          return true;
-        }
-      }
-      return false;
-    };
-    return await hasMarker('hvc1')||await hasMarker('hev1')||await hasMarker('av01');
-  }
-
   async function normalizeStoryVideo(file){
-    if(!file?.type?.startsWith('video/') && !/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(file?.name||''))return file;
-    if(!(await storyVideoNeedsNormalize(file)))return file;
-    setStatus('#storyStatus','Video hazırlanır...');
-    const lib=await loadStoryFFmpeg();
-    const inputExt=(String(file.name||'').split('.').pop()||'mp4').replace(/[^a-z0-9]/gi,'').toLowerCase()||'mp4';
-    const inputName=`story-input.${inputExt}`,outputName='story-ready.mp4';
-    let lastLog='';
-    const ffmpeg=lib.createFFmpeg({
-      log:false,
-      corePath:'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
-      progress:({ratio})=>{if(Number.isFinite(ratio)&&ratio>=0)setStatus('#storyStatus',`Video hazırlanır... ${Math.min(99,Math.max(1,Math.round(ratio*100)))}%`)},
-      logger:({message})=>{lastLog=message||lastLog}
-    });
-    const cleanup=()=>{
-      try{ffmpeg.FS('unlink',inputName)}catch{}
-      try{ffmpeg.FS('unlink',outputName)}catch{}
-    };
-    try{
-      if(!ffmpeg.isLoaded())await ffmpeg.load();
-      ffmpeg.FS('writeFile',inputName,await lib.fetchFile(file));
-      const common=['-i',inputName,'-map','0:v:0','-map','0:a?','-vf','scale=w=720:h=1280:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2:(ow-iw)/2:(oh-ih)/2:black','-r','30','-c:v','libx264','-preset','ultrafast','-crf','25','-pix_fmt','yuv420p','-threads','1','-c:a','aac','-b:a','96k','-ar','44100','-ac','2','-movflags','+faststart',outputName];
-      try{
-        await ffmpeg.run(...common);
-      }catch(firstErr){
-        cleanup();
-        ffmpeg.FS('writeFile',inputName,await lib.fetchFile(file));
-        await ffmpeg.run('-i',inputName,'-map','0:v:0','-map','0:a?','-vf','scale=w=540:h=960:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2:(ow-iw)/2:(oh-ih)/2:black','-r','24','-c:v','libx264','-preset','ultrafast','-crf','28','-pix_fmt','yuv420p','-threads','1','-c:a','aac','-b:a','80k','-ar','44100','-ac','1','-movflags','+faststart',outputName);
-      }
-      const data=ffmpeg.FS('readFile',outputName);
-      if(!data?.length)throw new Error('empty-output');
-      setStatus('#storyStatus','Video hazırdır.','success');
-      return new File([data.buffer],`${String(file.name||'video').replace(/\.[^.]+$/,'')}.mp4`,{type:'video/mp4',lastModified:Date.now()});
-    }catch(e){
-      console.warn('[AvtoVIP story video]',e,lastLog);
-      throw new Error('Video emal edilə bilmədi. Zəhmət olmasa bir dəfə də göndərin.');
-    }finally{cleanup()}
+    return db.transcodeVideo(file,{maxWidth:720,maxHeight:1280,progressTitle:'Hekayə videosu hazırlanır...'});
   }
 
   async function initCreateStory(){
@@ -1207,15 +1137,15 @@
         const original=media.files[0];if(!original)throw new Error('Şəkil və ya video seçin.');
         const looksVideo=original.type.startsWith('video/')||/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(original.name||'');
         if(looksVideo&&original.size>80*1024*1024)throw new Error('Video faylı çox böyükdür. Daha qısa video seçin.');
-        const file=original.type.startsWith('image/')
-          ?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000})
+        const file=(original.type.startsWith('image/')||db.isHeicFile(original))
+          ?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000,progressTitle:'Hekayə şəkli hazırlanır...'})
           :looksVideo?await normalizeStoryVideo(original):original;
         if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))throw new Error('Şəkil və ya video seçin.');
-        uploaded=await db.upload('story-media',user.id,file,'stories');
+        db.mediaProgress('Yüklənir...',97,'Hekayə AvtoVİP-ə əlavə olunur...');uploaded=await db.upload('story-media',user.id,file,'stories');db.mediaProgressHide();
         const {data:story,error}=await sb.from('stories').insert({user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:$('#storyCaption').value.trim(),status:'pending_payment'}).select().single();if(error)throw error;storyId=story.id;
         const amount=Number($('#storyAmount')?.dataset.amount||5);const {error:pe}=await sb.from('payment_requests').insert({user_id:user.id,target_type:'story',target_id:story.id,plan_code:'24h',amount,payment_method:$('#storyPaymentMethod').value,payer_note:$('#storyPaymentNote').value.trim()});if(pe)throw pe;
         toast('Hekayə yaradıldı. Ödəniş sorğusu admin təsdiqini gözləyir.','success');setStatus('#storyStatus','Admin ödənişi təsdiqlədikdən sonra hekayə 24 saatlıq aktiv olacaq.','success');form.reset();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
-      }catch(err){if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
+      }catch(err){db.mediaProgressHide();if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
     });
     const {data:list}=await sb.from('elanlar').select('id,brand,model,year').eq('user_id',user.id).eq('status','approved').order('created_at',{ascending:false});const sel=$('#storyListing');if(sel)sel.innerHTML=`<option value="">${esc(staticText('Elana bağlama'))}</option>`+(list||[]).map(x=>`<option value="${x.id}">${esc(x.brand)} ${esc(x.model)} ${x.year}</option>`).join('');
   }
@@ -1308,7 +1238,7 @@
     const form=$('#chatForm');if(!form||form.dataset.mediaReady==='1')return;form.dataset.mediaReady='1';
     const file=$('#chatMediaInput'),camera=$('#chatCameraInput'),preview=$('#chatMediaPreview');
     $('#chatMediaBtn')?.addEventListener('click',()=>file?.click());$('#chatCameraBtn')?.addEventListener('click',()=>camera?.click());
-    const handleMedia=async inputEl=>{const original=inputEl.files?.[0];if(!original)return;let up=null;try{const isVideo=original.type.startsWith('video/'),isImage=original.type.startsWith('image/');if(!isImage&&!isVideo)throw new Error('Şəkil və ya video seçin.');if(isVideo&&original.size>50*1024*1024)throw new Error('Video maksimum 50 MB ola bilər.');if(isImage&&original.size>10*1024*1024)throw new Error('Şəkil 10 MB-dan böyük ola bilməz.');const media=isImage?await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.84,maxBytes:2_500_000}):original;up=await db.upload('chat-media',currentUser.id,media,'messages');form.dataset.mediaUrl=up.url;form.dataset.mediaType=isVideo?'video':'image';if(preview)preview.innerHTML=`<span>${isVideo?`<video src="${esc(up.url)}" muted playsinline></video>`:`<img src="${esc(up.url)}" alt="">`}<button type="button" id="chatMediaRemove" aria-label="Sil">×</button></span>`;$('#chatMediaRemove')?.addEventListener('click',async()=>{const url=form.dataset.mediaUrl;delete form.dataset.mediaUrl;delete form.dataset.mediaType;preview.replaceChildren();file.value='';camera.value='';if(url)await db.removeUrls('chat-media',[url]).catch(()=>{})})}catch(e){if(up?.url)await db.removeUrls('chat-media',[up.url]).catch(()=>{});toast(e.message,'error')}};file?.addEventListener('change',()=>handleMedia(file));camera?.addEventListener('change',()=>handleMedia(camera));
+    const handleMedia=async inputEl=>{const original=inputEl.files?.[0];if(!original)return;let up=null;try{const isVideo=db.isVideoFile(original),isImage=original.type.startsWith('image/')||db.isHeicFile(original);if(!isImage&&!isVideo)throw new Error('Şəkil və ya video seçin.');if(isVideo&&original.size>50*1024*1024)throw new Error('Video maksimum 50 MB ola bilər.');if(isImage&&original.size>10*1024*1024)throw new Error('Şəkil 10 MB-dan böyük ola bilməz.');const media=isImage?await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.84,maxBytes:2_500_000,progressTitle:'Şəkil hazırlanır...'}):await db.transcodeVideo(original,{maxWidth:1280,maxHeight:1280,progressTitle:'Mesaj videosu hazırlanır...'});db.mediaProgress('Yüklənir...',97,'Media AvtoVİP-ə əlavə olunur...');up=await db.upload('chat-media',currentUser.id,media,'messages');db.mediaProgressHide();form.dataset.mediaUrl=up.url;form.dataset.mediaType=isVideo?'video':'image';if(preview)preview.innerHTML=`<span>${isVideo?`<video src="${esc(up.url)}" muted playsinline></video>`:`<img src="${esc(up.url)}" alt="">`}<button type="button" id="chatMediaRemove" aria-label="Sil">×</button></span>`;$('#chatMediaRemove')?.addEventListener('click',async()=>{const url=form.dataset.mediaUrl;delete form.dataset.mediaUrl;delete form.dataset.mediaType;preview.replaceChildren();file.value='';camera.value='';if(url)await db.removeUrls('chat-media',[url]).catch(()=>{})})}catch(e){db.mediaProgressHide();if(up?.url)await db.removeUrls('chat-media',[up.url]).catch(()=>{});toast(e.message,'error')}};file?.addEventListener('change',()=>handleMedia(file));camera?.addEventListener('change',()=>handleMedia(camera));
     let chatEmojiSelStart=0,chatEmojiSelEnd=0;const rememberChatEmojiCaret=()=>{const input=$('#chatInput');if(!input)return;chatEmojiSelStart=input.selectionStart??input.value.length;chatEmojiSelEnd=input.selectionEnd??chatEmojiSelStart};$('#chatInput')?.addEventListener('keyup',rememberChatEmojiCaret);$('#chatInput')?.addEventListener('click',rememberChatEmojiCaret);$('#chatInput')?.addEventListener('select',rememberChatEmojiCaret);$('#chatEmojiBtn')?.addEventListener('click',()=>{rememberChatEmojiCaret();const box=$('#chatEmojiPicker');box.hidden=!box.hidden;$('#chatInput')?.focus({preventScroll:true})});$('#chatEmojiPicker')?.addEventListener('pointerdown',e=>{if(e.target.closest('[data-emoji]'))e.preventDefault()},{passive:false});
     $('#chatEmojiPicker')?.addEventListener('click',e=>{const b=e.target.closest('[data-emoji]'),input=$('#chatInput');if(!b||!input)return;const a=Math.min(chatEmojiSelStart,input.value.length),z=Math.min(chatEmojiSelEnd,input.value.length),emoji=b.dataset.emoji;input.value=input.value.slice(0,a)+emoji+input.value.slice(z);const pos=a+emoji.length;chatEmojiSelStart=chatEmojiSelEnd=pos;input.focus({preventScroll:true});try{input.setSelectionRange(pos,pos)}catch{}e.currentTarget.hidden=false});
   }
