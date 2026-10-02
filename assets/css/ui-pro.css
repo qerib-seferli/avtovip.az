@@ -3214,3 +3214,32 @@ body[data-page="feed"] .av-feed-slide>.av-feed-video{
     padding-bottom:12px!important;
   }
 }
+
+
+/* AvtoVIP v96 — requested-only Lent edge media, date-only header, compact counter, collapsed hashtags */
+body[data-page="feed"] .av-carousel-count{
+  top:8px!important;
+  right:8px!important;
+  min-width:32px!important;
+  height:20px!important;
+  padding:0 6px!important;
+  font-size:9.5px!important;
+  border-radius:999px!important;
+  box-shadow:0 1px 6px rgba(0,0,0,.16)!important;
+}
+body[data-page="feed"] .av-feed-caption.is-collapsible .av-post-hashtags{display:none!important}
+body[data-page="feed"] .av-feed-caption.is-collapsible.expanded .av-post-hashtags{display:flex!important}
+@media(max-width:800px){
+  body[data-page="feed"] .av-feed-media{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    border-radius:0!important;
+    overflow:hidden!important;
+  }
+  body[data-page="feed"] .av-feed-slide,
+  body[data-page="feed"] .av-feed-slide .av-media-main,
+  body[data-page="feed"] .av-feed-slide>.av-feed-video{
+    border-radius:0!important;
+  }
+}
