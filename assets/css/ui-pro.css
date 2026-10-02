@@ -3243,3 +3243,34 @@ body[data-page="feed"] .av-feed-caption.is-collapsible.expanded .av-post-hashtag
     border-radius:0!important;
   }
 }
+
+
+/* AvtoVIP v97 — requested-only Reels two-line caption + reveal hashtags on expand */
+.av-reel-overlay .av-reel-caption.is-collapsible{
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:6px!important;
+}
+.av-reel-overlay .av-reel-caption.is-collapsible>span{
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  max-width:100%!important;
+}
+.av-reel-overlay .av-reel-caption.is-collapsible.expanded{
+  display:block!important;
+}
+.av-reel-overlay .av-reel-caption.is-collapsible.expanded>span{
+  display:block!important;
+  -webkit-line-clamp:unset!important;
+  overflow:visible!important;
+}
+.av-reel-overlay .av-reel-caption.is-collapsible:not(.expanded)+.av-post-hashtags{
+  display:none!important;
+}
+.av-reel-overlay .av-reel-caption.is-collapsible.expanded+.av-post-hashtags{
+  display:flex!important;
+}
