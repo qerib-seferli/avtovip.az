@@ -3107,3 +3107,28 @@ body[data-page="feed"] .av-feed-slide:-webkit-full-screen{width:100vw!important;
 body[data-page="feed"] .av-feed-slide:fullscreen>.av-feed-video,
 body[data-page="feed"] .av-feed-slide:-webkit-full-screen>.av-feed-video{width:100vw!important;height:100vh!important;object-fit:contain!important}
 @media(min-width:801px){.av-reel-download{top:108px!important;right:12px!important}}
+
+/* AvtoVIP v94 — requested-only Lent mobile media inset + composer bottom alignment */
+@media(max-width:800px){
+  body[data-page="feed"] .av-feed-media{
+    width:calc(100% - 20px)!important;
+    margin-left:10px!important;
+    margin-right:10px!important;
+    border-radius:12px!important;
+    overflow:hidden!important;
+  }
+
+  /* Keep the create-post panel visually continuous down to the fixed nav. */
+  body[data-page="create-post"] main.page{
+    min-height:0!important;
+    padding-bottom:max(10px,env(safe-area-inset-bottom))!important;
+  }
+  body[data-page="create-post"] main.page>.container{
+    min-height:0!important;
+    display:block!important;
+  }
+  body[data-page="create-post"] .av-post-create{
+    min-height:0!important;
+    margin-bottom:0!important;
+  }
+}
