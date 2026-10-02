@@ -136,7 +136,7 @@ function postNotice(message,type='info'){
  box.className=`av-post-notice ${type}`;box.innerHTML=`<i class="fa-solid ${type==='error'?'fa-circle-exclamation':type==='success'?'fa-circle-check':'fa-circle-info'}"></i><span>${esc(message)}</span>`;box.classList.add('show');clearTimeout(box.__t);box.__t=setTimeout(()=>box.classList.remove('show'),3200)
 }
 async function prepareCompatibleImage(file){
- return window.avtoDb.prepareImage(file,{maxWidth:1920,maxHeight:1920,quality:.84,maxBytes:2200000,progressTitle:'Şəkil hazırlanır...'});
+ return window.avtoDb.prepareImage(file,{maxWidth:1920,maxHeight:1920,quality:.90,maxBytes:4000000,progressTitle:'Şəkil hazırlanır...'});
 }
 async function transcodeVideo(file,status){
  return window.avtoDb.transcodeVideo(file,{maxWidth:1280,maxHeight:1280,progressTitle:'Video hazırlanır...',onProgress:p=>{if(status)status.textContent=`Video çevrilir... ${Math.round(p)}%`}});

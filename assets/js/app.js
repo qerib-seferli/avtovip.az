@@ -1054,7 +1054,7 @@
       preview.innerHTML=old+fresh;
     };
     const syncListingFiles=()=>{const dt=new DataTransfer();selectedListingFiles.slice(0,Math.max(0,15-existingUrls.length)).forEach(f=>dt.items.add(f));files.files=dt.files;selectedListingFiles=[...dt.files];if(editId)drawEditPreview();else renderPreview(files.files,preview,index=>{selectedListingFiles.splice(index,1);syncListingFiles()})};
-    files?.addEventListener('change',async()=>{const incoming=[...files.files];if(!incoming.length)return;try{for(const original of incoming){if(selectedListingFiles.length>=Math.max(0,15-existingUrls.length))break;const key=original.name+'|'+original.size+'|'+original.lastModified;if(selectedListingFiles.some(x=>(x.__avOriginalKey||`${x.name}|${x.size}|${x.lastModified}`)===key))continue;const f=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.82,maxBytes:2500000,progressTitle:'Şəkil hazırlanır...'});Object.defineProperty(f,'__avOriginalKey',{value:key,enumerable:false});selectedListingFiles.push(f)}syncListingFiles();db.mediaProgressHide()}catch(err){db.mediaProgressHide();toast(err.message,'error')}});
+    files?.addEventListener('change',async()=>{const incoming=[...files.files];if(!incoming.length)return;try{for(const original of incoming){if(selectedListingFiles.length>=Math.max(0,15-existingUrls.length))break;const key=original.name+'|'+original.size+'|'+original.lastModified;if(selectedListingFiles.some(x=>(x.__avOriginalKey||`${x.name}|${x.size}|${x.lastModified}`)===key))continue;const f=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.90,maxBytes:4_000_000,progressTitle:'Şəkil hazırlanır...'});Object.defineProperty(f,'__avOriginalKey',{value:key,enumerable:false});selectedListingFiles.push(f)}syncListingFiles();db.mediaProgressHide()}catch(err){db.mediaProgressHide();toast(err.message,'error')}});
     if(editId){
       document.body.classList.add('av-edit-listing');if(files)files.required=false;
       const {data,error}=await sb.from('elanlar').select('*').eq('id',editId).eq('user_id',user.id).maybeSingle();
@@ -1085,7 +1085,7 @@
         if(editId&&existingUrls.length+imageFiles.length<3)throw new Error('Elan üçün minimum 3 şəkil qalmalıdır.');
         for(const original of imageFiles){
           if(original.size>10*1024*1024)throw new Error(`${original.name} 10 MB-dan böyükdür.`);
-          const file=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.82,maxBytes:2_500_000});
+          const file=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.90,maxBytes:4_000_000});
           db.mediaProgress('Yüklənir...',97,'Şəkil AvtoVİP-ə əlavə olunur...');const up=await db.upload('elan-images',user.id,file,'listings');uploadedPaths.push(up.path);newUrls.push(up.url);
         }
         const fd=new FormData(form);
@@ -1117,18 +1117,19 @@
   async function initCreateStory(){
     const user=await db.requireAuth();if(!user)return;
     const form=$('#storyForm'),media=$('#storyMedia');setupFriendlyFileInput(media,{kind:'media'});
-    let storyPreviewUrl='';
+    let storyPreviewUrl='',storyPreparedFile=null;
     const clearStoryPreviewUrl=()=>{if(storyPreviewUrl){URL.revokeObjectURL(storyPreviewUrl);storyPreviewUrl=''}};
     media?.addEventListener('change',async()=>{
-      const f=media.files[0],box=$('#storyPreview');if(!box)return;clearStoryPreviewUrl();box.innerHTML='';if(!f)return;
+      const f=media.files[0],box=$('#storyPreview');if(!box)return;storyPreparedFile=null;clearStoryPreviewUrl();box.innerHTML='';if(!f)return;
       storyPreviewUrl=URL.createObjectURL(f);
       const previewIsVideo=f.type.startsWith('video/')||/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(f.name||'');
       if(previewIsVideo){
         const v=document.createElement('video');v.src=storyPreviewUrl;v.muted=true;v.playsInline=true;v.preload='metadata';v.autoplay=true;v.loop=true;v.setAttribute('playsinline','');box.append(v);
         v.addEventListener('loadedmetadata',()=>{v.play().catch(()=>{})},{once:true});
         v.addEventListener('error',()=>{box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Video seçildi. Göndərilərkən avtomatik hazırlanacaq.</div>'},{once:true});
-      }else if(f.type.startsWith('image/')){
-        const img=document.createElement('img');img.src=storyPreviewUrl;img.alt='Hekayə önbaxışı';box.append(img);
+      }else if(f.type.startsWith('image/')||db.isHeicFile(f)){
+        const img=document.createElement('img');img.alt='Hekayə önbaxışı';box.append(img);
+        if(db.isHeicFile(f)){db.prepareImage(f,{maxWidth:1440,maxHeight:1920,quality:.92,maxBytes:3500000,progressTitle:'Hekayə şəkli hazırlanır...'}).then(prepared=>{storyPreparedFile=prepared;clearStoryPreviewUrl();storyPreviewUrl=URL.createObjectURL(prepared);img.src=storyPreviewUrl;db.mediaProgressHide()}).catch(()=>{img.alt='Şəkil seçildi';db.mediaProgressHide()})}else img.src=storyPreviewUrl;
       }else box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Şəkil və ya video seçin.</div>';
     });
     form?.addEventListener('submit',async e=>{
@@ -1138,7 +1139,7 @@
         const looksVideo=original.type.startsWith('video/')||/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(original.name||'');
         if(looksVideo&&original.size>80*1024*1024)throw new Error('Video faylı çox böyükdür. Daha qısa video seçin.');
         const file=(original.type.startsWith('image/')||db.isHeicFile(original))
-          ?await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.82,maxBytes:2_000_000,progressTitle:'Hekayə şəkli hazırlanır...'})
+          ?(storyPreparedFile||await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.92,maxBytes:3_500_000,progressTitle:'Hekayə şəkli hazırlanır...'}))
           :looksVideo?await normalizeStoryVideo(original):original;
         if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))throw new Error('Şəkil və ya video seçin.');
         db.mediaProgress('Yüklənir...',97,'Hekayə AvtoVİP-ə əlavə olunur...');uploaded=await db.upload('story-media',user.id,file,'stories');db.mediaProgressHide();
@@ -1180,7 +1181,7 @@
     const walletCurrency=currencyForProfile(profile);if($('#walletBalance'))$('#walletBalance').textContent=money(profile?.wallet_balance||0,walletCurrency);localizeFinanceCurrencyHint(walletCurrency);
     $('#profileForm')?.addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(e.currentTarget);const payload={name:fd.get('name')?.trim(),surname:fd.get('surname')?.trim(),phone:fd.get('phone')?.trim(),whatsapp_phone:fd.get('whatsapp_phone')?.trim(),country_code:fd.get('country_code')||'AZ',preferred_currency:COUNTRY_CURRENCY[String(fd.get('country_code')||'AZ').toUpperCase()]||'USD',city:fd.get('city')?.trim(),address:fd.get('address')?.trim(),bio:fd.get('bio')?.trim()};const {error}=await sb.from('users').update(payload).eq('id',user.id);if(error)toast(error.message,'error');else{toast('Profil yeniləndi.','success');loadCurrent()}});
     $('#walletTopupBtn')?.addEventListener('click',async()=>{const currency=currencyForProfile(currentProfile||profile);const value=await uiDialog({title:runtimeText('Balansı artır'),message:`${runtimeText('Balansa əlavə etmək istədiyiniz məbləği yazın')} (${currency}):`,input:true,confirmText:runtimeText('Sorğu yarat')});const amount=Number(String(value||'').replace(',','.'));if(!Number.isFinite(amount)||amount<=0)return;const {error}=await sb.from('payment_requests').insert({user_id:user.id,target_type:'wallet_topup',plan_code:'wallet_topup',amount,currency,payment_method:'payment_request',payer_note:''});if(error)toast(error.message,'error');else{toast(runtimeText('Balans artırma sorğusu yaradıldı.'),'success');loadOwnPayments(user.id)}});
-    $('#avatarInput')?.addEventListener('change',async e=>{const original=e.target.files[0];if(!original)return;let up=null;try{const oldUrl=profile?.avatar_url||null;const f=await db.prepareImage(original,{maxWidth:640,maxHeight:640,quality:.84,maxBytes:700_000});up=await db.upload('avatars',user.id,f,'profile');const {error}=await sb.from('users').update({avatar_url:up.url}).eq('id',user.id);if(error)throw error;$('#profileAvatar').src=up.url;if(oldUrl&&oldUrl!==up.url)await db.removeUrls('avatars',[oldUrl]).catch(()=>{});toast('Profil şəkli yeniləndi.','success')}catch(err){if(up?.path)await db.removePaths('avatars',[up.path]).catch(()=>{});toast(err.message,'error')}});
+    $('#avatarInput')?.addEventListener('change',async e=>{const original=e.target.files[0];if(!original)return;let up=null;try{const oldUrl=profile?.avatar_url||null;const f=await db.prepareImage(original,{maxWidth:640,maxHeight:640,quality:.92,maxBytes:1_200_000});up=await db.upload('avatars',user.id,f,'profile');const {error}=await sb.from('users').update({avatar_url:up.url}).eq('id',user.id);if(error)throw error;$('#profileAvatar').src=up.url;if(oldUrl&&oldUrl!==up.url)await db.removeUrls('avatars',[oldUrl]).catch(()=>{});toast('Profil şəkli yeniləndi.','success')}catch(err){if(up?.path)await db.removePaths('avatars',[up.path]).catch(()=>{});toast(err.message,'error')}});
     $('#logoutBtn')?.addEventListener('click',async()=>{await sb.auth.signOut();location.href='index.html'});
     await Promise.all([loadOwnListings(user.id),loadOwnPayments(user.id),loadWalletTransactions(user.id)]);
   }

@@ -126,7 +126,7 @@
     if(mediaProgressEl) return mediaProgressEl;
     const style=document.createElement('style');
     style.textContent=`
-      #avMediaProgress{position:fixed;left:50%;top:max(14px,env(safe-area-inset-top));transform:translateX(-50%);width:min(92vw,520px);z-index:2147483000;display:none;pointer-events:none}
+      #avMediaProgress{position:fixed;left:50%;top:calc(var(--header-h,68px) + env(safe-area-inset-top) + 10px);transform:translateX(-50%);width:min(92vw,520px);z-index:2147483000;display:none;pointer-events:none}
       #avMediaProgress.show{display:block}
       #avMediaProgress .av-mp-card{background:rgba(18,20,26,.97);border:1px solid rgba(255,255,255,.13);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.42);padding:12px 14px;color:#fff;backdrop-filter:blur(14px)}
       #avMediaProgress .av-mp-row{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
@@ -140,9 +140,10 @@
     document.body.appendChild(el);mediaProgressEl=el;return el;
   }
   function mediaProgress(title='Media hazırlanır...',percent=0,detail=''){
-    const el=mediaUi();el.classList.add('show');el.querySelector('.av-mp-title').textContent=title;el.querySelector('.av-mp-bar').style.width=`${Math.max(0,Math.min(100,Number(percent)||0))}%`;el.querySelector('.av-mp-detail').textContent=detail||'';
+    clearTimeout(mediaHideTimer);const el=mediaUi();el.classList.add('show');el.querySelector('.av-mp-title').textContent=title;el.querySelector('.av-mp-bar').style.width=`${Math.max(0,Math.min(100,Number(percent)||0))}%`;el.querySelector('.av-mp-detail').textContent=detail||'';
   }
-  function mediaProgressHide(delay=180){const el=mediaProgressEl;if(!el)return;setTimeout(()=>el.classList.remove('show'),delay)}
+  let mediaHideTimer=0;
+  function mediaProgressHide(delay=120){const el=mediaProgressEl;if(!el)return;clearTimeout(mediaHideTimer);mediaHideTimer=setTimeout(()=>{el.classList.remove('show');el.querySelector('.av-mp-bar').style.width='0%'},delay)}
 
   function isHeicFile(file){
     const name=String(file?.name||'').toLowerCase(),type=String(file?.type||'').toLowerCase();
@@ -167,13 +168,13 @@
 
   async function heicToJpeg(file){
     const lib=await loadScriptOnce('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js','heic2any','heic');
-    const out=await lib({blob:file,toType:'image/jpeg',quality:.92});
+    const out=await lib({blob:file,toType:'image/jpeg',quality:.96});
     const blob=Array.isArray(out)?out[0]:out;
     if(!blob)throw new Error('HEIC/HEIF şəkli çevrilə bilmədi.');
     return new File([blob],`${String(file.name||'image').replace(/\.[^.]+$/,'')}.jpg`,{type:'image/jpeg',lastModified:Date.now()});
   }
 
-  async function prepareImage(file,{maxWidth=1600,maxHeight=1600,quality=.82,maxBytes=2_500_000,progressTitle='Şəkil hazırlanır...'}={}){
+  async function prepareImage(file,{maxWidth=2400,maxHeight=2400,quality=.90,maxBytes=4_000_000,progressTitle='Şəkil hazırlanır...'}={}){
     if(!file)return file;
     if(isVideoFile(file))return file;
     let src=file;
@@ -185,7 +186,7 @@
     const type=String(src.type||'').toLowerCase();
     if(!type.startsWith('image/'))throw new Error('Bu fayl şəkil kimi oxuna bilmədi.');
     if(src.size<=maxBytes && type==='image/webp'){
-      mediaProgress(progressTitle,88,'Şəkil hazırdır.');mediaProgressHide();return src;
+      mediaProgress(progressTitle,100,'Şəkil hazırdır.');mediaProgressHide(100);return src;
     }
     let bitmap;
     try{bitmap=await createImageBitmap(src,{imageOrientation:'from-image'});}catch{try{bitmap=await createImageBitmap(src)}catch{throw new Error('Şəkil oxuna bilmədi. Telefon formatı çevrilərkən xəta baş verdi.')}}
@@ -195,15 +196,15 @@
     if(!ctx){bitmap.close?.();throw new Error('Şəkil emalı üçün brauzer dəstəyi yoxdur.');}
     ctx.drawImage(bitmap,0,0,w,h);bitmap.close?.();
     let qualityNow=quality,blob=null;
-    for(let i=0;i<6;i++){
-      mediaProgress('Şəkil optimallaşdırılır...',55+i*5,`${w}×${h} • ${i+1}/6`);
+    for(let i=0;i<4;i++){
+      mediaProgress('Şəkil hazırlanır...',55+i*9,`${w}×${h}`);
       blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',qualityNow));
-      if(!blob)break;if(blob.size<=maxBytes)break;qualityNow=Math.max(.48,qualityNow-.07);
+      if(!blob)break;if(blob.size<=maxBytes)break;qualityNow=Math.max(.68,qualityNow-.06);
     }
     if(!blob)throw new Error('Şəkil düzgün formata çevrilə bilmədi.');
     const base=String(src.name||'image').replace(/\.[^.]+$/,'');
     const out=new File([blob],`${base}.webp`,{type:'image/webp',lastModified:Date.now()});
-    mediaProgress(progressTitle,92,'Yükləməyə hazırdır.');return out;
+    mediaProgress(progressTitle,100,'Şəkil hazırdır.');mediaProgressHide(100);return out;
   }
 
   async function loadFFmpeg(){
@@ -222,10 +223,18 @@
 
   async function transcodeVideo(file,{maxWidth=1280,maxHeight=1280,progressTitle='Video hazırlanır...',onProgress=null}={}){
     if(!file)return file;if(!isVideoFile(file))throw new Error('Bu fayl video kimi oxuna bilmədi.');
+    const ext=String(file.name||'').split('.').pop().toLowerCase();
+    /* Most Android/iPhone camera MP4 files are already directly usable. Do not re-encode them
+       needlessly: it is much faster and preserves the original visual quality. MOV/HEVC and
+       other containers still go through FFmpeg for cross-browser compatibility. */
+    if(ext==='mp4' && String(file.type||'video/mp4').toLowerCase().includes('mp4')){
+      mediaProgress(progressTitle,100,'Video hazırdır.');onProgress?.(100);mediaProgressHide(100);return file;
+    }
+    mediaProgress(progressTitle,6,'Video uyğunluğu yoxlanılır...');
     const {lib,ffmpeg}=await loadFFmpeg();
     const base=String(file.name||'video').replace(/\.[^.]+$/,'').replace(/[^a-z0-9_-]+/gi,'-')||'video';
     const stamp=Date.now();const input=`av-input-${stamp}.${(String(file.name||'mp4').split('.').pop()||'mp4').replace(/[^a-z0-9]/gi,'')||'mp4'}`;const output=`av-output-${stamp}.mp4`;
-    mediaProgress(progressTitle,10,'Video emal modulu hazırlanır...');
+    mediaProgress(progressTitle,10,'Video hazırlanır...');
     try{
       ffmpeg.setProgress?.(({ratio})=>{const pct=Math.max(12,Math.min(94,12+(Number(ratio)||0)*82));mediaProgress(progressTitle,pct,`Çevrilir... ${Math.round((Number(ratio)||0)*100)}%`);onProgress?.(pct)});
       ffmpeg.FS('writeFile',input,await lib.fetchFile(file));
@@ -235,7 +244,7 @@
       await run(common);
       const data=ffmpeg.FS('readFile',output);if(!data?.length)throw new Error('empty-output');
       const out=new File([data.buffer],`${base}.mp4`,{type:'video/mp4',lastModified:Date.now()});
-      mediaProgress(progressTitle,96,'Video hazırdır.');return out;
+      mediaProgress(progressTitle,100,'Video hazırdır.');return out;
     }catch(e){
       console.error('[AvtoVIP media] video conversion failed',e);
       throw new Error('Video uyğun MP4 formatına çevrilə bilmədi. Zəhmət olmasa videonu yenidən seçin.');
