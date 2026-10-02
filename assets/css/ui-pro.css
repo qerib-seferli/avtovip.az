@@ -3020,3 +3020,27 @@ body[data-page="feed"] .av-feed-slide:has(.av-media-progress) .av-carousel-dots{
 .av-hashtag-suggest button span{color:#55a9c9;font-weight:800}.av-hashtag-suggest button small{color:var(--muted);font-size:10px}
 @media(max-width:800px){body[data-page="feed"] .av-feed-card{border-radius:0!important;box-shadow:none!important}body[data-page="feed"] .av-feed-media{height:min(64dvh,calc(100dvh - var(--av-header) - 176px))!important;min-height:300px!important;max-height:680px!important}body[data-page="feed"] .av-feed-card>header{min-height:62px!important;padding-inline:12px!important}body[data-page="feed"] .av-feed-actions{padding-inline:10px!important}body[data-page="feed"] .av-feed-caption{padding-inline:12px!important}.av-post-hashtags{gap:4px 7px}.av-post-hashtags button{font-size:11.5px!important}.av-hashtag-filter{margin:0 10px 4px}}
 @media(max-height:720px) and (max-width:800px){body[data-page="feed"] .av-feed-media{height:calc(100dvh - var(--av-header) - 182px)!important;min-height:260px!important}}
+
+
+/* AvtoVIP v91 — compact adaptive Lent media, soft backdrops, download controls, composer fit */
+body[data-page="feed"] .av-feed-media{height:var(--av-feed-media-h,min(62dvh,680px))!important;min-height:240px!important;transition:height .18s ease!important;background:#0a0b0e!important}
+body[data-page="feed"] .av-feed-slide{isolation:isolate;background:#0a0b0e!important}
+body[data-page="feed"] .av-feed-slide .av-media-backdrop{position:absolute!important;inset:-28px!important;width:calc(100% + 56px)!important;height:calc(100% + 56px)!important;object-fit:cover!important;filter:blur(26px) brightness(.42) saturate(.9)!important;transform:scale(1.08)!important;opacity:.88!important;z-index:0!important;pointer-events:none!important}
+body[data-page="feed"] .av-feed-slide .av-media-main,body[data-page="feed"] .av-feed-slide>.av-feed-video{position:relative!important;z-index:1!important;width:100%!important;height:100%!important;object-fit:contain!important;background:transparent!important}
+body[data-page="feed"] .av-feed-slide .av-media-sound,body[data-page="feed"] .av-feed-slide .av-media-progress{z-index:14!important}
+body[data-page="feed"] .av-carousel-prev,body[data-page="feed"] .av-carousel-next{z-index:16!important}
+body[data-page="feed"] .av-carousel-dots{bottom:28px!important;z-index:17!important}
+body[data-page="feed"] .av-feed-slide:has(.av-media-progress)~.av-carousel-dots,body[data-page="feed"] .av-feed-media:has(.av-feed-slide.active .av-media-progress)>.av-carousel-dots{bottom:30px!important}
+body[data-page="feed"] .av-media-progress{bottom:8px!important;z-index:15!important}
+body[data-page="feed"] .av-feed-caption>strong{display:none!important}
+body[data-page="feed"] .av-feed-caption{display:block!important;padding-top:5px!important}
+body[data-page="feed"] .av-feed-actions [data-post-download]{font-size:17px!important}
+.av-reel-download{position:absolute;right:12px;top:62px;z-index:8;width:38px;height:38px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.4);color:#fff;font-size:17px;cursor:pointer}
+.av-reel-download:hover{background:rgba(0,0,0,.55)}
+@media(max-width:800px){.av-reel-download{right:12px;top:calc(62px + env(safe-area-inset-top))}}
+body[data-page="create-post"] .av-hashtag-suggest[hidden]{display:none!important}
+@media(max-width:900px){
+  body[data-page="create-post"] main.page{min-height:0!important;padding-bottom:calc(70px + env(safe-area-inset-bottom))!important}
+  body[data-page="create-post"] main.page>.container{min-height:0!important;display:block!important}
+  body[data-page="create-post"] .av-post-create{min-height:0!important;margin-bottom:0!important;padding-bottom:12px!important}
+}
