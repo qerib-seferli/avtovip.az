@@ -3274,3 +3274,11 @@ body[data-page="feed"] .av-feed-caption.is-collapsible.expanded .av-post-hashtag
 .av-reel-overlay .av-reel-caption.is-collapsible.expanded+.av-post-hashtags{
   display:flex!important;
 }
+
+
+/* AvtoVIP v98 — requested-only Reels hashtag filter alignment */
+body[data-page="reels"] .av-reels-grid>.av-reels-hashtag-filter{
+  grid-column:1 / -1!important;
+  width:100%!important;
+  margin:0 0 10px!important;
+}
