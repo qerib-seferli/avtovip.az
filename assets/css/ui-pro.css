@@ -3132,3 +3132,85 @@ body[data-page="feed"] .av-feed-slide:-webkit-full-screen>.av-feed-video{width:1
     margin-bottom:0!important;
   }
 }
+
+/* AvtoVIP v95 — requested-only Lent clean media + compact counter + composer/nav seam */
+body[data-page="feed"] .av-carousel-prev,
+body[data-page="feed"] .av-carousel-next,
+body[data-page="feed"] .av-carousel-dots{display:none!important}
+body[data-page="feed"] .av-carousel-count{
+  position:absolute!important;
+  top:10px!important;
+  right:10px!important;
+  z-index:18!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:2px!important;
+  min-width:38px!important;
+  height:24px!important;
+  padding:0 8px!important;
+  border-radius:999px!important;
+  background:rgba(8,10,14,.62)!important;
+  color:#fff!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.01em!important;
+  box-shadow:0 2px 10px rgba(0,0,0,.18)!important;
+  backdrop-filter:blur(7px)!important;
+  -webkit-backdrop-filter:blur(7px)!important;
+  pointer-events:none!important;
+}
+body[data-page="feed"] .av-feed-media,
+body[data-page="feed"] .av-feed-slide{background:transparent!important}
+body[data-page="feed"] .av-feed-slide .av-media-backdrop,
+body[data-page="feed"] .av-feed-slide .av-video-backdrop{display:none!important}
+body[data-page="feed"] .av-feed-slide .av-media-main,
+body[data-page="feed"] .av-feed-slide>.av-feed-video{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  background:transparent!important;
+}
+@media(max-width:800px){
+  body[data-page="feed"] .av-feed-media{
+    width:calc(100% - 24px)!important;
+    margin-left:12px!important;
+    margin-right:12px!important;
+    border-radius:14px!important;
+    overflow:hidden!important;
+    box-shadow:none!important;
+    outline:0!important;
+    border:0!important;
+  }
+  body[data-page="feed"] .av-feed-slide{
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+  }
+  body[data-page="feed"] .av-feed-slide .av-media-main,
+  body[data-page="feed"] .av-feed-slide>.av-feed-video{
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+  }
+
+  /* The create-post card should end directly at the visual top edge of the fixed nav. */
+  body[data-page="create-post"] main.page{
+    padding-bottom:calc(72px + env(safe-area-inset-bottom))!important;
+    min-height:calc(100dvh - var(--av-header,58px))!important;
+  }
+  body[data-page="create-post"] main.page>.container{
+    min-height:calc(100dvh - var(--av-header,58px) - 72px - env(safe-area-inset-bottom))!important;
+    display:flex!important;
+    align-items:stretch!important;
+  }
+  body[data-page="create-post"] .av-post-create{
+    flex:1 1 auto!important;
+    min-height:calc(100dvh - var(--av-header,58px) - 72px - env(safe-area-inset-bottom))!important;
+    margin-bottom:0!important;
+    padding-bottom:12px!important;
+  }
+}

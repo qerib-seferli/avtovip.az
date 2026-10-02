@@ -1,4 +1,4 @@
-const CACHE='avtovip-social-feed-v94-20261003';
+const CACHE='avtovip-social-feed-v95-20261003';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
@@ -24,3 +24,5 @@ self.addEventListener('fetch',e=>{
 // AvtoVIP media controls cache refresh 2026-10-03
 
 // AvtoVIP Lent inset + composer bottom alignment cache refresh 2026-10-03
+
+// AvtoVIP Lent clean media/count + composer seam refresh 2026-10-03
