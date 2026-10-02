@@ -3082,3 +3082,28 @@ body[data-page="create-post"] .av-hashtag-suggest[hidden]{display:none!important
     margin-bottom:0!important;
   }
 }
+
+
+/* AvtoVIP v93 — requested-only Lent video controls + desktop Reels control spacing */
+body[data-page="feed"] .av-media-sound,
+body[data-page="feed"] .av-media-sound:hover,
+body[data-page="feed"] .av-media-sound:focus,
+body[data-page="feed"] .av-media-sound:active{
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+  backdrop-filter:none!important;
+}
+body[data-page="feed"] .av-media-fullscreen{
+  position:absolute;right:10px;top:50px;z-index:14;width:36px;height:36px;border:0;border-radius:0;
+  display:grid;place-items:center;background:transparent;color:#fff;font-size:15px;cursor:pointer;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.72));
+}
+body[data-page="feed"] .av-media-fullscreen:hover,
+body[data-page="feed"] .av-media-fullscreen:focus,
+body[data-page="feed"] .av-media-fullscreen:active{background:transparent!important;box-shadow:none!important}
+body[data-page="feed"] .av-feed-slide:fullscreen,
+body[data-page="feed"] .av-feed-slide:-webkit-full-screen{width:100vw!important;height:100vh!important;background:#000!important}
+body[data-page="feed"] .av-feed-slide:fullscreen>.av-feed-video,
+body[data-page="feed"] .av-feed-slide:-webkit-full-screen>.av-feed-video{width:100vw!important;height:100vh!important;object-fit:contain!important}
+@media(min-width:801px){.av-reel-download{top:108px!important;right:12px!important}}
