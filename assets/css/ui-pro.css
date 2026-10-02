@@ -3044,3 +3044,41 @@ body[data-page="create-post"] .av-hashtag-suggest[hidden]{display:none!important
   body[data-page="create-post"] main.page>.container{min-height:0!important;display:block!important}
   body[data-page="create-post"] .av-post-create{min-height:0!important;margin-bottom:0!important;padding-bottom:12px!important}
 }
+
+
+/* AvtoVIP v92 — requested-only Reels download, hashtag replacement, composer viewport fit */
+.av-reel-download,
+.av-reel-download:hover,
+.av-reel-download:focus,
+.av-reel-download:active{
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+  backdrop-filter:none!important;
+}
+@media(max-width:800px){
+  .av-post-notice.reel-download-notice{
+    top:calc(env(safe-area-inset-top) + 16px)!important;
+    left:18px!important;
+    right:148px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    transform:translateY(-16px)!important;
+  }
+  .av-post-notice.reel-download-notice.show{transform:translateY(0)!important}
+  body[data-page="create-post"] main.page{
+    min-height:calc(100dvh - var(--av-header,58px))!important;
+    padding-bottom:calc(70px + env(safe-area-inset-bottom))!important;
+  }
+  body[data-page="create-post"] main.page>.container{
+    display:flex!important;
+    align-items:stretch!important;
+    min-height:calc(100dvh - var(--av-header,58px) - 77px - env(safe-area-inset-bottom))!important;
+  }
+  body[data-page="create-post"] .av-post-create{
+    flex:1 1 auto!important;
+    min-height:calc(100dvh - var(--av-header,58px) - 77px - env(safe-area-inset-bottom))!important;
+    margin-bottom:0!important;
+  }
+}
