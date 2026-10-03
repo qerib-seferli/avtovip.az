@@ -835,3 +835,117 @@ body[data-page="profile"] #pfLikedPosts{
   }
   body[data-page="profile"] .pf-library-toggle i{font-size:11px!important}
 }
+
+/* AvtoVIP v137 — saved/liked rail direction + clean bookmark + profile bottom clearance only. */
+body[data-page="profile"] .pf-library-toggle.is-saved{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+body[data-page="profile"] .pf-library-toggle.is-saved:hover,
+body[data-page="profile"] .pf-library-toggle.is-saved:focus-visible{
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Mobile/PWA: saved + liked listings are one horizontal swipe rail. */
+@media(max-width:900px){
+  body[data-page="profile"] main.page{
+    padding-bottom:calc(64px + max(10px,env(safe-area-inset-bottom)))!important;
+  }
+
+  body[data-page="profile"] .pf-panel[data-pf-panel="saved"] .pf-saved-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="liked"] .pf-liked-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+    min-width:0!important;
+  }
+
+  body[data-page="profile"] #pfSavedListings,
+  body[data-page="profile"] #pfLikedListings{
+    display:flex!important;
+    flex-flow:row nowrap!important;
+    align-items:stretch!important;
+    justify-content:flex-start!important;
+    gap:8px!important;
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding:9px!important;
+    scroll-snap-type:x proximity!important;
+    overscroll-behavior-inline:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:thin!important;
+  }
+  body[data-page="profile"] #pfSavedListings>.pf-item,
+  body[data-page="profile"] #pfLikedListings>.pf-item{
+    flex:0 0 min(45vw,190px)!important;
+    width:min(45vw,190px)!important;
+    min-width:min(45vw,190px)!important;
+    max-width:190px!important;
+    scroll-snap-align:start!important;
+  }
+  body[data-page="profile"] #pfSavedListings>.pf-more-wrap,
+  body[data-page="profile"] #pfLikedListings>.pf-more-wrap{
+    flex:0 0 auto!important;
+    min-width:92px!important;
+    align-self:center!important;
+  }
+
+  /* Saved + liked posts keep normal page vertical flow. */
+  body[data-page="profile"] #pfSavedPosts,
+  body[data-page="profile"] #pfLikedPosts{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    overflow:visible!important;
+    padding:9px!important;
+    align-content:start!important;
+  }
+
+  /* Keep the last saved/liked/finance/payment content fully above the fixed nav. */
+  body[data-page="profile"] .pf-panel[data-pf-panel="saved"]:not([hidden]),
+  body[data-page="profile"] .pf-panel[data-pf-panel="liked"]:not([hidden]),
+  body[data-page="profile"] .pf-panel[data-pf-panel="finance"]:not([hidden]),
+  body[data-page="profile"] .pf-panel[data-pf-panel="payments"]:not([hidden]){
+    padding-bottom:2px!important;
+  }
+}
+
+/* Desktop: saved/liked sections and their cards are stacked vertically, not side-by-side. */
+@media(min-width:901px){
+  body[data-page="profile"] .pf-panel[data-pf-panel="saved"] .pf-saved-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="liked"] .pf-liked-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  body[data-page="profile"] #pfSavedListings,
+  body[data-page="profile"] #pfLikedListings,
+  body[data-page="profile"] #pfSavedPosts,
+  body[data-page="profile"] #pfLikedPosts{
+    display:grid!important;
+    grid-template-columns:260px!important;
+    justify-content:start!important;
+    gap:8px!important;
+    padding:10px!important;
+  }
+  body[data-page="profile"] #pfSavedListings>.pf-item,
+  body[data-page="profile"] #pfLikedListings>.pf-item,
+  body[data-page="profile"] #pfSavedPosts>.pf-item,
+  body[data-page="profile"] #pfLikedPosts>.pf-item{
+    width:100%!important;
+    max-width:none!important;
+  }
+  body[data-page="profile"] #pfSavedListings .pf-thumb,
+  body[data-page="profile"] #pfLikedListings .pf-thumb,
+  body[data-page="profile"] #pfSavedPosts .pf-thumb,
+  body[data-page="profile"] #pfLikedPosts .pf-thumb{
+    width:100%!important;
+  }
+}
