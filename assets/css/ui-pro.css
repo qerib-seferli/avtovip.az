@@ -3282,3 +3282,27 @@ body[data-page="reels"] .av-reels-grid>.av-reels-hashtag-filter{
   width:100%!important;
   margin:0 0 10px!important;
 }
+
+/* AvtoVIP v99 — requested-only home card footer anchoring on narrow PWA screens */
+@media(max-width:480px){
+  body[data-page="home"] .listing-grid{align-items:stretch!important}
+  body[data-page="home"] .listing-card{
+    display:flex!important;
+    flex-direction:column!important;
+    height:100%!important;
+  }
+  body[data-page="home"] .listing-card .listing-photo{flex:0 0 auto!important}
+  body[data-page="home"] .listing-card .listing-body{
+    display:flex!important;
+    flex-direction:column!important;
+    flex:1 1 auto!important;
+    min-height:0!important;
+  }
+  body[data-page="home"] .listing-card .listing-footer{
+    margin-top:auto!important;
+    padding-top:4px!important;
+  }
+  body[data-page="home"] .listing-card-actions{
+    flex:0 0 auto!important;
+  }
+}
