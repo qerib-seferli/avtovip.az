@@ -651,3 +651,132 @@ body[data-page="profile"] .pf-profile-map .leaflet-marker-pane{z-index:650!impor
   body[data-page="profile"] #pfProfileAvatarShell{width:66px!important;height:66px!important;min-width:66px!important;min-height:66px!important;flex:0 0 66px!important}
   body[data-page="profile"] #pfProfileAvatarShell.profile-verified-avatar::after{right:-1px!important;bottom:-1px!important;width:20px!important;height:20px!important}
 }
+
+
+/* AvtoVIP v135 — own-profile bottom seam + compact saved/liked cards only. */
+@media(max-width:900px){
+  body[data-page="profile"] main.page{
+    min-height:calc(100dvh - var(--header-h))!important;
+    padding-bottom:calc(58px + max(7px,env(safe-area-inset-bottom)))!important;
+  }
+  body[data-page="profile"] .profile-final-shell{
+    min-height:calc(100dvh - var(--header-h) - 58px - max(7px,env(safe-area-inset-bottom)) - 36px)!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  body[data-page="profile"] .pf-panel:not([hidden]){
+    flex:1 1 auto!important;
+    min-height:0!important;
+  }
+  body[data-page="profile"] .pf-panel[data-pf-panel="saved"]:not([hidden]) .pf-saved-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="liked"]:not([hidden]) .pf-liked-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="account"]:not([hidden]) #profileInfoPanel,
+  body[data-page="profile"] .pf-panel[data-pf-panel="finance"]:not([hidden]) .pf-finance-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="payments"]:not([hidden])>.account-finance-panel{
+    min-height:100%!important;
+  }
+}
+
+/* Saved / liked libraries: visual cards, minimal metadata, direct toggle on-card. */
+body[data-page="profile"] #pfSavedListings,
+body[data-page="profile"] #pfLikedListings,
+body[data-page="profile"] #pfSavedPosts,
+body[data-page="profile"] #pfLikedPosts{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  padding:10px!important;
+  align-content:start!important;
+}
+body[data-page="profile"] #pfSavedListings>.pf-item,
+body[data-page="profile"] #pfLikedListings>.pf-item,
+body[data-page="profile"] #pfSavedPosts>.pf-item,
+body[data-page="profile"] #pfLikedPosts>.pf-item{
+  position:relative!important;
+  display:block!important;
+  min-width:0!important;
+  padding:0!important;
+  border:1px solid var(--line)!important;
+  border-radius:12px!important;
+  overflow:hidden!important;
+  background:var(--surface-2)!important;
+}
+body[data-page="profile"] #pfSavedListings .pf-thumb,
+body[data-page="profile"] #pfLikedListings .pf-thumb,
+body[data-page="profile"] #pfSavedPosts .pf-thumb,
+body[data-page="profile"] #pfLikedPosts .pf-thumb{
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1.28/1!important;
+  border-radius:0!important;
+  background:#090b0f!important;
+}
+body[data-page="profile"] #pfSavedPosts .pf-thumb,
+body[data-page="profile"] #pfLikedPosts .pf-thumb{aspect-ratio:1/1!important}
+body[data-page="profile"] #pfSavedListings .pf-item-main,
+body[data-page="profile"] #pfLikedListings .pf-item-main,
+body[data-page="profile"] #pfSavedPosts .pf-item-main,
+body[data-page="profile"] #pfLikedPosts .pf-item-main{
+  padding:8px 9px 9px!important;
+  min-width:0!important;
+}
+body[data-page="profile"] #pfSavedListings .pf-item-title strong,
+body[data-page="profile"] #pfLikedListings .pf-item-title strong{
+  display:block!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-size:11px!important;
+}
+body[data-page="profile"] #pfSavedListings .pf-meta,
+body[data-page="profile"] #pfLikedListings .pf-meta{font-size:9px!important;margin-top:2px!important}
+body[data-page="profile"] #pfSavedPosts .pf-item-title,
+body[data-page="profile"] #pfLikedPosts .pf-item-title,
+body[data-page="profile"] #pfSavedPosts .pf-social-metrics,
+body[data-page="profile"] #pfLikedPosts .pf-social-metrics,
+body[data-page="profile"] #pfSavedPosts .pf-caption,
+body[data-page="profile"] #pfLikedPosts .pf-caption{display:none!important}
+body[data-page="profile"] #pfSavedListings .pf-actions,
+body[data-page="profile"] #pfLikedListings .pf-actions,
+body[data-page="profile"] #pfSavedPosts .pf-actions,
+body[data-page="profile"] #pfLikedPosts .pf-actions{
+  position:absolute!important;
+  right:7px!important;
+  top:7px!important;
+  z-index:8!important;
+  margin:0!important;
+  display:block!important;
+}
+body[data-page="profile"] .pf-library-toggle{
+  width:31px!important;
+  min-width:31px!important;
+  height:31px!important;
+  min-height:31px!important;
+  padding:0!important;
+  border-radius:50%!important;
+  display:grid!important;
+  place-items:center!important;
+  backdrop-filter:blur(8px)!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.24)!important;
+}
+body[data-page="profile"] .pf-library-toggle.is-saved{
+  color:#fff!important;
+  background:rgba(15,20,27,.78)!important;
+  border-color:rgba(255,255,255,.38)!important;
+}
+body[data-page="profile"] .pf-library-toggle.is-liked{
+  color:#fff!important;
+  background:#ef3d4c!important;
+  border-color:#ef3d4c!important;
+}
+body[data-page="profile"] .pf-library-toggle i{font-size:13px!important}
+body[data-page="profile"] #pfSavedPosts .pf-item-main,
+body[data-page="profile"] #pfLikedPosts .pf-item-main{padding:0!important;height:0!important}
+@media(max-width:420px){
+  body[data-page="profile"] #pfSavedListings,
+  body[data-page="profile"] #pfLikedListings,
+  body[data-page="profile"] #pfSavedPosts,
+  body[data-page="profile"] #pfLikedPosts{gap:6px!important;padding:8px!important}
+  body[data-page="profile"] .pf-library-toggle{width:29px!important;min-width:29px!important;height:29px!important;min-height:29px!important}
+}

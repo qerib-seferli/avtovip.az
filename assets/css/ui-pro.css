@@ -3388,3 +3388,21 @@ body[data-page="create-listing"] .av-stepbar-live{position:relative!important;to
     margin-top:0!important;
   }
 }
+
+
+/* AvtoVIP v104 — public profile bottom seam only. */
+@media(max-width:900px){
+  body[data-page="public-user"] main.page{
+    min-height:calc(100dvh - var(--header-h))!important;
+    padding-bottom:calc(58px + max(7px,env(safe-area-inset-bottom)))!important;
+  }
+  body[data-page="public-user"] #publicProfile{
+    min-height:calc(100dvh - var(--header-h) - 58px - max(7px,env(safe-area-inset-bottom)) - 36px)!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  body[data-page="public-user"] #publicProfile>.public-safe-buy:last-child{
+    margin-top:auto!important;
+    margin-bottom:0!important;
+  }
+}
