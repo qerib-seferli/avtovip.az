@@ -3306,3 +3306,31 @@ body[data-page="reels"] .av-reels-grid>.av-reels-hashtag-filter{
     flex:0 0 auto!important;
   }
 }
+
+
+/* AvtoVIP v100 — requested-only live create/edit listing section progress */
+body[data-page="create-listing"] .av-stepbar-live{
+  align-items:center!important;
+  gap:6px!important;
+  scrollbar-width:none;
+}
+body[data-page="create-listing"] .av-stepbar-live::-webkit-scrollbar{display:none}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip{
+  appearance:none;border:1px solid var(--av-line);background:var(--av-card);color:var(--av-text);
+  display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:5px 8px;border-radius:999px;
+  white-space:nowrap;font:inherit;font-size:9px;font-weight:800;cursor:pointer;
+}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip b{
+  display:grid;place-items:center;width:17px;height:17px;border-radius:50%;font-size:8px;background:color-mix(in srgb,var(--av-line) 72%,transparent)
+}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip i{font-size:7px}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip.is-complete{border-color:#23a26d;color:#23a26d;background:color-mix(in srgb,#23a26d 10%,var(--av-card))}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip.is-complete b{background:#23a26d;color:#fff}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip.is-partial{border-color:#d89a24;color:#d89a24;background:color-mix(in srgb,#d89a24 10%,var(--av-card))}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip.is-partial b{background:#d89a24;color:#fff}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip.is-empty{border-color:#c92735;color:#d5424f;background:color-mix(in srgb,#c92735 8%,var(--av-card))}
+body[data-page="create-listing"] .av-stepbar-live .av-step-chip.is-empty b{background:#c92735;color:#fff}
+@media(max-width:600px){
+  body[data-page="create-listing"] .av-stepbar-live .av-step-chip{min-height:28px;padding:4px 7px;font-size:8px;gap:4px}
+  body[data-page="create-listing"] .av-stepbar-live .av-step-chip b{width:16px;height:16px;font-size:7.5px}
+}

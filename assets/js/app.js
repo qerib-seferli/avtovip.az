@@ -1063,12 +1063,23 @@
       const title=document.querySelector('.form-shell h1');if(title){title.textContent='Elanı redaktə et';title.insertAdjacentHTML('beforeend','<span class="av-edit-title-note"><i class="fa-solid fa-pen"></i> Mövcud elan</span>')}
       const submit=$('#submitListing');if(submit)submit.innerHTML='<i class="fa-solid fa-check"></i> Dəyişiklikləri yadda saxla';
       const imageSection=files?.closest('.form-section');imageSection?.querySelector('.form-note')?.insertAdjacentHTML('afterend','<p class="av-existing-images-note">Mövcud şəkillər saxlanılır. İstədiyinizi × ilə silə, yeni şəkil əlavə edə bilərsiniz. Ümumi maksimum 15 şəkildir.</p>');
-      const set=(name,val)=>{const el=form?.elements?.namedItem(name);if(!el)return;if(el instanceof RadioNodeList)return;el.value=val??'';el.dispatchEvent(new Event('change',{bubbles:true}))};
+      const ensureOption=(el,val)=>{if(!el||el.tagName!=='SELECT'||val==null||val==='')return;if(![...el.options].some(o=>String(o.value)===String(val))){const o=document.createElement('option');o.value=String(val);o.textContent=String(val);el.append(o)}};
+      const set=(name,val,{event='change'}={})=>{const el=form?.elements?.namedItem(name);if(!el||el instanceof RadioNodeList)return;ensureOption(el,val);el.value=val??'';el.dispatchEvent(new Event(event,{bubbles:true}))};
       const wait=(ms=60)=>new Promise(r=>setTimeout(r,ms));
-      const waitOption=async(el,val,max=2400)=>{if(!el||val==null||val==='')return;const start=performance.now();while(performance.now()-start<max){if([...el.options].some(o=>String(o.value)===String(val)))return;await wait(80)}};
-      set('brand',data.brand);await wait(80);
-      set('model',data.model);['generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,data[k]));
-      const countryEl=form.elements.namedItem('country_code');if(countryEl&&data.country_code){countryEl.value=data.country_code;countryEl.dispatchEvent(new Event('change',{bubbles:true}));await wait(120);const stateEl=form.elements.namedItem('state_name');if(data.state_name){await waitOption(stateEl,data.state_name);set('state_name',data.state_name);await wait(50)}set('city',data.city)}else{set('state_name',data.state_name);set('city',data.city)}
+      const waitOption=async(el,val,max=4000)=>{if(!el||val==null||val==='')return false;const start=performance.now();while(performance.now()-start<max){if([...el.options].some(o=>String(o.value)===String(val)))return true;await wait(80)}return false};
+      /* Hydrate edit values in dependency order. Async catalog/location listeners can
+         repopulate selects, so dependent values are restored only after their options exist. */
+      set('brand',data.brand);await wait(120);
+      set('model',data.model,{event:'input'});
+      ['generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,data[k],{event:'input'}));
+      const countryEl=form.elements.namedItem('country_code');
+      if(countryEl&&data.country_code){
+        ensureOption(countryEl,data.country_code);countryEl.value=data.country_code;countryEl.dispatchEvent(new Event('change',{bubbles:true}));
+        const stateEl=form.elements.namedItem('state_name');
+        if(data.state_name){await waitOption(stateEl,data.state_name);set('state_name',data.state_name);await wait(80)}
+        set('city',data.city,{event:'input'});
+      }else{set('state_name',data.state_name);set('city',data.city,{event:'input'})}
+      /* Country selection may auto-change currency; restore the saved listing value last. */
       ['currency','body_type','color','fuel','transmission','drivetrain'].forEach(k=>set(k,data[k]));
       set('condition',data.is_new===true?'new':data.is_new===false?'used':(data.condition||''));
       ['is_credit','is_barter','has_accident','is_painted'].forEach(k=>{const el=form.elements.namedItem(k);if(el)el.checked=!!data[k]});
@@ -1089,7 +1100,8 @@
           db.mediaProgress('Yüklənir...',97,'Şəkil AvtoVİP-ə əlavə olunur...');const up=await db.upload('elan-images',user.id,file,'listings');uploadedPaths.push(up.path);newUrls.push(up.url);
         }
         const fd=new FormData(form);
-        const payload={brand:fd.get('brand'),model:fd.get('model')?.trim(),generation:fd.get('generation')?.trim(),trim:fd.get('trim')?.trim(),year:Number(fd.get('year')),price:Number(fd.get('price')),currency:fd.get('currency'),country_code:fd.get('country_code')||'AZ',state_name:fd.get('state_name')||null,city:fd.get('city'),district:fd.get('district')?.trim()||null,body_type:fd.get('body_type'),color:fd.get('color'),fuel:fd.get('fuel'),transmission:fd.get('transmission'),drivetrain:fd.get('drivetrain'),engine_volume:fd.get('engine_volume')?Number(fd.get('engine_volume')):null,engine_power:fd.get('engine_power')?Number(fd.get('engine_power')):null,mileage:Number(fd.get('mileage')||0),seats:fd.get('seats')?Number(fd.get('seats')):null,owners_count:fd.get('owners_count')?Number(fd.get('owners_count')):null,market_origin:fd.get('market_origin')?.trim(),vin:fd.get('vin')?.trim().toUpperCase(),description:fd.get('description')?.trim(),phone:fd.get('phone')?.trim(),whatsapp_phone:fd.get('whatsapp_phone')?.trim(),is_new:fd.get('condition')==='new',is_credit:fd.get('is_credit')==='on',is_barter:fd.get('is_barter')==='on',has_accident:fd.get('has_accident')==='on',is_painted:fd.get('is_painted')==='on',equipment:fd.getAll('equipment'),image_urls:[...existingUrls,...newUrls]};
+        const vinValue=String(fd.get('vin')||'').trim().toUpperCase();
+        const payload={brand:fd.get('brand'),model:fd.get('model')?.trim(),generation:fd.get('generation')?.trim(),trim:fd.get('trim')?.trim(),year:Number(fd.get('year')),price:Number(fd.get('price')),currency:fd.get('currency'),country_code:fd.get('country_code')||'AZ',state_name:fd.get('state_name')||null,city:fd.get('city'),district:fd.get('district')?.trim()||null,body_type:fd.get('body_type'),color:fd.get('color'),fuel:fd.get('fuel'),transmission:fd.get('transmission'),drivetrain:fd.get('drivetrain'),engine_volume:fd.get('engine_volume')?Number(fd.get('engine_volume')):null,engine_power:fd.get('engine_power')?Number(fd.get('engine_power')):null,mileage:Number(fd.get('mileage')||0),seats:fd.get('seats')?Number(fd.get('seats')):null,owners_count:fd.get('owners_count')?Number(fd.get('owners_count')):null,market_origin:fd.get('market_origin')?.trim()||null,vin:vinValue||null,description:fd.get('description')?.trim()||null,phone:fd.get('phone')?.trim(),whatsapp_phone:fd.get('whatsapp_phone')?.trim()||null,is_new:fd.get('condition')==='new',is_credit:fd.get('is_credit')==='on',is_barter:fd.get('is_barter')==='on',has_accident:fd.get('has_accident')==='on',is_painted:fd.get('is_painted')==='on',equipment:fd.getAll('equipment'),image_urls:[...existingUrls,...newUrls]};
         if(!payload.brand||!payload.model||!payload.year||!payload.price||!payload.phone)throw new Error('Vacib sahələri doldurun.');
         if(payload.country_code==='AM'||payload.currency==='AMD')throw new Error('Bu ölkə/valyuta bazarda aktiv deyil.');
         if(editId){
