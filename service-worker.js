@@ -1,4 +1,4 @@
-const CACHE='avtovip-profile-owner-card-flow-v142-20261004';
+const CACHE='avtovip-profile-owner-card-layout-v143-20261004';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
