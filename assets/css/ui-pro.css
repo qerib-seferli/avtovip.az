@@ -3406,3 +3406,32 @@ body[data-page="create-listing"] .av-stepbar-live{position:relative!important;to
     margin-bottom:0!important;
   }
 }
+
+/* AvtoVIP v105 — public profile grid/icon polish + bottom seam correction only. */
+@media(max-width:900px){
+  body[data-page="public-user"] #publicProfile{
+    min-height:0!important;
+    display:grid!important;
+    flex:none!important;
+  }
+  body[data-page="public-user"] #publicProfile>.public-safe-buy:last-child{
+    margin-top:10px!important;
+    margin-bottom:0!important;
+  }
+}
+@media(min-width:901px){
+  body[data-page="public-user"] .public-social-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
+body[data-page="public-user"] .public-social-card>span{
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  text-shadow:0 1px 4px rgba(0,0,0,.8)!important;
+}

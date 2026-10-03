@@ -1,4 +1,4 @@
-const CACHE='avtovip-profile-library-v104-20261003';
+const CACHE='avtovip-profile-layout-v105-20261003';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
@@ -30,3 +30,5 @@ self.addEventListener('fetch',e=>{
 // AvtoVIP Lent edge/date/counter/hashtags cache refresh 2026-10-03
 
 // AvtoVIP home listing footer anchoring cache refresh 2026-10-03
+
+// AvtoVIP profile saved/liked 3-col + public profile 4-col/icon/bottom refresh 2026-10-03

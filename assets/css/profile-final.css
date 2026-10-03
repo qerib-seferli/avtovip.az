@@ -780,3 +780,58 @@ body[data-page="profile"] #pfLikedPosts .pf-item-main{padding:0!important;height
   body[data-page="profile"] #pfLikedPosts{gap:6px!important;padding:8px!important}
   body[data-page="profile"] .pf-library-toggle{width:29px!important;min-width:29px!important;height:29px!important;min-height:29px!important}
 }
+
+/* AvtoVIP v136 — profile library density + bottom seam correction only. */
+@media(max-width:900px){
+  /* The shell previously carried its own 76px spacer in addition to main.page.
+     Keep only the global bottom-nav clearance so the profile ends at the nav. */
+  body[data-page="profile"] .profile-final-shell{
+    padding-bottom:0!important;
+    min-height:0!important;
+    display:grid!important;
+  }
+  body[data-page="profile"] .pf-panel:not([hidden]){
+    min-height:0!important;
+    flex:none!important;
+  }
+  body[data-page="profile"] .pf-panel[data-pf-panel="saved"] .pf-saved-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="liked"] .pf-liked-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="account"] #profileInfoPanel,
+  body[data-page="profile"] .pf-panel[data-pf-panel="finance"] .pf-finance-grid,
+  body[data-page="profile"] .pf-panel[data-pf-panel="payments"]>.account-finance-panel{
+    min-height:0!important;
+  }
+}
+
+/* Saved / liked libraries stay open: there is no accordion control on these cards. */
+body[data-page="profile"] .pf-panel[data-pf-panel="saved"] .pf-collapse,
+body[data-page="profile"] .pf-panel[data-pf-panel="liked"] .pf-collapse,
+body[data-page="profile"] .profile-info-toggle{display:none!important}
+
+/* Three compact cards per row for saved and liked content. */
+body[data-page="profile"] #pfSavedListings,
+body[data-page="profile"] #pfLikedListings,
+body[data-page="profile"] #pfSavedPosts,
+body[data-page="profile"] #pfLikedPosts{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+@media(max-width:420px){
+  body[data-page="profile"] #pfSavedListings,
+  body[data-page="profile"] #pfLikedListings,
+  body[data-page="profile"] #pfSavedPosts,
+  body[data-page="profile"] #pfLikedPosts{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:5px!important;
+    padding:7px!important;
+  }
+  body[data-page="profile"] #pfSavedListings .pf-item-main,
+  body[data-page="profile"] #pfLikedListings .pf-item-main{padding:6px!important}
+  body[data-page="profile"] #pfSavedListings .pf-item-title strong,
+  body[data-page="profile"] #pfLikedListings .pf-item-title strong{font-size:9px!important}
+  body[data-page="profile"] #pfSavedListings .pf-meta,
+  body[data-page="profile"] #pfLikedListings .pf-meta{font-size:7.5px!important}
+  body[data-page="profile"] .pf-library-toggle{
+    width:26px!important;min-width:26px!important;height:26px!important;min-height:26px!important;
+  }
+  body[data-page="profile"] .pf-library-toggle i{font-size:11px!important}
+}

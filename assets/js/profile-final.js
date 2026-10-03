@@ -69,7 +69,33 @@ async function previewStory(id){
  toast('Hekayə baxışı hazır deyil. Səhifəni yeniləyin.','error');
 }
 
-function bindCollapsibles(){const mobile=matchMedia('(max-width:900px)').matches;$$('.pf-section').forEach((section,i)=>{const head=section.querySelector('.pf-section-head');if(!head||section.classList.contains('pf-always-open'))return;const key=section.dataset.pfCollapseKey||`section-${i}`;const storeKey=`avtovip-profile-collapse:${key}`;let collapsed;const saved=localStorage.getItem(storeKey);if(saved===null)collapsed=mobile;else collapsed=saved==='1';section.classList.toggle('collapsed',collapsed);let btn=head.querySelector('.pf-collapse');if(!btn){btn=document.createElement('button');btn.type='button';btn.className='pf-collapse';btn.innerHTML='<i class="fa-solid fa-chevron-up"></i>';btn.setAttribute('aria-label','Bölməni aç/bağla');head.append(btn)}const sync=()=>{const isClosed=section.classList.contains('collapsed');btn.classList.toggle('closed',isClosed);btn.setAttribute('aria-expanded',String(!isClosed))};sync();btn.onclick=()=>{section.classList.toggle('collapsed');localStorage.setItem(storeKey,section.classList.contains('collapsed')?'1':'0');sync()}});const panel=$('#profileInfoPanel'),body=$('#profileInfoBody'),btn=$('#profileInfoToggle');if(panel&&body&&btn){const k='avtovip-profile-collapse:account-info';const saved=localStorage.getItem(k);let closed=saved===null?mobile:saved==='1';const sync=()=>{body.hidden=closed;btn.setAttribute('aria-expanded',String(!closed));btn.querySelector('i')?.classList.toggle('fa-chevron-down',closed);btn.querySelector('i')?.classList.toggle('fa-chevron-up',!closed)};sync();btn.onclick=()=>{closed=!closed;localStorage.setItem(k,closed?'1':'0');sync()}}}
+function bindCollapsibles(){
+ const mobile=matchMedia('(max-width:900px)').matches;
+ $$('.pf-section').forEach((section,i)=>{
+   const head=section.querySelector('.pf-section-head');
+   if(!head)return;
+   const fixedOpen=section.classList.contains('pf-always-open')||section.closest('[data-pf-panel="saved"],[data-pf-panel="liked"]');
+   if(fixedOpen){
+     section.classList.remove('collapsed');
+     head.querySelector('.pf-collapse')?.remove();
+     return;
+   }
+   const key=section.dataset.pfCollapseKey||`section-${i}`;
+   const storeKey=`avtovip-profile-collapse:${key}`;
+   let collapsed;
+   const saved=localStorage.getItem(storeKey);
+   if(saved===null)collapsed=mobile;else collapsed=saved==='1';
+   section.classList.toggle('collapsed',collapsed);
+   let btn=head.querySelector('.pf-collapse');
+   if(!btn){btn=document.createElement('button');btn.type='button';btn.className='pf-collapse';btn.innerHTML='<i class="fa-solid fa-chevron-up"></i>';btn.setAttribute('aria-label','Bölməni aç/bağla');head.append(btn)}
+   const sync=()=>{const isClosed=section.classList.contains('collapsed');btn.classList.toggle('closed',isClosed);btn.setAttribute('aria-expanded',String(!isClosed))};
+   sync();
+   btn.onclick=()=>{section.classList.toggle('collapsed');localStorage.setItem(storeKey,section.classList.contains('collapsed')?'1':'0');sync()}
+ });
+ const body=$('#profileInfoBody'),btn=$('#profileInfoToggle');
+ if(body)body.hidden=false;
+ btn?.remove();
+}
 let profileGeoHierarchy=null,profileGeoCities=[],profileGeoLoadSeq=0;
 const AZ_GEO={
  'abseron rayonu':[40.4700,49.6500],'agcabedi rayonu':[40.0500,47.4600],'agdam rayonu':[39.9900,46.9300],'agdas rayonu':[40.6500,47.4800],'agstafa rayonu':[41.1200,45.4500],'agsu rayonu':[40.5700,48.4000],'astara rayonu':[38.4600,48.8700],'babek rayonu':[39.1500,45.4500],'balaken rayonu':[41.7300,46.4100],'berde rayonu':[40.3700,47.1300],'beyleqan rayonu':[39.7700,47.6200],'bilesuvar rayonu':[39.4600,48.5500],'cebrayil rayonu':[39.4000,47.0300],'celilabad rayonu':[39.2100,48.5000],'daskesen rayonu':[40.5200,46.0800],'fuzuli rayonu':[39.6000,47.1500],'gedebey rayonu':[40.5700,45.8100],'goranboy rayonu':[40.6100,46.7900],'goycay rayonu':[40.6500,47.7400],'goygol rayonu':[40.5900,46.3200],'haciqabul rayonu':[40.0400,48.9400],'xacmaz rayonu':[41.4700,48.8100],'xizi rayonu':[40.9100,49.0700],'xocali rayonu':[39.9100,46.7900],'xocavend rayonu':[39.8000,47.1000],'imisli rayonu':[39.8700,48.0600],'ismayilli rayonu':[40.7900,48.1500],'kelbecer rayonu':[40.1000,46.0400],'kengerli rayonu':[39.4000,45.1600],'kurdemir rayonu':[40.3400,48.1600],'qax rayonu':[41.4200,46.9200],'qazax rayonu':[41.0900,45.3700],'qebele rayonu':[40.9800,47.8500],'qobustan rayonu':[40.5300,48.9300],'quba rayonu':[41.3600,48.5100],'qubadli rayonu':[39.3400,46.5800],'qusar rayonu':[41.4300,48.4300],'lacin rayonu':[39.6400,46.5500],'lenkeran rayonu':[38.7500,48.8500],'lerik rayonu':[38.7700,48.4100],'masalli rayonu':[39.0300,48.6700],'neftcala rayonu':[39.3700,49.2500],'oguz rayonu':[41.0700,47.4700],'ordubad rayonu':[38.9100,46.0200],'saatli rayonu':[39.9300,48.3700],'sabirabad rayonu':[40.0100,48.4800],'sederek rayonu':[39.7100,44.8800],'salyan rayonu':[39.6000,48.9800],'samux rayonu':[40.7600,46.4100],'siyezen rayonu':[41.0800,49.1100],'sabran rayonu':[41.2000,48.9900],'sahbuz rayonu':[39.4100,45.5700],'samaxi rayonu':[40.6300,48.6400],'semkir rayonu':[40.8300,46.0200],'serur rayonu':[39.5500,44.9800],'susa rayonu':[39.7600,46.7500],'terter rayonu':[40.3400,46.9300],'tovuz rayonu':[40.9900,45.6300],'ucar rayonu':[40.5200,47.6500],'yardimli rayonu':[38.9200,48.2400],'yevlax rayonu':[40.6100,47.1500],'zaqatala rayonu':[41.6300,46.6400],'zengilan rayonu':[39.0800,46.6500],'zerdab rayonu':[40.2200,47.7100],
