@@ -31,7 +31,8 @@
      {label:'Satıcı / Açıqlama',section:sections[7],required:['phone'],watch:['whatsapp_phone','description']}
    ];
    const bar=document.createElement('div');bar.className='av-stepbar av-stepbar-live';
-   bar.innerHTML=groups.map((g,i)=>`<button type="button" class="av-step-chip is-empty" data-step="${i}"><b>${i+1}</b><span>${g.label}</span><i class="fa-solid fa-circle"></i></button>`).join('');
+   bar.innerHTML=groups.map((g,i)=>`<button type="button" class="av-step-chip is-empty" data-step="${i}"><b>${i+1}</b><span>${g.label}</span></button>`).join('');
+   const titleRow=form.previousElementSibling;let clearBtn=null;if(titleRow){titleRow.classList.add('av-listing-form-title-row');clearBtn=document.createElement('button');clearBtn.type='button';clearBtn.className='av-clear-listing-draft';clearBtn.innerHTML='<i class="fa-solid fa-broom"></i><span>Təmizlə</span>';clearBtn.title='Yadda qalan köhnə elan məlumatlarını təmizlə';titleRow.append(clearBtn);clearBtn.addEventListener('click',()=>{if(!confirm('Yadda qalan köhnə elan məlumatları təmizlənsin və boş yeni elan forması açılsın?'))return;localStorage.removeItem('avtovip-listing-draft-v2');form.dataset.avSkipDraftRestore='1';location.href='elan-ver.html?fresh=1'})}
    form.before(bar);
    const hasValue=name=>{const nodes=[...form.querySelectorAll(`[name="${name}"]`)];if(!nodes.length)return false;return nodes.some(el=>el.type==='checkbox'||el.type==='radio'?el.checked:String(el.value??'').trim()!=='')};
    const statusFor=g=>{

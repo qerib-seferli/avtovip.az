@@ -641,7 +641,7 @@
     const renderCities=(arr)=>{cityNames=(arr||[]).map(x=>typeof x==='string'?x:x.name).filter(Boolean);fillDatalist(cityList,cityNames)};
     const onCountry=async()=>{const iso=countryEl.value; if(iso)localStorage.setItem('avtovip-country',iso); if(mirror&&mirror.value!==iso)mirror.value=iso; hierarchy=iso&&intl?await intl.countryHierarchy(iso,lang):null; activeLocationData=hierarchy; const states=hierarchy?.states||[]; if(stateEl)fillSelectPairs(stateEl,states.map(st=>({value:st.name,label:`${st.native&&st.native!==st.name?st.native+' / ':''}${st.name}`})),'Hamısı'); const flat=iso&&intl?await intl.cities(iso,lang):CITIES; renderCities(flat); if(currencyEl&&iso){await ensureCatalogs();const cur=intl?.currencyForCountry?.(countryCatalog,iso);if(cur&&[...currencyEl.options].some(o=>o.value===cur))currencyEl.value=cur}}
     const onState=()=>{if(!stateEl)return;const st=(hierarchy?.states||[]).find(x=>x.name===stateEl.value);if(st?.cities?.length)renderCities(st.cities);};
-    countryEl.addEventListener('change',onCountry); stateEl?.addEventListener('change',()=>{if(cityInput)cityInput.value='';onState()}); cityInput?.addEventListener('input',()=>{const q=cityInput.value.trim().toLocaleLowerCase();if(q.length<2)return;fillDatalist(cityList,cityNames.filter(x=>x.toLocaleLowerCase().includes(q)).slice(0,80))}); await onCountry();
+    countryEl.addEventListener('change',onCountry); stateEl?.addEventListener('change',()=>{const hydrating=countryEl.closest('form')?.dataset.avHydrating==='1';if(cityInput&&!hydrating)cityInput.value='';onState()}); cityInput?.addEventListener('input',()=>{const q=cityInput.value.trim().toLocaleLowerCase();if(q.length<2)return;fillDatalist(cityList,cityNames.filter(x=>x.toLocaleLowerCase().includes(q)).slice(0,80))}); await onCountry();
   }
   function fillColorSelect(el,placeholder='Seçin'){
     if(!el)return;
@@ -1059,7 +1059,7 @@
       document.body.classList.add('av-edit-listing');if(files)files.required=false;
       const {data,error}=await sb.from('elanlar').select('*').eq('id',editId).eq('user_id',user.id).maybeSingle();
       if(error||!data){toast(error?.message||'Elan tapılmadı və ya bu elanı redaktə etmək icazəniz yoxdur.','error');setTimeout(()=>location.href='profile.html',900);return}
-      editRow=data;existingUrls=[...(data.image_urls||[])];
+      editRow=data;existingUrls=[...(data.image_urls||[])];form.dataset.avHydrating='1';
       const title=document.querySelector('.form-shell h1');if(title){title.textContent='Elanı redaktə et';title.insertAdjacentHTML('beforeend','<span class="av-edit-title-note"><i class="fa-solid fa-pen"></i> Mövcud elan</span>')}
       const submit=$('#submitListing');if(submit)submit.innerHTML='<i class="fa-solid fa-check"></i> Dəyişiklikləri yadda saxla';
       const imageSection=files?.closest('.form-section');imageSection?.querySelector('.form-note')?.insertAdjacentHTML('afterend','<p class="av-existing-images-note">Mövcud şəkillər saxlanılır. İstədiyinizi × ilə silə, yeni şəkil əlavə edə bilərsiniz. Ümumi maksimum 15 şəkildir.</p>');
@@ -1084,6 +1084,14 @@
       set('condition',data.is_new===true?'new':data.is_new===false?'used':(data.condition||''));
       ['is_credit','is_barter','has_accident','is_painted'].forEach(k=>{const el=form.elements.namedItem(k);if(el)el.checked=!!data[k]});
       const equipmentRaw=Array.isArray(data.equipment)?data.equipment:(typeof data.equipment==='string'?(()=>{try{return JSON.parse(data.equipment)}catch{return data.equipment.split(',')}})():[]);const fold=v=>String(v||'').trim().toLocaleLowerCase('az').normalize('NFD').replace(/[\u0300-\u036f]/g,'');const selectedEq=new Set((equipmentRaw||[]).map(fold));for(const cb of form.querySelectorAll('input[name="equipment"]'))cb.checked=selectedEq.has(fold(cb.value));
+      /* A final pass runs after async make/location/custom-select listeners settle. This
+         keeps the database row authoritative while editing and prevents a delayed UI
+         listener from blanking city/model or restoring stale draft values. */
+      await wait(180);
+      ['model','generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,data[k],{event:'input'}));
+      set('city',data.city,{event:'input'});['currency','body_type','color','fuel','transmission','drivetrain'].forEach(k=>set(k,data[k]));set('condition',data.is_new===true?'new':data.is_new===false?'used':(data.condition||''));
+      ['is_credit','is_barter','has_accident','is_painted'].forEach(k=>{const el=form.elements.namedItem(k);if(el)el.checked=!!data[k]});for(const cb of form.querySelectorAll('input[name="equipment"]'))cb.checked=selectedEq.has(fold(cb.value));
+      form.dataset.avHydrating='0';form.dispatchEvent(new Event('input',{bubbles:true}));form.dispatchEvent(new Event('change',{bubbles:true}));
       drawEditPreview();
       preview?.addEventListener('click',e=>{const a=e.target.closest('[data-remove-existing]'),b=e.target.closest('[data-remove-new]');if(a){const i=Number(a.dataset.removeExisting),[u]=existingUrls.splice(i,1);if(u)removedExisting.push(u);drawEditPreview()}else if(b){selectedListingFiles.splice(Number(b.dataset.removeNew),1);syncListingFiles()}});
     }

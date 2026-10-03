@@ -3334,3 +3334,17 @@ body[data-page="create-listing"] .av-stepbar-live .av-step-chip.is-empty b{backg
   body[data-page="create-listing"] .av-stepbar-live .av-step-chip{min-height:28px;padding:4px 7px;font-size:8px;gap:4px}
   body[data-page="create-listing"] .av-stepbar-live .av-step-chip b{width:16px;height:16px;font-size:7.5px}
 }
+
+
+/* AvtoVIP listing editor — compact live section rail + clean-draft action. */
+body[data-page="create-listing"] .av-listing-form-title-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-width:0!important}
+body[data-page="create-listing"] .av-listing-form-title-row>h1{min-width:0!important}
+body[data-page="create-listing"] .av-clear-listing-draft{appearance:none;border:1px solid var(--av-line)!important;background:var(--av-card)!important;color:var(--av-muted)!important;border-radius:9px!important;min-height:30px!important;padding:5px 9px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;font:inherit!important;font-size:10px!important;font-weight:800!important;white-space:nowrap!important;cursor:pointer!important;flex:0 0 auto!important}
+body[data-page="create-listing"] .av-clear-listing-draft:hover{color:var(--av-text)!important;border-color:color-mix(in srgb,var(--av-red) 46%,var(--av-line))!important}
+body[data-page="create-listing"] .av-stepbar-live{gap:5px!important;margin:0!important;padding:0!important;display:flex!important;overflow-x:auto!important;scrollbar-width:none!important}
+body[data-page="create-listing"] .av-stepbar-live::-webkit-scrollbar{display:none!important}
+body[data-page="create-listing"] .av-step-chip{min-height:28px!important;height:28px!important;padding:3px 7px!important;border-radius:999px!important;gap:5px!important;font-size:9px!important;line-height:1!important;flex:0 0 auto!important}
+body[data-page="create-listing"] .av-step-chip b{width:17px!important;height:17px!important;min-width:17px!important;font-size:8px!important;display:grid!important;place-items:center!important}
+body[data-page="create-listing"] .av-step-chip span{font-size:8.5px!important;font-weight:800!important;white-space:nowrap!important}
+body[data-page="create-listing"] .av-step-chip>i{display:none!important}
+@media(max-width:900px){body[data-page="create-listing"] .av-listing-form-title-row{padding-right:1px!important}body[data-page="create-listing"] .av-clear-listing-draft{min-height:28px!important;height:28px!important;padding:4px 8px!important;font-size:9px!important;border-radius:8px!important}body[data-page="create-listing"] .av-clear-listing-draft span{display:none!important}body[data-page="create-listing"] .av-clear-listing-draft i{font-size:11px!important}body[data-page="create-listing"] .av-stepbar-live{margin-top:-1px!important}.av-edit-title-note{font-size:.55em!important;margin-left:4px!important}}
