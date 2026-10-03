@@ -1309,3 +1309,134 @@ body[data-page="profile"] #pfLikedPosts .pf-library-toggle i{font-size:10px!impo
   body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics>button{font-size:7px!important}
   body[data-page="profile"] .pf-own-media .pf-own-post-meta>time{font-size:6.3px!important}
 }
+
+
+/* AvtoVIP v141 — own-profile media cards: uniform footer baseline + PWA date cleanup.
+   Scoped only to profile.html media/library cards. */
+body[data-page="profile"] .pf-own-media .pf-date-mobile{display:none!important}
+
+/* Keep every own Feed/Reels card structurally identical even when caption is empty.
+   This is what keeps the edit/delete row at one stable baseline across a desktop row. */
+body[data-page="profile"] .pf-own-media .pf-caption,
+body[data-page="profile"] .pf-own-media .pf-caption.is-empty{
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  height:2.5em!important;
+  min-height:2.5em!important;
+  max-height:2.5em!important;
+  margin:2px 0 4px!important;
+  overflow:hidden!important;
+  line-height:1.25!important;
+}
+body[data-page="profile"] .pf-own-media .pf-caption.is-empty{visibility:hidden!important}
+body[data-page="profile"] .pf-own-media .pf-media-admin{
+  margin-top:auto!important;
+  align-self:stretch!important;
+}
+
+/* Saved bookmark gets the same compact floating-chip treatment as the heart:
+   symmetric corner position, soft dark plate, no oversized halo. */
+body[data-page="profile"] .pf-library-toggle.is-saved{
+  width:28px!important;
+  min-width:28px!important;
+  height:28px!important;
+  min-height:28px!important;
+  padding:0!important;
+  border-radius:50%!important;
+  color:#fff!important;
+  background:rgba(13,17,23,.68)!important;
+  border:1px solid rgba(255,255,255,.32)!important;
+  box-shadow:0 2px 9px rgba(0,0,0,.28)!important;
+  backdrop-filter:blur(5px)!important;
+  -webkit-backdrop-filter:blur(5px)!important;
+}
+body[data-page="profile"] .pf-library-toggle.is-saved:hover,
+body[data-page="profile"] .pf-library-toggle.is-saved:focus-visible{
+  background:rgba(13,17,23,.78)!important;
+  border-color:rgba(255,255,255,.42)!important;
+  box-shadow:0 2px 9px rgba(0,0,0,.3)!important;
+}
+body[data-page="profile"] #pfSavedPosts>.pf-item>.pf-item-main>.pf-actions,
+body[data-page="profile"] #pfSavedListings>.pf-item>.pf-item-main>.pf-actions{
+  top:7px!important;
+  right:7px!important;
+}
+
+@media(min-width:901px){
+  /* Desktop: match the circled reference card — metrics/date, reserved caption,
+     then one fixed action row at the bottom on every Feed/Reels card. */
+  body[data-page="profile"] .pf-own-media .pf-item-main{
+    display:flex!important;
+    flex-direction:column!important;
+    height:100%!important;
+    padding:5px 7px 7px!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:center!important;
+    min-height:14px!important;
+    margin:0!important;
+    column-gap:6px!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta>time{
+    justify-self:end!important;
+    white-space:nowrap!important;
+    margin:0!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-media-admin{
+    margin-top:auto!important;
+    padding-top:3px!important;
+  }
+}
+
+@media(max-width:900px){
+  /* PWA: show date only (no hour), on its own clean right-aligned line so the
+     social counters never collide with it. */
+  body[data-page="profile"] .pf-own-media .pf-date-desktop{display:none!important}
+  body[data-page="profile"] .pf-own-media .pf-date-mobile{display:inline!important}
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important;
+    row-gap:2px!important;
+    min-height:0!important;
+    margin:0 0 2px!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics{
+    width:100%!important;
+    min-width:0!important;
+    justify-content:flex-start!important;
+    flex-wrap:nowrap!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta>time{
+    display:block!important;
+    justify-self:end!important;
+    width:auto!important;
+    margin:0!important;
+    white-space:nowrap!important;
+    font-size:6.8px!important;
+    line-height:1.05!important;
+    color:var(--muted)!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-caption,
+  body[data-page="profile"] .pf-own-media .pf-caption.is-empty{
+    height:2.4em!important;
+    min-height:2.4em!important;
+    max-height:2.4em!important;
+    margin:1px 0 3px!important;
+    font-size:8px!important;
+    line-height:1.2!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-media-admin{
+    margin-top:auto!important;
+    padding-top:2px!important;
+  }
+  body[data-page="profile"] .pf-library-toggle.is-saved{
+    width:26px!important;
+    min-width:26px!important;
+    height:26px!important;
+    min-height:26px!important;
+  }
+}

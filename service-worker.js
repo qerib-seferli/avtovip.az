@@ -1,4 +1,4 @@
-const CACHE='avtovip-profile-media-v109-20261003';
+const CACHE='avtovip-profile-media-v110-20261003';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
@@ -38,3 +38,5 @@ self.addEventListener('fetch',e=>{
 // AvtoVIP profile media compact alignment + public view badge refresh 2026-10-03
 
 // AvtoVIP owner profile media footer/badge alignment refresh 2026-10-03
+
+// AvtoVIP profile own-media uniform footer + PWA date-only + saved bookmark plate refresh 2026-10-03
