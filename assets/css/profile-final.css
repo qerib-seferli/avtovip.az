@@ -1440,3 +1440,136 @@ body[data-page="profile"] #pfSavedListings>.pf-item>.pf-item-main>.pf-actions{
     min-height:26px!important;
   }
 }
+
+/* AvtoVIP v142 — owner profile media information flow.
+   Requested-only correction: keep each own Feed/Reels card compact and readable,
+   with one stable information order and no artificial empty caption block. */
+body[data-page="profile"] .pf-own-media{
+  height:auto!important;
+  align-self:start!important;
+}
+body[data-page="profile"] .pf-own-media .pf-item-main{
+  display:flex!important;
+  flex-direction:column!important;
+  flex:0 0 auto!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:5px 7px 7px!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta{
+  order:1!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:4px 6px!important;
+  width:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics{
+  width:auto!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  flex-wrap:nowrap!important;
+  gap:6px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  line-height:1!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics>button{
+  flex:0 0 auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:8px!important;
+  line-height:1!important;
+  gap:2px!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta>time{
+  display:block!important;
+  justify-self:end!important;
+  margin:0!important;
+  padding:0!important;
+  white-space:nowrap!important;
+  color:var(--muted)!important;
+  font-size:7px!important;
+  line-height:1!important;
+}
+body[data-page="profile"] .pf-own-media .pf-caption{
+  order:2!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:2.5em!important;
+  margin:5px 0 0!important;
+  padding:0!important;
+  font-size:8.5px!important;
+  line-height:1.25!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  overflow:hidden!important;
+}
+body[data-page="profile"] .pf-own-media .pf-caption.is-empty{
+  display:none!important;
+  visibility:visible!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+}
+body[data-page="profile"] .pf-own-media .pf-media-admin{
+  order:3!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:5px!important;
+  width:100%!important;
+  margin:6px 0 0!important;
+  padding:0!important;
+  align-self:stretch!important;
+}
+body[data-page="profile"] .pf-own-media .pf-media-admin .btn{
+  width:100%!important;
+  min-width:0!important;
+  height:28px!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+@media(max-width:900px){
+  body[data-page="profile"] .pf-own-media .pf-item-main{padding:4px 5px 5px!important}
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta{
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important;
+    row-gap:4px!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics{
+    width:100%!important;
+    justify-content:center!important;
+    gap:5px!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics>button{font-size:7.5px!important}
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta>time{
+    justify-self:end!important;
+    font-size:7px!important;
+    line-height:1!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-caption{
+    margin-top:4px!important;
+    font-size:8px!important;
+    line-height:1.2!important;
+    max-height:2.4em!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-media-admin{
+    margin-top:5px!important;
+    gap:4px!important;
+  }
+  body[data-page="profile"] .pf-own-media .pf-media-admin .btn{
+    height:26px!important;
+    min-height:26px!important;
+  }
+}
