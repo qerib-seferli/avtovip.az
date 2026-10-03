@@ -3435,3 +3435,51 @@ body[data-page="public-user"] .public-social-card>span{
   backdrop-filter:none!important;
   text-shadow:0 1px 4px rgba(0,0,0,.8)!important;
 }
+
+
+/* AvtoVIP v106 — public profile media badges only. */
+body[data-page="public-user"] .public-social-card>.public-social-kind{
+  position:absolute!important;
+  right:6px!important;
+  top:6px!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1!important;
+  text-shadow:0 1px 4px rgba(0,0,0,.9)!important;
+}
+body[data-page="public-user"] .public-social-card>.public-social-view{
+  position:absolute!important;
+  left:6px!important;
+  top:6px!important;
+  right:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:3px!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  color:#fff!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  text-shadow:0 1px 4px rgba(0,0,0,.95)!important;
+}
+body[data-page="public-user"] .public-social-card>.public-social-view i{font-size:10px!important}
+body[data-page="public-user"] .public-social-card>.public-social-view b{font:inherit!important}

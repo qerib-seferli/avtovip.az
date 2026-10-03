@@ -1018,3 +1018,105 @@ body[data-page="profile"] .pf-panel[data-pf-panel="liked"] .pf-liked-grid>.pf-se
     max-width:none!important;
   }
 }
+
+
+/* AvtoVIP v139 — requested profile media density/alignment polish only. */
+body[data-page="profile"] .pf-own-media .pf-item-main{
+  padding:6px 7px 7px!important;
+  gap:0!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:6px!important;
+  min-width:0!important;
+  margin:0 0 3px!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics{
+  width:auto!important;
+  flex:0 1 auto!important;
+  justify-content:flex-start!important;
+  gap:7px!important;
+  margin:0!important;
+  min-width:0!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics>button{
+  padding:0!important;
+  gap:2px!important;
+  font-size:8.5px!important;
+  min-width:0!important;
+}
+body[data-page="profile"] .pf-own-media .pf-own-post-meta>time{
+  flex:0 0 auto!important;
+  color:var(--muted)!important;
+  font-size:7.5px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+body[data-page="profile"] .pf-own-media .pf-caption{
+  margin:2px 0 4px!important;
+  height:auto!important;
+  min-height:1.25em!important;
+  max-height:2.5em!important;
+  font-size:9px!important;
+  line-height:1.25!important;
+}
+body[data-page="profile"] .pf-own-media .pf-caption.is-empty{
+  min-height:0!important;
+  height:0!important;
+  margin:0!important;
+}
+body[data-page="profile"] .pf-own-media .pf-media-admin{
+  margin-top:auto!important;
+  padding-top:3px!important;
+  gap:4px!important;
+}
+body[data-page="profile"] .pf-own-media .pf-media-admin .btn{
+  min-height:27px!important;
+  height:27px!important;
+}
+body[data-page="profile"] .pf-media-view,
+body[data-page="profile"] #pfSavedPosts .pf-media-view,
+body[data-page="profile"] #pfLikedPosts .pf-media-view{
+  left:6px!important;
+  top:6px!important;
+  gap:3px!important;
+  font-size:10px!important;
+  line-height:1!important;
+}
+body[data-page="profile"] .pf-media-view i{font-size:10px!important}
+
+/* Desktop library cards: four compact columns, matching the public-profile density. */
+@media(min-width:901px){
+  body[data-page="profile"] #pfSavedListings,
+  body[data-page="profile"] #pfLikedListings,
+  body[data-page="profile"] #pfSavedPosts,
+  body[data-page="profile"] #pfLikedPosts{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:8px!important;
+    padding:9px!important;
+  }
+  body[data-page="profile"] #pfSavedListings .pf-item-main,
+  body[data-page="profile"] #pfLikedListings .pf-item-main{padding:6px 7px!important}
+  body[data-page="profile"] #pfSavedListings .pf-item-title strong,
+  body[data-page="profile"] #pfLikedListings .pf-item-title strong{font-size:10px!important}
+  body[data-page="profile"] #pfSavedListings .pf-meta,
+  body[data-page="profile"] #pfLikedListings .pf-meta{font-size:8px!important}
+  body[data-page="profile"] .pf-library-toggle{
+    width:28px!important;min-width:28px!important;height:28px!important;min-height:28px!important;
+  }
+  body[data-page="profile"] .pf-library-toggle i{font-size:11px!important}
+}
+
+/* PWA: keep the same content, only tighten excessive vertical spacing inside own feed/reel cards. */
+@media(max-width:900px){
+  body[data-page="profile"] .pf-media-grid{gap:6px!important}
+  body[data-page="profile"] .pf-own-media .pf-item-main{padding:5px 6px 6px!important}
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta{gap:4px!important;margin-bottom:2px!important}
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics{gap:5px!important}
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta .pf-social-metrics>button{font-size:8px!important}
+  body[data-page="profile"] .pf-own-media .pf-own-post-meta>time{font-size:7px!important}
+  body[data-page="profile"] .pf-own-media .pf-caption{margin:1px 0 3px!important;font-size:8.5px!important}
+  body[data-page="profile"] .pf-own-media .pf-media-admin{padding-top:2px!important;margin-top:2px!important}
+}
