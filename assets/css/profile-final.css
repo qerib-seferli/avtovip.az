@@ -2074,3 +2074,60 @@ body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
     min-height:28px!important;
   }
 }
+
+/* === AvtoVİP v147 — Mənim elanlarım: sosial sıra tam ortalı + incə vertikal məsafələr === */
+/* Yalnız #pfOwnListings kartlarına aiddir. Şəkil ilə alt xətt arasında sosial ikonları simmetrik mərkəzləşdirir. */
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+  box-sizing:border-box!important;
+  min-height:24px!important;
+  margin:0 0 4px!important;
+  padding:3px 0 3px!important;
+  align-items:center!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{
+  min-height:17px!important;
+  height:17px!important;
+  line-height:1!important;
+}
+/* Ayırıcı xətdən marka/modelə 2px rahatlıq. */
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-title{
+  margin-top:2px!important;
+}
+/* Tarix/qiymət sətrindən aşağıdakı 3 idarəetmə düyməsinə 2px əlavə nəfəs. */
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
+  padding-top:6px!important;
+}
+
+@media(max-width:900px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-main{
+    padding-top:2px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+    min-height:23px!important;
+    margin:0 0 3px!important;
+    padding:3px 0 3px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{
+    min-height:16px!important;
+    height:16px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-title{
+    margin-top:2px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
+    padding-top:5px!important;
+  }
+}
+@media(max-width:480px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+    min-height:22px!important;
+    padding:3px 0 3px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{
+    min-height:15px!important;
+    height:15px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
+    padding-top:5px!important;
+  }
+}
