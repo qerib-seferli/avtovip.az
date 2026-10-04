@@ -2131,3 +2131,46 @@ body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
     padding-top:5px!important;
   }
 }
+
+/* === AvtoVİP v148 — Mənim elanlarım: şəkil ↔ sosial sıra ↔ ayırıcı xətt tam simmetrik === */
+/* Əvvəlki min-height + üst padding kombinasiyası şəkil tərəfdə artıq boşluq yaradırdı.
+   Bu son qat yalnız öz elan kartlarındakı 4 sosial göstəricinin vertikal ritmini düzəldir. */
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-main{
+  padding-top:0!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+  min-height:0!important;
+  height:auto!important;
+  padding:4px 0 4px!important;
+  margin:0 0 4px!important;
+  align-items:center!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{
+  min-height:17px!important;
+  height:17px!important;
+  margin:0!important;
+}
+@media(max-width:900px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-main{
+    padding-top:0!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+    min-height:0!important;
+    height:auto!important;
+    padding:3px 0 3px!important;
+    margin:0 0 3px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{
+    min-height:16px!important;
+    height:16px!important;
+  }
+}
+@media(max-width:480px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+    padding:3px 0 3px!important;
+  }
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{
+    min-height:15px!important;
+    height:15px!important;
+  }
+}
