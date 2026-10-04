@@ -1,4 +1,4 @@
-const CACHE='avtovip-profile-owner-card-layout-v143-20261004';
+const CACHE='avtovip-profile-own-listings-v144-20261004';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
@@ -42,3 +42,5 @@ self.addEventListener('fetch',e=>{
 // AvtoVIP profile own-media uniform footer + PWA date-only + saved bookmark plate refresh 2026-10-03
 
 // AvtoVIP profile own-card information-flow refresh 2026-10-04
+
+// AvtoVIP own listings card order + sold stamp refresh 2026-10-04
