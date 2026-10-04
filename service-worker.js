@@ -1,4 +1,4 @@
-const CACHE='avtovip-story-free-caption-v156-20261004';
+const CACHE='avtovip-story-auto-active-v157-20261004';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
@@ -52,3 +52,5 @@ self.addEventListener('fetch',e=>{
 // AvtoVIP profile sold library stamp + post footer clearance refresh 2026-10-04
 
 // AvtoVIP free 24h story + required 50-char caption + rail headline refresh 2026-10-04
+
+// AvtoVIP story auto-publish for every authenticated user + clean composer copy 2026-10-04

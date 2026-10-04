@@ -1169,8 +1169,29 @@
         if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))throw new Error('Şəkil və ya video seçin.');
         db.mediaProgress('Yüklənir...',97,'Hekayə AvtoVİP-ə əlavə olunur...');uploaded=await db.upload('story-media',user.id,file,'stories');db.mediaProgressHide();
         const activeAt=new Date(),expiresAt=new Date(activeAt.getTime()+24*60*60*1000);
-        const {data:story,error}=await sb.from('stories').insert({user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:captionText,status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()}).select().single();if(error)throw error;storyId=story.id;
-        toast('Hekayə paylaşıldı və 24 saatlıq aktiv edildi.','success');setStatus('#storyStatus','Hekayəniz aktivdir. 24 saat sonra avtomatik silinəcək.','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
+        const payload={user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:captionText,status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()};
+        const {data:story,error}=await sb.from('stories').insert(payload).select('id,status,active_at,expires_at').single();if(error)throw error;storyId=story.id;
+
+        /* Some older DB rules still turn non-admin stories into pending_payment on INSERT.
+           Finalize the freshly-created row immediately so every authenticated user gets
+           the same 24-hour publishing flow as the admin account. */
+        let finalStory=story;
+        if(String(finalStory?.status||'')!=='active'){
+          const direct=await sb.from('stories').update({status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()}).eq('id',storyId).eq('user_id',user.id).select('id,status,active_at,expires_at').maybeSingle();
+          if(!direct.error&&direct.data)finalStory=direct.data;
+        }
+        if(String(finalStory?.status||'')!=='active'){
+          const rpc=await sb.rpc('activate_story',{p_story_id:storyId,p_payment_request_id:null});
+          if(rpc.error)console.warn('Story activation RPC:',rpc.error.message);
+          const verify=await sb.from('stories').select('id,status,active_at,expires_at').eq('id',storyId).eq('user_id',user.id).maybeSingle();
+          if(!verify.error&&verify.data)finalStory=verify.data;
+        }
+        if(String(finalStory?.status||'')!=='active')throw new Error('Hekayə avtomatik aktivləşdirilə bilmədi.');
+
+        /* Remove only an obsolete pending story payment row if an old trigger created one. */
+        await sb.from('payment_requests').delete().eq('user_id',user.id).eq('target_type','story').eq('target_id',storyId).eq('status','pending').then(()=>{}).catch(()=>{});
+
+        toast('Hekayə paylaşıldı.','success');setStatus('#storyStatus','','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
       }catch(err){db.mediaProgressHide();if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
     });
     const {data:list}=await sb.from('elanlar').select('id,brand,model,year').eq('user_id',user.id).eq('status','approved').order('created_at',{ascending:false});const sel=$('#storyListing');if(sel)sel.innerHTML=`<option value="">${esc(staticText('Elana bağlama'))}</option>`+(list||[]).map(x=>`<option value="${x.id}">${esc(x.brand)} ${esc(x.model)} ${x.year}</option>`).join('');
