@@ -33,3 +33,14 @@ body[data-page="place-add"] .field-grid{grid-template-columns:repeat(4,minmax(0,
 .places-map-fab>.places-clean-toggle{position:static!important;right:auto!important;top:auto!important;bottom:auto!important;width:44px!important;height:44px!important}
 body.places-clean-map .places-map-fab{position:fixed!important;right:14px!important;top:76px!important;z-index:520!important}body.places-clean-map .places-map-fab>.places-clean-toggle{position:static!important}
 @media(max-width:900px){body.places-clean-map .places-map-fab{right:8px!important;top:112px!important}}
+
+/* AvtoVIP Places v4 — stable header + single custom controls + no FOUC */
+.header-row>.av-places-shortcut{position:relative!important;z-index:2!important;margin-left:10px!important;margin-right:auto!important;flex:0 0 auto!important;min-width:max-content!important;transform:none!important}
+.header-row>.brand{position:relative!important;z-index:3!important;flex:0 0 44px!important;min-width:44px!important;max-width:44px!important;overflow:visible!important}
+body[data-page="places"] .header-row>.brand,body[data-page="place-add"] .header-row>.brand{margin-right:4px!important}
+.av-select-source{position:absolute!important;inset:auto!important;width:1px!important;height:1px!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;pointer-events:none!important;clip:rect(0 0 0 0)!important;overflow:hidden!important}
+.av-select{position:relative!important;width:100%!important;min-width:0!important}.av-select-btn{width:100%!important;min-width:0!important}.av-select-menu{z-index:5200!important}
+body[data-page="place-add"] .field-grid{align-items:start}body[data-page="place-add"] .field{min-width:0}body[data-page="place-add"] .field>input,body[data-page="place-add"] .field>select,body[data-page="place-add"] .field>.av-select{width:100%!important}
+@media(min-width:901px){body[data-page="place-add"] .field-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.header-row>.av-places-shortcut{margin-left:14px!important}}
+@media(max-width:900px){.header-row>.av-places-shortcut{width:auto!important;max-width:118px!important;height:38px!important;margin-left:5px!important;padding:0 9px!important;gap:6px!important}.header-row>.av-places-shortcut span{display:inline!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:10px!important}.header-row>.brand{flex-basis:40px!important;min-width:40px!important;max-width:40px!important}.place-wizard-grid>.stack:first-child{order:1!important}.place-wizard-grid>.stack:last-child{order:2!important}}
+@media(max-width:390px){.header-row>.av-places-shortcut{max-width:105px!important;padding-inline:7px!important;margin-left:3px!important}.header-row>.av-places-shortcut span{font-size:9px!important}}

@@ -3,6 +3,7 @@
 };function tr(s){return D[s]?.[L()]||s}
 function apply(){
  document.documentElement.lang=L();
+ const pl=document.querySelector('[data-av-place-label]');if(pl)pl.textContent=({az:'Məkanlar',en:'Places',ru:'Места',tr:'Mekanlar',ka:'ადგილები'})[L()]||'Məkanlar';
  document.querySelectorAll('button,a,label,strong,h1,h2,h3,span').forEach(e=>{
    if(e.children.length)return;
    if(!e.dataset.avI18nSource)e.dataset.avI18nSource=e.textContent.trim();
