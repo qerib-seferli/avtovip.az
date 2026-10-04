@@ -1909,3 +1909,87 @@ body[data-page="profile"] #pfOwnListings .pf-listing-sold>.pf-thumb>.pf-sold-sta
   body[data-page="profile"] #pfOwnListings .pf-listing-sold>.pf-thumb>.pf-sold-stamp::after{width:58%!important;min-height:24px!important}
   body[data-page="profile"] #pfOwnListings .pf-listing-sold>.pf-thumb>.pf-sold-stamp b{font-size:9.5px!important;letter-spacing:.14em!important}
 }
+
+
+/* === AvtoVİP v145 — Mənim elanlarım: kompakt sosial sıra + paylaşılma tarixi === */
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-main{
+  padding:6px 8px 8px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+  min-height:21px!important;
+  margin:0 0 4px!important;
+  padding:0 0 3px!important;
+  gap:2px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{
+  min-height:18px!important;
+  padding:0 1px!important;
+  gap:3px!important;
+  font-size:10px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button i{
+  font-size:12px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-title strong{
+  font-size:11.5px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-meta-row{
+  order:3!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:5px!important;
+  width:100%!important;
+  min-width:0!important;
+  margin-top:3px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-meta-row .pf-meta{
+  order:initial!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  margin:0!important;
+  font-size:9px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-date{
+  flex:0 0 auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:3px!important;
+  margin:0!important;
+  color:var(--muted)!important;
+  font-size:8px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-date i{
+  font-size:8px!important;
+}
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
+  order:4!important;
+  padding-top:6px!important;
+  gap:6px!important;
+}
+@media(max-width:900px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-main{padding:5px 6px 6px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{min-height:19px!important;margin-bottom:3px!important;padding-bottom:2px!important;gap:1px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{min-height:17px!important;font-size:9px!important;gap:2px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button i{font-size:11px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-title strong{font-size:10.5px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-meta-row{gap:3px!important;margin-top:2px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-meta-row .pf-meta{font-size:8.5px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-date{font-size:7.5px!important;gap:2px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-date i{font-size:7px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{padding-top:5px!important;gap:5px!important}
+}
+@media(max-width:480px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-main{padding:5px 5px 6px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button{font-size:8.5px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social>button i{font-size:10.5px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-item-title strong{font-size:10px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-meta-row{align-items:flex-end!important;flex-wrap:wrap!important;row-gap:2px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-meta-row .pf-meta{font-size:8px!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-date{font-size:7px!important;margin-left:auto!important}
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{padding-top:4px!important;gap:4px!important}
+}
