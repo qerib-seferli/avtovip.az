@@ -2416,3 +2416,164 @@ body[data-page="profile"] #pfOwnReels .pf-own-post-actions .btn{
     min-height:27px!important;
   }
 }
+
+/* === AvtoVİP v151 — Öz profilim / Paylaşımlarım: vahid kompakt kart ritmi ===
+   Yalnız şəxsi profilin Avto Lent və Reels kartlarına tətbiq olunur. */
+body[data-page="profile"] #pfOwnFeed>.pf-own-post-card,
+body[data-page="profile"] #pfOwnReels>.pf-own-post-card{
+  align-self:start!important;
+  height:auto!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-body,
+body[data-page="profile"] #pfOwnReels .pf-own-post-body{
+  flex:none!important;
+  display:grid!important;
+  grid-template-rows:18px 24px 12px 28px!important;
+  row-gap:4px!important;
+  height:106px!important;
+  min-height:106px!important;
+  max-height:106px!important;
+  padding:6px 7px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics,
+body[data-page="profile"] #pfOwnReels .pf-own-post-metrics{
+  align-self:center!important;
+  height:18px!important;
+  min-height:18px!important;
+  overflow:hidden!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics,
+body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics{
+  height:18px!important;
+  min-height:18px!important;
+  margin:0!important;
+  padding:0!important;
+  gap:6px!important;
+  overflow:hidden!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-caption,
+body[data-page="profile"] #pfOwnReels .pf-own-post-caption{
+  align-self:start!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  width:100%!important;
+  height:24px!important;
+  min-height:24px!important;
+  max-height:24px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  font-size:8.5px!important;
+  line-height:12px!important;
+  overflow-wrap:anywhere!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-caption.is-empty,
+body[data-page="profile"] #pfOwnReels .pf-own-post-caption.is-empty{
+  visibility:hidden!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-date,
+body[data-page="profile"] #pfOwnReels .pf-own-post-date{
+  align-self:center!important;
+  display:block!important;
+  height:12px!important;
+  min-height:12px!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:7.5px!important;
+  line-height:12px!important;
+  text-align:left!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-actions,
+body[data-page="profile"] #pfOwnReels .pf-own-post-actions{
+  align-self:end!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:5px!important;
+  width:100%!important;
+  height:28px!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:0!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-actions .btn,
+body[data-page="profile"] #pfOwnReels .pf-own-post-actions .btn{
+  align-self:stretch!important;
+  width:100%!important;
+  height:28px!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+@media(max-width:900px){
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-body,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-body{
+    grid-template-rows:18px 26px 13px 28px!important;
+    row-gap:4px!important;
+    height:111px!important;
+    min-height:111px!important;
+    max-height:111px!important;
+    padding:6px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-caption,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-caption{
+    height:26px!important;
+    min-height:26px!important;
+    max-height:26px!important;
+    font-size:8.5px!important;
+    line-height:13px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-date,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-date{
+    height:13px!important;
+    min-height:13px!important;
+    line-height:13px!important;
+    font-size:7.5px!important;
+  }
+}
+
+@media(max-width:420px){
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-body,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-body{
+    grid-template-rows:17px 24px 12px 27px!important;
+    row-gap:3px!important;
+    height:98px!important;
+    min-height:98px!important;
+    max-height:98px!important;
+    padding:5px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics,
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics{
+    height:17px!important;
+    min-height:17px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-caption,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-caption{
+    height:24px!important;
+    min-height:24px!important;
+    max-height:24px!important;
+    line-height:12px!important;
+    font-size:8px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-date,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-date{
+    height:12px!important;
+    min-height:12px!important;
+    line-height:12px!important;
+    font-size:7px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-actions,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-actions,
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-actions .btn,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-actions .btn{
+    height:27px!important;
+    min-height:27px!important;
+  }
+}
