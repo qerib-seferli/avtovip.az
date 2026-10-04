@@ -3483,3 +3483,19 @@ body[data-page="public-user"] .public-social-card>.public-social-view{
 }
 body[data-page="public-user"] .public-social-card>.public-social-view i{font-size:10px!important}
 body[data-page="public-user"] .public-social-card>.public-social-view b{font:inherit!important}
+
+
+/* === AvtoVIP v104 — Reels: enli videonu dar/PWA ekranda kəsmədən göstər ===
+   Yalnız viewer-də həqiqətən landscape (videoWidth > videoHeight) video üçün işləyir. */
+@media(max-width:800px){
+  .av-reel-stage.av-reel-landscape .av-reel-media{
+    background:#000!important;
+  }
+  .av-reel-stage.av-reel-landscape .av-reel-media video{
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    background:#000!important;
+  }
+}
