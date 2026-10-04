@@ -2174,3 +2174,19 @@ body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social
     height:15px!important;
   }
 }
+
+/* === AvtoVİP v149 — Mənim elanlarım: son 1–2px mikro məsafə balansı === */
+/* Yalnız öz profilindəki "Mənim elanlarım" kartları. */
+body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-listing-social{
+  transform:translateY(-1px)!important;
+}
+@media(min-width:901px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
+    padding-top:6px!important;
+  }
+}
+@media(max-width:900px){
+  body[data-page="profile"] #pfOwnListings .pf-own-listing-card .pf-actions{
+    padding-top:5px!important;
+  }
+}
