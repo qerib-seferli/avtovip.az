@@ -1339,7 +1339,7 @@
       $('#installBanner')?.setAttribute('hidden','');
     });
     $('#installBtn')?.addEventListener('click',async()=>{
-      if(!deferredInstallPrompt){toast('Tətbiqi brauzerin menyusundakı quraşdırma seçimindən əlavə edin.','info');return}
+      if(!deferredInstallPrompt){const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;if(standalone){toast('AvtoVİP artıq tətbiq kimi quraşdırılıb.','success');return}const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);toast(isIOS?'Safari: Paylaş → Ana ekrana əlavə et seçin.':'Brauzer quraşdırma pəncərəsini təqdim etmirsə, menyudan “Tətbiqi quraşdır / Ana ekrana əlavə et” seçin.','info');return}
       deferredInstallPrompt.prompt();
       await deferredInstallPrompt.userChoice;
       deferredInstallPrompt=null;
@@ -1360,5 +1360,5 @@
     requestAnimationFrame(()=>window.dispatchEvent(new CustomEvent('avtovip:language',{detail:{lang,initial:true}})));
   }
   document.addEventListener('DOMContentLoaded',boot);
-  if(!document.querySelector('script[data-av-places-entry]')){const ps=document.createElement('script');ps.src='assets/js/places/global-entry.js?v=1';ps.defer=true;ps.dataset.avPlacesEntry='1';document.head.appendChild(ps)}
+  if(!document.querySelector('script[data-av-places-entry]')){const ps=document.createElement('script');ps.src='assets/js/places/global-entry.js?v=2';ps.defer=true;ps.dataset.avPlacesEntry='1';document.head.appendChild(ps)}
 })();
