@@ -1,0 +1,17 @@
+AVTOVİP MƏKANLAR — QURAŞDIRMA
+
+1) ZIP-dəki faylları eyni qovluq yolları ilə GitHub repoya əlavə edin / dəyişənləri əvəz edin.
+2) Supabase > SQL Editor açın.
+3) supabase/sql/20261004_avtovip_places_v1.sql faylını TAM olaraq 1 dəfə Run edin.
+4) GitHub Pages deploy bitdikdən sonra places.html səhifəsini açın.
+5) Brauzerdə Location icazəsini Allow edin və realtime konumu test edin.
+6) Profil > Balans əməliyyatları bölməsindən balansınızın valyutasını yoxlayın. Azərbaycan məkanı üçün AZN balans tələb olunur.
+7) Profil > Məkanlarım > Məkan əlavə et ilə test məkanı yaradın. Məkan pulsuz yaradılmır; create_paid_place RPC balansdan ölkə qiymətini çıxır.
+8) Admin panel > Məkanlar bölməsində məkanı, sahibini, statusu və ölkə qiymətlərini yoxlayın.
+
+QEYD
+- Xəritə: MapLibre GL JS + OpenFreeMap.
+- Ünvan axtarışı: OpenStreetMap/Nominatim.
+- Marşrut: Valhalla açıq demo endpointi provider-adapter başlanğıcı kimi qoşulub.
+- Bu açıq servislər üçün production SLA zəmanəti yoxdur. Kod provider dəyişməyə uyğun ayrılıb; gələcəkdə öz serverimizə köçürmək mümkündür.
+- Naviqasiya zamanı GPS watchPosition realtime işləyir, marşrutdan çıxma aşkarlananda route yenilənir, Web Speech ilə səsli istiqamətləndirmə və Wake Lock aktivləşir.
