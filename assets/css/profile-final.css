@@ -2577,3 +2577,88 @@ body[data-page="profile"] #pfOwnReels .pf-own-post-actions .btn{
     min-height:27px!important;
   }
 }
+
+/* === AvtoVIP v152 — Öz profilim / Paylaşımlarım: sosial göstəriciləri kompakt mərkəzlə ===
+   Yalnız şəxsi profilin Avto Lent və Reels kartlarındakı bəyənmə/şərh/paylaşım/yadda saxla sətrinə aiddir. */
+body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics,
+body[data-page="profile"] #pfOwnReels .pf-own-post-metrics{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  overflow:visible!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics,
+body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  padding:0 4px!important;
+  gap:7px!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button,
+body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  gap:2px!important;
+  font-size:9px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button i,
+body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button i{
+  font-size:10px!important;
+  line-height:1!important;
+}
+body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button b,
+body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button b{
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:700!important;
+}
+
+@media(max-width:900px){
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics{
+    padding:0 3px!important;
+    gap:5px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button,
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button b,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button b{
+    font-size:8.5px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button i,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button i{
+    font-size:9.5px!important;
+  }
+}
+
+@media(max-width:420px){
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics{
+    padding:0 2px!important;
+    gap:4px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button,
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button b,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button b{
+    font-size:8px!important;
+  }
+  body[data-page="profile"] #pfOwnFeed .pf-own-post-metrics .pf-social-metrics>button i,
+  body[data-page="profile"] #pfOwnReels .pf-own-post-metrics .pf-social-metrics>button i{
+    font-size:9px!important;
+  }
+}
