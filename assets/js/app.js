@@ -1172,23 +1172,22 @@
         const payload={user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:captionText,status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()};
         const {data:story,error}=await sb.from('stories').insert(payload).select('id,status,active_at,expires_at').single();if(error)throw error;storyId=story.id;
 
-        /* Some older DB rules still turn non-admin stories into pending_payment on INSERT.
-           Finalize the freshly-created row immediately so every authenticated user gets
-           the same 24-hour publishing flow as the admin account. */
+        /* Legacy DB logic can still change a normal user's new story to pending_payment.
+           Do not use the admin-only activate_story RPC here. publish_own_story is a narrow
+           SECURITY DEFINER RPC that may activate only the authenticated user's own story. */
         let finalStory=story;
         if(String(finalStory?.status||'')!=='active'){
-          const direct=await sb.from('stories').update({status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()}).eq('id',storyId).eq('user_id',user.id).select('id,status,active_at,expires_at').maybeSingle();
-          if(!direct.error&&direct.data)finalStory=direct.data;
+          const publish=await sb.rpc('publish_own_story',{p_story_id:storyId});
+          if(publish.error)throw new Error('Hekayə avtomatik aktivləşdirilə bilmədi.');
+          finalStory=Array.isArray(publish.data)?publish.data[0]:publish.data;
         }
         if(String(finalStory?.status||'')!=='active'){
-          const rpc=await sb.rpc('activate_story',{p_story_id:storyId,p_payment_request_id:null});
-          if(rpc.error)console.warn('Story activation RPC:',rpc.error.message);
           const verify=await sb.from('stories').select('id,status,active_at,expires_at').eq('id',storyId).eq('user_id',user.id).maybeSingle();
-          if(!verify.error&&verify.data)finalStory=verify.data;
+          if(verify.error||String(verify.data?.status||'')!=='active')throw new Error('Hekayə avtomatik aktivləşdirilə bilmədi.');
+          finalStory=verify.data;
         }
-        if(String(finalStory?.status||'')!=='active')throw new Error('Hekayə avtomatik aktivləşdirilə bilmədi.');
 
-        /* Remove only an obsolete pending story payment row if an old trigger created one. */
+        /* Best-effort cleanup if an old payment trigger created an obsolete pending row. */
         await sb.from('payment_requests').delete().eq('user_id',user.id).eq('target_type','story').eq('target_id',storyId).eq('status','pending').then(()=>{}).catch(()=>{});
 
         toast('Hekayə paylaşıldı.','success');setStatus('#storyStatus','','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
