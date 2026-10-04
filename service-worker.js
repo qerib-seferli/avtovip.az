@@ -1,4 +1,4 @@
-const CACHE='avtovip-story-owner-publish-v158-20261004';
+const CACHE='avtovip-story-owner-publish-v159-20261004';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js',
@@ -56,3 +56,5 @@ self.addEventListener('fetch',e=>{
 // AvtoVIP story auto-publish for every authenticated user + clean composer copy 2026-10-04
 
 // AvtoVIP authenticated owner story publish RPC refresh 2026-10-04
+
+// AvtoVIP free story DB trigger/RPC v159 refresh 2026-10-04

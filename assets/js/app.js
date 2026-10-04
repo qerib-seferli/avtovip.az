@@ -1172,13 +1172,16 @@
         const payload={user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:captionText,status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()};
         const {data:story,error}=await sb.from('stories').insert(payload).select('id,status,active_at,expires_at').single();if(error)throw error;storyId=story.id;
 
-        /* Legacy DB logic can still change a normal user's new story to pending_payment.
-           Do not use the admin-only activate_story RPC here. publish_own_story is a narrow
-           SECURITY DEFINER RPC that may activate only the authenticated user's own story. */
+        /* Free stories must be active immediately for every authenticated owner.
+           DB migration v159 also enforces this at INSERT time. This RPC is only a
+           compatibility fallback for databases that still have the old payment trigger. */
         let finalStory=story;
         if(String(finalStory?.status||'')!=='active'){
-          const publish=await sb.rpc('publish_own_story',{p_story_id:storyId});
-          if(publish.error)throw new Error('Hekayə avtomatik aktivləşdirilə bilmədi.');
+          const publish=await sb.rpc('publish_own_story_v2',{p_story_id:storyId});
+          if(publish.error){
+            console.warn('Story owner publish fallback:',publish.error);
+            throw new Error('Hekayə avtomatik aktivləşdirilə bilmədi.');
+          }
           finalStory=Array.isArray(publish.data)?publish.data[0]:publish.data;
         }
         if(String(finalStory?.status||'')!=='active'){
