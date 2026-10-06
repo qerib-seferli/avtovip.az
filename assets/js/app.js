@@ -1360,7 +1360,7 @@
     requestAnimationFrame(()=>window.dispatchEvent(new CustomEvent('avtovip:language',{detail:{lang,initial:true}})));
   }
   document.addEventListener('DOMContentLoaded',boot);
-  if(!document.querySelector('script[data-av-places-entry]')){const ps=document.createElement('script');ps.src='assets/js/places/global-entry.js?v=5';ps.defer=true;ps.dataset.avPlacesEntry='1';document.head.appendChild(ps)}
+  if(!['places','place-add'].includes(document.body?.dataset?.page)&&!document.querySelector('script[data-av-places-entry]')){const ps=document.createElement('script');ps.src='assets/js/places/global-entry.js?v=7';ps.defer=true;ps.dataset.avPlacesEntry='1';document.head.appendChild(ps)}
 })();
 
 /* Global Places shortcut: created synchronously from existing header structure and kept at one fixed position. */
