@@ -708,3 +708,8 @@ body[data-page="auth"] .auth-logo{
 /* 2026-09-26 — story rail view badge must stay visible outside the circular ring */
 .story-ring{overflow:visible!important}
 .story-rail-views{z-index:12!important;right:-5px!important;bottom:-5px!important}
+
+/* Global stable Places header shortcut */
+.av-places-shortcut{box-sizing:border-box;flex:0 0 auto;width:auto;min-width:0;height:38px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(230,28,42,.48);background:linear-gradient(135deg,rgba(181,14,26,.14),rgba(181,14,26,.03));border-radius:10px;font-size:10px;font-weight:900;white-space:nowrap;position:relative;z-index:2}.av-places-shortcut i{font-size:12px;color:#ef3340}.av-places-shortcut span{display:inline;line-height:1;white-space:nowrap}
+@media(min-width:901px){.header-row>.av-places-shortcut{margin-left:18px!important}}
+@media(max-width:900px){.header-row{position:relative}.header-row>.av-places-shortcut{position:absolute!important;left:72px!important;top:50%!important;transform:translateY(-50%)!important;margin:0!important;height:36px!important;min-width:112px!important;max-width:112px!important;padding:0 9px!important;justify-content:center!important;font-size:10px!important}.header-actions{margin-left:auto!important}}
