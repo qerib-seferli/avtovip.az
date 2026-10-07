@@ -121,3 +121,12 @@ body[data-page="place-add"] .field input,body[data-page="place-add"] .field sele
     border-radius:0!important;
   }
 }
+
+/* 2026-10-07 — Places search/navigation/photo fixes only. */
+@media(min-width:901px){
+  body[data-page="places"] .place-detail-photos{cursor:grab;user-select:none}
+  body[data-page="places"] .place-detail-photos.is-dragging{cursor:grabbing;scroll-behavior:auto!important}
+  body[data-page="places"] .place-lightbox{padding-top:calc(var(--header-h,72px) + 18px)!important;padding-bottom:18px!important}
+  body[data-page="places"] .place-lightbox>img{max-height:calc(100vh - var(--header-h,72px) - 36px)!important}
+  body[data-page="places"] .place-lightbox-close{top:calc(var(--header-h,72px) + 10px)!important}
+}
