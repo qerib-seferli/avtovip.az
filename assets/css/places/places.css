@@ -62,3 +62,34 @@ body[data-page="places"] .header-row>.av-places-shortcut{margin-left:18px!import
 /* v9: only Places viewport + horizontal interaction fixes */
 .places-chips{touch-action:pan-x!important;pointer-events:auto!important;scroll-behavior:smooth}.places-chip{pointer-events:auto!important;user-select:none}.place-detail-photos{touch-action:pan-x!important;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}.place-photo-thumb{pointer-events:auto!important}
 @media(max-width:900px){html:has(body[data-page="places"]),body[data-page="places"]{width:100%;height:100dvh!important;min-height:100dvh!important;overflow:hidden!important}body[data-page="places"] .page{top:var(--places-header-bottom,120px)!important;bottom:var(--places-nav-height,0px)!important;height:auto!important;min-height:0!important}body[data-page="places"] .page>.container,body[data-page="places"] .places-shell,body[data-page="places"] #placesMap{height:100%!important;min-height:0!important;max-height:none!important}body[data-page="places"] .bottom-nav{bottom:0!important}body[data-page="places"] .places-sheet{bottom:8px!important;max-height:min(29%,230px)!important}}
+
+/* 2026-10-07 — Places page uses the exact same header shortcut geometry as every other page. */
+body[data-page="places"] .header-row>.brand,
+body[data-page="place-add"] .header-row>.brand{flex:0 0 44px!important;min-width:44px!important;max-width:44px!important}
+body[data-page="places"] .header-row>.brand img,
+body[data-page="place-add"] .header-row>.brand img{width:44px!important;height:44px!important;flex:0 0 44px!important}
+body[data-page="places"] .header-row>.av-places-shortcut,
+body[data-page="place-add"] .header-row>.av-places-shortcut{
+  position:relative!important;left:auto!important;top:auto!important;transform:none!important;
+  flex:0 0 112px!important;width:112px!important;min-width:112px!important;max-width:112px!important;
+  height:36px!important;margin:0 0 0 8px!important;padding:0 9px!important;
+  justify-content:center!important;gap:6px!important;font-size:10px!important;line-height:1!important;
+}
+body[data-page="places"] .header-row>.av-places-shortcut i,
+body[data-page="place-add"] .header-row>.av-places-shortcut i{font-size:11px!important}
+@media(max-width:900px){
+  body[data-page="places"] .header-row>.brand,
+  body[data-page="place-add"] .header-row>.brand{flex-basis:40px!important;min-width:40px!important;max-width:40px!important}
+  body[data-page="places"] .header-row>.brand img,
+  body[data-page="place-add"] .header-row>.brand img{width:40px!important;height:40px!important;flex-basis:40px!important}
+  body[data-page="places"] .header-row>.av-places-shortcut,
+  body[data-page="place-add"] .header-row>.av-places-shortcut{
+    position:relative!important;left:auto!important;top:auto!important;transform:none!important;
+    flex-basis:112px!important;width:112px!important;min-width:112px!important;max-width:112px!important;
+    height:36px!important;margin-left:8px!important;padding:0 9px!important;font-size:10px!important;
+  }
+}
+@media(max-width:390px){
+  body[data-page="places"] .header-row>.av-places-shortcut,
+  body[data-page="place-add"] .header-row>.av-places-shortcut{margin-left:5px!important;flex-basis:108px!important;width:108px!important;min-width:108px!important;max-width:108px!important;padding-inline:7px!important;font-size:9.5px!important}
+}
