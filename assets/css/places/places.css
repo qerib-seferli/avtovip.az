@@ -78,8 +78,13 @@ body[data-page="place-add"] .field input,body[data-page="place-add"] .field sele
 
 /* 2026-10-07 — focused PWA Places viewport/card/full-map corrections. */
 @media(max-width:900px){
+  /* Match the exact shared PWA nav baseline used by the rest of the app. */
   body[data-page="places"] .bottom-nav{
-    bottom:max(10px,env(safe-area-inset-bottom))!important;
+    bottom:max(7px,env(safe-area-inset-bottom))!important;
+  }
+  /* Reserve the nav's height plus its bottom inset so map cards never slide under it. */
+  body[data-page="places"] .page{
+    bottom:calc(var(--places-nav-height,71px) + max(7px,env(safe-area-inset-bottom)))!important;
   }
   body[data-page="places"] .places-sheet,
   body[data-page="places"] .route-panel{
