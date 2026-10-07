@@ -732,6 +732,6 @@ body[data-page="auth"] .auth-logo{
 /* 2026-10-07 — Desktop only: move the existing Places shortcut slightly right so it clears the logo. */
 @media(min-width:901px){
   .header-row>.av-places-shortcut{
-    transform:translateX(18px)!important;
+    transform:translateX(24px)!important;
   }
 }
