@@ -721,3 +721,10 @@ body[data-page="auth"] .auth-logo{
 .header-row>.av-places-shortcut span{display:inline!important;line-height:1!important;white-space:nowrap!important}
 @media(max-width:390px){.header-row>.av-places-shortcut{flex-basis:108px!important;width:108px!important;min-width:108px!important;max-width:108px!important;margin-left:5px!important;padding-inline:7px!important;font-size:9.5px!important}}
 
+
+/* 2026-10-07 — PWA home header: align only the Places shortcut with the other pages. */
+@media(max-width:900px){
+  body[data-page="home"] .header-row>.av-places-shortcut{
+    transform:translateX(-21px)!important;
+  }
+}
