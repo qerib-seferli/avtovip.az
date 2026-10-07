@@ -130,3 +130,22 @@ body[data-page="place-add"] .field input,body[data-page="place-add"] .field sele
   body[data-page="places"] .place-lightbox>img{max-height:calc(100vh - var(--header-h,72px) - 36px)!important}
   body[data-page="places"] .place-lightbox-close{top:calc(var(--header-h,72px) + 10px)!important}
 }
+\n\n/* 2026-10-08 — focused Places navigation/PWA marker/search corrections only. */
+body[data-page="places"] .place-marker .pm-logo,
+body[data-page="places"] .user-place-marker .up-photo{top:0!important;margin:0!important}
+body[data-page="places"] .place-marker,
+body[data-page="places"] .user-place-marker{box-sizing:border-box!important;transform-origin:50% 100%!important}
+@media(max-width:900px){
+  body[data-page="places"].places-searching .places-chips,
+  body[data-page="places"].places-searching .places-map-fab{display:none!important}
+  body[data-page="places"].places-searching .places-sheet{
+    display:block!important;top:62px!important;bottom:8px!important;left:8px!important;right:8px!important;
+    width:auto!important;max-height:none!important;height:auto!important;overflow:auto!important;
+    border-radius:16px!important
+  }
+  body[data-page="places"].places-nav-detached #locateMe{
+    display:grid!important;animation:avLocatePulse 1.15s ease-in-out infinite!important;
+    border-color:#ff3348!important;box-shadow:0 0 0 0 rgba(255,51,72,.7),0 0 18px rgba(255,51,72,.85)!important
+  }
+}
+@keyframes avLocatePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,51,72,.72),0 0 14px rgba(255,51,72,.75)}50%{transform:scale(1.08);box-shadow:0 0 0 9px rgba(255,51,72,0),0 0 28px rgba(255,51,72,1)}}
