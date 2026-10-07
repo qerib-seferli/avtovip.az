@@ -75,3 +75,44 @@ body[data-page="place-add"] .field input,body[data-page="place-add"] .field sele
 @media(max-width:390px){
   
 }
+
+/* 2026-10-07 — focused PWA Places viewport/card/full-map corrections. */
+@media(max-width:900px){
+  body[data-page="places"] .bottom-nav{
+    bottom:max(10px,env(safe-area-inset-bottom))!important;
+  }
+  body[data-page="places"] .places-sheet,
+  body[data-page="places"] .route-panel{
+    left:8px!important;
+    right:8px!important;
+    width:auto!important;
+  }
+  body[data-page="places"] .route-main .muted.tiny{
+    display:none!important;
+  }
+  body.places-clean-map[data-page="places"] .page{
+    position:fixed!important;
+    inset:0!important;
+    top:0!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    width:100vw!important;
+    height:100dvh!important;
+    padding:0!important;
+    margin:0!important;
+  }
+  body.places-clean-map[data-page="places"] .page>.container,
+  body.places-clean-map[data-page="places"] .places-shell,
+  body.places-clean-map[data-page="places"] #placesMap{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    border:0!important;
+    border-radius:0!important;
+  }
+}
