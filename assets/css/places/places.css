@@ -179,3 +179,15 @@ body[data-page="places"] .places-sheet{scrollbar-width:thin;scrollbar-color:#b61
 body[data-page="places"] .places-sheet::-webkit-scrollbar{width:5px}
 body[data-page="places"] .places-sheet::-webkit-scrollbar-thumb{background:#b6192c;border-radius:8px}
 body[data-page="places"] .places-sheet-head{position:sticky;top:0;z-index:2;background:var(--pl-glass);backdrop-filter:blur(12px)}
+
+/* Places: stable list header, unobstructed translucent sheet and equal-width actions */
+body[data-page="places"] .places-sheet-head{background:var(--surface)!important;backdrop-filter:none!important;isolation:isolate;padding-bottom:8px!important}
+body[data-page="places"] #placesStatus{display:none!important}
+body[data-page="places"] .places-sheet{overscroll-behavior:contain}
+body[data-page="places"] .av-place-info-card nav{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px!important;width:100%}
+body[data-page="places"] .av-place-info-card nav a{min-width:0;padding:10px 3px!important;white-space:nowrap;font-size:clamp(10px,2.6vw,13px)!important;text-align:center}
+body[data-page="places"] .av-place-info-card nav a[href^="mesajlar"]{background:#2563eb!important}
+body[data-page="places"] .av-place-info-card nav a[href^="http"]:not([href^="https://wa.me/"]){background:#2563eb!important}
+body[data-page="places"] .av-place-info-card nav a[href^="https://wa.me/"]{background:#16a34a!important}
+body[data-page="places"] .av-place-info-card nav a[href^="tel:"]{background:#ed3344!important}
+body[data-page="place-add"] .pin-cross{transform:translate(-50%,-100%)!important;transition:none!important}
