@@ -216,3 +216,6 @@ body[data-page="places"] .places-sheet-head>*{position:relative;z-index:1}
 body[data-page="places"] .av-route-alternatives{display:flex;gap:6px;overflow-x:auto;margin:8px 0 2px;scrollbar-width:thin}
 body[data-page="places"] .av-route-alternatives button{flex:0 0 auto;border:1px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--surface-2);color:var(--text);font-size:11px;font-weight:700;cursor:pointer}
 body[data-page="places"] .av-route-alternatives button[aria-pressed="true"]{border-color:#ed3344;background:#8b1524;color:white}
+
+/* Keep MapLibre marker projection and anchor transforms under the map engine control. */
+body[data-page="places"] .maplibregl-marker.place-marker,body[data-page="places"] .maplibregl-marker.user-place-marker{transform-origin:initial!important;transition:none!important}
