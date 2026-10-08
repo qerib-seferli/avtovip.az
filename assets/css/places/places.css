@@ -201,3 +201,9 @@ body[data-page="places"] .places-sheet-head{background:transparent!important;bac
 body[data-page="places"] .places-sheet-head::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl-glass);border-radius:8px}
 body[data-page="places"] #startNav:not(.av-nav-stop){background:#14884b!important;border-color:#14884b!important;color:#fff!important}
 body[data-page="places"].places-navigating #startNav{background:#b80d20!important;border-color:#b80d20!important;color:#fff!important}
+
+/* Places marker overlays remain upright in 3D; keep the map engine transform untouched. */
+body[data-page="places"] .maplibregl-marker.place-marker,body[data-page="places"] .maplibregl-marker.user-place-marker{transform-origin:center center!important;transition:none!important}
+/* Sticky sheet title masks scrolling rows without adding a dark title strip. */
+body[data-page="places"] .places-sheet-head{position:sticky!important;top:-8px!important;z-index:5!important;background:var(--surface)!important;backdrop-filter:none!important;isolation:isolate}
+body[data-page="places"] .places-sheet-head::before{display:none!important}
