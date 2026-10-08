@@ -219,3 +219,16 @@ body[data-page="places"] .av-route-alternatives button[aria-pressed="true"]{bord
 
 /* Keep MapLibre marker projection and anchor transforms under the map engine control. */
 body[data-page="places"] .maplibregl-marker.place-marker,body[data-page="places"] .maplibregl-marker.user-place-marker{transform-origin:initial!important;transition:none!important}
+
+/* Places: compact route choices and independently scrolling lists */
+body[data-page="places"] .av-route-alternatives:not([hidden]){display:grid!important;grid-template-columns:repeat(var(--route-count,3),minmax(0,1fr));gap:5px;overflow:visible!important;width:100%;margin:7px 0 3px}
+body[data-page="places"] .av-route-alternatives[hidden]{display:none!important}
+body[data-page="places"] .av-route-alternatives button{min-width:0!important;width:100%;padding:7px 3px!important;font-size:clamp(9px,1vw,11px)!important;white-space:nowrap;text-align:center;overflow:hidden;text-overflow:ellipsis}
+body[data-page="places"] .places-sheet,body[data-page="places"] .saved-places-panel{display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:0!important}
+body[data-page="places"] .places-sheet[hidden],body[data-page="places"] .saved-places-panel[hidden]{display:none!important}
+body[data-page="places"] .places-sheet-head,body[data-page="places"] .saved-places-panel>header{position:relative!important;top:auto!important;flex:0 0 auto;z-index:2;background:#343b46!important;box-shadow:none!important;margin:0 -8px 0!important;padding:12px!important;border-radius:14px 14px 0 0!important}
+body[data-page="places"] .saved-places-panel>header{margin:0 -10px 0!important}
+body[data-page="places"] #placesList,body[data-page="places"] #savedPlacesList{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#b6192c transparent}
+body[data-page="places"] #placesList::-webkit-scrollbar,body[data-page="places"] #savedPlacesList::-webkit-scrollbar{width:5px}
+body[data-page="places"] #placesList::-webkit-scrollbar-thumb,body[data-page="places"] #savedPlacesList::-webkit-scrollbar-thumb{background:#b6192c;border-radius:8px}
+@media(max-width:900px){body[data-page="places"] .av-route-alternatives button{font-size:10px!important}}
