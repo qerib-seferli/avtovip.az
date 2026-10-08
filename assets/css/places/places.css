@@ -162,3 +162,20 @@ body[data-page="places"] .places-chips{scroll-behavior:auto!important;user-selec
 body[data-page="places"] .place-desc-expand{display:block;width:100%;text-align:left;border:0;background:transparent;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:none!important;padding:4px 0}body[data-page="places"] .place-desc-expand b{color:#ffcb38}
 .av-place-info-overlay{position:fixed;inset:0;z-index:100050;background:rgba(0,0,0,.78);display:grid;place-items:center;padding:14px}.av-place-info-card{position:relative;width:min(540px,100%);max-height:90dvh;overflow:auto;background:var(--surface,#181c24);color:var(--text,#fff);border:1px solid var(--line,#343943);border-radius:18px;padding:20px}.av-place-info-close{position:absolute;right:12px;top:10px;border:0;background:#292e38;color:#fff;border-radius:50%;width:34px;height:34px;font-size:24px;cursor:pointer}.av-place-info-card header{display:flex;align-items:center;gap:12px;padding-right:36px}.av-place-info-card header img{width:62px;height:62px;border-radius:15px;object-fit:cover}.av-place-info-card h2{margin:0 0 5px;font-size:20px}.av-place-info-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.av-place-info-fields>div{display:grid;gap:3px;min-width:0}.av-place-info-fields small{color:var(--muted,#aeb4c1)}.av-place-info-fields strong{overflow-wrap:anywhere}.av-place-info-card p{white-space:pre-wrap;overflow-wrap:anywhere}.av-place-info-photos{display:flex;overflow-x:auto;gap:8px}.av-place-info-photos button{padding:0;border:0;background:none;flex:none}.av-place-info-photos img{width:150px;height:110px;object-fit:cover;border-radius:10px}.av-place-info-card nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.av-place-info-card nav a{color:#fff;background:#b20d1d;padding:10px 13px;border-radius:10px;text-decoration:none}
 body[data-page="places"].places-nav-detached #locateMe{animation:av-locate-glow 1.6s ease-in-out infinite!important;transform:none!important}body[data-page="places"].places-nav-detached #locateMe i{animation:none!important;transform:none!important}@keyframes av-locate-glow{0%,100%{box-shadow:0 0 0 2px #ff314a,0 0 8px 2px #ff314a}50%{box-shadow:0 0 0 4px #ff314a,0 0 24px 9px rgba(255,49,74,.85)}}
+
+/* 2026-10-08: isolated Places detail and scrolling refinements */
+body[data-page="places"] .av-place-info-close{display:grid!important;place-items:center!important;line-height:1!important;padding:0!important;font-family:Arial,sans-serif!important}
+body[data-page="places"] .av-place-info-card nav{margin:16px 0 12px!important;gap:8px!important}
+body[data-page="places"] .av-place-info-card nav a{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;font-size:13px;font-weight:700}
+body[data-page="places"] .av-place-info-card nav a[href^="https://wa.me/"]{background:#168b52!important}
+body[data-page="places"] .av-place-info-card nav a[href^="http"]:not([href^="https://wa.me/"]){background:#2466aa!important}
+body[data-page="places"] .av-place-info-card nav a[href^="mesajlar"]{background:#6846b7!important}
+body[data-page="places"] .av-place-info-photos{scrollbar-width:thin;scrollbar-color:#d4142a transparent;scroll-snap-type:x mandatory;padding-bottom:8px}
+body[data-page="places"] .av-place-info-photos button{scroll-snap-align:start}
+body[data-page="places"] .av-place-info-photos::-webkit-scrollbar{height:5px}
+body[data-page="places"] .av-place-info-photos::-webkit-scrollbar-thumb{background:#d4142a;border-radius:12px}
+body[data-page="places"] .av-place-top-lightbox{z-index:2147483000!important}
+body[data-page="places"] .places-sheet{scrollbar-width:thin;scrollbar-color:#b6192c transparent}
+body[data-page="places"] .places-sheet::-webkit-scrollbar{width:5px}
+body[data-page="places"] .places-sheet::-webkit-scrollbar-thumb{background:#b6192c;border-radius:8px}
+body[data-page="places"] .places-sheet-head{position:sticky;top:0;z-index:2;background:var(--pl-glass);backdrop-filter:blur(12px)}
