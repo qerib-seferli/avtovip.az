@@ -191,3 +191,13 @@ body[data-page="places"] .av-place-info-card nav a[href^="http"]:not([href^="htt
 body[data-page="places"] .av-place-info-card nav a[href^="https://wa.me/"]{background:#16a34a!important}
 body[data-page="places"] .av-place-info-card nav a[href^="tel:"]{background:#ed3344!important}
 body[data-page="place-add"] .pin-cross{transform:translate(-50%,-100%)!important;transition:none!important}
+
+/* 2026-10-08: marker anchor and modal presentation corrections */
+body[data-page="places"] .maplibregl-marker.place-marker,body[data-page="places"] .maplibregl-marker.user-place-marker{transform-origin:initial!important;transition:none!important;will-change:auto!important}
+body[data-page="places"] .place-desc-expand{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important}
+body[data-page="places"] .place-desc-expand .place-desc-text{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+body[data-page="places"] .place-desc-expand b{flex:none;white-space:nowrap;color:#ffcb38!important}
+body[data-page="places"] .places-sheet-head{background:transparent!important;backdrop-filter:none!important}
+body[data-page="places"] .places-sheet-head::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl-glass);border-radius:8px}
+body[data-page="places"] #startNav:not(.av-nav-stop){background:#14884b!important;border-color:#14884b!important;color:#fff!important}
+body[data-page="places"].places-navigating #startNav{background:#b80d20!important;border-color:#b80d20!important;color:#fff!important}
