@@ -150,3 +150,7 @@ body[data-page="places"] .user-place-marker{box-sizing:border-box!important;tran
 }
 @keyframes avLocatePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,51,72,.72),0 0 14px rgba(255,51,72,.75)}50%{box-shadow:0 0 0 9px rgba(255,51,72,0),0 0 28px rgba(255,51,72,1)}}
 body[data-page="places"].places-nav-detached #locateMe i{transform:none!important;animation:none!important}
+
+/* Targeted fixes: keep the detached-navigation icon fixed and allow mouse dragging of category strip. */
+@media(max-width:900px){body.places-nav-detached #locateMe,body.places-nav-detached #locateMe i,body.places-nav-detached #locateMe svg{transform:none!important;animation:none!important}body.places-nav-detached #locateMe{box-shadow:0 0 0 2px #ff314a,0 0 13px 4px rgba(255,49,74,.6)!important}}
+@media(min-width:901px){#placeChips{cursor:grab;user-select:none}#placeChips:active{cursor:grabbing}}
