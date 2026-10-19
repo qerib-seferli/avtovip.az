@@ -82,7 +82,7 @@
   }
   function setupDraftPersistence(){
     const page=document.body.dataset.page;
-    if(page==='home')persistFields('avtovip-filter-draft-v2',['filterBrand','filterModel','filterCountry','filterCountryAdvanced','filterState','filterCity','filterCityAdvanced','filterDistrict','filterPriceMin','filterPriceMax','filterCurrency','filterYearMin','filterYearMax','filterCondition','filterMileageMin','filterMileageMax','filterEngineMin','filterEngineMax','filterPowerMin','filterPowerMax','filterFuel','filterTransmission','filterDrivetrain','filterBody','filterColor','filterSeatsMin','filterSeatsMax','filterOwnersMax','filterGeneration','filterTrim','filterMarketOrigin','filterVin','filterCredit','filterBarter','filterDamage','filterPainted','sortListings','vipOnly'],true);
+    if(page==='home')persistFields('avtovip-filter-draft-v2',['filterBrand','filterModel','filterState','filterCity','filterCityAdvanced','filterDistrict','filterPriceMin','filterPriceMax','filterCurrency','filterYearMin','filterYearMax','filterCondition','filterMileageMin','filterMileageMax','filterEngineMin','filterEngineMax','filterPowerMin','filterPowerMax','filterFuel','filterTransmission','filterDrivetrain','filterBody','filterColor','filterSeatsMin','filterSeatsMax','filterOwnersMax','filterGeneration','filterTrim','filterMarketOrigin','filterVin','filterCredit','filterBarter','filterDamage','filterPainted','sortListings','vipOnly'],true);
     if(page==='create-listing')persistForm('listingForm','avtovip-listing-draft-v2');
   }
   function persistFields(key,ids,trigger=false){
