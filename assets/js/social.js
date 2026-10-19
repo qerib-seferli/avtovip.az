@@ -144,11 +144,14 @@
   window.avtoOpenListingComments=openComments;
   async function initExplore(){
     const feed=$('#exploreFeed');if(!feed)return;await auth();let offset=0,busy=false,done=false;const limit=16;let blocked=new Set();
-    let exploreCountry=String(localStorage.getItem('avtovip-country')||'').toUpperCase();
+    /* The signed-in profile is authoritative; cache it for the next first paint. */
+    const profileCountry=String(profile?.country_code||'').toUpperCase();
+    if(profileCountry&&/^[A-Z]{2}$/.test(profileCountry))localStorage.setItem('avtovip-country',profileCountry);
+    let exploreCountry=profileCountry||String(localStorage.getItem('avtovip-country')||'').toUpperCase();
     /* Country selector exists in HTML immediately, before async auth/data loading. */
     const countrySelect=document.getElementById('exploreCountrySelect');
     try{const countries=await window.AvtoVIPInternational?.countries?.(localStorage.getItem('avtovip-lang')||'az')||[];
-      for(const c of countries){const o=document.createElement('option');o.value=c.iso2;o.textContent=(c.emoji||'')+' '+(c.displayName||c.name||c.iso2);countrySelect.append(o)}
+      for(const c of countries){let o=[...countrySelect.options].find(x=>x.value===c.iso2);if(!o){o=document.createElement('option');o.value=c.iso2;countrySelect.append(o)}o.textContent=(c.emoji||'')+' '+(c.displayName||c.name||c.iso2)}
     }catch(e){console.warn('[AvtoVIP explore countries]',e)}
     if([...countrySelect.options].some(o=>o.value===exploreCountry))countrySelect.value=exploreCountry;
     else {exploreCountry='';countrySelect.value=''}
