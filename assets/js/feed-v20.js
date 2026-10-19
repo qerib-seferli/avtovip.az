@@ -117,7 +117,20 @@ function setupFeedPlayback(root){
  document.addEventListener('fullscreenchange',syncFs);
  document.addEventListener('webkitfullscreenchange',syncFs);
 }
-function setupGridPlayback(root){$$('video',root).forEach(hardenVideo);const io=new IntersectionObserver(es=>{for(const e of es){const v=e.target;if(e.isIntersecting&&e.intersectionRatio>.35){v.muted=true;v.play().catch(()=>{})}else v.pause()}},{threshold:[0,.35,.75]});$$('video',root).forEach(v=>io.observe(v))}
+function setupGridPlayback(root){
+ const videos=$$('video',root);videos.forEach(hardenVideo);
+ // Desktop-only hover preview. Preserve existing mobile/PWA intersection playback.
+ const desktop=window.matchMedia('(min-width:901px) and (hover:hover) and (pointer:fine)');
+ const pause=v=>{if(!v.paused)v.pause()};
+ const pauseAllTiles=()=>videos.forEach(pause);
+ const io=new IntersectionObserver(es=>{if(desktop.matches){for(const e of es)if(!e.isIntersecting)pause(e.target);return}for(const e of es){const v=e.target;if(e.isIntersecting&&e.intersectionRatio>.35){v.muted=true;v.play().catch(()=>{})}else pause(v)}},{threshold:[0,.35,.75]});
+ videos.forEach(v=>{io.observe(v);v.addEventListener('mouseenter',()=>{if(!desktop.matches||document.hidden)return;pauseAllTiles();v.muted=true;v.play().catch(()=>{})});v.addEventListener('mouseleave',()=>{if(desktop.matches)pause(v)})});
+ const stopIfDesktop=()=>{if(desktop.matches)pauseAllTiles()};
+ desktop.addEventListener?.('change',stopIfDesktop);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseAllTiles()});
+ window.addEventListener('blur',()=>{if(desktop.matches)pauseAllTiles()});
+ if(desktop.matches)pauseAllTiles();
+}
 
 async function toggleLike(postId,btn){if(!me){location.href='login.html';return}const active=myLikes.has(postId);btn.disabled=true;const {error}=active?await sb.from('post_likes').delete().eq('post_id',postId).eq('user_id',me.id):await sb.from('post_likes').upsert({post_id:postId,user_id:me.id});if(!error){if(active){myLikes.delete(postId);bump(likes,postId,-1)}else{myLikes.add(postId);bump(likes,postId,1)}$$(`[data-post="${CSS.escape(postId)}"] [data-post-like]`).forEach(b=>{b.classList.toggle('active',!active);b.querySelector('i').className=`fa-${active?'regular':'solid'} fa-heart`;const n=b.querySelector('b');if(n)n.textContent=likes.get(postId)||0});const vb=$('#avReelViewer [data-post-like]');if(vb&&posts[activeModalIndex]?.id===postId){vb.classList.toggle('active',!active);vb.querySelector('i').className=`fa-${active?'regular':'solid'} fa-heart`;vb.querySelector('b').textContent=likes.get(postId)||0}}btn.disabled=false}
 async function toggleFollow(uid){if(!me){location.href='login.html';return}if(!uid||uid===me.id)return;const active=following.has(uid);const {error}=active?await sb.from('user_follows').delete().eq('follower_id',me.id).eq('following_id',uid):await sb.from('user_follows').insert({follower_id:me.id,following_id:uid});if(!error){active?following.delete(uid):following.add(uid);$$(`[data-post-follow="${CSS.escape(uid)}"]`).forEach(b=>{b.classList.toggle('active',!active);const i=b.querySelector('i'),s=b.querySelector('span');if(i)i.className=`fa-solid ${active?'fa-user-plus':'fa-user-check'}`;if(s)s.textContent=active?'Takip et':'Takip edilir'})}}
