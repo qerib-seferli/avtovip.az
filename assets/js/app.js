@@ -775,10 +775,10 @@
     await populateCountries($('#filterCountry'),$('#filterCountryAdvanced'));
     const pref=localStorage.getItem('avtovip-country')||''; if(pref){if($('#filterCountry'))$('#filterCountry').value=pref;if($('#filterCountryAdvanced'))$('#filterCountryAdvanced').value=pref}
     await bindLocation($('#filterCountryAdvanced'),$('#filterState'),$('#filterCityAdvanced'),$('#filterCityAdvancedList'),{mirror:$('#filterCountry')});
-    /* Home must open with the complete approved marketplace on every device/browser.
-       A saved profile/location preference must not silently hide listings on desktop. */
-    if($('#filterCountry'))$('#filterCountry').value='';
-    if($('#filterCountryAdvanced'))$('#filterCountryAdvanced').value='';
+    /* Apply the saved country as the initial filter, but preserve the user's
+       ability to select another country or clear the selection. */
+    if($('#filterCountry'))$('#filterCountry').value=pref;
+    if($('#filterCountryAdvanced'))$('#filterCountryAdvanced').value=pref;
     if($('#filterState'))$('#filterState').value='';
     if($('#filterCity'))$('#filterCity').value='';
     if($('#filterCityAdvanced'))$('#filterCityAdvanced').value='';
