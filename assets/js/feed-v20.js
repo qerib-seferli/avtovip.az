@@ -28,7 +28,7 @@ async function load(){
  const root=$('#socialFeed');if(!root)return;
  const reels=document.body.dataset.page==='reels';
  const requestedTag=normalizeTag(new URL(location.href).searchParams.get('tag')||'');
- let q=sb.from('posts').select('*').eq('status','active').order('created_at',{ascending:false}).limit(requestedTag?120:(reels?80:40));
+ let q=sb.from('posts').select('*').eq('status','active').order('created_at',{ascending:false}).limit(1000);
  q=reels?q.eq('is_reel',true):q.or('is_reel.eq.false,is_reel.is.null');
  if(requestedTag)q=q.ilike('caption',`%#${requestedTag}%`);
  const {data,error}=await q;if(error){root.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;return}
@@ -39,7 +39,7 @@ async function load(){
    const row=exact.data;if(row&&((reels&&row.is_reel===true)||(!reels&&row.is_reel!==true)))posts.unshift(row);
  }
  for(const p of posts)viewsCount.set(p.id,Number(p.view_count||0)||0);
- if(reels){for(let i=posts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[posts[i],posts[j]]=[posts[j],posts[i]]}if(matchMedia('(min-width:901px)').matches)posts=posts.slice(0,8)}
+ if(reels){for(let i=posts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[posts[i],posts[j]]=[posts[j],posts[i]]}/* All devices display the same worldwide reel collection. */}
  if(!posts.length){root.innerHTML=requestedTag?`<div class="av-hashtag-filter"><span>#${esc(requestedTag)}</span><a href="${reels?'reels.html':'lent.html'}">Filtri təmizlə</a></div><div class="empty-state">Bu heşteqlə paylaşım tapılmadı.</div>`:'<div class="empty-state">Hələ paylaşım yoxdur.</div>';return}
  const uids=[...new Set(posts.map(p=>p.user_id).filter(Boolean))];
  if(uids.length){const r=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').in('id',uids);if(!r.error)users=Object.fromEntries((r.data||[]).map(u=>[u.id,u]));}
