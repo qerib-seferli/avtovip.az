@@ -214,7 +214,7 @@
     window.addEventListener('avtovip:language',()=>setTimeout(refreshLanguageBoundData,0));
     document.addEventListener('avtovip:p11-notifications',()=>{refreshNotificationBadge();const pop=$('#notificationPopover');if(pop){pop.remove();document.documentElement.classList.remove('popover-open')}});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(!rtChannels.length)setupRealtime();refreshNotificationBadge()}});window.addEventListener('online',()=>{rtUser=null;setupRealtime()});
-    setupRealtime();refreshNotificationBadge();setTimeout(refreshLanguageBoundData,120);setTimeout(()=>{patchAll();decorateTierCards();syncCountrySelectFlags();},450);
+    setupRealtime();refreshNotificationBadge();if(document.body.dataset.page!=='messages')setTimeout(refreshLanguageBoundData,120);setTimeout(()=>{patchAll();decorateTierCards();syncCountrySelectFlags();},450);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,80),{once:true});else setTimeout(boot,80);
 })();
