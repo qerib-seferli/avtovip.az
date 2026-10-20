@@ -163,7 +163,7 @@
   async function teardownRealtime(){for(const c of rtChannels){try{await sb.removeChannel(c)}catch{}}rtChannels=[];}
   async function setupRealtime(){
     const {data:{session}}=await sb.auth.getSession();const uid=session?.user?.id;if(!uid)return;if(rtUser===uid&&rtChannels.length)return;rtUser=uid;await teardownRealtime();
-    const refreshMsg=()=>{window.AvtoVIPUI?.updateMessageBadge?.(); if(document.body.dataset.page==='messages'){window.AvtoVIPUI?.renderConversations?.(uid);const pane=$('#chatPane');if(pane?.dataset.peer)window.AvtoVIPUI?.renderThread?.(pane.dataset.peer,pane.dataset.listing||'')}};
+    const refreshMsg=()=>{window.AvtoVIPUI?.updateMessageBadge?.(); /* app.js owns live chat updates on the messages page; avoid a second full fetch. */};
     const refreshNotif=()=>document.dispatchEvent(new CustomEvent('avtovip:p11-notifications'));
     const refreshProfile=()=>refreshProfileLive(uid);const refreshBlocks=()=>{refreshProfileLive(uid);refreshMsg();syncBlockedComposer(uid)};
     const status=(name)=>s=>{if(s==='SUBSCRIBED')document.documentElement.dataset.realtime='on'; if(s==='CHANNEL_ERROR'||s==='TIMED_OUT'||s==='CLOSED'){console.warn(`[AvtoVIP realtime:${name}]`,s);document.documentElement.dataset.realtime='retry';clearTimeout(rtRetry);rtRetry=setTimeout(()=>{rtUser=null;setupRealtime()},2500)}};
@@ -213,7 +213,7 @@
     patchAll(); mo.observe(document.body,{childList:true,subtree:true});
     window.addEventListener('avtovip:language',()=>setTimeout(refreshLanguageBoundData,0));
     document.addEventListener('avtovip:p11-notifications',()=>{refreshNotificationBadge();const pop=$('#notificationPopover');if(pop){pop.remove();document.documentElement.classList.remove('popover-open')}});
-    document.addEventListener('visibilitychange',()=>{if(!document.hidden){rtUser=null;setupRealtime();refreshNotificationBadge()}});window.addEventListener('online',()=>{rtUser=null;setupRealtime()});
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(!rtChannels.length)setupRealtime();refreshNotificationBadge()}});window.addEventListener('online',()=>{rtUser=null;setupRealtime()});
     setupRealtime();refreshNotificationBadge();setTimeout(refreshLanguageBoundData,120);setTimeout(()=>{patchAll();decorateTierCards();syncCountrySelectFlags();},450);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,80),{once:true});else setTimeout(boot,80);

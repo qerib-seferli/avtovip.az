@@ -1271,11 +1271,11 @@
     let lastRefresh=Date.now(),pendingRefresh=false;
     const refresh=()=>{if(document.hidden){pendingRefresh=true;return}if(refreshTimer)return;refreshTimer=setTimeout(()=>{refreshTimer=0;lastRefresh=Date.now();pendingRefresh=false;renderConversations(user.id);const pane=$('#chatPane');if(pane?.dataset.peer)renderThread(pane.dataset.peer,pane.dataset.listing||'')},900)};
     // A quick tab switch must not re-fetch the entire chat. Reconcile only after a long absence.
-    const onVisible=()=>{if(!document.hidden&&(pendingRefresh||Date.now()-lastRefresh>120000))refresh()};
+    const onVisible=()=>{if(!document.hidden&&pendingRefresh)refresh()};
     document.addEventListener('visibilitychange',onVisible);
     if(activeRealtimeChannel)await sb.removeChannel(activeRealtimeChannel).catch(()=>{});
     activeRealtimeChannel=sb.channel(`messages-live-${user.id}`,{config:{broadcast:{self:false}}})
-      .on('postgres_changes',{event:'*',schema:'public',table:'messages'},payload=>{const m=payload.new?.id?payload.new:payload.old;if(!m)return;if(m.sender_id===user.id||m.receiver_id===user.id){if(m.sender_id===user.id&&Date.now()-(window.__avLastLocalMessageSend||0)<2500)return;refresh()}})
+      .on('postgres_changes',{event:'*',schema:'public',table:'messages'},payload=>{const m=payload.new?.id?payload.new:payload.old;if(!m)return;if(m.sender_id===user.id||m.receiver_id===user.id){if(m.sender_id===user.id&&Date.now()-(window.__avLastLocalMessageSend||0)<10000)return;refresh()}})
       .subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){console.warn('[AvtoVIP realtime] messages',status)}else if(status==='SUBSCRIBED'){document.body.dataset.realtime='on'}});
     const closeChatOnBack=()=>{if(!history.state?.avChat){const shell=$('#messagesShell'),pane=$('#chatPane');shell?.classList.remove('chat-selected');pane?.classList.remove('open');if(pane){delete pane.dataset.peer;delete pane.dataset.listing}}};window.addEventListener('popstate',closeChatOnBack);
     const cleanup=()=>{clearTimeout(refreshTimer);document.removeEventListener('visibilitychange',onVisible);if(activeRealtimeChannel){sb.removeChannel(activeRealtimeChannel).catch(()=>{});activeRealtimeChannel=null}};
