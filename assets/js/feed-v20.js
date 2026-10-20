@@ -124,7 +124,9 @@ function setupGridPlayback(root){
  const pause=v=>{if(!v.paused)v.pause()};
  const pauseAllTiles=()=>videos.forEach(pause);
  const io=new IntersectionObserver(es=>{if(desktop.matches){for(const e of es)if(!e.isIntersecting)pause(e.target);return}for(const e of es){const v=e.target;if(e.isIntersecting&&e.intersectionRatio>.35){v.muted=true;v.play().catch(()=>{})}else pause(v)}},{threshold:[0,.35,.75]});
- videos.forEach(v=>{io.observe(v);v.addEventListener('mouseenter',()=>{if(!desktop.matches||document.hidden)return;pauseAllTiles();v.muted=true;v.play().catch(()=>{})});v.addEventListener('mouseleave',()=>{if(desktop.matches)pause(v)})});
+ // Fetch only metadata for visible tiles so a first frame appears without downloading every video.
+ const thumbObserver=new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;const v=entry.target;if(v.preload==='none'){v.preload='metadata';v.addEventListener('loadeddata',()=>{try{if(v.paused&&v.readyState>=2)v.currentTime=Math.min(.08,Number.isFinite(v.duration)?Math.max(0,v.duration-.01):.08)}catch{}},{once:true})}thumbObserver.unobserve(v)}},{rootMargin:'240px 0px',threshold:0});
+ videos.forEach(v=>{thumbObserver.observe(v);io.observe(v);v.addEventListener('mouseenter',()=>{if(!desktop.matches||document.hidden)return;pauseAllTiles();v.muted=true;v.play().catch(()=>{})});v.addEventListener('mouseleave',()=>{if(desktop.matches)pause(v)})});
  const stopIfDesktop=()=>{if(desktop.matches)pauseAllTiles()};
  desktop.addEventListener?.('change',stopIfDesktop);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseAllTiles()});

@@ -1268,8 +1268,10 @@
     const withId=qsParam('with'),listingId=qsParam('listing');if(withId)await openConversation(withId,listingId);else if(matchMedia('(min-width:901px)').matches){const first=$('#conversationList [data-peer]');if(first)await openConversation(first.dataset.peer,first.dataset.listing||'')}
     // Coalesce bursts of Realtime events into one refresh; keep the active chat live.
     let refreshTimer=0;
-    const refresh=()=>{if(document.hidden||refreshTimer)return;refreshTimer=setTimeout(()=>{refreshTimer=0;renderConversations(user.id);const pane=$('#chatPane');if(pane?.dataset.peer)renderThread(pane.dataset.peer,pane.dataset.listing||'')},180)};
-    const onVisible=()=>{if(!document.hidden)refresh()};
+    let lastRefresh=Date.now(),pendingRefresh=false;
+    const refresh=()=>{if(document.hidden){pendingRefresh=true;return}if(refreshTimer)return;refreshTimer=setTimeout(()=>{refreshTimer=0;lastRefresh=Date.now();pendingRefresh=false;renderConversations(user.id);const pane=$('#chatPane');if(pane?.dataset.peer)renderThread(pane.dataset.peer,pane.dataset.listing||'')},900)};
+    // A quick tab switch must not re-fetch the entire chat. Reconcile only after a long absence.
+    const onVisible=()=>{if(!document.hidden&&(pendingRefresh||Date.now()-lastRefresh>120000))refresh()};
     document.addEventListener('visibilitychange',onVisible);
     if(activeRealtimeChannel)await sb.removeChannel(activeRealtimeChannel).catch(()=>{});
     activeRealtimeChannel=sb.channel(`messages-live-${user.id}`,{config:{broadcast:{self:false}}})
@@ -1335,7 +1337,7 @@
     const sync=()=>{const state=ch.presenceState(),set=new Set();Object.keys(state||{}).forEach(k=>set.add(k));window.__avOnlineUsers=set;window.dispatchEvent(new CustomEvent('avtovip:presence'));};
     ch.on('presence',{event:'sync'},sync).on('presence',{event:'join'},sync).on('presence',{event:'leave'},sync).subscribe(async status=>{if(status==='SUBSCRIBED')await ch.track({user_id:currentUser.id,at:new Date().toISOString()})});
     window.__avPresenceChannel=ch;
-    window.addEventListener('avtovip:presence',()=>{if(document.body.dataset.page==='messages'){renderConversations(currentUser.id);const pane=$('#chatPane');if(pane?.dataset.peer){const sub=$('#chatPeerLink .muted.tiny');if(sub)sub.textContent=window.__avOnlineUsers.has(pane.dataset.peer)?'Onlayn':'Oflayn';}}});
+    window.addEventListener('avtovip:presence',()=>{if(document.body.dataset.page==='messages'){const pane=$('#chatPane');if(pane?.dataset.peer){const sub=$('#chatPeerLink .muted.tiny');if(sub)sub.textContent=window.__avOnlineUsers.has(pane.dataset.peer)?'Onlayn':'Oflayn';}}});
   }
 
 
@@ -1350,7 +1352,7 @@
     if('serviceWorker' in navigator){
       window.addEventListener('load',async()=>{
         try{
-          const reg=await navigator.serviceWorker.register('./service-worker.js?v=118',{scope:'./',updateViaCache:'none'});
+          const reg=await navigator.serviceWorker.register('./service-worker.js?v=119',{scope:'./',updateViaCache:'none'});
           await reg.update();
           await navigator.serviceWorker.ready;
           let reloading=false;
