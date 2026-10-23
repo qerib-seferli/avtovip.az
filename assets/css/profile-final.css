@@ -2945,3 +2945,19 @@ body[data-page="profile"] #pfLikedListings .pf-listing-sold>.pf-thumb>.pf-sold-s
     font-size:9.5px!important;letter-spacing:.14em!important;
   }
 }
+
+/* Profile: fixed eight-slot navigation; content swipe is handled separately. */
+body[data-page="profile"] .pf-nav{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;gap:clamp(2px,.5vw,7px)!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow:visible!important}
+body[data-page="profile"] .pf-nav>button,body[data-page="profile"] .pf-nav>a{width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important;padding:0 3px!important;overflow:hidden!important}
+@media(max-width:900px){body[data-page="profile"] .pf-nav>button,body[data-page="profile"] .pf-nav>a{height:clamp(34px,9vw,47px)!important;padding:0!important;gap:0!important}body[data-page="profile"] .pf-nav i{font-size:clamp(12px,3.8vw,18px)!important}body[data-page="profile"] .pf-nav span{display:none!important}}
+/* My places: three balanced desktop columns, single-column compact mobile rows. */
+body[data-page="profile"] #myPlacesList{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;align-items:stretch!important;min-width:0!important}
+body[data-page="profile"] #myPlacesList>.my-place-card{min-width:0!important;width:100%!important;box-sizing:border-box!important;display:grid!important;grid-template-columns:52px minmax(0,1fr) auto!important;align-items:center!important;gap:9px!important;padding:10px!important;margin:0!important}
+body[data-page="profile"] #myPlacesList>.my-place-card>img{width:52px!important;height:52px!important;object-fit:cover!important}
+body[data-page="profile"] #myPlacesList>.my-place-card>div:nth-child(2){min-width:0!important;overflow-wrap:anywhere!important}
+body[data-page="profile"] #myPlacesList .place-card-actions{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;flex-wrap:nowrap!important;margin:0!important}
+body[data-page="profile"] #myPlacesList .place-card-actions>.btn{display:grid!important;place-items:center!important;width:32px!important;min-width:32px!important;height:32px!important;min-height:32px!important;padding:0!important;font-size:12px!important;border-radius:9px!important}
+body[data-page="profile"] #myPlacesList .place-card-actions>.btn[data-toggle]{font-size:0!important}
+body[data-page="profile"] #myPlacesList .place-card-actions>.btn[data-toggle] i{font-size:12px!important}
+@media(max-width:900px){body[data-page="profile"] #myPlacesList{grid-template-columns:minmax(0,1fr)!important}body[data-page="profile"] #myPlacesList>.my-place-card{grid-template-columns:52px minmax(0,1fr) 34px!important}}
+@media(min-width:901px) and (max-width:1150px){body[data-page="profile"] #myPlacesList>.my-place-card{grid-template-columns:40px minmax(0,1fr) 32px!important;gap:5px!important}body[data-page="profile"] #myPlacesList>.my-place-card>img{width:40px!important;height:40px!important}}
