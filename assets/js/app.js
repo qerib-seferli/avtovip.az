@@ -508,9 +508,17 @@
   function observeDynamicI18n(){
     if(!document.body || document.body.dataset.i18nObserved==='1') return;
     document.body.dataset.i18nObserved='1';
-    const observer=new MutationObserver(()=>{
+    const observer=new MutationObserver(mutations=>{
+      // AZ is the source language: dynamic content needs no full-page translation.
+      // A complete DOM walk on every list/card insertion stalls Safari's main thread.
+      if(lang==='az')return;
+      if(!mutations.some(m=>m.addedNodes.length))return;
       clearTimeout(i18nMutationTimer);
-      i18nMutationTimer=setTimeout(()=>{translateStaticDom();localizeBranding();},40);
+      i18nMutationTimer=setTimeout(()=>{
+        const run=()=>{translateStaticDom();localizeBranding();};
+        if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1200});
+        else setTimeout(run,0);
+      },250);
     });
     observer.observe(document.body,{childList:true,subtree:true});
   }
@@ -727,7 +735,7 @@
   }
   function toggleCompare(id){let ids=compareIds(); if(ids.includes(id))ids=ids.filter(x=>x!==id);else if(ids.length<4)ids.push(id);else{toast('Maksimum 4 avtomobil müqayisə oluna bilər.','info');return} setCompareIds(ids); toast(ids.includes(id)?'Müqayisəyə əlavə edildi':'Müqayisədən çıxarıldı','success');}
   function bindCardActions(root=document){
-    root.addEventListener('click',e=>{const f=e.target.closest('[data-fav]');if(f){e.preventDefault();toggleFavorite(f.dataset.fav,f);return} const c=e.target.closest('[data-compare]');if(c){e.preventDefault();toggleCompare(c.dataset.compare);c.innerHTML=`<i class="fa-solid fa-code-compare"></i>${compareIds().includes(c.dataset.compare)?'✓':t('compare')}`}});
+    root.addEventListener('click',e=>{const f=e.target.closest('[data-fav]');if(f){e.preventDefault();toggleFavorite(f.dataset.fav,f);return} const c=e.target.closest('[data-compare]');if(c){e.preventDefault();toggleCompare(c.dataset.compare);c.innerHTML=`<i class="fa-solid fa-code-compare"></i>${compareIds().includes(c.dataset.compare)?'✓':t('compare')}`;return}const card=e.target.closest('article.listing-card[data-listing]');if(card&&!e.target.closest('a,button,input,select,textarea,[role=button],[contenteditable]')){const link=card.querySelector('a.listing-photo[href]');if(link)location.href=link.href}});
   }
 
   let smartSearchText='';
