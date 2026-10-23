@@ -3013,3 +3013,23 @@ body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions>.btn{
   /* Do not stretch the content area into an empty screen above fixed navigation. */
   body[data-page="profile"] main.page{min-height:0!important;padding-bottom:calc(80px + env(safe-area-inset-bottom))!important;}
 }
+
+/* PWA: keep place controls on the date/status line, never create a second row. */
+@media(max-width:900px){
+ body[data-page="profile"] #myPlacesList>.my-place-card{
+   position:relative!important;display:grid!important;grid-template-columns:52px minmax(0,1fr)!important;
+   align-items:center!important;min-height:72px!important;padding:9px!important;gap:8px!important;
+ }
+ body[data-page="profile"] #myPlacesList>.my-place-card>div:nth-child(2){
+   min-width:0!important;padding-right:83px!important;
+ }
+ body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions{
+   position:absolute!important;right:9px!important;bottom:9px!important;top:auto!important;
+   transform:none!important;display:flex!important;flex-direction:row!important;
+   gap:3px!important;align-items:center!important;width:auto!important;margin:0!important;
+ }
+ body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions>.btn{
+   flex:0 0 24px!important;width:24px!important;min-width:24px!important;max-width:24px!important;
+   height:24px!important;min-height:24px!important;max-height:24px!important;
+ }
+}
