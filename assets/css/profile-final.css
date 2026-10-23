@@ -2970,3 +2970,46 @@ body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions{posit
 body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions>.btn{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 25px!important;width:25px!important;min-width:25px!important;max-width:25px!important;height:25px!important;min-height:25px!important;max-height:25px!important;padding:0!important;line-height:1!important;border-radius:7px!important;font-size:0!important}
 body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions>.btn i{font-size:10px!important;line-height:1!important}
 @media(max-width:900px){body[data-page="profile"] #myPlacesList>.my-place-card{min-height:82px!important;padding-right:42px!important}body[data-page="profile"] #myPlacesList>.my-place-card>img{flex-basis:52px!important;width:52px!important;height:52px!important}}
+
+/* Profile places: keep actions inside the card, aligned to the right of the details. */
+body[data-page="profile"] #myPlacesList>.my-place-card{
+  display:grid!important;
+  grid-template-columns:48px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:72px!important;
+  padding:9px!important;
+  overflow:hidden!important;
+}
+body[data-page="profile"] #myPlacesList>.my-place-card>img{
+  width:48px!important;height:48px!important;min-width:0!important;
+}
+body[data-page="profile"] #myPlacesList>.my-place-card>div:nth-child(2){min-width:0!important;}
+body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions{
+  position:static!important;top:auto!important;right:auto!important;
+  transform:none!important;display:flex!important;flex-direction:row!important;
+  flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;
+  width:auto!important;min-width:0!important;gap:4px!important;
+  margin:0!important;padding:0!important;align-self:center!important;
+}
+body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions>.btn{
+  flex:0 0 25px!important;width:25px!important;min-width:25px!important;
+  max-width:25px!important;height:25px!important;min-height:25px!important;
+  max-height:25px!important;border-radius:7px!important;
+}
+@media(max-width:900px){
+  body[data-page="profile"] #myPlacesList>.my-place-card{
+    grid-template-columns:52px minmax(0,1fr) auto!important;
+    min-height:72px!important;padding:9px!important;
+  }
+  body[data-page="profile"] #myPlacesList>.my-place-card>img{width:52px!important;height:52px!important;}
+  body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions{
+    gap:3px!important;
+  }
+  body[data-page="profile"] #myPlacesList>.my-place-card .place-card-actions>.btn{
+    flex-basis:23px!important;width:23px!important;min-width:23px!important;
+    max-width:23px!important;height:23px!important;min-height:23px!important;max-height:23px!important;
+  }
+  /* Do not stretch the content area into an empty screen above fixed navigation. */
+  body[data-page="profile"] main.page{min-height:0!important;padding-bottom:calc(80px + env(safe-area-inset-bottom))!important;}
+}
