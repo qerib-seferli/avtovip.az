@@ -104,6 +104,8 @@ function bindSeek(video,bar){if(!video||!bar)return;const seek=e=>{const r=bar.g
 function bindSmoothProgress(video,progress){if(!video||!progress)return;const fill=progress.querySelector('i');if(!fill)return;let raf=0;const paint=()=>{if(Number.isFinite(video.duration)&&video.duration>0)fill.style.transform=`scaleX(${Math.max(0,Math.min(1,video.currentTime/video.duration))})`;if(!video.paused&&!video.ended)raf=requestAnimationFrame(paint)};const start=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(paint)};const stop=()=>{cancelAnimationFrame(raf);paint()};video.addEventListener('play',start);video.addEventListener('pause',stop);video.addEventListener('ended',stop);video.addEventListener('seeking',paint);video.addEventListener('loadedmetadata',paint);paint()}
 function setupFeedPlayback(root){
  const videos=$$('.av-feed-video',root);if(!videos.length)return;
+ // Feed always starts muted; reflect that state in the sound button too.
+ soundEnabled=false;syncSoundIcons();
  const visible=new Map();
  let feedAudioActivated=false;
  const choose=()=>{let best=null,bestR=.55;for(const [v,r] of visible){const activeSlide=v.closest('.av-feed-slide')?.classList.contains('active');if(activeSlide&&r>bestR){best=v;bestR=r}}videos.forEach(v=>{if(v!==best){if(!v.paused)v.pause();v.classList.remove('is-active');if((visible.get(v)||0)<.15)v.dataset.manualPaused=''}});if(best){best.classList.add('is-active');best.muted=!(soundEnabled&&feedAudioActivated);if(best.dataset.manualPaused!=='1'&&best.paused)best.play().catch(()=>{if(!best.muted){best.muted=true;best.play().catch(()=>{})}})}};
