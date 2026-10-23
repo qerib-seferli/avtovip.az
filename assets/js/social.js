@@ -311,7 +311,22 @@
       const card=p=>{const url=p.media_urls?.[0]||'assets/img/brand/icon-512.png',isVideo=String(p.media_types?.[0]||'').startsWith('video'),href=`${p.is_reel?'reels.html':'lent.html'}#post=${encodeURIComponent(p.id)}`,views=Number(p.view_count??p.views_count??p.views??0);return `<a class="public-social-card" href="${href}">${isVideo?`<video src="${esc(url)}" muted playsinline preload="metadata"></video>`:`<img src="${esc(url)}" alt="">`}<span class="public-social-view"><i class="fa-regular fa-eye"></i><b>${views}</b></span><span class="public-social-kind"><i class="fa-solid ${p.is_reel?'fa-clapperboard':'fa-layer-group'}"></i></span></a>`};
       $('#publicFeed').innerHTML=posts.filter(p=>!p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
       $('#publicReels').innerHTML=posts.filter(p=>p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
-      root.querySelectorAll('[data-public-tab]').forEach(b=>b.onclick=()=>{root.querySelectorAll('[data-public-tab]').forEach(x=>x.classList.toggle('active',x===b));root.querySelectorAll('[data-public-pane]').forEach(x=>x.hidden=x.dataset.publicPane!==b.dataset.publicTab)})
+      // Safari does not reliably paint the first frame of a paused video without a seek.
+      // Load only the visible tab's thumbnails to avoid excessive mobile network/CPU work.
+      const preparePublicVideoFrames=()=>{
+        root.querySelectorAll('.public-social-card video').forEach(v=>{
+          if(v.closest('[data-public-pane]')?.hidden)return;
+          if(v.dataset.avFrameReady)return;
+          v.dataset.avFrameReady='1';
+          v.preload='metadata';v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');
+          const seek=()=>{try{if(v.seekable.length&&v.currentTime<.05)v.currentTime=Math.min(.12,Math.max(.01,(v.duration||1)-.02))}catch{}};
+          v.addEventListener('loadedmetadata',seek,{once:true});
+          if(v.readyState>=1)seek();
+          v.load();
+        });
+      };
+      preparePublicVideoFrames();
+      root.querySelectorAll('[data-public-tab]').forEach(b=>b.onclick=()=>{root.querySelectorAll('[data-public-tab]').forEach(x=>x.classList.toggle('active',x===b));root.querySelectorAll('[data-public-pane]').forEach(x=>x.hidden=x.dataset.publicPane!==b.dataset.publicTab);preparePublicVideoFrames()})
     }
   }
   function avatarViewer(url){const d=document.createElement('div');d.className='avatar-viewer';d.innerHTML=`<button aria-label="${esc(L().close)}">×</button><img src="${esc(url)}" alt="">`;document.body.append(d);document.documentElement.classList.add('modal-open');const close=()=>{d.remove();document.documentElement.classList.remove('modal-open')};d.onclick=e=>{if(e.target===d||e.target.tagName==='BUTTON')close()}}
