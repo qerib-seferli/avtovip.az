@@ -105,13 +105,14 @@ function bindSmoothProgress(video,progress){if(!video||!progress)return;const fi
 function setupFeedPlayback(root){
  const videos=$$('.av-feed-video',root);if(!videos.length)return;
  const visible=new Map();
- const choose=()=>{let best=null,bestR=.55;for(const [v,r] of visible){const activeSlide=v.closest('.av-feed-slide')?.classList.contains('active');if(activeSlide&&r>bestR){best=v;bestR=r}}videos.forEach(v=>{if(v!==best){if(!v.paused)v.pause();v.classList.remove('is-active');if((visible.get(v)||0)<.15)v.dataset.manualPaused=''}});if(best){best.classList.add('is-active');best.muted=!soundEnabled;if(best.dataset.manualPaused!=='1'&&best.paused)best.play().catch(()=>{})}};
+ let feedAudioActivated=false;
+ const choose=()=>{let best=null,bestR=.55;for(const [v,r] of visible){const activeSlide=v.closest('.av-feed-slide')?.classList.contains('active');if(activeSlide&&r>bestR){best=v;bestR=r}}videos.forEach(v=>{if(v!==best){if(!v.paused)v.pause();v.classList.remove('is-active');if((visible.get(v)||0)<.15)v.dataset.manualPaused=''}});if(best){best.classList.add('is-active');best.muted=!(soundEnabled&&feedAudioActivated);if(best.dataset.manualPaused!=='1'&&best.paused)best.play().catch(()=>{if(!best.muted){best.muted=true;best.play().catch(()=>{})}})}};
  const io=new IntersectionObserver(es=>{for(const e of es)visible.set(e.target,e.intersectionRatio);choose()},{threshold:[0,.15,.35,.55,.75,1]});
  videos.forEach(v=>{hardenVideo(v);syncVideoBackdrop(v);io.observe(v);let dragged=false,sx=0,sy=0;v.addEventListener('pointerdown',e=>{dragged=false;sx=e.clientX;sy=e.clientY});v.addEventListener('pointermove',e=>{if(Math.hypot(e.clientX-sx,e.clientY-sy)>10)dragged=true});v.addEventListener('click',e=>{if(dragged)return;e.preventDefault();if(v.paused){v.dataset.manualPaused='';v.muted=!soundEnabled;pauseAll(v);v.play().catch(()=>{})}else{v.dataset.manualPaused='1';v.pause()}});const progress=v.closest('.av-feed-slide')?.querySelector('.av-media-progress');bindSeek(v,progress);bindSmoothProgress(v,progress)});
  root.addEventListener('click',async e=>{
   const fs=e.target.closest('.av-media-fullscreen');
-  if(fs){e.preventDefault();e.stopPropagation();const slide=fs.closest('.av-feed-slide'),v=slide?.querySelector('.av-feed-video');if(!slide||!v)return;try{if(!document.fullscreenElement){await (slide.requestFullscreen?.()||slide.webkitRequestFullscreen?.());try{if(screen.orientation?.lock){const mode=(v.videoWidth||0)>=(v.videoHeight||0)?'landscape':'portrait';await screen.orientation.lock(mode)}}catch{}}else{await (document.exitFullscreen?.()||document.webkitExitFullscreen?.())}}catch{}return}
-  const b=e.target.closest('.av-media-sound');if(!b)return;e.preventDefault();e.stopPropagation();setSound(!soundEnabled)
+  if(fs){e.preventDefault();e.stopPropagation();const slide=fs.closest('.av-feed-slide'),v=slide?.querySelector('.av-feed-video');if(!slide||!v)return;try{if(!document.fullscreenElement&&typeof v.webkitEnterFullscreen==='function'&&!slide.requestFullscreen&&!slide.webkitRequestFullscreen){v.webkitEnterFullscreen();return}if(!document.fullscreenElement){await (slide.requestFullscreen?.()||slide.webkitRequestFullscreen?.());try{if(screen.orientation?.lock){const mode=(v.videoWidth||0)>=(v.videoHeight||0)?'landscape':'portrait';await screen.orientation.lock(mode)}}catch{}}else{await (document.exitFullscreen?.()||document.webkitExitFullscreen?.())}}catch{try{v.webkitEnterFullscreen?.()}catch{}}return}
+  const b=e.target.closest('.av-media-sound');if(!b)return;e.preventDefault();e.stopPropagation();feedAudioActivated=true;setSound(!soundEnabled)
  });
  const syncFs=()=>{$$('.av-media-fullscreen i',root).forEach(i=>i.className=`fa-solid ${document.fullscreenElement?'fa-compress':'fa-expand'}`);if(!document.fullscreenElement){try{screen.orientation?.unlock?.()}catch{}}};
  document.addEventListener('fullscreenchange',syncFs);
@@ -123,10 +124,10 @@ function setupGridPlayback(root){
  const desktop=window.matchMedia('(min-width:901px) and (hover:hover) and (pointer:fine)');
  const pause=v=>{if(!v.paused)v.pause()};
  const pauseAllTiles=()=>videos.forEach(pause);
- const io=new IntersectionObserver(es=>{if(desktop.matches){for(const e of es)if(!e.isIntersecting)pause(e.target);return}for(const e of es){const v=e.target;if(e.isIntersecting&&e.intersectionRatio>.35){v.muted=!soundEnabled;v.play().catch(()=>{})}else pause(v)}},{threshold:[0,.35,.75]});
+ const io=new IntersectionObserver(es=>{if(desktop.matches){for(const e of es)if(!e.isIntersecting)pause(e.target);return}for(const e of es){const v=e.target;if(e.isIntersecting&&e.intersectionRatio>.35){v.muted=true;v.play().catch(()=>{})}else pause(v)}},{threshold:[0,.35,.75]});
  // Fetch only metadata for visible tiles so a first frame appears without downloading every video.
  const thumbObserver=new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;const v=entry.target;if(v.preload==='none'){v.preload='metadata';v.addEventListener('loadeddata',()=>{try{if(v.paused&&v.readyState>=2)v.currentTime=Math.min(.08,Number.isFinite(v.duration)?Math.max(0,v.duration-.01):.08)}catch{}},{once:true})}thumbObserver.unobserve(v)}},{rootMargin:'650px 0px',threshold:0});
- videos.forEach(v=>{thumbObserver.observe(v);io.observe(v);v.addEventListener('mouseenter',()=>{if(!desktop.matches||document.hidden)return;pauseAllTiles();v.muted=!soundEnabled;v.play().catch(()=>{})});v.addEventListener('mouseleave',()=>{if(desktop.matches)pause(v)})});
+ videos.forEach(v=>{thumbObserver.observe(v);io.observe(v);v.addEventListener('mouseenter',()=>{if(!desktop.matches||document.hidden)return;pauseAllTiles();v.muted=true;v.play().catch(()=>{})});v.addEventListener('mouseleave',()=>{if(desktop.matches)pause(v)})});
  const stopIfDesktop=()=>{if(desktop.matches)pauseAllTiles()};
  desktop.addEventListener?.('change',stopIfDesktop);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseAllTiles()});
