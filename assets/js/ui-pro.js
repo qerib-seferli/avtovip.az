@@ -65,11 +65,12 @@
    const langHost=a.querySelector('.header-control,.lang-picker-host');if(langHost){langHost.style.setProperty('display','none','important');langHost.setAttribute('aria-hidden','true')}
 
    /* Old implementations could leave a Reel/Lent shortcut behind. Remove all of them first. */
-   $$('.av-mobile-social-cross,#avSocialShortcut',a).forEach(x=>x.remove());
+   $$('.av-mobile-social-cross',a).forEach(x=>x.remove());
+   if(page==='feed')$('#avSocialShortcut',a)?.remove();
 
    /* Mobile/PWA order is fixed: Lent → Favorites → Notifications → Profile.
       Lent does not duplicate itself on the Lent page; Reels stays only in bottom navigation. */
-   if(page!=='feed'){
+   if(page!=='feed'&&!$('#avSocialShortcut',a)){
      const lent=document.createElement('a');lent.id='avSocialShortcut';lent.className='icon-btn';lent.href='lent.html';
      lent.setAttribute('aria-label','Avto Lent');lent.title='Avto Lent';lent.innerHTML='<i class="fa-solid fa-bolt"></i>';
      a.prepend(lent);
@@ -92,7 +93,10 @@
  function boot(){mobileNavReels();desktopSocialRail();syncMobileHeaderActions();setTimeout(syncMobileHeaderActions,60);setTimeout(syncMobileHeaderActions,260);if(page==='explore')explore();if(page==='messages')messages();if(page==='profile')profile();if(page==='create-listing')createSteps();if(page==='auth')oauth();realtimeSounds()}
  addEventListener('avtovip:language',()=>{ /* app.js + social.js own the full dynamic translation cycle */ });
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();addEventListener('resize',()=>{clearTimeout(window.__avNavResize);window.__avNavResize=setTimeout(()=>{mobileNavReels();syncMobileHeaderActions()},120)},{passive:true});
- const headerActions=$('.header-actions');if(headerActions){let headerSyncTimer=0;new MutationObserver(()=>{clearTimeout(headerSyncTimer);headerSyncTimer=setTimeout(syncMobileHeaderActions,0)}).observe(headerActions,{childList:true})}
+ /* Do not observe our own header rebuilds. On iOS WebKit the previous
+    observer + remove/reinsert shortcut formed a continuous DOM mutation loop,
+    starving taps while the page still scrolled smoothly. The header is already
+    synchronized at boot and on resize. */
 })();
 
 /* AvtoVIP UI hotfix v23 — removes the recursive DOM observer that could freeze browser/PWA. */

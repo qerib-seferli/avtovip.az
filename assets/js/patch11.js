@@ -208,7 +208,14 @@
     const trust=$('.status-pill.approved');if(trust&&/Etibar|Trust|Доверие|Güven|ნდობა/.test(trust.textContent))trust.childNodes.forEach(n=>{if(n.nodeType===3&&n.nodeValue.trim())n.nodeValue=' '+tr('trust')+' '});
     const chatSub=$('#chatPeerLink .muted.tiny');if(chatSub)chatSub.textContent=tr('chatService');
   }
-  let moTimer=0; const mo=new MutationObserver(()=>{clearTimeout(moTimer);moTimer=setTimeout(patchAll,60)});
+  let moTimer=0;
+  const mo=new MutationObserver(records=>{
+    // Attribute/text edits by patchAll must not schedule another full scan.
+    // Coalesce actual inserted UI into one idle pass instead of repeatedly
+    // scanning the entire page during rapid card/message rendering.
+    if(moTimer||!records.some(r=>Array.from(r.addedNodes).some(n=>n.nodeType===1)))return;
+    moTimer=setTimeout(()=>{moTimer=0;if(!document.hidden)patchAll()},300);
+  });
   function boot(){
     patchAll(); mo.observe(document.body,{childList:true,subtree:true});
     window.addEventListener('avtovip:language',()=>setTimeout(refreshLanguageBoundData,0));
