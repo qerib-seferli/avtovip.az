@@ -224,10 +224,11 @@
   async function transcodeVideo(file,{maxWidth=1280,maxHeight=1280,progressTitle='Video hazırlanır...',onProgress=null}={}){
     if(!file)return file;if(!isVideoFile(file))throw new Error('Bu fayl video kimi oxuna bilmədi.');
     const ext=String(file.name||'').split('.').pop().toLowerCase();
-    /* Most Android/iPhone camera MP4 files are already directly usable. Do not re-encode them
-       needlessly: it is much faster and preserves the original visual quality. MOV/HEVC and
-       other containers still go through FFmpeg for cross-browser compatibility. */
-    if(ext==='mp4' && String(file.type||'video/mp4').toLowerCase().includes('mp4')){
+    /* Keep small MP4 uploads fast. Large MP4 files need a size-reduction pass so
+       repeated feed/Reels playback does not transfer the original camera file.
+       This only changes newly uploaded media; existing Storage files are untouched. */
+    const MAX_DIRECT_MP4_BYTES=20*1024*1024;
+    if(ext==='mp4' && String(file.type||'video/mp4').toLowerCase().includes('mp4') && file.size<=MAX_DIRECT_MP4_BYTES){
       mediaProgress(progressTitle,100,'Video hazırdır.');onProgress?.(100);mediaProgressHide(100);return file;
     }
     mediaProgress(progressTitle,6,'Video uyğunluğu yoxlanılır...');
@@ -244,7 +245,9 @@
       await run(common);
       const data=ffmpeg.FS('readFile',output);if(!data?.length)throw new Error('empty-output');
       const out=new File([data.buffer],`${base}.mp4`,{type:'video/mp4',lastModified:Date.now()});
-      mediaProgress(progressTitle,100,'Video hazırdır.');return out;
+      // Never replace a valid MP4 with a larger encoded copy.
+      const result=(ext==='mp4' && out.size>=file.size)?file:out;
+      mediaProgress(progressTitle,100,'Video hazırdır.');return result;
     }catch(e){
       console.error('[AvtoVIP media] video conversion failed',e);
       throw new Error('Video uyğun MP4 formatına çevrilə bilmədi. Zəhmət olmasa videonu yenidən seçin.');
