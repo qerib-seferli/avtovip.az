@@ -3499,3 +3499,17 @@ body[data-page="public-user"] .public-social-card>.public-social-view b{font:inh
     background:#000!important;
   }
 }
+
+/* Message gallery: viewport-centered, image/video support and download control */
+body[data-page="messages"] .bubble .chat-media,body[data-page="messages"] .bubble .chat-video{width:auto!important;max-width:min(260px,65vw)!important;max-height:240px!important;object-fit:contain!important}
+body[data-page="messages"] .bubble .chat-media-open{width:auto!important;max-width:100%!important}
+.chat-lightbox.av-chat-gallery{display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;padding:64px 56px!important}
+.av-chat-gallery-stage{display:flex;align-items:center;justify-content:center;min-width:0;max-width:100%;max-height:100%;margin:auto}
+.av-chat-gallery-stage img,.av-chat-gallery-stage video{display:block!important;position:static!important;width:auto!important;height:auto!important;max-width:calc(100vw - 112px)!important;max-height:calc(100dvh - 132px)!important;object-fit:contain!important;margin:auto!important}
+.av-chat-gallery-toolbar{position:fixed;top:max(12px,env(safe-area-inset-top));right:14px;display:flex;align-items:center;gap:10px;z-index:4}
+.av-chat-gallery-toolbar .chat-lightbox-close{position:static!important}
+.av-chat-gallery-download{width:42px;height:42px;border:1px solid rgba(255,255,255,.3);border-radius:50%;background:rgba(20,22,27,.85);color:white;display:grid;place-items:center;text-decoration:none}
+.av-chat-gallery [data-gallery-prev],.av-chat-gallery [data-gallery-next]{position:fixed;top:50%;transform:translateY(-50%);z-index:3;border:1px solid #777;border-radius:9px;background:#24252e;color:white;font-size:30px;width:40px;height:54px}
+.av-chat-gallery [data-gallery-prev]{left:8px}.av-chat-gallery [data-gallery-next]{right:8px}
+.av-chat-gallery [data-gallery-count]{position:fixed;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:white;z-index:3}
+@media(max-width:600px){.chat-lightbox.av-chat-gallery{padding:66px 35px!important}.av-chat-gallery-stage img,.av-chat-gallery-stage video{max-width:calc(100vw - 70px)!important}}
