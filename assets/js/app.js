@@ -824,6 +824,7 @@
     const adv=$('#advancedFilters'),toggle=$('#toggleAdvanced');
     const savedOpen=localStorage.getItem('avtovip-filter-open')==='1'; if(adv)adv.classList.toggle('open',savedOpen); if(toggle)toggle.setAttribute('aria-expanded',String(savedOpen));
     toggle?.addEventListener('click',()=>{const open=!adv?.classList.contains('open');adv?.classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));localStorage.setItem('avtovip-filter-open',open?'1':'0')});
+    document.addEventListener('avtovip:category-car',()=>{const grid=$('#listingsGrid');if(grid){grid.dataset.ready='0';loadHomeListings()}});
     $('#applyFilters')?.addEventListener('click',loadHomeListings); $('#resetFilters')?.addEventListener('click',()=>{ $$('#filterPanel input,#filterPanel select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''}); $('#vipOnly').dataset.on='0';$('#vipOnly').classList.remove('btn-gold');loadHomeListings() });
     $('#vipOnly')?.addEventListener('click',e=>{e.currentTarget.classList.toggle('btn-gold');e.currentTarget.dataset.on=e.currentTarget.dataset.on==='1'?'0':'1';loadHomeListings()});
     let filterTimer=0;const scheduleFilter=()=>{clearTimeout(filterTimer);filterTimer=setTimeout(loadHomeListings,260)};$('#filterPanel')?.addEventListener('change',e=>{if(e.target.closest('#toggleAdvanced,#applyFilters,#resetFilters,#vipOnly'))return;scheduleFilter()});$('#filterPanel')?.addEventListener('input',e=>{if(['INPUT'].includes(e.target.tagName)&&['search','number','text'].includes(e.target.type))scheduleFilter()});
@@ -877,7 +878,7 @@
     const selectedEq=$$('#filterEquipmentGrid input:checked').map(x=>x.value);if(selectedEq.length)q=q.contains('equipment',selectedEq);
     const sort=v('#sortListings'); if(sort==='price-asc')q=q.order('price',{ascending:true});else if(sort==='price-desc')q=q.order('price',{ascending:false});else if(sort==='year-desc')q=q.order('year',{ascending:false});else if(sort==='mileage-asc')q=q.order('mileage',{ascending:true});else q=q.order('is_premium',{ascending:false}).order('is_vip',{ascending:false}).order('published_at',{ascending:false}); q=q.limit(100);
     const [{data,error},favs]=await Promise.all([q,favoriteSet()]);
-    if(requestId!==homeListingsRequestId)return;
+    if(requestId!==homeListingsRequestId||document.getElementById('listingsGrid')?.dataset.categoryPending)return;
     if(error){grid.innerHTML=`<div class="empty-state">${esc(error.message)}</div>`;grid.dataset.ready='1';return}
     $('#resultCount')&&($('#resultCount').textContent=`${(data||[]).length} ${lang==='ru'?'объявл.':lang==='en'?'ads':lang==='tr'?'ilan':lang==='ka'?'განცხადება':'elan'}`);
     grid.innerHTML=(data||[]).length?(data||[]).map(x=>listingCard(x,favs)).join(''):`<div class="empty-state">${t('empty')}</div>`;
