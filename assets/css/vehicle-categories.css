@@ -38,3 +38,13 @@
 .vehicle-noncar .vehicle-features input{width:15px;height:15px;margin:0;flex:0 0 15px}
 .vehicle-noncar .vehicle-features{gap:5px;margin:10px 0}
 @media(max-width:700px){.vehicle-noncar .vehicle-primary-grid .vehicle-field:nth-child(n+3){display:none!important}.vehicle-noncar #applyFilters{display:flex!important;width:100%;justify-content:center;margin-top:8px}.vehicle-noncar .vehicle-primary-grid{margin-bottom:4px}.vehicle-noncar .vehicle-features label{padding:5px 7px;font-size:11px;min-height:28px}}
+
+/* Unified card sizing and compact feature chips (desktop and PWA). */
+.vehicle-noncar-brands{box-sizing:border-box}
+.vehicle-noncar .vehicle-primary-grid{margin-top:8px;margin-bottom:0}
+.vehicle-noncar .vehicle-features{display:flex;align-items:center;gap:6px;margin:10px 0}
+.vehicle-noncar .vehicle-features label{box-sizing:border-box;display:inline-flex;align-items:center;min-height:30px;height:auto;padding:5px 8px;gap:6px;line-height:16px;font-size:11px;font-weight:400;white-space:normal}
+.vehicle-noncar .vehicle-features input[type=checkbox]{appearance:auto;width:14px;height:14px;min-width:14px;min-height:14px;margin:0;padding:0;flex:0 0 14px}
+.vehicle-noncar .vehicle-advanced-section{padding-top:10px;margin-top:10px}
+.vehicle-noncar .vehicle-advanced-section>.btn{min-height:32px;padding:5px 10px}
+@media(max-width:700px){.vehicle-noncar .vehicle-features{gap:5px}.vehicle-noncar .vehicle-features label{min-height:29px;padding:5px 7px;font-size:11px}.vehicle-noncar .vehicle-primary-grid{margin-bottom:0}}
