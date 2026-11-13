@@ -28,3 +28,7 @@ Manufacturer trademarks remain owned by their respective owners; use for identif
 
 2026-11-14: AvtoVIP curated model-series supplements (manual cross-check required for individual model-year availability). No bulk proprietary site extraction.
 Brand marks: thesvg.org repository (MIT code license; individual brand trademarks remain with their respective owners). Source: https://thesvg.org/. Brand marks are not covered by the code MIT grant; trademark rights are separate.
+
+2026-11-14 supplemental sources:
+- thesvg (https://github.com/thesvg/thesvg): MIT-licensed SVG collection; individual brand names and trademarks remain owned by their holders. Included only exact/recognizable brand icons, no endorsement implied.
+- arthurkao/vehicle-make-model-data (https://github.com/arthurkao/vehicle-make-model-data): MIT license; historic motorcycle make/model entries only. Year records deduplicated to names; not a claim of 2026 production.
