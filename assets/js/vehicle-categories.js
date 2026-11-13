@@ -28,7 +28,6 @@ const logoFiles={"fiat":"fiat.svg","hongqi":"hongqi.svg","aston_martin":"aston_m
 const slug=s=>s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
 const BRAND_LOGO_ALIASES={"bmw motorrad":"bmw","yamaha marine":"yamaha","jcb agriculture":"jcb","jcb":"jcb","kubota":"kubota","volvo trucks":"volvo","mercedes-benz trucks":"mercedes_benz","ford trucks":"ford","isuzu":"isuzu","honda aircraft":"honda","suzuki":"suzuki","kawasaki":"kawasaki","triumph":"triumph","peterbilt":"peterbilt","hino":"hino","ram trucks":"ram","toyota commercial":"toyota","chevrolet commercial":"chevrolet","peugeot commercial":"peugeot","hyundai trucks":"hyundai","volkswagen commercial vehicles":"volkswagen","byd commercial":"byd","changan commercial":"changan","jac trucks":"jac","honda":"honda","volvo ce":"volvo","dongfeng trucks":"dongfeng"};
 const VERIFIED_EXTRA_LOGOS={"Airbus":"avtovip_airbus.svg","BMW Motorrad":"avtovip_bmw.svg","Boeing":"avtovip_boeing.svg","Bombardier":"avtovip_bombardier.svg","Cadillac":"avtovip_cadillac.svg","Caterpillar":"avtovip_caterpillar.svg","Chevrolet":"avtovip_chevrolet.svg","Chrysler":"avtovip_chrysler.svg","Citroën":"avtovip_citroen.svg","Conan":"avtovip_conan.svg","Cube":"avtovip_cube.svg","DAF":"avtovip_daf.svg","Dacia":"avtovip_dacia.svg","Dts":"avtovip_dts.svg","Ducati":"avtovip_ducati.svg","Fiat":"avtovip_fiat.svg","Ford Trucks":"avtovip_ford.svg","Hero MotoCorp":"avtovip_hero_motocorp.svg","Hitachi Construction":"avtovip_hitachi.svg","Honda":"avtovip_honda.svg","Honda Aircraft":"avtovip_honda.svg","Husqvarna":"avtovip_husqvarna.svg","Hymer":"avtovip_hymer.svg","Hyundai":"avtovip_hyundai.svg","Iveco":"avtovip_iveco.svg","JCB":"avtovip_jcb.svg","JCB Agriculture":"avtovip_jcb.svg","Jeep":"avtovip_jeep.svg","John Deere":"avtovip_john_deere.svg","KTM":"avtovip_ktm.svg","Keystone":"avtovip_keystone.svg","Kia":"avtovip_kia.svg","Livewire":"avtovip_livewire.svg","Lockheed Martin":"avtovip_lockheed_martin.svg","MAN":"avtovip_man.svg","MG":"avtovip_mg.svg","Mahindra":"avtovip_mahindra.svg","Mazda":"avtovip_mazda.svg","Mega":"avtovip_mega.svg","Mercedes-Benz Trucks":"avtovip_mercedes_benz.svg","Mini":"avtovip_mini.svg","Mitsubishi":"avtovip_mitsubishi.svg","Nissan":"avtovip_nissan.svg","Norton":"avtovip_norton.svg","Opel":"avtovip_opel.svg","Peugeot":"avtovip_peugeot.svg","Polaris":"avtovip_polaris.svg","Proton":"avtovip_proton.svg","Ram":"avtovip_ram.svg","Rapid":"avtovip_rapid.svg","Renault":"avtovip_renault.svg","SEAT":"avtovip_seat.svg","Scania":"avtovip_scania.svg","Spark":"avtovip_spark.svg","Subaru":"avtovip_subaru.svg","Suzuki":"avtovip_suzuki.svg","Swift":"avtovip_swift.svg","Tata":"avtovip_tata.svg","Tesla":"avtovip_tesla.svg","Toyota":"avtovip_toyota.svg","Trek":"avtovip_trek.svg","Vauxhall":"avtovip_vauxhall.svg","Vespa":"avtovip_vespa.svg","Volkswagen":"avtovip_volkswagen.svg","Volvo CE":"avtovip_volvo.svg","Volvo Trucks":"avtovip_volvo.svg","Yamaha":"avtovip_yamaha_motor_corporation.svg","Yamaha Marine":"avtovip_yamaha_motor_corporation.svg","Škoda":"avtovip_skoda.svg"};
-Object.assign(logoFiles,{});
 const brandLogo=b=>{if(VERIFIED_EXTRA_LOGOS[b])return "assets/data/brand-logos/"+VERIFIED_EXTRA_LOGOS[b];const guesses=[BRAND_LOGO_ALIASES[b.toLowerCase()]||slug(b),slug(b.replace(/ (motorcycle|motorcycles|marine|helicopters|helicopter|aircraft|construction|trucks|truck|yachts|boats)$/i,''))];for(const key of guesses){if(logoFiles[key])return 'assets/data/brand-logos/'+logoFiles[key]}return null};
 const showPending=()=>{if(selected==='car'||!grid)return;grid.dataset.categoryPending=selected;grid.innerHTML='<div class="empty-state">'+escapeHTML(t().noResults)+'</div>'};
 const formState=()=>{const o={};panel?.querySelectorAll('#vehicleExtraFilters input,#vehicleExtraFilters select').forEach(x=>o[x.name]=x.type==='checkbox'?x.checked:x.value);return o};
@@ -83,73 +82,17 @@ const localCategoryType=value=>(CATEGORY_TYPE_LABELS[document.documentElement.la
 const CATEGORY_EXTRAS={motorcycle:['Kredit','Barter','Sənədləri qaydasında','ABS','TCS','Elektrik start'],watercraft:['Kredit','Barter','Qeydiyyat sənədi','Naviqasiya','Avtopilot','Xilasetmə avadanlığı'],aircraft:['Kredit','Barter','Uçuşa yararlılıq sertifikatı','Texniki baxış','Avtopilot'],agriculture:['Kredit','Barter','Lizinq','4x4','Kabin','Kondisioner'],construction:['Kredit','Barter','Lizinq','Servis tarixçəsi','Zəmanət'],commercial:['Kredit','Barter','Lizinq','Gömrük sənədi','Soyuducu','Taxoqraf'],caravan:['Kredit','Barter','Lizinq','Duş','Mətbəx','Kondisioner','Günəş paneli']};
 const fillOptions=(select,values,placeholder)=>{select.replaceChildren(new Option(placeholder||'—',''));values.forEach(x=>select.add(new Option(x.label||x.name||x,x.value??x.iso2??x.name??x)))};
 async function setupGeo(){const country=extra.querySelector('[name="country"]'),city=extra.querySelector('[name="city"]');if(!country||!city)return;const intl=window.AvtoVIPInternational;const original=$('filterCountry');const preferred=original?.value||localStorage.getItem('avtovip-country')||'AZ';if(intl){const countries=await intl.countries(document.documentElement.lang||'az');if(!country.isConnected)return;fillOptions(country,countries.filter(x=>x.iso2!=='AM').map(x=>({label:(x.emoji?x.emoji+' ':'')+x.displayName,value:x.iso2})),t().all)}else if(original){country.innerHTML=original.innerHTML;country.querySelectorAll('option').forEach(o=>{if(o.value==='AM')o.remove()})}country.value=preferred==='AM'?'AZ':preferred;const updateCities=async()=>{const iso=country.value;const arr=iso&&intl?await intl.cities(iso,document.documentElement.lang||'az'):[];if(!city.isConnected)return;fillOptions(city,arr,t().city)};country.addEventListener('change',updateCities);await updateCities()}
-// Model picker: one visible control per category; underlying fields keep their values/events.
-let activeModelPopup=null;
-function closeModelPopup(){if(activeModelPopup){activeModelPopup.remove();activeModelPopup=null}}
-function showModelPopup(anchor,options,onPick){
-  if(activeModelPopup&&activeModelPopup._anchor===anchor){closeModelPopup();return}
-  closeModelPopup();
-  const popup=document.createElement('div');popup.className='av-model-popup';popup.setAttribute('role','listbox');popup._anchor=anchor;
-  const place=()=>{
-    if(!anchor.isConnected){closeModelPopup();return}
-    const r=anchor.getBoundingClientRect(),vw=document.documentElement.clientWidth,vh=window.innerHeight;
-    const width=Math.min(r.width,vw-16),left=Math.max(8,Math.min(r.left,vw-width-8));
-    const desired=Math.min(300,options.length*43+10),below=vh-r.bottom-8,above=r.top-8;
-    // Prefer below for short lists, and only flip for long lists if the upper space is better.
-    const flip=below<Math.min(desired,110)&&above>below;
-    const available=Math.max(48,flip?above:below);
-    const height=Math.min(desired,available);
-    popup.style.width=width+'px';popup.style.left=left+'px';popup.style.maxHeight=height+'px';
-    popup.style.top=(flip?Math.max(8,r.top-height-4):r.bottom+4)+'px';
-  };
-  for(const opt of options){const button=document.createElement('button');button.type='button';button.className='av-model-option';button.setAttribute('role','option');button.textContent=opt.label;button.addEventListener('click',event=>{event.stopPropagation();closeModelPopup();onPick(opt.value);if(anchor.isConnected)anchor.focus()});popup.append(button)}
-  document.body.append(popup);activeModelPopup=popup;place();
-}
-document.addEventListener('pointerdown',event=>{if(activeModelPopup&&!activeModelPopup.contains(event.target)&&!activeModelPopup._anchor.contains(event.target))closeModelPopup()});
-document.addEventListener('keydown',event=>{if(event.key==='Escape')closeModelPopup()});
-window.addEventListener('resize',closeModelPopup,{passive:true});
-// Closing on every captured scroll made the menu disappear as soon as it was opened in Firefox.
-function enhanceModelSelect(select){
-  if(!select||select.dataset.avEnhanced)return;
-  select.dataset.avEnhanced='1';select.classList.add('av-model-native');
-  select.style.setProperty('display','none','important');
-  const trigger=document.createElement('button');trigger.type='button';trigger.className='av-model-trigger';
-  trigger.setAttribute('aria-label',select.closest('label')?.querySelector('span')?.textContent||'Model');select.after(trigger);
-  const refresh=()=>{trigger.textContent=select.selectedOptions[0]?.textContent||'Model';trigger.classList.toggle('av-model-empty',!select.value)};
-  trigger.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();showModelPopup(trigger,[...select.options].map(o=>({value:o.value,label:o.textContent})),value=>{select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}));refresh()})});
-  select.addEventListener('change',refresh);new MutationObserver(refresh).observe(select,{childList:true,subtree:true});refresh();
-}
-function enhanceCarModel(){
-  const input=document.getElementById('filterModel'),datalist=document.getElementById('filterModelList');
-  if(!input||!datalist||input.dataset.avEnhanced)return;
-  input.dataset.avEnhanced='1';input.removeAttribute('list');input.classList.add('av-model-car-input');
-  input.style.setProperty('display','none','important');
-  const trigger=document.createElement('button');trigger.type='button';trigger.className='av-model-trigger av-model-car-trigger';trigger.setAttribute('aria-label','Model');input.after(trigger);
-  const refresh=()=>{trigger.textContent=input.value||input.placeholder||'Model';trigger.classList.toggle('av-model-empty',!input.value)};
-  trigger.addEventListener('click',event=>{
-    event.preventDefault();event.stopPropagation();
-    const values=[{value:'',label:input.placeholder||'Model'},...[...datalist.options].map(o=>({value:o.value,label:o.value}))];
-    const unique=[...new Map(values.map(o=>[o.value,o])).values()];
-    showModelPopup(trigger,unique,value=>{input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));refresh()});
-  });
-  input.addEventListener('input',refresh);input.addEventListener('change',refresh);new MutationObserver(refresh).observe(datalist,{childList:true});refresh();
-}
 const renderFilters=()=>{if(selected==='car')return;const L=t(),fields=L.fields[selected]||[];extra.innerHTML='';const primary=document.createElement('div');primary.className='vehicle-extra-grid vehicle-primary-grid';const make=makeField('make',L.make,'text', [['',L.all],...DATA.find(x=>x.id===selected).brands.map(b=>[b,b])]);const model=makeField('model',L.model,'text', [['',L.select]]);
 const modelSelect=model.querySelector('select');
-enhanceModelSelect(modelSelect);
-// Keep exactly one visible model selector. No secondary manual field or synthetic option.
-const updateModels=()=>{
-  const brand=make.querySelector('select').value;
-  const models=MODEL_CATALOG[selected]?.[brand]||[];
-  modelSelect.replaceChildren(new Option(L.select,''));
-  for(const name of models)modelSelect.add(new Option(name,name));
-  modelSelect.value='';
-  modelSelect.dispatchEvent(new Event('change',{bubbles:true}));
-};
+// A single model control is used for all seven non-car categories.
+// When a make has no catalog models, allow a manual model name without losing the filter.
+const manualModel=document.createElement('input');manualModel.type='search';manualModel.className='vehicle-model-manual';manualModel.placeholder=L.model;manualModel.setAttribute('aria-label',L.model);manualModel.hidden=true;model.append(manualModel);
+const otherModelValue='__avtovip_other_model__';
+const updateModels=()=>{const brand=make.querySelector('select').value;const models=MODEL_CATALOG[selected]?.[brand]||[];modelSelect.replaceChildren(new Option(L.select,''));for(const name of models)modelSelect.add(new Option(name,name));modelSelect.add(new Option(L.other||'Digər',otherModelValue));modelSelect.value='';manualModel.value='';manualModel.hidden=true;modelSelect.name='model';manualModel.removeAttribute('name');};
+modelSelect.addEventListener('change',()=>{const isOther=modelSelect.value===otherModelValue;manualModel.hidden=!isOther;if(isOther){modelSelect.removeAttribute('name');manualModel.name='model';manualModel.focus();}else{manualModel.removeAttribute('name');modelSelect.name='model';manualModel.value='';}});
 make.querySelector('select').addEventListener('change',()=>{updateModels();custom.querySelectorAll('[data-brand]').forEach(x=>x.classList.toggle('active',x.dataset.brand===make.querySelector('select').value))});
 primary.append(make,model,makeField('country',L.country,'text',[['',L.all]]),makeField('city',L.city,'text',[['',L.all]]));extra.append(primary);setupGeo();const section=document.createElement('div');section.className='vehicle-advanced-section';section.hidden=true;section.id='vehicleAdvancedSection';const fieldsGrid=document.createElement('div');fieldsGrid.className='vehicle-extra-grid';fields.forEach((label,i)=>fieldsGrid.append(makeField('spec'+i,label,i===0?'text':'number',i===0?[['',L.all],...(CATEGORY_TYPES[selected]||[]).map(x=>[x,localCategoryType(x)])]:null)));[['priceMin',L.priceMin],['priceMax',L.priceMax],['yearMin',L.yearMin],['yearMax',L.yearMax]].forEach(([key,label])=>fieldsGrid.append(makeField(key,label,'number')));fieldsGrid.append(makeField('condition',L.condition,'text',[['',L.all],['new',L.new],['used',L.used]]));section.append(fieldsGrid);const features=document.createElement('div');features.className='vehicle-features';for(const feature of CATEGORY_EXTRAS[selected]||[]){const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.name='feature_'+slug(feature);check.value='1';label.append(check,document.createTextNode(' '+localFeature(feature)));features.append(label)}section.append(features);const actions=document.createElement('div');actions.className='filter-actions vehicle-reset-actions';const spacer=document.createElement('span');spacer.className='vehicle-reset-spacer';const reset=document.createElement('button');reset.type='button';reset.className='btn btn-outline btn-sm vehicle-reset-button';reset.innerHTML='<i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span></span>';reset.querySelector('span').textContent=L.reset;reset.addEventListener('click',()=>{extra.querySelectorAll('input,select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''});const mk=extra.querySelector('[name="make"]');if(mk)mk.dispatchEvent(new Event('change',{bubbles:true}));setupGeo();custom.querySelectorAll('.vehicle-brand-chip').forEach(x=>x.classList.remove('active'));if(vip){vip.dataset.on='0';vip.classList.remove('active');vip.setAttribute('aria-pressed','false')}showPending()});actions.append(spacer,reset);section.append(actions);extra.append(section)};
 const originalListings=()=>{delete grid.dataset.categoryPending;document.dispatchEvent(new CustomEvent('avtovip:category-car'))};
-enhanceCarModel();
 function select(id){if(!DATA.some(x=>x.id===id))return;const was=selected;selected=id;const car=id==='car';if(brandsRail){brandsRail.classList.toggle('vehicle-hidden',!car);brandsRail.setAttribute('aria-hidden',String(!car))}custom.hidden=car;if(quick)quick.classList.toggle('vehicle-hidden',!car);if(advanced){advanced.classList.toggle('vehicle-hidden',!car);if(!car)advanced.classList.remove('open')}if(extra)extra.hidden=car;if(panel)panel.classList.toggle('vehicle-noncar',!car);if(brandPanel)brandPanel.classList.toggle('vehicle-noncar-brands',!car);
 if(toggle){toggle.hidden=false;toggle.setAttribute('aria-expanded','false')}if(apply)apply.disabled=false;
 if(car){if(was!=='car')originalListings()}else{renderBrands();renderFilters();showPending()}

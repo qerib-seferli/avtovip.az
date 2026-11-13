@@ -123,25 +123,3 @@ html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
   transform: scale(1.03);
 }
 
-
-/* Consistent model dropdown for all eight categories. Native value is retained. */
-.av-model-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
-.vehicle-field:has(.av-model-native){position:relative}
-.av-model-trigger{display:block;width:100%;min-height:39px;padding:8px 32px 8px 11px;border:1px solid var(--border,#303743);border-radius:9px;background:var(--card,#161a22);color:var(--text,#f1f4fa);text-align:left;font:inherit;cursor:pointer;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.av-model-trigger:after{content:'';position:absolute;right:13px;top:44%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg)}
-.av-model-trigger:focus-visible{outline:2px solid #e21c35;outline-offset:1px}
-.av-model-empty{color:var(--muted,#aab0bb)}
-.av-model-popup{position:fixed;z-index:999999;overflow-y:auto;overscroll-behavior:contain;background:var(--card,#161a22);color:var(--text,#f1f4fa);border:1px solid var(--border,#303743);border-radius:10px;box-shadow:0 12px 28px #0006;padding:5px}
-.av-model-option{display:block;width:100%;text-align:left;padding:11px 12px;min-height:40px;border:0;border-radius:7px;background:transparent;color:inherit;font:inherit;cursor:pointer}
-.av-model-option:hover,.av-model-option:focus-visible{background:rgba(140,150,170,.14);outline:none}
-.av-model-car-input{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
-.quick-filters .field:has(.av-model-car-input){position:relative}
-
-/* Keep exactly one model picker visible, with the same width as other fields. */
-.av-model-native,.av-model-car-input{display:none!important}
-.vehicle-field>.av-model-trigger,.quick-filters .field>.av-model-trigger{box-sizing:border-box;width:100%;max-width:100%;min-width:0;margin:0}
-.av-model-popup{box-sizing:border-box;scrollbar-width:thin}
-
-/* Model selector sizing only: match the neighboring country field in each filter grid. */
-.quick-filters .field>.av-model-car-trigger{height:40px!important;min-height:40px!important;max-height:40px!important;padding-top:0!important;padding-bottom:0!important;line-height:38px!important;align-self:end}
-.vehicle-primary-grid .vehicle-field>.av-model-trigger{height:38px!important;min-height:38px!important;max-height:38px!important;padding-top:0!important;padding-bottom:0!important;line-height:36px!important}
