@@ -92,3 +92,9 @@ watercraft | Leopard Catamarans | https://www.leopardcatamarans.com/wp-content/u
 construction | Yanmar Construction | https://www.yanmar.com/media/news/2025/09/10012651/equipment_model_and_applicable_engine_compact_equipment_202509.pdf
 agriculture | Claas Tractors | https://www.claas.com/caas/v1/media/1093444/data/76a9dcc73d2709b0175673d020477a60
 Exact normalized duplicates skipped per brand. Historical and current ranges may coexist. Model names are manufacturer identifiers, not UI translations. No themes or language assets changed.
+
+2026-11-14 official manufacturer catalog additions (model names only; no descriptions or media copied):
+watercraft | Regal Boats | https://www.regalboats.com/our-boats/
+watercraft | Prestige Yachts | https://www.prestige-yachts.com/tr/site-haritas%C4%B1
+construction | Epiroc | https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
+construction | Dynapac | https://dynapac.com/us-en/products/service/more/kitselector
