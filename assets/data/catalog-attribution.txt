@@ -25,3 +25,6 @@ Aircraft model names and designator data may have independent upstream provenanc
 
 vehiclespecs.io brand-logos — https://github.com/vehiclespecs/brand-logos — MIT license for repository assets.
 Manufacturer trademarks remain owned by their respective owners; use for identification, not endorsement.
+
+2026-11-14: AvtoVIP curated model-series supplements (manual cross-check required for individual model-year availability). No bulk proprietary site extraction.
+Brand marks: thesvg.org repository (MIT code license; individual brand trademarks remain with their respective owners). Source: https://thesvg.org/. Brand marks are not covered by the code MIT grant; trademark rights are separate.
