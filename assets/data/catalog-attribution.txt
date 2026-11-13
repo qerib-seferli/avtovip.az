@@ -114,3 +114,12 @@ construction | Gehl | https://www.gehl.com/en-GB/our-machines/compact-loaders
 construction | LiuGong | https://www.liugong.com/storage/upload/2026-04-30/QUARRY%20%26%20AGGREGATES%20AND%20CEMENT%20INDUSTRY%20SOLUTION%20%20EN%20202511.pdf
 watercraft | Bertram Yachts | https://bertram.com/
 Qeyd: Model və seriya adları istehsalçının orijinal yazılışındadır. Seriya ilə konkret model kodu eyni səviyyədə təqdim oluna bilər.
+
+
+2026-11-14 — Official manufacturer model names added to previously empty brands; model identifiers retained in manufacturer spelling.
+agriculture | ArmaTrac Tractors | https://armatrac.com/tractors
+agriculture | Zetor Tractors | https://www.zetor.com/file/ZET2024_Leaflet_PORTFOLIO_EN.pdf
+construction | Hidromek | https://www.hidromek.com/ocenian-EN/products/special-purpose-excavators
+construction | Skyjack | https://www.skyjack.com/sites/default/files/literature-library/ENG_ANSI_CHINA_DC_SCISSORS_F%26B_BROCHURE.pdf
+agriculture | Kioti Tractors | https://www.kioti.com/owner-manuals
+agriculture | Solis Tractors | https://solisworld.com/resources/
