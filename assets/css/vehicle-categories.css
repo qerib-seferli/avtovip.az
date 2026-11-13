@@ -103,22 +103,23 @@ html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active) 
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Bulanıqlığı yox edib, sərt və iti kontur (hard shadow) veririk */
+/* Konturu 1px-dən daha incə (0.75px) və zərif edirik */
 html[data-theme="dark"] .brands-rail .brand-chip img,
 html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip img {
-  filter: drop-shadow(1px 0px 0px rgba(255, 255, 255, 0.6)) 
-          drop-shadow(-1px 0px 0px rgba(255, 255, 255, 0.6)) 
-          drop-shadow(0px 1px 0px rgba(255, 255, 255, 0.6)) 
-          drop-shadow(0px -1px 0px rgba(255, 255, 255, 0.6)) !important;
+  filter: drop-shadow(0.75px 0px 0px rgba(255, 255, 255, 0.55)) 
+          drop-shadow(-0.75px 0px 0px rgba(255, 255, 255, 0.55)) 
+          drop-shadow(0px 0.75px 0px rgba(255, 255, 255, 0.55)) 
+          drop-shadow(0px -0.75px 0px rgba(255, 255, 255, 0.55)) !important;
   transition: transform 0.2s ease;
 }
 
 /* Üzərinə gələndə (hover) işıqlanma */
 html[data-theme="dark"] .brands-rail .brand-chip:hover img,
 html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
-  filter: drop-shadow(1px 0px 0px rgba(255, 255, 255, 0.9)) 
-          drop-shadow(-1px 0px 0px rgba(255, 255, 255, 0.9)) 
-          drop-shadow(0px 1px 0px rgba(255, 255, 255, 0.9)) 
-          drop-shadow(0px -1px 0px rgba(255, 255, 255, 0.9)) !important;
-  transform: scale(1.05);
+  filter: drop-shadow(0.75px 0px 0px rgba(255, 255, 255, 0.85)) 
+          drop-shadow(-0.75px 0px 0px rgba(255, 255, 255, 0.85)) 
+          drop-shadow(0px 0.75px 0px rgba(255, 255, 255, 0.85)) 
+          drop-shadow(0px -0.75px 0px rgba(255, 255, 255, 0.85)) !important;
+  transform: scale(1.03);
 }
+
