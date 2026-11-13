@@ -32,3 +32,12 @@ Brand marks: thesvg.org repository (MIT code license; individual brand trademark
 2026-11-14 supplemental sources:
 - thesvg (https://github.com/thesvg/thesvg): MIT-licensed SVG collection; individual brand names and trademarks remain owned by their holders. Included only exact/recognizable brand icons, no endorsement implied.
 - arthurkao/vehicle-make-model-data (https://github.com/arthurkao/vehicle-make-model-data): MIT license; historic motorcycle make/model entries only. Year records deduplicated to names; not a claim of 2026 production.
+
+2026-11-14: Expanded verified-source historical/model-variant catalog from previously supplied archives:
+- vehiclesdb (https://github.com/vehiclesdb/vehiclesdb): CC BY 4.0 database content; attribution required. Motorcycle, moped, truck, van, bus manufacturer/model entries, deduplicated against existing catalog. https://creativecommons.org/licenses/by/4.0/
+- whatisflying-db (https://github.com/jbroutier/whatisflying-db): ODbL 1.0 database content; manufacturer/model variants and ICAO aircraft types deduplicated from registration records. ODbL share-alike and attribution obligations apply to derivative databases and public reuse. https://opendatacommons.org/licenses/odbl/1-0/
+- Model identifiers from registration records may include operator-specific variants, historical types and spelling differences. They are NOT a certified 2026 new-model inventory.
+- No logo rights or manufacturer endorsements are implied. No UI/theme/language logic was changed.
+
+- vehicle-makes-models (https://github.com/gor3a/vehicle-makes-models): supplied repository snapshot; its data is ODbL 1.0, separate from repository code license. Used only for models of existing AvtoVIP car makes. Consult bundled LICENSE-DATA for attribution/share-alike.
+- Car models added to existing local vehicle-models.csv snapshot; no car make-list, theme, UI, or search logic changed. Historical and 2026 models are not distinguished by year in this CSV.
