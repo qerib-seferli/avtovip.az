@@ -60,3 +60,20 @@
 #filterPanel.vehicle-noncar #vehicleExtraFilters .vehicle-features>label{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:0!important;height:28px!important;max-height:28px!important;box-sizing:border-box!important;padding:3px 8px!important;margin:0!important;gap:6px!important;font-size:11px!important;font-weight:400!important;line-height:16px!important;border-radius:8px!important;align-items:center!important}
 #filterPanel.vehicle-noncar #vehicleExtraFilters .vehicle-features>label>input[type=checkbox]{display:block!important;appearance:auto!important;box-sizing:border-box!important;width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;max-width:14px!important;max-height:14px!important;padding:0!important;margin:0!important;flex:0 0 14px!important}
 @media(max-width:700px){#filterPanel.vehicle-noncar #vehicleExtraFilters .vehicle-features>label{height:27px!important;max-height:27px!important;padding:3px 7px!important;font-size:11px!important}}
+
+/* Match the original car brand panel dimensions and filter action layout. */
+.vehicle-noncar-brands{min-height:0!important}
+.vehicle-noncar-brands .vehicle-custom-brands{padding-top:2px;padding-bottom:7px;box-sizing:border-box}
+.vehicle-noncar-brands .vehicle-brand-track{padding:1px 0 4px!important;gap:8px}
+.vehicle-noncar-brands .vehicle-brand-chip{height:78px!important;min-height:78px!important;width:76px!important;min-width:76px!important;max-width:76px!important;padding:6px!important;gap:4px!important;border-radius:12px!important}
+.vehicle-noncar-brands .vehicle-brand-chip img{width:50px;height:32px;max-height:32px;object-fit:contain;pointer-events:none;-webkit-user-drag:none}
+.vehicle-noncar-brands .vehicle-brand-chip span{font-size:9px!important;line-height:1.2!important;max-width:65px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap!important}
+.vehicle-brand-monogram{display:grid;place-items:center;width:43px;height:32px;font-size:15px;letter-spacing:-.04em;color:#d9dce4;text-shadow:0 1px 2px #080a0e;font-weight:800}
+/* The existing resetFilters button is the only reset control for all categories. */
+#filterPanel.vehicle-noncar .filter-actions{display:flex!important}
+#filterPanel.vehicle-noncar .filter-actions #resetFilters{display:inline-flex!important;align-items:center;justify-content:center;gap:7px}
+/* Low-contrast dark logos remain readable without a bright white patch. */
+.brands-rail .brand-logo-box:not(.fallback){background:linear-gradient(145deg,#363b45,#252a34)!important;border:1px solid rgba(185,192,205,.12);border-radius:8px}
+.brands-rail .brand-logo-box img{pointer-events:none!important;-webkit-user-drag:none!important}
+.brands-rail img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
+@media(max-width:700px){#filterPanel.vehicle-noncar .filter-actions{align-items:stretch!important;flex-direction:column!important}#filterPanel.vehicle-noncar .filter-actions #resetFilters{width:100%!important}}

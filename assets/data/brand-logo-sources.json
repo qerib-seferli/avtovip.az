@@ -11,7 +11,7 @@
   },
   {
     "make": "AM General",
-    "file": "assets/data/brand-logos/am_general.svg",
+    "file": "assets/data/brand-logos/am_general_mobile.png",
     "source": "local/snapshot"
   },
   {
@@ -81,7 +81,7 @@
   },
   {
     "make": "Delorean",
-    "file": "assets/data/brand-logos/delorean.svg",
+    "file": "assets/data/brand-logos/delorean_mobile.png",
     "source": "local/snapshot"
   },
   {
@@ -301,7 +301,7 @@
   },
   {
     "make": "Shelby",
-    "file": "assets/data/brand-logos/shelby.svg",
+    "file": "assets/data/brand-logos/shelby_mobile.png",
     "source": "local/snapshot"
   },
   {
@@ -346,7 +346,7 @@
   },
   {
     "make": "Yugo",
-    "file": "assets/data/brand-logos/yugo.svg",
+    "file": "assets/data/brand-logos/yugo_mobile.png",
     "source": "local/snapshot"
   }
 ]

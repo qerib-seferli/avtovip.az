@@ -17,7 +17,7 @@
     "id": "am_general",
     "name": "AM General",
     "logo": {
-      "local_url": "assets/data/brand-logos/am_general.svg"
+      "local_url": "assets/data/brand-logos/am_general_mobile.png"
     }
   },
   {
@@ -38,7 +38,7 @@
     "id": "baic",
     "name": "BAIC",
     "logo": {
-      "local_url": "assets/data/brand-logos/baic.svg"
+      "local_url": "assets/data/brand-logos/baic_mobile.png"
     }
   },
   {
@@ -129,7 +129,7 @@
     "id": "delorean",
     "name": "Delorean",
     "logo": {
-      "local_url": "assets/data/brand-logos/delorean.svg"
+      "local_url": "assets/data/brand-logos/delorean_mobile.png"
     }
   },
   {
@@ -493,7 +493,7 @@
     "id": "shelby",
     "name": "Shelby",
     "logo": {
-      "local_url": "assets/data/brand-logos/shelby.svg"
+      "local_url": "assets/data/brand-logos/shelby_mobile.png"
     }
   },
   {
@@ -570,7 +570,7 @@
     "id": "yugo",
     "name": "Yugo",
     "logo": {
-      "local_url": "assets/data/brand-logos/yugo.svg"
+      "local_url": "assets/data/brand-logos/yugo_mobile.png"
     }
   },
   {
