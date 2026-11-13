@@ -123,3 +123,8 @@ construction | Hidromek | https://www.hidromek.com/ocenian-EN/products/special-p
 construction | Skyjack | https://www.skyjack.com/sites/default/files/literature-library/ENG_ANSI_CHINA_DC_SCISSORS_F%26B_BROCHURE.pdf
 agriculture | Kioti Tractors | https://www.kioti.com/owner-manuals
 agriculture | Solis Tractors | https://solisworld.com/resources/
+
+2026-11-14 — Models verified on HAMM manufacturer product catalogue; only previously empty brand Hamm populated.
+construction | Hamm | https://www.wirtgen-group.com/ocs/en-de/hamm/tandem-rollers-131-c/
+construction | Hamm | https://www.wirtgen-group.com/media/vusg/wirtgen_america/03_broschueren_8/roadnews_1/vg_america_magazine_roadnews06_0521_us.pdf
+construction | Hamm | https://www.wirtgen-group.com/en-us/magazine/the-road/innovation/hd-series-with-vio-drum/
