@@ -62,3 +62,15 @@ Only factual model identifiers from the following publicly viewable manufacturer
 - construction / Brokk: 11 new unique model names; https://www.brokk.com/compare-models/
 - agriculture / AGCO Allis Tractors: 39 new unique model names; https://www.tractordata.com/farm-tractors/tractor-brands/agcoallis/agcoallis-tractors-year-sorted.html
 Model identifiers retained in their original manufacturer spelling (not translated); AZ/EN/RU/TR/KA UI and light/dark theme code left unchanged.
+
+2026-11-14 — verified targeted catalog expansion (manufacturer names and model identifiers only).
+Agriculture: AGCO Tractors (historical 1995–2011), Allis Chalmers Tractors (historical):
+https://www.tractordata.com/farm-tractors/tractor-brands/agco/agco-tractors.html
+https://www.tractordata.com/farm-tractors/tractor-brands/allischalmers/allischalmers-tractors.html
+Construction: Bobcat and CASE Construction historical/current excavator identifiers from equipment specification index (individual model sources should be verified before claiming production status):
+https://heavyequipments.net/specs/type/excavators/
+Watercraft: Hanse Yachts 2024/2025 brochures and 2018 historical range; Beneteau current product range and Aquador historical survey entries:
+https://hanseyachtsag.com/us/
+https://www.beneteau.com/
+https://www.iims.org.uk/boat-models/
+No photos, logos or technical specifications were copied. Model strings remain original (not translated). Historical and current models are mixed; market availability unverified. Same-brand normalized exact duplicates skipped.
