@@ -84,3 +84,11 @@ https://www.searay.com/us/en/boats
 https://www.cat.com/en_US/by-industry/construction/excavator-family.html
 https://www.cat.com/en_us/products/new/equipment/excavators/mini-excavators.html
 Only factual model names were transcribed, not product descriptions or media. Historical and regional availability may vary.
+
+2026-11-14 additional verified manufacturer-model identifiers (only names; no media or product descriptions copied):
+watercraft | Dufour Yachts | https://www.dufour-yachts.com/en/owner-requests/
+watercraft | Fairline | https://us.fairline.com/yachts/
+watercraft | Leopard Catamarans | https://www.leopardcatamarans.com/wp-content/uploads/2024/04/Leopard-Range-Brochure-Web-EN.pdf
+construction | Yanmar Construction | https://www.yanmar.com/media/news/2025/09/10012651/equipment_model_and_applicable_engine_compact_equipment_202509.pdf
+agriculture | Claas Tractors | https://www.claas.com/caas/v1/media/1093444/data/76a9dcc73d2709b0175673d020477a60
+Exact normalized duplicates skipped per brand. Historical and current ranges may coexist. Model names are manufacturer identifiers, not UI translations. No themes or language assets changed.
