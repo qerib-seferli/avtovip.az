@@ -97,29 +97,13 @@
 
 
 
-/* Dark theme: Arxa fonu şəffaf edirik və tünd loqoları ağ rəngə çeviririk */
-html[data-theme="dark"] .brands-rail .brand-chip:not(.active),
-html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active) {
-  background: transparent !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* Loqoların özlərinə tətbiq olunan filter */
 html[data-theme="dark"] .brands-rail .brand-chip:not(.active) img,
 html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active) img {
-  filter: brightness(0) invert(1) !important;
-  opacity: 0.85;
-  transition: opacity 0.2s ease;
+  filter: brightness(0) invert(1) !important; /* Tünd loqoları tam ağ edir */
+  opacity: 0.85; /* Çox parıldamaması üçün bir az yumşaldırıq */
 }
 
-/* Hover (üzərinə gələndə) effekti */
-html[data-theme="dark"] .brands-rail .brand-chip:not(.active):hover,
-html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
-}
-
-html[data-theme="dark"] .brands-rail .brand-chip:not(.active):hover img,
-html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover img {
+html[data-theme="dark"] .brands-rail .brand-chip:not(.active) img:hover,
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active) img:hover {
   opacity: 1;
 }
