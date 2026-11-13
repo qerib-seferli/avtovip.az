@@ -98,3 +98,10 @@ watercraft | Regal Boats | https://www.regalboats.com/our-boats/
 watercraft | Prestige Yachts | https://www.prestige-yachts.com/tr/site-haritas%C4%B1
 construction | Epiroc | https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
 construction | Dynapac | https://dynapac.com/us-en/products/service/more/kitselector
+
+
+2026-11-14: Manufacturer-verified additions (model names only, not copied descriptions):
+construction / John Deere Construction: https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction / Liebherr: https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+watercraft / Bluegame: https://bluegame.it/
+watercraft / Fountaine Pajot: https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf

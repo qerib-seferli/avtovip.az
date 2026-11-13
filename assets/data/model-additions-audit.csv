@@ -1,70 +1,60 @@
-category,brand,model,source_url
-watercraft,Regal Boats,2000 ES,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS2,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS4,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS6,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS9,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,3300,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS36,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,21 OBX,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LX2,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LX4,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LX6,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LX9,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,33 OBX,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LX36,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LX43,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS2 Surf,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS4 Surf,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS6 Surf,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS9 Surf,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,38 Surf,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,34 SAV,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,38 SAV,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,43 SAV,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,50 SAV,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,LS4C,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,26 Express,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,26 XO,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,28 Express,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,33 Express,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,33 XO,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,36 Grande Coupe,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,36 XO,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,38 Grande Coupe,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,38 XO,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,38 FLY,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,38 FXO,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,42 Grande Coupe,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,42 XO,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,42 FLY,https://www.regalboats.com/our-boats/
-watercraft,Regal Boats,42 FXO,https://www.regalboats.com/our-boats/
-watercraft,Prestige Yachts,F4.3,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,F4.9,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,F5.7,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,F6.7,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,M48,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,M6,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,M7,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,M8 EVO,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,420,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,460,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,520,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,590,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,X60,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-watercraft,Prestige Yachts,X70,https://www.prestige-yachts.com/tr/site-haritas%C4%B1
-construction,Epiroc,SmartROC T30 RX,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Epiroc,FlexiROC T20 R,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Epiroc,FlexiROC T30 R Construction Edition,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Epiroc,FlexiROC D60,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Epiroc,FlexiROC D65,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Epiroc,FlexiROC T25 R Construction Edition,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Epiroc,SmartROC T35,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Epiroc,SmartROC T40,https://www.epiroc.com/en/products/drill-rigs/surface-drill-rigs
-construction,Dynapac,CA1500D,https://dynapac.com/us-en/products/service/more/kitselector
-construction,Dynapac,CA1500PD,https://dynapac.com/us-en/products/service/more/kitselector
-construction,Dynapac,CA2500D,https://dynapac.com/us-en/products/service/more/kitselector
-construction,Dynapac,CA2500PD,https://dynapac.com/us-en/products/service/more/kitselector
-construction,Dynapac,CA2800D,https://dynapac.com/us-en/products/service/more/kitselector
-construction,Dynapac,CA3500,https://dynapac.com/us-en/products/service/more/kitselector
-construction,Dynapac,CA4000,https://dynapac.com/us-en/products/service/more/kitselector
+category,brand,model,official_source_url
+construction,John Deere Construction,17 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,26 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,30 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,35 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,50 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,60 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,75 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,85 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,130 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,135 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,160 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,200G,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,210 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,230 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,245 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,250 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,260 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,300 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,345 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,350 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,John Deere Construction,380 P-Tier,https://www.deere.com/en-us/industries/construction/all-about-excavators
+construction,Liebherr,R 922,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 924,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 925,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 928,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 934,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 938,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 950 Demolition,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 960 Demolition,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 972,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 978 SME,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 980 Demolition,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 992,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,R 998 SME,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,A 916,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,A 918,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,A 920,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+construction,Liebherr,A 922 Rail,https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
+watercraft,Bluegame,BG42,https://bluegame.it/
+watercraft,Bluegame,BG54,https://bluegame.it/
+watercraft,Bluegame,BG64,https://bluegame.it/
+watercraft,Bluegame,BG74,https://bluegame.it/
+watercraft,Bluegame,BGX63,https://bluegame.it/
+watercraft,Bluegame,BGX73,https://bluegame.it/
+watercraft,Bluegame,BGX83,https://bluegame.it/
+watercraft,Bluegame,BGM75,https://bluegame.it/
+watercraft,Bluegame,BGF45,https://bluegame.it/
+watercraft,Fountaine Pajot,New 41,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,New 44,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Elba 45,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Tanna 47,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Aura 51,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Samana 59,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Alegria 67,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Thira 80,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,MY.6,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Veya 53,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Power 67,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+watercraft,Fountaine Pajot,Power 80,https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
