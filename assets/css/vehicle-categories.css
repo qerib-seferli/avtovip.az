@@ -93,3 +93,16 @@
 .brands-rail .brand-chip.active,.vehicle-noncar-brands .vehicle-brand-chip.active{background:var(--brand-soft)!important;border-color:var(--brand)!important;color:var(--brand)!important}
 .vehicle-noncar-brands .vehicle-brand-monogram{color:var(--text)!important;text-shadow:none!important}
 @media(max-width:700px){.vehicle-noncar .vehicle-reset-actions{flex-direction:column!important;align-items:stretch!important}.vehicle-noncar .vehicle-reset-button{width:100%!important;min-height:40px!important}}
+
+/* Dark theme: lift the ENTIRE brand card slightly so dark logos remain visible.
+   Light theme and active selection styling stay unchanged. */
+html[data-theme="dark"] .brands-rail .brand-chip:not(.active),
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active){
+  background:#383e48!important;
+  border-color:#4b515d!important;
+}
+html[data-theme="dark"] .brands-rail .brand-chip:not(.active):hover,
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover{
+  background:#414854!important;
+  border-color:#626b7a!important;
+}
