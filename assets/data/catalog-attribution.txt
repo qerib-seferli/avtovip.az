@@ -74,3 +74,13 @@ https://hanseyachtsag.com/us/
 https://www.beneteau.com/
 https://www.iims.org.uk/boat-models/
 No photos, logos or technical specifications were copied. Model strings remain original (not translated). Historical and current models are mixed; market availability unverified. Same-brand normalized exact duplicates skipped.
+
+2026-11-14 official manufacturer catalog supplementation (specific published model identifiers; no inferred variants):
+https://www.mahindratractor.com/tractors
+https://www.kubotausa.com/tractors
+https://www.kubotausa.com/kubota-introduces-all-new-bx90-sub-compact-tractor-series-bigger-better-more-capable
+https://www.deere.com/en-us/products-solutions/tractors/row-crop-4wd-tractors
+https://www.searay.com/us/en/boats
+https://www.cat.com/en_US/by-industry/construction/excavator-family.html
+https://www.cat.com/en_us/products/new/equipment/excavators/mini-excavators.html
+Only factual model names were transcribed, not product descriptions or media. Historical and regional availability may vary.
