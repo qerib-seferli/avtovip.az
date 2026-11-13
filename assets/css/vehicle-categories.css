@@ -141,3 +141,7 @@ html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
 .av-model-native,.av-model-car-input{display:none!important}
 .vehicle-field>.av-model-trigger,.quick-filters .field>.av-model-trigger{box-sizing:border-box;width:100%;max-width:100%;min-width:0;margin:0}
 .av-model-popup{box-sizing:border-box;scrollbar-width:thin}
+
+/* Model selector sizing only: match the neighboring country field in each filter grid. */
+.quick-filters .field>.av-model-car-trigger{height:40px!important;min-height:40px!important;max-height:40px!important;padding-top:0!important;padding-bottom:0!important;line-height:38px!important;align-self:end}
+.vehicle-primary-grid .vehicle-field>.av-model-trigger{height:38px!important;min-height:38px!important;max-height:38px!important;padding-top:0!important;padding-bottom:0!important;line-height:36px!important}
