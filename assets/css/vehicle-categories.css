@@ -95,15 +95,31 @@
 @media(max-width:700px){.vehicle-noncar .vehicle-reset-actions{flex-direction:column!important;align-items:stretch!important}.vehicle-noncar .vehicle-reset-button{width:100%!important;min-height:40px!important}}
 
 
-/* Dark theme: Şəffaf fon və incə çərçivə */
+
+
+/* Dark theme: Arxa fonu şəffaf edirik və tünd loqoları ağ rəngə çeviririk */
 html[data-theme="dark"] .brands-rail .brand-chip:not(.active),
-html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active){
-  background: transparent !important; /* Arxa fonu tamamilə yığışdırır */
-  border-color: rgba(255, 255, 255, 0.08) !important; /* Çox zəif, şık sərhəd */
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active) {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
+/* Loqoların özlərinə tətbiq olunan filter */
+html[data-theme="dark"] .brands-rail .brand-chip:not(.active) img,
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active) img {
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+/* Hover (üzərinə gələndə) effekti */
 html[data-theme="dark"] .brands-rail .brand-chip:not(.active):hover,
-html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover{
-  background: rgba(255, 255, 255, 0.04) !important; /* Üzərinə gələndə çox yüngül parıltı */
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover {
+  background: rgba(255, 255, 255, 0.04) !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme="dark"] .brands-rail .brand-chip:not(.active):hover img,
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover img {
+  opacity: 1;
 }
