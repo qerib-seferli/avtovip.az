@@ -16,3 +16,5 @@ and measurement notes as required by the source.
 
 Other categories retain the original AvtoVIP curated make/model fallback.
 This catalog does not assert exhaustive 2026 coverage or verified brand logo rights.
+
+2026-11-14: Additional aircraft, watercraft, agriculture, construction and motorhome model names curated as factual model identifiers; no bulk copying from third-party commercial catalog websites. Historical models retained. Availability and model-year completeness not guaranteed.
