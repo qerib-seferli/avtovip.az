@@ -105,3 +105,12 @@ construction / John Deere Construction: https://www.deere.com/en-us/industries/c
 construction / Liebherr: https://www.liebherr.com/en-in/earthmoving/information-sales/downloads-4154692
 watercraft / Bluegame: https://bluegame.it/
 watercraft / Fountaine Pajot: https://www.fountaine-pajot.com/wp-content/uploads/2025/12/FP-RapportGestion-31-08-2025.pdf
+
+2026-11-14 — Modelsiz markalara istehsalçı kataloqundan əlavələr
+agriculture | CaseIH Tractors | https://net.caseih.com/caseih/catalog/
+agriculture | Deutz-Fahr Tractors | https://www.deutz-fahr.com/en-nd/tractors
+construction | Kubota | https://www.kubotausa.com/equipment-series/kx-series
+construction | Gehl | https://www.gehl.com/en-GB/our-machines/compact-loaders
+construction | LiuGong | https://www.liugong.com/storage/upload/2026-04-30/QUARRY%20%26%20AGGREGATES%20AND%20CEMENT%20INDUSTRY%20SOLUTION%20%20EN%20202511.pdf
+watercraft | Bertram Yachts | https://bertram.com/
+Qeyd: Model və seriya adları istehsalçının orijinal yazılışındadır. Seriya ilə konkret model kodu eyni səviyyədə təqdim oluna bilər.
