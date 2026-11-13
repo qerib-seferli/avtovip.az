@@ -96,14 +96,23 @@
 
 
 
-/* Dark theme: Arxa fonu şəffaf edirik və tünd loqoları ağ rəngə çeviririk */
+/* Kartın fonunu tünd və səliqəli saxlayırıq */
 html[data-theme="dark"] .brands-rail .brand-chip:not(.active),
-html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active){
-  background: transparent !important;  /* Arxa fonu yox edir */
-  border-color: rgba(255, 255, 255, 0.08) !important; /* Çox incə çərçivə */
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active) {
+  background: #1a1d24 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
-html[data-theme="dark"] .brands-rail .brand-chip:not(.active):hover,
-html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover{
-  background: rgba(255, 255, 255, 0.04) !important; 
-  border-color: rgba(255, 255, 255, 0.2) !important;
+
+/* Loqo şəkillərinə kənar işıq veririk ki, qara loqolar fonda itməsin */
+html[data-theme="dark"] .brands-rail .brand-chip img,
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip img {
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75)) 
+          drop-shadow(0 0 6px rgba(255, 255, 255, 0.25)) !important;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+html[data-theme="dark"] .brands-rail .brand-chip:hover img,
+html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95)) 
+          drop-shadow(0 0 8px rgba(255, 255, 255, 0.35)) !important;
 }
