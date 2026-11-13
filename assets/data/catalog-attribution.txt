@@ -51,3 +51,14 @@ Brand marks: thesvg.org repository (MIT code license; individual brand trademark
 2026-11-14 audit: VehiclesDB car catalog was compared with vehicle-models.csv; 1,563 new normalized make/model pairs added. Motorcycle/moped/van/truck/bus catalogs were checked and 34 missing model pairs added before case/punctuation-normalized deduplication. Models may be historical; manufacturer current availability not verified. Source: https://github.com/vehiclesdb/vehiclesdb (CC BY 4.0; source-specific conditions apply).
 
 2026-11-14: Additional existing-brand make/model names sourced from MeterApp vehicle-db offline snapshot (https://github.com/MeterApp/vehicle-db), using only its explicitly identified public-domain, U.S. government, UK Open Government Licence v3.0, and CC BY 4.0 source rows. Original providers include NHTSA vPIC, UK DfT/DVLA, NZTA, Malaysia JPJ, EEA, RDW, FuelEconomy.gov, and SENATRAN. Source licensing and attribution details: https://github.com/MeterApp/vehicle-db/blob/main/data/compact.json . Derived model-name facts only; historical records may appear. Records are deduplicated per category, brand, normalized model spelling. No changes to UI/translations/themes.
+
+2026-11-14 — Targeted manufacturer/model verification (watercraft, agriculture, construction).
+Only factual model identifiers from the following publicly viewable manufacturer catalogs and the historical TractorData reference are included. This is NOT a complete global model list. No source photos, logos, descriptions or code were copied. Historical and future models can appear; availability depends on region and year.
+- watercraft / AB Yachts: 4 new unique model names; https://www.abyachts.com/yachts/
+- watercraft / Absolute Yachts: 13 new unique model names; https://www.absoluteyachts.com/en/yachts/
+- watercraft / Aquila Power Catamarans: 18 new unique model names; https://www.aquilaboats.com/models
+- construction / Ammann: 46 new unique model names; https://showroom.ammann.com/shared/Files/076cf6e61b9b457f900fca2d83b8848a.pdf
+- construction / Bell Equipment: 9 new unique model names; https://www.bellequipment.com/mining-construction/western-europe/products/6x6-articulated-dump-trucks/
+- construction / Brokk: 11 new unique model names; https://www.brokk.com/compare-models/
+- agriculture / AGCO Allis Tractors: 39 new unique model names; https://www.tractordata.com/farm-tractors/tractor-brands/agcoallis/agcoallis-tractors-year-sorted.html
+Model identifiers retained in their original manufacturer spelling (not translated); AZ/EN/RU/TR/KA UI and light/dark theme code left unchanged.
