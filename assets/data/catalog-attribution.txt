@@ -1,0 +1,18 @@
+AvtoVIP extended vehicle catalog — source notices
+
+VehiclesDB — https://github.com/vehiclesdb/vehiclesdb — CC BY 4.0.
+Data adapted and deduplicated by category for AvtoVIP. Attribution required.
+License: https://creativecommons.org/licenses/by/4.0/
+
+Open Tractor Data — https://github.com/tractordata-site/open-tractor-data — CC BY 4.0.
+Manufacturer names only; no missing tractor models were invented.
+License: https://creativecommons.org/licenses/by/4.0/
+
+CamperTrailers.com — https://campertrailers.com/data/ — free to republish with attribution and technical qualifiers.
+Brand/line/floorplan model names only are used. The publisher's original technical specifications,
+hitch/pin weight basis and measurement fields are NOT included in this catalog.
+For any later use of technical specs, preserve original hitch_weight_basis, GVWR-derived flags,
+and measurement notes as required by the source.
+
+Other categories retain the original AvtoVIP curated make/model fallback.
+This catalog does not assert exhaustive 2026 coverage or verified brand logo rights.
