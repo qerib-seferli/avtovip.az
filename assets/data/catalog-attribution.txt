@@ -18,3 +18,10 @@ Other categories retain the original AvtoVIP curated make/model fallback.
 This catalog does not assert exhaustive 2026 coverage or verified brand logo rights.
 
 2026-11-14: Additional aircraft, watercraft, agriculture, construction and motorhome model names curated as factual model identifiers; no bulk copying from third-party commercial catalog websites. Historical models retained. Availability and model-year completeness not guaranteed.
+
+AircraftTypeDesignatorScraper — https://github.com/RePassCloud/AircraftTypeDesignatorScraper — MIT License (repository license).
+Only clearly attributable single-manufacturer aircraft model labels were added; mixed/ambiguous entries excluded.
+Aircraft model names and designator data may have independent upstream provenance; verify before commercial redistribution.
+
+vehiclespecs.io brand-logos — https://github.com/vehiclespecs/brand-logos — MIT license for repository assets.
+Manufacturer trademarks remain owned by their respective owners; use for identification, not endorsement.
