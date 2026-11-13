@@ -136,3 +136,8 @@ html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
 .av-model-option:hover,.av-model-option:focus-visible{background:rgba(140,150,170,.14);outline:none}
 .av-model-car-input{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
 .quick-filters .field:has(.av-model-car-input){position:relative}
+
+/* Keep exactly one model picker visible, with the same width as other fields. */
+.av-model-native,.av-model-car-input{display:none!important}
+.vehicle-field>.av-model-trigger,.quick-filters .field>.av-model-trigger{box-sizing:border-box;width:100%;max-width:100%;min-width:0;margin:0}
+.av-model-popup{box-sizing:border-box;scrollbar-width:thin}

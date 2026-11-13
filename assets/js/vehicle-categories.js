@@ -83,18 +83,57 @@ const localCategoryType=value=>(CATEGORY_TYPE_LABELS[document.documentElement.la
 const CATEGORY_EXTRAS={motorcycle:['Kredit','Barter','Sənədləri qaydasında','ABS','TCS','Elektrik start'],watercraft:['Kredit','Barter','Qeydiyyat sənədi','Naviqasiya','Avtopilot','Xilasetmə avadanlığı'],aircraft:['Kredit','Barter','Uçuşa yararlılıq sertifikatı','Texniki baxış','Avtopilot'],agriculture:['Kredit','Barter','Lizinq','4x4','Kabin','Kondisioner'],construction:['Kredit','Barter','Lizinq','Servis tarixçəsi','Zəmanət'],commercial:['Kredit','Barter','Lizinq','Gömrük sənədi','Soyuducu','Taxoqraf'],caravan:['Kredit','Barter','Lizinq','Duş','Mətbəx','Kondisioner','Günəş paneli']};
 const fillOptions=(select,values,placeholder)=>{select.replaceChildren(new Option(placeholder||'—',''));values.forEach(x=>select.add(new Option(x.label||x.name||x,x.value??x.iso2??x.name??x)))};
 async function setupGeo(){const country=extra.querySelector('[name="country"]'),city=extra.querySelector('[name="city"]');if(!country||!city)return;const intl=window.AvtoVIPInternational;const original=$('filterCountry');const preferred=original?.value||localStorage.getItem('avtovip-country')||'AZ';if(intl){const countries=await intl.countries(document.documentElement.lang||'az');if(!country.isConnected)return;fillOptions(country,countries.filter(x=>x.iso2!=='AM').map(x=>({label:(x.emoji?x.emoji+' ':'')+x.displayName,value:x.iso2})),t().all)}else if(original){country.innerHTML=original.innerHTML;country.querySelectorAll('option').forEach(o=>{if(o.value==='AM')o.remove()})}country.value=preferred==='AM'?'AZ':preferred;const updateCities=async()=>{const iso=country.value;const arr=iso&&intl?await intl.cities(iso,document.documentElement.lang||'az'):[];if(!city.isConnected)return;fillOptions(city,arr,t().city)};country.addEventListener('change',updateCities);await updateCities()}
-// Shared, anchored model picker: native controls remain the source of truth.
-const modelPickerLabels={az:'Digər',en:'Other',ru:'Другое',tr:'Diğer',ka:'სხვა'};
+// Model picker: one visible control per category; underlying fields keep their values/events.
 let activeModelPopup=null;
 function closeModelPopup(){if(activeModelPopup){activeModelPopup.remove();activeModelPopup=null}}
-function showModelPopup(anchor,options,onPick){closeModelPopup();const rect=anchor.getBoundingClientRect();const popup=document.createElement('div');popup.className='av-model-popup';popup.setAttribute('role','listbox');const maxHeight=Math.min(300,Math.max(120,window.innerHeight-32));popup.style.maxHeight=maxHeight+'px';popup.style.width=Math.max(180,rect.width)+'px';popup.style.left=Math.max(8,Math.min(rect.left,window.innerWidth-Math.max(180,rect.width)-8))+'px';// Prefer below, but flip only when there is genuinely insufficient room.
-const below=window.innerHeight-rect.bottom-10;const above=rect.top-10;const height=Math.min(maxHeight,Math.max(46,options.length*43));if(below>=70){popup.style.maxHeight=Math.min(maxHeight,below)+'px';popup.style.top=(rect.bottom+4)+'px'}else{popup.style.maxHeight=Math.min(maxHeight,above)+'px';popup.style.top=Math.max(8,rect.top-Math.min(height,above)-4)+'px'}
-for(const opt of options){const b=document.createElement('button');b.type='button';b.className='av-model-option';b.setAttribute('role','option');b.textContent=opt.label;b.addEventListener('click',()=>{onPick(opt.value);closeModelPopup();anchor.focus()});popup.append(b)}document.body.append(popup);activeModelPopup=popup;}
-document.addEventListener('pointerdown',e=>{if(activeModelPopup&&!activeModelPopup.contains(e.target)&&!e.target.closest('.av-model-trigger'))closeModelPopup()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModelPopup()});
-window.addEventListener('scroll',e=>{if(activeModelPopup&&e.target!==activeModelPopup&&!activeModelPopup.contains(e.target))closeModelPopup()},true);window.addEventListener('resize',closeModelPopup,{passive:true});
-function enhanceModelSelect(select){if(!select||select.dataset.avEnhanced)return;select.dataset.avEnhanced='1';select.classList.add('av-model-native');const trigger=document.createElement('button');trigger.type='button';trigger.className='av-model-trigger';trigger.setAttribute('aria-label',select.closest('label')?.querySelector('span')?.textContent||'Model');select.after(trigger);const refresh=()=>{trigger.textContent=select.selectedOptions[0]?.textContent||'Model';trigger.classList.toggle('av-model-empty',!select.value)};trigger.addEventListener('click',()=>{const options=[...select.options].map(o=>({value:o.value,label:o.textContent}));showModelPopup(trigger,options,value=>{select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}));refresh()})});select.addEventListener('change',refresh);new MutationObserver(refresh).observe(select,{childList:true,subtree:true});refresh();}
-function enhanceCarModel(){const input=document.getElementById('filterModel');const datalist=document.getElementById('filterModelList');if(!input||!datalist||input.dataset.avEnhanced)return;input.dataset.avEnhanced='1';input.removeAttribute('list');input.classList.add('av-model-car-input');const trigger=document.createElement('button');trigger.type='button';trigger.className='av-model-trigger av-model-car-trigger';trigger.setAttribute('aria-label','Model');input.after(trigger);const refresh=()=>{trigger.textContent=input.value||input.placeholder||'Model';trigger.classList.toggle('av-model-empty',!input.value)};const open=()=>{const options=[{value:'',label:input.placeholder||'Model'},...[...datalist.options].map(o=>({value:o.value,label:o.value}))];const unique=[...new Map(options.map(o=>[o.value,o])).values()];showModelPopup(trigger,unique,value=>{input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));refresh()})};trigger.addEventListener('click',open);input.addEventListener('input',refresh);input.addEventListener('change',refresh);new MutationObserver(refresh).observe(datalist,{childList:true});refresh();}
+function showModelPopup(anchor,options,onPick){
+  if(activeModelPopup&&activeModelPopup._anchor===anchor){closeModelPopup();return}
+  closeModelPopup();
+  const popup=document.createElement('div');popup.className='av-model-popup';popup.setAttribute('role','listbox');popup._anchor=anchor;
+  const place=()=>{
+    if(!anchor.isConnected){closeModelPopup();return}
+    const r=anchor.getBoundingClientRect(),vw=document.documentElement.clientWidth,vh=window.innerHeight;
+    const width=Math.min(r.width,vw-16),left=Math.max(8,Math.min(r.left,vw-width-8));
+    const desired=Math.min(300,options.length*43+10),below=vh-r.bottom-8,above=r.top-8;
+    // Prefer below for short lists, and only flip for long lists if the upper space is better.
+    const flip=below<Math.min(desired,110)&&above>below;
+    const available=Math.max(48,flip?above:below);
+    const height=Math.min(desired,available);
+    popup.style.width=width+'px';popup.style.left=left+'px';popup.style.maxHeight=height+'px';
+    popup.style.top=(flip?Math.max(8,r.top-height-4):r.bottom+4)+'px';
+  };
+  for(const opt of options){const button=document.createElement('button');button.type='button';button.className='av-model-option';button.setAttribute('role','option');button.textContent=opt.label;button.addEventListener('click',event=>{event.stopPropagation();closeModelPopup();onPick(opt.value);if(anchor.isConnected)anchor.focus()});popup.append(button)}
+  document.body.append(popup);activeModelPopup=popup;place();
+}
+document.addEventListener('pointerdown',event=>{if(activeModelPopup&&!activeModelPopup.contains(event.target)&&!activeModelPopup._anchor.contains(event.target))closeModelPopup()});
+document.addEventListener('keydown',event=>{if(event.key==='Escape')closeModelPopup()});
+window.addEventListener('resize',closeModelPopup,{passive:true});
+// Closing on every captured scroll made the menu disappear as soon as it was opened in Firefox.
+function enhanceModelSelect(select){
+  if(!select||select.dataset.avEnhanced)return;
+  select.dataset.avEnhanced='1';select.classList.add('av-model-native');
+  select.style.setProperty('display','none','important');
+  const trigger=document.createElement('button');trigger.type='button';trigger.className='av-model-trigger';
+  trigger.setAttribute('aria-label',select.closest('label')?.querySelector('span')?.textContent||'Model');select.after(trigger);
+  const refresh=()=>{trigger.textContent=select.selectedOptions[0]?.textContent||'Model';trigger.classList.toggle('av-model-empty',!select.value)};
+  trigger.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();showModelPopup(trigger,[...select.options].map(o=>({value:o.value,label:o.textContent})),value=>{select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}));refresh()})});
+  select.addEventListener('change',refresh);new MutationObserver(refresh).observe(select,{childList:true,subtree:true});refresh();
+}
+function enhanceCarModel(){
+  const input=document.getElementById('filterModel'),datalist=document.getElementById('filterModelList');
+  if(!input||!datalist||input.dataset.avEnhanced)return;
+  input.dataset.avEnhanced='1';input.removeAttribute('list');input.classList.add('av-model-car-input');
+  input.style.setProperty('display','none','important');
+  const trigger=document.createElement('button');trigger.type='button';trigger.className='av-model-trigger av-model-car-trigger';trigger.setAttribute('aria-label','Model');input.after(trigger);
+  const refresh=()=>{trigger.textContent=input.value||input.placeholder||'Model';trigger.classList.toggle('av-model-empty',!input.value)};
+  trigger.addEventListener('click',event=>{
+    event.preventDefault();event.stopPropagation();
+    const values=[{value:'',label:input.placeholder||'Model'},...[...datalist.options].map(o=>({value:o.value,label:o.value}))];
+    const unique=[...new Map(values.map(o=>[o.value,o])).values()];
+    showModelPopup(trigger,unique,value=>{input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));refresh()});
+  });
+  input.addEventListener('input',refresh);input.addEventListener('change',refresh);new MutationObserver(refresh).observe(datalist,{childList:true});refresh();
+}
 const renderFilters=()=>{if(selected==='car')return;const L=t(),fields=L.fields[selected]||[];extra.innerHTML='';const primary=document.createElement('div');primary.className='vehicle-extra-grid vehicle-primary-grid';const make=makeField('make',L.make,'text', [['',L.all],...DATA.find(x=>x.id===selected).brands.map(b=>[b,b])]);const model=makeField('model',L.model,'text', [['',L.select]]);
 const modelSelect=model.querySelector('select');
 enhanceModelSelect(modelSelect);
