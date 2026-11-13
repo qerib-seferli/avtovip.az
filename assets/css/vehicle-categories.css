@@ -99,11 +99,11 @@
 /* Dark theme: Arxa fonu şəffaf edirik və tünd loqoları ağ rəngə çeviririk */
 html[data-theme="dark"] .brands-rail .brand-chip:not(.active),
 html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active){
-  background: #181a1e !important;       /* Saytın ümumi tünd fonuna yaxın və ya eyni rəng */
-  border-color: #2a2e35 !important;    /* Çox zəif, göz yormayan sərhəd xətti */
+  background: transparent !important;  /* Arxa fonu yox edir */
+  border-color: rgba(255, 255, 255, 0.08) !important; /* Çox incə çərçivə */
 }
 html[data-theme="dark"] .brands-rail .brand-chip:not(.active):hover,
 html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:not(.active):hover{
-  background: #22262c !important;      /* Hover zamanı çox yüngül işıqlanma */
-  border-color: #4b515d !important;
+  background: rgba(255, 255, 255, 0.04) !important; 
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
