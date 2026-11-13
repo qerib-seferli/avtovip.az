@@ -77,3 +77,19 @@
 .brands-rail .brand-logo-box img{pointer-events:none!important;-webkit-user-drag:none!important}
 .brands-rail img{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 @media(max-width:700px){#filterPanel.vehicle-noncar .filter-actions{align-items:stretch!important;flex-direction:column!important}#filterPanel.vehicle-noncar .filter-actions #resetFilters{width:100%!important}}
+
+/* 2026-11-13: use the same theme-aware surfaces and reset footer for all eight categories. */
+.vehicle-noncar-brands,.vehicle-noncar{background:var(--surface)!important;color:var(--text)!important}
+.vehicle-noncar .vehicle-extra-grid input,.vehicle-noncar .vehicle-extra-grid select{background:var(--surface)!important;color:var(--text)!important;border-color:var(--line)!important}
+.vehicle-noncar .vehicle-extra-grid select option{background:var(--surface)!important;color:var(--text)!important}
+.vehicle-noncar .vehicle-features label{background:var(--surface-2)!important;color:var(--text)!important;border:1px solid var(--line)!important}
+.vehicle-noncar .vehicle-features input[type=checkbox]{accent-color:var(--brand)}
+.vehicle-noncar .vehicle-advanced-section{border-color:var(--line)!important}
+.vehicle-noncar .vehicle-reset-actions{display:flex!important;align-items:center!important;justify-content:space-between!important;border-top:1px solid var(--line);padding-top:11px;margin-top:12px}
+.vehicle-noncar .vehicle-reset-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;width:auto!important;min-height:34px!important;color:var(--text)!important;background:var(--surface)!important;border:1px solid var(--line)!important}
+/* Apply the logo contrast surface to the whole chip, never a small rectangle behind the logo. */
+.brands-rail .brand-logo-box:not(.fallback){background:transparent!important;border:0!important;border-radius:0!important}
+.brands-rail .brand-chip,.vehicle-noncar-brands .vehicle-brand-chip{background:color-mix(in srgb,var(--surface-2) 78%,var(--surface))!important;color:var(--text)!important;border:1px solid var(--line)!important}
+.brands-rail .brand-chip.active,.vehicle-noncar-brands .vehicle-brand-chip.active{background:var(--brand-soft)!important;border-color:var(--brand)!important;color:var(--brand)!important}
+.vehicle-noncar-brands .vehicle-brand-monogram{color:var(--text)!important;text-shadow:none!important}
+@media(max-width:700px){.vehicle-noncar .vehicle-reset-actions{flex-direction:column!important;align-items:stretch!important}.vehicle-noncar .vehicle-reset-button{width:100%!important;min-height:40px!important}}
