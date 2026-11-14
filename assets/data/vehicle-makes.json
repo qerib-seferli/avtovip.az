@@ -57,7 +57,10 @@
   },
   {
     "id": "adler",
-    "name": "Adler"
+    "name": "Adler",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_adler.png"
+    }
   },
   {
     "id": "ahorn",
@@ -139,7 +142,10 @@
   },
   {
     "id": "amphicar",
-    "name": "Amphicar"
+    "name": "Amphicar",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_amphicar.png"
+    }
   },
   {
     "id": "apollo",
@@ -210,7 +216,10 @@
   },
   {
     "id": "asia",
-    "name": "Asia"
+    "name": "Asia",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_asia.png"
+    }
   },
   {
     "id": "askam",
@@ -267,7 +276,10 @@
   },
   {
     "id": "aurus",
-    "name": "Aurus"
+    "name": "Aurus",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_aurus.png"
+    }
   },
   {
     "id": "austin",
@@ -286,7 +298,10 @@
   },
   {
     "id": "auto-union",
-    "name": "Auto Union"
+    "name": "Auto Union",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_auto_union.png"
+    }
   },
   {
     "id": "autobacs",
@@ -346,7 +361,10 @@
   },
   {
     "id": "barkas",
-    "name": "Barkas"
+    "name": "Barkas",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_barkas.png"
+    }
   },
   {
     "id": "beauford",
@@ -884,7 +902,10 @@
   },
   {
     "id": "dodge-brothers",
-    "name": "Dodge Brothers"
+    "name": "Dodge Brothers",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_dodge_brothers.png"
+    }
   },
   {
     "id": "dodge-viper",
@@ -909,7 +930,10 @@
   },
   {
     "id": "dr",
-    "name": "DR"
+    "name": "DR",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_dr.png"
+    }
   },
   {
     "id": "drako",
@@ -2333,11 +2357,17 @@
   },
   {
     "id": "nsu",
-    "name": "NSU"
+    "name": "NSU",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_nsu.png"
+    }
   },
   {
     "id": "oakland",
-    "name": "Oakland"
+    "name": "Oakland",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_oakland.png"
+    }
   },
   {
     "id": "oldsmobile",
@@ -2503,7 +2533,10 @@
   },
   {
     "id": "polski-fiat",
-    "name": "Polski Fiat"
+    "name": "Polski Fiat",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_polski_fiat.png"
+    }
   },
   {
     "id": "pontiac",
@@ -2599,7 +2632,10 @@
   },
   {
     "id": "ravon",
-    "name": "Ravon"
+    "name": "Ravon",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_ravon.png"
+    }
   },
   {
     "id": "reliant",
@@ -2624,7 +2660,10 @@
   },
   {
     "id": "reo",
-    "name": "Reo"
+    "name": "Reo",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_reo.png"
+    }
   },
   {
     "id": "reva",
@@ -2719,7 +2758,10 @@
   },
   {
     "id": "sachsenring",
-    "name": "Sachsenring"
+    "name": "Sachsenring",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_sachsenring.png"
+    }
   },
   {
     "id": "saic-motor",
@@ -2751,7 +2793,10 @@
   },
   {
     "id": "santana",
-    "name": "Santana"
+    "name": "Santana",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_santana.png"
+    }
   },
   {
     "id": "saturn",
@@ -2815,7 +2860,10 @@
   },
   {
     "id": "shineray",
-    "name": "Shineray"
+    "name": "Shineray",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_shineray.png"
+    }
   },
   {
     "id": "simca",
@@ -2858,7 +2906,10 @@
   },
   {
     "id": "skyworth",
-    "name": "Skyworth"
+    "name": "Skyworth",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_skyworth.png"
+    }
   },
   {
     "id": "smart",
@@ -2905,7 +2956,10 @@
   },
   {
     "id": "srt",
-    "name": "Srt"
+    "name": "Srt",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_srt.png"
+    }
   },
   {
     "id": "ssangyong",
@@ -3238,7 +3292,10 @@
   },
   {
     "id": "vm",
-    "name": "Vm"
+    "name": "Vm",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_vm.png"
+    }
   },
   {
     "id": "volga",
@@ -3338,7 +3395,10 @@
   },
   {
     "id": "wolseley",
-    "name": "Wolseley"
+    "name": "Wolseley",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_wolseley.png"
+    }
   },
   {
     "id": "workhorse",
