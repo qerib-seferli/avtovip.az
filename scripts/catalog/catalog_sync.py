@@ -3,7 +3,7 @@
 Sources: NHTSA vPIC public API, Wikidata Query Service (CC0).
 Only exact manufacturer matches and explicit category classes are eligible.
 """
-import argparse,csv,io,json,re,time,urllib.parse,urllib.request,unicodedata,collections,pathlib,sys
+import argparse,csv,io,json,re,time,urllib.parse,urllib.request,urllib.error,unicodedata,collections,pathlib,sys,os,datetime
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 DATA=ROOT/'assets/data'; OUT=ROOT/'assets/data/catalog-import-review.csv'
 CLASSES={
@@ -19,14 +19,27 @@ SUFFIXES={'motorcycle':[' motorcycles',' motorcycle',' moto'], 'commercial':[' t
 def norm(s):
  s=unicodedata.normalize('NFKD',str(s)).casefold()
  return ''.join(c for c in s if c.isalnum() and not unicodedata.combining(c))
-def get_json(url, retries=3):
+def get_json(url, retries=2, is_wikidata=False):
+ """Bounded retries; respect Retry-After, never hammer an overloaded endpoint."""
  for attempt in range(retries):
   try:
-   req=urllib.request.Request(url,headers={'User-Agent':'AvtoVIP-catalog-sync/1.0 (public data reconciliation; contact via repository)', 'Accept':'application/json'})
-   with urllib.request.urlopen(req,timeout=50) as resp:return json.load(resp)
-  except Exception as e:
-   if attempt==retries-1:raise RuntimeError(f'{url.split("?")[0]}: {e}') from e
-   time.sleep(2**attempt*3)
+   req=urllib.request.Request(url,headers={
+    'User-Agent':'AvtoVIP-CatalogAudit/1.1 (GitHub qerib-seferli/avtovip.az; public research)',
+    'Accept':'application/sparql-results+json' if is_wikidata else 'application/json'})
+   with urllib.request.urlopen(req,timeout=65) as resp:return json.load(resp)
+  except urllib.error.HTTPError as e:
+   if e.code in (429,503):
+    wait=e.headers.get('Retry-After','')
+    try: delay=max(0,min(120,int(wait)))
+    except (ValueError,TypeError):delay=70 if is_wikidata else 10
+    if attempt+1<retries:time.sleep(delay);continue
+    raise RuntimeError(f'HTTP {e.code}; source temporarily rate-limited (retry later)') from e
+   if 500<=e.code<600 and attempt+1<retries:time.sleep(5*(attempt+1));continue
+   raise RuntimeError(f'HTTP {e.code}') from e
+  except (TimeoutError,urllib.error.URLError) as e:
+   if attempt+1<retries:time.sleep(5*(attempt+1));continue
+   raise RuntimeError(f'network/timeout: {e}') from e
+
 def wikidata(cat, qclass, limit=2500):
  # Query direct and indirect subclasses, but only P176 direct manufacturer.
  query=f'''SELECT DISTINCT ?item ?itemLabel ?makerLabel WHERE {{
@@ -34,7 +47,7 @@ def wikidata(cat, qclass, limit=2500):
  SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
  }} LIMIT {int(limit)}'''
  url='https://query.wikidata.org/sparql?'+urllib.parse.urlencode({'query':query,'format':'json'})
- for r in get_json(url).get('results',{}).get('bindings',[]):
+ for r in get_json(url,is_wikidata=True).get('results',{}).get('bindings',[]):
   item=r.get('item',{}).get('value',''); name=r.get('itemLabel',{}).get('value',''); maker=r.get('makerLabel',{}).get('value','')
   if item.startswith('http') and name and maker and not re.fullmatch(r'Q\d+',name):yield (maker,name,item)
 def nhtsa_makes():
@@ -44,15 +57,20 @@ def nhtsa_models(makeid):
  url=f'https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/{int(makeid)}?format=json'
  return get_json(url).get('Results',[])
 def main():
- p=argparse.ArgumentParser();p.add_argument('--max-add',type=int,default=500);p.add_argument('--apply',action='store_true');p.add_argument('--skip-wikidata',action='store_true');p.add_argument('--skip-nhtsa',action='store_true');p.add_argument('--only-empty',action='store_true',default=True);args=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--max-add',type=int,default=500);p.add_argument('--apply',action='store_true');p.add_argument('--skip-wikidata',action='store_true');p.add_argument('--strict-sources',action='store_true',help='Fail workflow if any public source is unavailable');p.add_argument('--skip-nhtsa',action='store_true');p.add_argument('--only-empty',action='store_true',default=True);args=p.parse_args()
  catalog_path=DATA/'avtovip-extended-catalog.json';catalog=json.loads(catalog_path.read_text('utf-8'))
  pending=[]; failures=[]; fetched=collections.Counter(); seen=set()
+ # Fetch NHTSA makes once, not once per vehicle category.
+ makes_cache=None
  for cat,brands in catalog.items():
   # Restrict to exactly empty brands, avoiding rewriting existing data.
   targets={norm(b):b for b,v in brands.items() if not v}
   if not targets:continue
   if cat in CLASSES and not args.skip_wikidata:
    for cls in CLASSES[cat]:
+    # WDQS is currently throttled to about one request per minute.
+    if 'wdqs_last' in locals():time.sleep(70)
+    wdqs_last=time.monotonic()
     try:
      for maker,model,qid in wikidata(cat,cls):
       brand=targets.get(norm(maker))
@@ -62,9 +80,10 @@ def main():
       key=(cat,brand,norm(model))
       if key not in seen:pending.append((cat,brand,model,'wikidata',qid));seen.add(key);fetched[cat]+=1
     except Exception as e:failures.append(f'wikidata {cat}/{cls}: {e}')
-  if cat in ('motorcycle','commercial','caravan') and not args.skip_nhtsa:
+  if cat in ('motorcycle','commercial') and not args.skip_nhtsa:
    try:
-    for make in nhtsa_makes():
+    if makes_cache is None:makes_cache=nhtsa_makes()
+    for make in makes_cache:
      raw=make.get('Make_Name','');mid=make.get('Make_ID')
      # Exact match only; brand suffix matching is deliberately disabled.
      brand=targets.get(norm(raw))
@@ -85,6 +104,6 @@ def main():
  if args.apply:
   print('Safety stop: Wikidata class membership alone cannot establish a vehicle model; manual review is required. No catalog changes made.',file=sys.stderr)
   return 2
- print(json.dumps({'candidate_count':len(pending),'by_category':dict(fetched),'errors':failures,'review_file':str(OUT)},ensure_ascii=False,indent=2))
- return 1 if failures else 0
+ print(json.dumps({'candidate_count':len(pending),'by_category':dict(fetched),'errors':failures,'review_file':str(OUT),'partial_sources':bool(failures),'catalog_modified':False},ensure_ascii=False,indent=2))
+ return 1 if (failures and args.strict_sources) else 0
 if __name__=='__main__':sys.exit(main())
