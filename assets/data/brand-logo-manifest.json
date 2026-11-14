@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-14-car-414",
+  "version": "2026-11-14-car-model-integrity",
   "note": "Car logo paths synchronized with on-disk original files and car make catalog; other categories unchanged.",
   "categories": {
     "car": {
@@ -96,7 +96,7 @@
       "Datsun": "assets/img/brand-logos/car/avtovip_datsun.png",
       "David Brown": "assets/img/brand-logos/car/avtovip_david_brown.png",
       "Dayun": "assets/img/brand-logos/car/avtovip_dayun.png",
-      "De Soto": "assets/img/brand-logos/car/avtovip_desoto.png",
+      "De Soto": "assets/img/brand-logos/car/avtovip_de_soto.png",
       "De Tomaso": "assets/img/brand-logos/car/avtovip_de_tomaso.png",
       "Deepal": "assets/img/brand-logos/car/avtovip_deepal.svg",
       "Delage": "assets/img/brand-logos/car/avtovip_delage.png",

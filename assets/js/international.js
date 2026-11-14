@@ -7,8 +7,8 @@
   const GEO_BASE = 'https://cdn.jsdelivr.net/gh/srestre/world-countries-cities-db@main';
   const VEHICLE_BASE = ''; // vehicle katalogu local snapshot-first işləyir
   const VEHICLE_INDEX_URL = ''; // local vehicle-models.csv is the authoritative runtime snapshot
-  const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json';
-  const LOCAL_VEHICLE_MODELS = 'assets/data/vehicle-models.csv';
+  const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json?v=20261114b';
+  const LOCAL_VEHICLE_MODELS = 'assets/data/vehicle-models.csv?v=20261114b';
   const BLOCKED_COUNTRIES = new Set();
   const BLOCKED_CURRENCIES = new Set();
   const memory = new Map();
