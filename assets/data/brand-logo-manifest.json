@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "note": "Only existing local real logo assets and documented same-brand aliases; no generated imitation logos. Missing brands remain initials.",
   "categories": {
     "car": {
@@ -201,7 +201,15 @@
       "ZAZ": "assets/img/brand-logos/car/avtovip_zaz.png",
       "Zenos": "assets/img/brand-logos/car/avtovip_zenos.png",
       "Zenvo": "assets/img/brand-logos/car/avtovip_zenvo.png",
-      "Škoda": "assets/img/brand-logos/car/avtovip_skoda.png"
+      "Škoda": "assets/img/brand-logos/car/avtovip_skoda.png",
+      "KGM": "assets/img/brand-logos/car/avtovip_kgm.svg",
+      "DFSK": "assets/img/brand-logos/car/avtovip_dfsk.svg",
+      "LDV": "assets/img/brand-logos/car/avtovip_ldv.svg",
+      "Piaggio": "assets/img/brand-logos/car/avtovip_piaggio.svg",
+      "Reva": "assets/img/brand-logos/car/avtovip_reva.svg",
+      "Ineos": "assets/img/brand-logos/car/avtovip_ineos.svg",
+      "Jaecoo": "assets/img/brand-logos/car/avtovip_jaecoo.svg",
+      "Ora": "assets/img/brand-logos/car/avtovip_ora.svg"
     },
     "motorcycle": {
       "Aixam": "assets/img/brand-logos/motorcycle/avtovip_aixam.svg",
