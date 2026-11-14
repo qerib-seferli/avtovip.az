@@ -1,4 +1,4 @@
-const CACHE='avtovip-chat-layout-v137-20261025';
+const CACHE='avtovip-chat-layout-v138-logos-20261114';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js','./assets/css/places/places.css','./assets/js/places/global-entry.js','./assets/js/places/place-i18n.js','./assets/js/places/profile-places.js','./assets/data/places/categories.js',
@@ -14,6 +14,11 @@ self.addEventListener('fetch',e=>{
      service-worker cache lookup + background network request that made page changes feel heavy. */
   if(r.mode==='navigate'||/\.html$/.test(u.pathname))return;
   if(!/\.(?:css|js|webmanifest|png|jpg|jpeg|webp|svg|ico)$/.test(u.pathname))return;
+  // Brand assets and their renderers must not remain stuck on an old PWA cache.
+  if(/\/assets\/img\/brand-logos\//.test(u.pathname)||/\/assets\/js\/(?:app|vehicle-categories)\.js$/.test(u.pathname)){
+    e.respondWith(fetch(r,{cache:'no-cache'}).catch(()=>caches.match(r).then(hit=>hit||Response.error())));
+    return;
+  }
   e.respondWith(caches.open(CACHE).then(async c=>{
     const hit=await c.match(r,{ignoreSearch:true});
     if(hit)return hit;

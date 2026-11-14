@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "note": "Only exact normalized brand-name matches from user-supplied 387 original logo archive; no trademark or license validation; existing logos preserved. Some manufacturer brand names repeat across categories.",
+  "version": 4,
+  "note": "Local brand logos only. Exact brand matching; no invented logos. Entries are checked against included asset files. Missing brands display initials.",
   "categories": {
     "car": {
       "AM General": "assets/img/brand-logos/car/avtovip_am_general.png",

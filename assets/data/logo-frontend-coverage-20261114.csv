@@ -1,0 +1,9 @@
+category,frontend_or_csv_brand_count,brands_with_real_local_logo,brands_without_local_logo,manifest_entries
+car,354,199,155,199
+motorcycle,60,11,49,45
+watercraft,65,0,65,0
+aircraft,59,5,54,9
+agriculture,59,3,56,16
+construction,54,6,48,6
+commercial,53,32,21,119
+caravan,63,4,59,5
