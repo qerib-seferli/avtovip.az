@@ -1,0 +1,505 @@
+﻿category,brand,model_count
+motorcycle,Arch Motorcycle,0
+motorcycle,Beta Motorcycles,0
+motorcycle,BSA Motorcycles,0
+motorcycle,Buell Motorcycles,0
+motorcycle,CCM Motorcycles,0
+motorcycle,Cleveland CycleWerks,0
+motorcycle,Hero MotoCorp,0
+motorcycle,Jawa Motorcycles,0
+motorcycle,Kove Moto,0
+motorcycle,Lifan Motorcycles,0
+motorcycle,Mash Motorcycles,0
+motorcycle,SWM Motorcycles,0
+motorcycle,Ural Motorcycles,0
+watercraft,Carver Yachts,0
+watercraft,Cigarette Racing,0
+watercraft,Elan Yachts,0
+watercraft,Excess Catamarans,0
+watercraft,Ferretti Yachts,0
+watercraft,Fjord Boats,0
+watercraft,Galeon Yachts,0
+watercraft,Grand Banks,0
+watercraft,Hatteras Yachts,0
+watercraft,Horizon Yachts,0
+watercraft,Invictus Yacht,0
+watercraft,Mangusta,0
+watercraft,Marex Boats,0
+watercraft,Monte Carlo Yachts,0
+watercraft,Nautitech,0
+watercraft,Nautor Swan,0
+watercraft,Nimbus Boats,0
+watercraft,Nordhavn,0
+watercraft,Ocean Alexander,0
+watercraft,Oyster Yachts,0
+watercraft,Parker Boats,0
+watercraft,Pershing,0
+watercraft,Quicksilver Boats,0
+watercraft,Riva,0
+watercraft,Sanlorenzo,0
+watercraft,Saxdor,0
+watercraft,Scout Boats,0
+watercraft,Solaris Yachts,0
+watercraft,Tiara Yachts,0
+watercraft,Viking Yachts,0
+watercraft,Wally Yachts,0
+watercraft,Wellcraft,0
+watercraft,Williams Jet Tenders,0
+aircraft,Airbus Corporate Jets,0
+aircraft,Blackshape,0
+aircraft,BRM Aero,0
+aircraft,Eclipse Aerospace,0
+aircraft,Flight Design,0
+aircraft,Game Composites,0
+aircraft,Glasair,0
+aircraft,Grob Aircraft,0
+aircraft,ICON Aircraft,0
+aircraft,Lancair,0
+aircraft,LET Aircraft,0
+aircraft,Mooney Aircraft,0
+aircraft,Piaggio Aerospace,0
+aircraft,Schweizer Helicopters,0
+aircraft,Sling Aircraft,0
+aircraft,Sonex Aircraft,0
+aircraft,Stemme,0
+aircraft,Textron Aviation,0
+aircraft,Thrush Aircraft,0
+aircraft,TL-Ultralight,0
+aircraft,Vulcanair,0
+aircraft,Waco Aircraft,0
+aircraft,Zenith Aircraft,0
+agriculture,Acremaster Tractors,0
+agriculture,Ag King Tractors,0
+agriculture,AGCO lawn tractors Tractors,0
+agriculture,AgraCat Tractors,0
+agriculture,Agri-Power Tractors,0
+agriculture,Agria Hispania Tractors,0
+agriculture,Agrico Tractors,0
+agriculture,Agrinar Tractors,0
+agriculture,Agro-Masz,0
+agriculture,AgTrac Tractors,0
+agriculture,Allis Chalmers lawn tractors Tractors,0
+agriculture,AMF lawn tractors Tractors,0
+agriculture,Amigo lawn tractors Tractors,0
+agriculture,Antonio Carraro,0
+agriculture,Antonio Carraro Tractors,0
+agriculture,Apollo Tractors,0
+agriculture,Arbos,0
+agriculture,Arctic Enterprises lawn tractors Tractors,0
+agriculture,Ariens lawn tractors Tractors,0
+agriculture,Ascot Universal Tractors,0
+agriculture,ATC Tractors,0
+agriculture,Aultman & Taylor Tractors,0
+agriculture,Avery Tractors,0
+agriculture,B.F. Avery Tractors,0
+agriculture,Bad Boy Tractors,0
+agriculture,Baldwin Tractors,0
+agriculture,Barreiros Tractors,0
+agriculture,Belarus Tractors,0
+agriculture,Benye Tractors,0
+agriculture,Bergmann,0
+agriculture,Best Tractors,0
+agriculture,Big Bud Tractors,0
+agriculture,Bima Tractors,0
+agriculture,Bobcat lawn tractors Tractors,0
+agriculture,Bobcat Tractors,0
+agriculture,Bolens lawn tractors Tractors,0
+agriculture,Bolens Tractors,0
+agriculture,Bolinder-Munktell Tractors,0
+agriculture,Bombardier Tractors,0
+agriculture,Bomet,0
+agriculture,Branson Tractors,0
+agriculture,Bristol Tractors,0
+agriculture,Brockway Tractors,0
+agriculture,Buhler Versatile Tractors,0
+agriculture,Bukh Tractors,0
+agriculture,Burns lawn tractors Tractors,0
+agriculture,Bush Hog lawn tractors Tractors,0
+agriculture,C.O.D. Tractor Company Tractors,0
+agriculture,Cabelas Tractors,0
+agriculture,Cameco Tractors,0
+agriculture,Capello,0
+agriculture,Captain Tractors,0
+agriculture,Carraro,0
+agriculture,Carraro Tractors,0
+agriculture,Case Tractors,0
+agriculture,Caterpillar Tractors,0
+agriculture,CBT Tractors,0
+agriculture,Centaur Tractors,0
+agriculture,Century Tractors,0
+agriculture,Challenger Tractors,0
+agriculture,Chamberlain Tractors,0
+agriculture,Chery Tractors,0
+agriculture,Cletrac Tractors,0
+agriculture,CO-OP Tractors,0
+agriculture,Cockshutt Tractors,0
+agriculture,Coleman Tractors,0
+agriculture,Colt lawn tractors Tractors,0
+agriculture,Corbitt Tractors,0
+agriculture,County Tractors,0
+agriculture,Craftsman lawn tractors Tractors,0
+agriculture,Craftsman Professional lawn tractors Tractors,0
+agriculture,Cub Cadet lawn tractors Tractors,0
+agriculture,Cub Cadet Tractors,0
+agriculture,Custom Tractors,0
+agriculture,Daedong Tractors,0
+agriculture,David Brown Tractors,0
+agriculture,Deere Tractors,0
+agriculture,Denning Tractors,0
+agriculture,Deutz Tractors,0
+agriculture,Deutz-Allis lawn tractors Tractors,0
+agriculture,Deutz-Allis Tractors,0
+agriculture,Dongfeng Tractors,0
+agriculture,Dutra Tractors,0
+agriculture,Eagle Manufacturing Tractors,0
+agriculture,Eagle Tractors,0
+agriculture,EarthForce Tractors,0
+agriculture,Earthmaster Tractors,0
+agriculture,East Wind Tractors,0
+agriculture,Ebro Tractors,0
+agriculture,Economy lawn tractors Tractors,0
+agriculture,Eicher Tractors,0
+agriculture,Empire Tractors,0
+agriculture,Erkunt Tractors,0
+agriculture,Escorts Tractors,0
+agriculture,Fahr Tractors,0
+agriculture,Farm Pro Tractors,0
+agriculture,Farmall Tractors,0
+agriculture,Farmhand lawn tractors Tractors,0
+agriculture,Farmtrac,0
+agriculture,Farmtrac Tractors,0
+agriculture,Fate-Root-Heath Tractors,0
+agriculture,Fendt Tractors,0
+agriculture,Ferguson Tractors,0
+agriculture,Fiat Tractors,0
+agriculture,Fiat-Hesston Tractors,0
+agriculture,Force Motors Tractors,0
+agriculture,Ford lawn tractors Tractors,0
+agriculture,Ford Tractors,0
+agriculture,Ford-New Holland Tractors,0
+agriculture,Fordson Tractors,0
+agriculture,Fortschritt Tractors,0
+agriculture,Foton Tractors,0
+agriculture,Fox River Tractor Company Tractors,0
+agriculture,Friday Tractors,0
+agriculture,Galloway Tractors,0
+agriculture,Gaspardo,0
+agriculture,GBT Tractors,0
+agriculture,General Electric lawn tractors Tractors,0
+agriculture,General Ordnance Tractors,0
+agriculture,Gibson Tractors,0
+agriculture,Gilson lawn tractors Tractors,0
+agriculture,Goldoni,0
+agriculture,Graham-Bradley Tractors,0
+agriculture,Gravely lawn tractors Tractors,0
+agriculture,Gray Tractor Tractors,0
+agriculture,Great Plains,0
+agriculture,Grimme,0
+agriculture,Gutbrod lawn tractors Tractors,0
+agriculture,Haas Tractors,0
+agriculture,Happy Farmer Tractors,0
+agriculture,Hardi,0
+agriculture,Hart-Parr Tractors,0
+agriculture,Hefty Tractors,0
+agriculture,Heider Tractors,0
+agriculture,Hesston lawn tractors Tractors,0
+agriculture,Hesston Tractors,0
+agriculture,Hiller lawn tractors Tractors,0
+agriculture,Hinomoto Tractors,0
+agriculture,Hitachi Tractors,0
+agriculture,Holder Tractors,0
+agriculture,Holt Tractors,0
+agriculture,Homelite lawn tractors Tractors,0
+agriculture,Honda lawn tractors Tractors,0
+agriculture,Huber Tractors,0
+agriculture,Huffy lawn tractors Tractors,0
+agriculture,Hurlimann Tractors,0
+agriculture,Husqvarna lawn tractors Tractors,0
+agriculture,IMR Rakovica Tractors,0
+agriculture,IMT Tractors,0
+agriculture,Ingersoll lawn tractors Tractors,0
+agriculture,Ingersoll Rand Tractors,0
+agriculture,International Harvester Tractors,0
+agriculture,Interstate Tractor Tractors,0
+agriculture,Iseki lawn tractors Tractors,0
+agriculture,Iseki Tractors,0
+agriculture,Ivel Agricultural Motors Tractors,0
+agriculture,J.I. Case lawn tractors Tractors,0
+agriculture,J.I. Case Tractors,0
+agriculture,Jackson Tractors,0
+agriculture,Jacobsen lawn tractors Tractors,0
+agriculture,Jacobsen Tractors,0
+agriculture,Jacto,0
+agriculture,JCB Tractors,0
+agriculture,Jeep Tractors,0
+agriculture,Jinma Tractors,0
+agriculture,John Deere lawn tractors Tractors,0
+agriculture,Johnson Manufacturing Tractors,0
+agriculture,KAMCO Tractors,0
+agriculture,Keck-Gonnerman Tractors,0
+agriculture,Kirovets Tractors,0
+agriculture,Knudson Tractors,0
+agriculture,Komatsu Tractors,0
+agriculture,Kubota lawn tractors Tractors,0
+agriculture,Kverneland,0
+agriculture,Lamborghini Tractors,0
+agriculture,Landini,0
+agriculture,Landini Tractors,0
+agriculture,Lanz Tractors,0
+agriculture,Lawn Chief lawn tractors Tractors,0
+agriculture,Lawn Rovr lawn tractors Tractors,0
+agriculture,Lawn-Boy lawn tractors Tractors,0
+agriculture,Le Roi Tractors,0
+agriculture,Leader Tractors,0
+agriculture,Lenar Tractors,0
+agriculture,Lennox lawn tractors Tractors,0
+agriculture,Levitt lawn tractors Tractors,0
+agriculture,Leyland Tractors,0
+agriculture,Limb Tractors,0
+agriculture,Lindner Tractors,0
+agriculture,Long Tractors,0
+agriculture,Lovol Tractors,0
+agriculture,LS Tractor,0
+agriculture,LS Tractors,0
+agriculture,M-R-S Tractors,0
+agriculture,MacDon,0
+agriculture,Mahindra Gujarat Tractors,0
+agriculture,Marshall Tractors,0
+agriculture,Maschio Gaspardo,0
+agriculture,Massey Ferguson lawn tractors Tractors,0
+agriculture,Massey Ferguson Tractors,0
+agriculture,Massey-Harris Tractors,0
+agriculture,Mayrath lawn tractors Tractors,0
+agriculture,McConnell-Marc Tractors,0
+agriculture,McCormick,0
+agriculture,McCormick Intl Tractors,0
+agriculture,McCormick-Deering Tractors,0
+agriculture,McCulloch Tractors,0
+agriculture,McKee Tractors,0
+agriculture,Memo Tractors,0
+agriculture,Mercedes-Benz Tractors,0
+agriculture,Merlin Tractors,0
+agriculture,Merlo,0
+agriculture,Midland Company lawn tractors Tractors,0
+agriculture,Minneapolis Tractors,0
+agriculture,Minneapolis-Moline lawn tractors Tractors,0
+agriculture,Minneapolis-Moline Tractors,0
+agriculture,Minot Tractors,0
+agriculture,Mitsubishi Tractors,0
+agriculture,Monosem,0
+agriculture,Montana lawn tractors Tractors,0
+agriculture,Montana Tractors,0
+agriculture,Montgomery Ward lawn tractors Tractors,0
+agriculture,Montgomery Ward Tractors,0
+agriculture,MTD lawn tractors Tractors,0
+agriculture,Muir-Hill Tractors,0
+agriculture,Murray lawn tractors Tractors,0
+agriculture,Müller Tractors,0
+agriculture,New Holland lawn tractors Tractors,0
+agriculture,New Holland Tractors,0
+agriculture,New Idea lawn tractors Tractors,0
+agriculture,Nichols-Shepard Tractors,0
+agriculture,NorTrac Tractors,0
+agriculture,Nuffield Tractors,0
+agriculture,Oliver lawn tractors Tractors,0
+agriculture,Oliver Tractors,0
+agriculture,Page lawn tractors Tractors,0
+agriculture,Panzer lawn tractors Tractors,0
+agriculture,Parrett Tractors,0
+agriculture,Pasquali Tractors,0
+agriculture,Pennsylvania lawn tractors Tractors,0
+agriculture,Pioneer Tractor Tractors,0
+agriculture,Poloron lawn tractors Tractors,0
+agriculture,Porsche Tractors,0
+agriculture,Poulan lawn tractors Tractors,0
+agriculture,Power King lawn tractors Tractors,0
+agriculture,Power-Flex lawn tractors Tractors,0
+agriculture,Pronar,0
+agriculture,Pöttinger,0
+agriculture,Raba Tractors,0
+agriculture,Ranch Hand Tractors,0
+agriculture,Ransomes Tractors,0
+agriculture,Raven lawn tractors Tractors,0
+agriculture,RedMax lawn tractors Tractors,0
+agriculture,Renault Tractors,0
+agriculture,REO lawn tractors Tractors,0
+agriculture,Rhino Tractors,0
+agriculture,RK Tractors Tractors,0
+agriculture,Rock Island Tractors,0
+agriculture,Rome Tractors,0
+agriculture,Roper lawn tractors Tractors,0
+agriculture,Rugg lawn tractors Tractors,0
+agriculture,Rumely Tractors,0
+agriculture,Sabre lawn tractors Tractors,0
+agriculture,SAME,0
+agriculture,SAME Tractors,0
+agriculture,Samson Tractors,0
+agriculture,Satoh Tractors,0
+agriculture,Saukville Tractors,0
+agriculture,Saunderson Tractors,0
+agriculture,Schilter Tractors,0
+agriculture,Schluter Tractors,0
+agriculture,Schramm Tractors,0
+agriculture,Scotts lawn tractors Tractors,0
+agriculture,Sears lawn tractors Tractors,0
+agriculture,Sears Tractors,0
+agriculture,Shaktimaan Tractors,0
+agriculture,Sheppard Diesel Tractors,0
+agriculture,Shibaura lawn tractors Tractors,0
+agriculture,Shibaura Tractors,0
+agriculture,Silver King Tractors,0
+agriculture,Simplicity lawn tractors Tractors,0
+agriculture,Simplicity Tractors,0
+agriculture,Simpson Jumbo Tractors,0
+agriculture,Siromer Tractors,0
+agriculture,Skoda-LIAZ Tractors,0
+agriculture,Snapper lawn tractors Tractors,0
+agriculture,SOMECA Tractors,0
+agriculture,Sonalika Tractors,0
+agriculture,Springfield lawn tractors Tractors,0
+agriculture,Square Turn Tractors,0
+agriculture,Stanley lawn tractors Tractors,0
+agriculture,Stara,0
+agriculture,Steiger Tractors,0
+agriculture,Steiner lawn tractors Tractors,0
+agriculture,Steyr Tractors,0
+agriculture,Stihl Tractors,0
+agriculture,Summit Tractors Tractors,0
+agriculture,Suzue Tractors,0
+agriculture,Swaraj Tractors,0
+agriculture,TAFE Tractors,0
+agriculture,Taishan-America Tractors,0
+agriculture,Terraplane Tractors,0
+agriculture,Terrion Tractors,0
+agriculture,Thieman Harvester Tractors,0
+agriculture,Toro lawn tractors Tractors,0
+agriculture,Toro Tractors,0
+agriculture,Troy-Bilt lawn tractors Tractors,0
+agriculture,Turner-Simplicity Tractors,0
+agriculture,Twin City Tractors,0
+agriculture,TYM Tractors,0
+agriculture,Tytan Tractors,0
+agriculture,Unimog Tractors,0
+agriculture,Unitrak Tractors,0
+agriculture,Upton Tractors,0
+agriculture,Ursus,0
+agriculture,Ursus Tractors,0
+agriculture,UTB/Universal Tractors,0
+agriculture,Valmet Tractors,0
+agriculture,Valpadana Tractors,0
+agriculture,Valtra Tractors,0
+agriculture,Ventrac lawn tractors Tractors,0
+agriculture,Ventrac Tractors,0
+agriculture,Versatile Tractors,0
+agriculture,Volvo Tractors,0
+agriculture,VST Tractors,0
+agriculture,Väderstad,0
+agriculture,Wagner Tractors,0
+agriculture,Wallis Tractors,0
+agriculture,Waltanna Tractors,0
+agriculture,Waterloo Boy Tractors,0
+agriculture,Waterloo Manufacturing Company Tractors,0
+agriculture,Weidemann,0
+agriculture,Wetmore Tractors,0
+agriculture,Wheel Horse lawn tractors Tractors,0
+agriculture,White lawn tractors Tractors,0
+agriculture,White Tractors,0
+agriculture,Wingin Tractors,0
+agriculture,Wisconsin Tractor Tractors,0
+agriculture,Woods & Copeland Tractors,0
+agriculture,Woods lawn tractors Tractors,0
+agriculture,Wuzheng Tractors,0
+agriculture,XTZ Tractors,0
+agriculture,Yamaha lawn tractors Tractors,0
+agriculture,Yanmar lawn tractors Tractors,0
+agriculture,Yanmar Tractors,0
+agriculture,Yard Machines lawn tractors Tractors,0
+agriculture,Yard Pro lawn tractors Tractors,0
+agriculture,Yard-Man lawn tractors Tractors,0
+agriculture,YTO Tractors,0
+agriculture,Zanello Tractors,0
+agriculture,Zetor Zebra Tractors,0
+construction,Atlas Copco,0
+construction,Atlas Weyhausen,0
+construction,CIFA,0
+construction,Fayat Group,0
+construction,Kato Works,0
+construction,Keestrack,0
+construction,Konecranes,0
+construction,Link-Belt Cranes,0
+construction,Mecalac,0
+construction,Merlo,0
+construction,Morooka,0
+construction,Multiquip,0
+construction,New Holland Construction,0
+construction,Palfinger,0
+construction,Putzmeister,0
+construction,Sakai,0
+construction,Schwing Stetter,0
+construction,Shantui,0
+construction,Sumitomo Construction,0
+construction,Wirtgen,0
+commercial,Autocar Trucks,0
+commercial,BMC Trucks,0
+commercial,Changan Commercial,0
+commercial,Chevrolet Commercial,0
+commercial,Dongfeng Trucks,0
+commercial,Eicher Motors,0
+commercial,FAW Trucks,0
+commercial,Foton Trucks,0
+commercial,GAZ Trucks,0
+commercial,Higer Bus,0
+commercial,Hyundai Trucks,0
+commercial,International Trucks,0
+commercial,JAC Trucks,0
+commercial,King Long Bus,0
+commercial,KrAZ,0
+commercial,MAZ Trucks,0
+commercial,Nikola Corporation,0
+commercial,Peugeot Commercial,0
+commercial,Ram Trucks,0
+commercial,Tata Motors,0
+commercial,Toyota Commercial,0
+commercial,Ural Trucks,0
+commercial,Volkswagen Commercial Vehicles,0
+commercial,Zhongtong Bus,0
+caravan,ABI Caravans,0
+caravan,Ace Caravans,0
+caravan,Auto-Sleepers,0
+caravan,Autostar,0
+caravan,Can-Am,0
+caravan,Coachmen RV,0
+caravan,Concorde Motorhomes,0
+caravan,Crosscamp,0
+caravan,Dreamer,0
+caravan,Elnagh,0
+caravan,Eriba,0
+caravan,Escape Trailer Industries,0
+caravan,Fendt Caravan,0
+caravan,Fleetwood RV,0
+caravan,Four Wheel Campers,0
+caravan,Grand Design RV,0
+caravan,Gulf Stream Coach,0
+caravan,Heartland RV,0
+caravan,Highland Ridge RV,0
+caravan,Holiday Rambler,0
+caravan,Keystone RV,0
+caravan,Leisure Travel Vans,0
+caravan,Lunar Caravans,0
+caravan,McLouis,0
+caravan,Niesmann Bischoff,0
+caravan,Northwood Manufacturing,0
+caravan,NuCamp RV,0
+caravan,Palomino RV,0
+caravan,Phoenix USA,0
+caravan,Pleasure-Way,0
+caravan,Polaris,0
+caravan,Roadtrek,0
+caravan,Roller Team,0
+caravan,Shasta RV,0
+caravan,Storyteller Overland,0
+caravan,Thor Motor Coach,0
+caravan,Tiffin Motorhomes,0
+caravan,Trigano,0
+caravan,VanTourer,0
+caravan,Wildax Motorhomes,0

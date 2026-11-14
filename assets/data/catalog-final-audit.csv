@@ -1,0 +1,9 @@
+﻿category,brand_count,model_records,empty_brands,normalized_duplicate_records
+car,354,20928,0,0
+motorcycle,522,13325,13,0
+watercraft,65,456,33,0
+aircraft,138,3048,23,0
+agriculture,385,722,351,0
+construction,54,653,20,0
+commercial,298,9979,24,0
+caravan,96,3553,40,0
