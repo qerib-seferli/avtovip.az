@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "note": "Existing artwork relocated, not independently verified as official",
+  "version": 2,
+  "note": "Existing artwork plus conservative exact-name matches from user-supplied automotive logo archives; manufacturer trademark and license status not independently certified; airline operator marks excluded.",
   "categories": {
     "car": {
       "AM General": "assets/img/brand-logos/car/avtovip_am_general.png",
@@ -119,7 +119,20 @@
       "Trek": "assets/img/brand-logos/motorcycle/avtovip_trek.svg",
       "Triumph": "assets/img/brand-logos/motorcycle/avtovip_triumph.svg",
       "Vespa": "assets/img/brand-logos/motorcycle/avtovip_vespa.svg",
-      "Norton Motorcycles": "assets/img/brand-logos/motorcycle/avtovip_norton_motorcycles.svg"
+      "Norton Motorcycles": "assets/img/brand-logos/motorcycle/avtovip_norton_motorcycles.svg",
+      "Brammo": "assets/img/brand-logos/motorcycle/avtovip_brammo.png",
+      "DKW": "assets/img/brand-logos/motorcycle/avtovip_dkw.png",
+      "Jawa": "assets/img/brand-logos/motorcycle/avtovip_jawa.png",
+      "Jawa Motorcycles": "assets/img/brand-logos/motorcycle/avtovip_jawa_motorcycles.png",
+      "Lifan": "assets/img/brand-logos/motorcycle/avtovip_lifan.png",
+      "Lifan Motorcycles": "assets/img/brand-logos/motorcycle/avtovip_lifan_motorcycles.png",
+      "Ligier": "assets/img/brand-logos/motorcycle/avtovip_ligier.png",
+      "Microcar": "assets/img/brand-logos/motorcycle/avtovip_microcar.png",
+      "Morgan": "assets/img/brand-logos/motorcycle/avtovip_morgan.png",
+      "PGO": "assets/img/brand-logos/motorcycle/avtovip_pgo.png",
+      "Reliant": "assets/img/brand-logos/motorcycle/avtovip_reliant.png",
+      "SWM": "assets/img/brand-logos/motorcycle/avtovip_swm.png",
+      "Vandenbrink": "assets/img/brand-logos/motorcycle/avtovip_vandenbrink.png"
     },
     "aircraft": {
       "Airbus": "assets/img/brand-logos/aircraft/avtovip_airbus.svg",
@@ -128,7 +141,9 @@
       "Honda Aircraft": "assets/img/brand-logos/aircraft/avtovip_honda_aircraft.svg",
       "Lockheed Martin": "assets/img/brand-logos/aircraft/avtovip_lockheed_martin.svg",
       "Mitsubishi": "assets/img/brand-logos/aircraft/avtovip_mitsubishi.svg",
-      "Saab": "assets/img/brand-logos/aircraft/avtovip_saab.svg"
+      "Saab": "assets/img/brand-logos/aircraft/avtovip_saab.svg",
+      "General Motors": "assets/img/brand-logos/aircraft/avtovip_general_motors.png",
+      "Tatra": "assets/img/brand-logos/aircraft/avtovip_tatra.png"
     },
     "agriculture": {
       "Caterpillar Tractors": "assets/img/brand-logos/agriculture/avtovip_caterpillar_tractors.svg",
@@ -153,7 +168,8 @@
       "Hitachi Construction": "assets/img/brand-logos/construction/avtovip_hitachi_construction.svg",
       "JCB": "assets/img/brand-logos/construction/avtovip_jcb.svg",
       "John Deere Construction": "assets/img/brand-logos/construction/avtovip_john_deere_construction.svg",
-      "Hyundai Construction": "assets/img/brand-logos/construction/avtovip_hyundai_construction.svg"
+      "Hyundai Construction": "assets/img/brand-logos/construction/avtovip_hyundai_construction.svg",
+      "Volvo CE": "assets/img/brand-logos/construction/avtovip_volvo_ce.png"
     },
     "commercial": {
       "Aixam": "assets/img/brand-logos/commercial/avtovip_aixam.svg",
@@ -236,7 +252,45 @@
       "Dongfeng Trucks": "assets/img/brand-logos/commercial/avtovip_dongfeng_trucks.svg",
       "Iveco Bus": "assets/img/brand-logos/commercial/avtovip_iveco_bus.svg",
       "JAC Trucks": "assets/img/brand-logos/commercial/avtovip_jac_trucks.svg",
-      "Renault Trucks": "assets/img/brand-logos/commercial/avtovip_renault_trucks.svg"
+      "Renault Trucks": "assets/img/brand-logos/commercial/avtovip_renault_trucks.svg",
+      "Bristol": "assets/img/brand-logos/commercial/avtovip_bristol.png",
+      "De Soto": "assets/img/brand-logos/commercial/avtovip_de_soto.png",
+      "Erf": "assets/img/brand-logos/commercial/avtovip_erf.png",
+      "FAW Trucks": "assets/img/brand-logos/commercial/avtovip_faw_trucks.png",
+      "Foden": "assets/img/brand-logos/commercial/avtovip_foden.png",
+      "Foton": "assets/img/brand-logos/commercial/avtovip_foton.png",
+      "Foton Trucks": "assets/img/brand-logos/commercial/avtovip_foton_trucks.png",
+      "Freightliner": "assets/img/brand-logos/commercial/avtovip_freightliner.png",
+      "Higer": "assets/img/brand-logos/commercial/avtovip_higer.png",
+      "Hino": "assets/img/brand-logos/commercial/avtovip_hino.png",
+      "HSV": "assets/img/brand-logos/commercial/avtovip_hsv.png",
+      "International": "assets/img/brand-logos/commercial/avtovip_international.png",
+      "Irizar": "assets/img/brand-logos/commercial/avtovip_irizar.png",
+      "Kamaz": "assets/img/brand-logos/commercial/avtovip_kamaz.png",
+      "Kenworth": "assets/img/brand-logos/commercial/avtovip_kenworth.png",
+      "King Long": "assets/img/brand-logos/commercial/avtovip_king_long.png",
+      "LEVC": "assets/img/brand-logos/commercial/avtovip_levc.png",
+      "Leyland": "assets/img/brand-logos/commercial/avtovip_leyland.png",
+      "Mack": "assets/img/brand-logos/commercial/avtovip_mack.png",
+      "Maxus": "assets/img/brand-logos/commercial/avtovip_maxus.png",
+      "Morris": "assets/img/brand-logos/commercial/avtovip_morris.png",
+      "Pegaso": "assets/img/brand-logos/commercial/avtovip_pegaso.png",
+      "Reliant": "assets/img/brand-logos/commercial/avtovip_reliant.png",
+      "Rover": "assets/img/brand-logos/commercial/avtovip_rover.png",
+      "Setra": "assets/img/brand-logos/commercial/avtovip_setra.png",
+      "Shacman": "assets/img/brand-logos/commercial/avtovip_shacman.png",
+      "Simca": "assets/img/brand-logos/commercial/avtovip_simca.png",
+      "Sinotruk": "assets/img/brand-logos/commercial/avtovip_sinotruk.png",
+      "Sisu": "assets/img/brand-logos/commercial/avtovip_sisu.png",
+      "Sterling": "assets/img/brand-logos/commercial/avtovip_sterling.png",
+      "Studebaker": "assets/img/brand-logos/commercial/avtovip_studebaker.png",
+      "Talbot": "assets/img/brand-logos/commercial/avtovip_talbot.png",
+      "Tatra": "assets/img/brand-logos/commercial/avtovip_tatra.png",
+      "Ud": "assets/img/brand-logos/commercial/avtovip_ud.png",
+      "Western Star": "assets/img/brand-logos/commercial/avtovip_western_star.png",
+      "Yutong": "assets/img/brand-logos/commercial/avtovip_yutong.png",
+      "ZAZ": "assets/img/brand-logos/commercial/avtovip_zaz.png",
+      "Zhongtong": "assets/img/brand-logos/commercial/avtovip_zhongtong.png"
     },
     "caravan": {
       "Hymer": "assets/img/brand-logos/caravan/avtovip_hymer.svg",
