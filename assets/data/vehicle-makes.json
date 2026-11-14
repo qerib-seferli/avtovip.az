@@ -747,7 +747,10 @@
   },
   {
     "id": "daimler-benz",
-    "name": "Daimler Benz"
+    "name": "Daimler Benz",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_mercedes_benz.svg"
+    }
   },
   {
     "id": "daimlerchrysler",
@@ -1320,7 +1323,10 @@
   },
   {
     "id": "gta",
-    "name": "GTA"
+    "name": "GTA",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_spania_gta.png"
+    }
   },
   {
     "id": "gumpert",
@@ -1384,7 +1390,10 @@
   },
   {
     "id": "hindustan",
-    "name": "Hindustan"
+    "name": "Hindustan",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_hindustan_motors.png"
+    }
   },
   {
     "id": "hindustan-motors",
@@ -1593,7 +1602,10 @@
   },
   {
     "id": "iso-rivolta",
-    "name": "Iso Rivolta"
+    "name": "Iso Rivolta",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_iso.png"
+    }
   },
   {
     "id": "isuzu",
@@ -1935,7 +1947,10 @@
   },
   {
     "id": "lixiang",
-    "name": "Lixiang"
+    "name": "Lixiang",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_li_auto.png"
+    }
   },
   {
     "id": "lloyd",
@@ -2729,7 +2744,10 @@
   },
   {
     "id": "samsung",
-    "name": "Samsung"
+    "name": "Samsung",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_renault_samsung.png"
+    }
   },
   {
     "id": "santana",
@@ -2916,7 +2934,10 @@
   },
   {
     "id": "steyr-puch",
-    "name": "Steyr-Puch"
+    "name": "Steyr-Puch",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_puch.svg"
+    }
   },
   {
     "id": "stuart-taylor",

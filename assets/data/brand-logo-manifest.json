@@ -423,7 +423,14 @@
       "212": "assets/img/brand-logos/car/avtovip_212.png",
       "Lynk & Co": "assets/img/brand-logos/car/avtovip_lynk_and_co.png",
       "GAC": "assets/img/brand-logos/car/avtovip_gac_group.png",
-      "Willys": "assets/img/brand-logos/car/avtovip_willys_overland.png"
+      "Willys": "assets/img/brand-logos/car/avtovip_willys_overland.png",
+      "GTA": "assets/img/brand-logos/car/avtovip_spania_gta.png",
+      "Hindustan": "assets/img/brand-logos/car/avtovip_hindustan_motors.png",
+      "Lixiang": "assets/img/brand-logos/car/avtovip_li_auto.png",
+      "Samsung": "assets/img/brand-logos/car/avtovip_renault_samsung.png",
+      "Iso Rivolta": "assets/img/brand-logos/car/avtovip_iso.png",
+      "Steyr-Puch": "assets/img/brand-logos/car/avtovip_puch.svg",
+      "Daimler Benz": "assets/img/brand-logos/car/avtovip_mercedes_benz.svg"
     },
     "motorcycle": {
       "Aixam": "assets/img/brand-logos/motorcycle/avtovip_aixam.svg",
