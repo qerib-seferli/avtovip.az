@@ -1,0 +1,9 @@
+category,brands_in_catalog,mapped_logos,brands_without_mapped_logo
+car,83,83,0
+motorcycle,522,31,491
+watercraft,65,0,65
+aircraft,138,7,131
+agriculture,385,5,380
+construction,54,4,50
+commercial,298,73,225
+caravan,96,4,92

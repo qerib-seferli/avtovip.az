@@ -551,28 +551,17 @@
     return messageBadgeTask;
   }
 
-  const LOCAL_BRAND_LOGOS = Object.fromEntries(BRANDS.map(([name,file])=>[name.toLowerCase(),`assets/img/brands/${file}`]));
+  // Only the new, category-specific local logo directory is authoritative.
+  // Do not silently fall back to legacy folders or remote artwork: a missing
+  // image must remain visibly missing until the new asset is installed.
   function brandLogoCandidates(make){
-    const name=String(make?.name||'');
-    const local=LOCAL_BRAND_LOGOS[name.toLowerCase()]||'';
     const snapshot=typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||'');
-    const rawId=String(make?.id||name).trim().toLowerCase();
-    const slug=rawId.replace(/_/g,'-').replace(/[^a-z0-9-]+/g,'-').replace(/^-+|-+$/g,'');
-    const logoSlugMap={
-      'lada-vaz':'lada','mercedes-benz':'mercedes-benz','mercedes_benz':'mercedes-benz',
-      'land-rover':'land-rover','land_rover':'land-rover','rolls-royce':'rolls-royce',
-      'rolls_royce':'rolls-royce','aston-martin':'aston-martin','aston_martin':'aston-martin',
-      'alfa-romeo':'alfa-romeo','alfa_romeo':'alfa-romeo','am-general':'am-general','am_general':'am-general'
-    };
-    const remoteSlug=logoSlugMap[rawId]||logoSlugMap[slug]||slug;
-    const remote=remoteSlug?`https://raw.githubusercontent.com/filippofilip95/car-logos-dataset/master/logos/optimized/${remoteSlug}.png`:'';
-    /* Prefer bundled artwork, then a real automotive-logo fallback, and only then the
-       old snapshot placeholder. This keeps desktop/browser logos visible as well. */
-    return [...new Set([snapshot,local,remote].filter(Boolean))];
+    return (typeof snapshot==='string' && /^assets\/img\/brand-logos\/car\/avtovip_[a-z0-9_-]+\.(svg|png|webp)$/i.test(snapshot))
+      ? [snapshot] : [];
   }
   async function brandRail(container){
     if(!container)return; await ensureCatalogs();
-    const makes=vehicleMakes.length?vehicleMakes:BRANDS.map(([name,file])=>({name,logo:`assets/img/brands/${file}`}));
+    const makes=vehicleMakes.length?vehicleMakes:BRANDS.map(([name])=>({name,logo:null}));
     container.innerHTML=''; const track=document.createElement('div');track.className='brands-track';container.append(track);
     for(const make of makes){const b=document.createElement('button');b.className='brand-chip';b.type='button';b.dataset.brand=make.name;const logos=brandLogoCandidates(make);const fallback=(make.name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();b.innerHTML=`<span class="brand-logo-box">${logos.length?`<img loading="lazy" decoding="async" src="${esc(logos[0])}" alt="${esc(make.name)}">`:''}<b>${esc(fallback)}</b></span><span>${esc(make.name)}</span>`;const img=b.querySelector('img');if(img){let i=0;img.addEventListener('error',()=>{i++;if(i<logos.length){img.src=logos[i]}else{img.remove();b.querySelector('.brand-logo-box')?.classList.add('fallback')}})}else b.querySelector('.brand-logo-box')?.classList.add('fallback');track.append(b)}
     container.classList.add('brands-scroll');
