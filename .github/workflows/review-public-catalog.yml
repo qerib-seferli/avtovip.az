@@ -6,7 +6,7 @@ permissions:
 jobs:
   review:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -14,10 +14,15 @@ jobs:
           python-version: '3.11'
       - name: Fetch and match public source candidates (no live catalog modification)
         run: python scripts/catalog/catalog_sync.py
+      - name: Summarize source status
+        if: always()
+        run: |
+          echo "Candidate CSV is a review-only artifact; no live catalog files were modified." >> "$GITHUB_STEP_SUMMARY"
+          echo "Wikidata may be rate-limited. Inspect job logs for partial_sources/errors." >> "$GITHUB_STEP_SUMMARY"
       - name: Upload candidate review
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: avtovip-catalog-candidates
           path: assets/data/catalog-import-review.csv
-          if-no-files-found: warn
+          if-no-files-found: error
