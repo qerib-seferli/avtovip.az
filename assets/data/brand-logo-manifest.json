@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-14-car-model-integrity",
+  "version": "2026-11-14-car-logo-mapping-fix2",
   "note": "Car logo paths synchronized with on-disk original files and car make catalog; other categories unchanged.",
   "categories": {
     "car": {
@@ -419,7 +419,11 @@
       "Zhongtong": "assets/img/brand-logos/car/avtovip_zhongtong.png",
       "Zinoro": "assets/img/brand-logos/car/avtovip_zinoro.png",
       "Zotye": "assets/img/brand-logos/car/avtovip_zotye.png",
-      "Škoda": "assets/img/brand-logos/car/avtovip_skoda.png"
+      "Škoda": "assets/img/brand-logos/car/avtovip_skoda.png",
+      "212": "assets/img/brand-logos/car/avtovip_212.png",
+      "Lynk & Co": "assets/img/brand-logos/car/avtovip_lynk_and_co.png",
+      "GAC": "assets/img/brand-logos/car/avtovip_gac_group.png",
+      "Willys": "assets/img/brand-logos/car/avtovip_willys_overland.png"
     },
     "motorcycle": {
       "Aixam": "assets/img/brand-logos/motorcycle/avtovip_aixam.svg",

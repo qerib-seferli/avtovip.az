@@ -1,7 +1,10 @@
 [
   {
     "id": "212",
-    "name": "212"
+    "name": "212",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_212.png"
+    }
   },
   {
     "id": "9ff",
@@ -1182,7 +1185,10 @@
   },
   {
     "id": "gac",
-    "name": "GAC"
+    "name": "GAC",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_gac_group.png"
+    }
   },
   {
     "id": "gac-group",
@@ -1979,7 +1985,10 @@
   },
   {
     "id": "lynk-co",
-    "name": "Lynk & Co"
+    "name": "Lynk & Co",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_lynk_and_co.png"
+    }
   },
   {
     "id": "lynk-and-co",
@@ -3294,7 +3303,10 @@
   },
   {
     "id": "willys",
-    "name": "Willys"
+    "name": "Willys",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_willys_overland.png"
+    }
   },
   {
     "id": "willys-overland",
