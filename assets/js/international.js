@@ -151,12 +151,29 @@
   let modelIndex=null;
   async function loadModelIndex(){
     if(modelIndex)return modelIndex;
-    const csv=await localFirstText(LOCAL_VEHICLE_MODELS,VEHICLE_INDEX_URL,'vehicle:model-index'); const map=new Map();
+    const csv=await localFirstText(LOCAL_VEHICLE_MODELS,VEHICLE_INDEX_URL,'vehicle:model-index');
+    const map=new Map();
     if(csv){
       const lines=csv.split(/\r?\n/).slice(1);
-      for(const line of lines){if(!line)continue;const m=line.match(/^([^,]+),([^,]+),(?:"([^"]*(?:""[^"]*)*)"|([^,]*)),/);if(!m)continue;const make=indexSlug(m[1]);const name=(m[3]||m[4]||'').replace(/""/g,'"').trim();if(!name)continue;if(!map.has(make))map.set(make,[]);map.get(make).push(name)}
+      const seen=new Map();
+      for(const line of lines){
+        if(!line)continue;
+        const m=line.match(/^([^,]+),([^,]+),(?:"([^"]*(?:""[^"]*)*)"|([^,]*)),/);
+        if(!m)continue;
+        const name=(m[3]||m[4]||'').replace(/""/g,'"').trim();
+        if(!name)continue;
+        // Both CSV make_slug and make_name resolve to the same model collection.
+        const keys=[indexSlug(m[1]),indexSlug(m[2])];
+        for(const key of new Set(keys)){
+          if(!map.has(key)){map.set(key,[]);seen.set(key,new Set())}
+          const normalized=name.normalize('NFKC').toLocaleLowerCase();
+          if(!seen.get(key).has(normalized)){
+            seen.get(key).add(normalized);map.get(key).push(name);
+          }
+        }
+      }
     }
-    modelIndex=map; return map;
+    modelIndex=map;return map;
   }
   async function makes(lang='en'){
     let data=null; try{const r=await fetch(LOCAL_VEHICLE_MAKES,{cache:'no-cache'});if(r.ok)data=await r.json()}catch{} const arr=Array.isArray(data)?data:[];
@@ -167,11 +184,20 @@
     return sortByName([...merged.values()],lang)
   }
   async function models(makeId,lang='en'){
-    if(!makeId)return[]; const id=slug(makeId); const names=new Set();
-    const local=CORE_MODELS[id]||CORE_MODELS[id.replace(/-benz$/,'-benz')]||[];local.forEach(x=>names.add(x));
-    const idx=await loadModelIndex(); const keys=[indexSlug(id),indexSlug(id.replace('mercedes-benz','mercedes_benz')),indexSlug(id.replace('lada-vaz','lada'))];
-    for(const k of keys)(idx.get(k)||[]).forEach(x=>names.add(x));
-    return sortByName([...names].map(name=>({id:slug(name),name})),lang)
+    if(!makeId)return[];
+    const id=slug(makeId);
+    const names=new Map();
+    const add=name=>{
+      const value=String(name||'').trim();
+      if(!value)return;
+      const key=value.normalize('NFKC').toLocaleLowerCase();
+      if(!names.has(key))names.set(key,value);
+    };
+    (CORE_MODELS[id]||[]).forEach(add);
+    const idx=await loadModelIndex();
+    const keys=[indexSlug(id),indexSlug(id.replace('mercedes-benz','mercedes_benz')),indexSlug(id.replace('lada-vaz','lada'))];
+    for(const key of new Set(keys))(idx.get(key)||[]).forEach(add);
+    return sortByName([...names.values()].map(name=>({id:slug(name),name})),lang);
   }
   function formatMoney(value,currency='USD',lang='en'){if(BLOCKED_CURRENCIES.has(currency))currency='USD';try{return new Intl.NumberFormat(locale(lang),{style:'currency',currency,maximumFractionDigits:0}).format(Number(value||0))}catch{return `${Number(value||0).toLocaleString(locale(lang))} ${currency}`}}
   function currencyForCountry(list,iso2){if(BLOCKED_COUNTRIES.has(String(iso2||'').toUpperCase()))return'USD';const cur=list.find(c=>c.iso2===iso2)?.currency||'USD';return BLOCKED_CURRENCIES.has(cur)?'USD':cur}
