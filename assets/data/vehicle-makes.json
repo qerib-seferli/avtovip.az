@@ -138,7 +138,10 @@
   },
   {
     "id": "american",
-    "name": "American"
+    "name": "American",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_american.png"
+    }
   },
   {
     "id": "amphicar",
@@ -772,7 +775,10 @@
   },
   {
     "id": "daimlerchrysler",
-    "name": "Daimlerchrysler"
+    "name": "Daimlerchrysler",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_daimlerchrysler.png"
+    }
   },
   {
     "id": "dartz",
@@ -1055,7 +1061,10 @@
   },
   {
     "id": "eunos",
-    "name": "Eunos"
+    "name": "Eunos",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_eunos.png"
+    }
   },
   {
     "id": "evo",
@@ -1314,7 +1323,10 @@
   },
   {
     "id": "goliath",
-    "name": "Goliath"
+    "name": "Goliath",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_goliath.png"
+    }
   },
   {
     "id": "gonow",
@@ -1491,7 +1503,10 @@
   },
   {
     "id": "hotchkiss",
-    "name": "Hotchkiss"
+    "name": "Hotchkiss",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_hotchkiss.png"
+    }
   },
   {
     "id": "hsv",
@@ -1814,7 +1829,10 @@
   },
   {
     "id": "krismar",
-    "name": "Krismar"
+    "name": "Krismar",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_krismar.png"
+    }
   },
   {
     "id": "ktm",
@@ -1967,7 +1985,10 @@
   },
   {
     "id": "livan",
-    "name": "Livan"
+    "name": "Livan",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_livan.png"
+    }
   },
   {
     "id": "lixiang",
@@ -2084,7 +2105,10 @@
   },
   {
     "id": "maruti-suzuki",
-    "name": "Maruti Suzuki"
+    "name": "Maruti Suzuki",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_maruti_suzuki.png"
+    }
   },
   {
     "id": "maserati",
@@ -2102,7 +2126,10 @@
   },
   {
     "id": "matra",
-    "name": "Matra"
+    "name": "Matra",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_matra.png"
+    }
   },
   {
     "id": "maxus",
@@ -2281,7 +2308,10 @@
   },
   {
     "id": "nash",
-    "name": "Nash"
+    "name": "Nash",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_nash.png"
+    }
   },
   {
     "id": "navistar",
@@ -2353,7 +2383,10 @@
   },
   {
     "id": "notin",
-    "name": "Notin"
+    "name": "Notin",
+    "logo": {
+      "local_url": "assets/img/brand-logos/car/avtovip_notin.png"
+    }
   },
   {
     "id": "nsu",
