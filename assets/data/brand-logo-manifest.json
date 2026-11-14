@@ -118,7 +118,8 @@
       "Suzuki": "assets/img/brand-logos/motorcycle/avtovip_suzuki.svg",
       "Trek": "assets/img/brand-logos/motorcycle/avtovip_trek.svg",
       "Triumph": "assets/img/brand-logos/motorcycle/avtovip_triumph.svg",
-      "Vespa": "assets/img/brand-logos/motorcycle/avtovip_vespa.svg"
+      "Vespa": "assets/img/brand-logos/motorcycle/avtovip_vespa.svg",
+      "Norton Motorcycles": "assets/img/brand-logos/motorcycle/avtovip_norton_motorcycles.svg"
     },
     "aircraft": {
       "Airbus": "assets/img/brand-logos/aircraft/avtovip_airbus.svg",
@@ -134,13 +135,25 @@
       "JCB Agriculture": "assets/img/brand-logos/agriculture/avtovip_jcb_agriculture.svg",
       "John Deere": "assets/img/brand-logos/agriculture/avtovip_john_deere.svg",
       "John Deere Tractors": "assets/img/brand-logos/agriculture/avtovip_john_deere_tractors.svg",
-      "Mahindra": "assets/img/brand-logos/agriculture/avtovip_mahindra.svg"
+      "Mahindra": "assets/img/brand-logos/agriculture/avtovip_mahindra.svg",
+      "Mahindra Tractors": "assets/img/brand-logos/agriculture/avtovip_mahindra_tractors.svg",
+      "Bombardier Tractors": "assets/img/brand-logos/agriculture/avtovip_bombardier_tractors.svg",
+      "Chery Tractors": "assets/img/brand-logos/agriculture/avtovip_chery_tractors.png",
+      "Dongfeng Tractors": "assets/img/brand-logos/agriculture/avtovip_dongfeng_tractors.svg",
+      "Fiat Tractors": "assets/img/brand-logos/agriculture/avtovip_fiat_tractors.svg",
+      "Ford Tractors": "assets/img/brand-logos/agriculture/avtovip_ford_tractors.svg",
+      "Hitachi Tractors": "assets/img/brand-logos/agriculture/avtovip_hitachi_tractors.svg",
+      "JCB Tractors": "assets/img/brand-logos/agriculture/avtovip_jcb_tractors.svg",
+      "Mitsubishi Tractors": "assets/img/brand-logos/agriculture/avtovip_mitsubishi_tractors.svg",
+      "Renault Tractors": "assets/img/brand-logos/agriculture/avtovip_renault_tractors.svg",
+      "Volvo Tractors": "assets/img/brand-logos/agriculture/avtovip_volvo_tractors.svg"
     },
     "construction": {
       "Caterpillar": "assets/img/brand-logos/construction/avtovip_caterpillar.svg",
       "Hitachi Construction": "assets/img/brand-logos/construction/avtovip_hitachi_construction.svg",
       "JCB": "assets/img/brand-logos/construction/avtovip_jcb.svg",
-      "John Deere Construction": "assets/img/brand-logos/construction/avtovip_john_deere_construction.svg"
+      "John Deere Construction": "assets/img/brand-logos/construction/avtovip_john_deere_construction.svg",
+      "Hyundai Construction": "assets/img/brand-logos/construction/avtovip_hyundai_construction.svg"
     },
     "commercial": {
       "Aixam": "assets/img/brand-logos/commercial/avtovip_aixam.svg",
@@ -215,13 +228,22 @@
       "Volkswagen Commercial Vehicles": "assets/img/brand-logos/commercial/avtovip_volkswagen_commercial_vehicles.svg",
       "Volvo": "assets/img/brand-logos/commercial/avtovip_volvo.svg",
       "Volvo Trucks": "assets/img/brand-logos/commercial/avtovip_volvo_trucks.svg",
-      "Škoda": "assets/img/brand-logos/commercial/avtovip_skoda.svg"
+      "Škoda": "assets/img/brand-logos/commercial/avtovip_skoda.svg",
+      "Peugeot Commercial": "assets/img/brand-logos/commercial/avtovip_peugeot_commercial.svg",
+      "Tata Motors": "assets/img/brand-logos/commercial/avtovip_tata_motors.svg",
+      "BYD Commercial": "assets/img/brand-logos/commercial/avtovip_byd_commercial.svg",
+      "Changan Commercial": "assets/img/brand-logos/commercial/avtovip_changan_commercial.png",
+      "Dongfeng Trucks": "assets/img/brand-logos/commercial/avtovip_dongfeng_trucks.svg",
+      "Iveco Bus": "assets/img/brand-logos/commercial/avtovip_iveco_bus.svg",
+      "JAC Trucks": "assets/img/brand-logos/commercial/avtovip_jac_trucks.svg",
+      "Renault Trucks": "assets/img/brand-logos/commercial/avtovip_renault_trucks.svg"
     },
     "caravan": {
       "Hymer": "assets/img/brand-logos/caravan/avtovip_hymer.svg",
       "Keystone": "assets/img/brand-logos/caravan/avtovip_keystone.svg",
       "Polaris": "assets/img/brand-logos/caravan/avtovip_polaris.svg",
-      "Swift": "assets/img/brand-logos/caravan/avtovip_swift.svg"
+      "Swift": "assets/img/brand-logos/caravan/avtovip_swift.svg",
+      "Keystone RV": "assets/img/brand-logos/caravan/avtovip_keystone_rv.svg"
     }
   }
 }

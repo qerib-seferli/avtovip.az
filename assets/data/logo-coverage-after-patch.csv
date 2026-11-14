@@ -1,0 +1,9 @@
+﻿category,existing_mapped,new_mapped,total_mapped,known_brand_count,remaining_without_mapped_logo
+car,83,0,83,83,0
+motorcycle,31,1,32,522,490
+watercraft,0,0,0,65,65
+aircraft,7,0,7,138,131
+agriculture,5,11,16,385,369
+construction,4,1,5,54,49
+commercial,73,8,81,298,217
+caravan,4,1,5,96,91
