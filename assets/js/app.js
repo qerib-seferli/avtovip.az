@@ -568,7 +568,7 @@
     const remote=remoteSlug?`https://raw.githubusercontent.com/filippofilip95/car-logos-dataset/master/logos/optimized/${remoteSlug}.png`:'';
     /* Prefer bundled artwork, then a real automotive-logo fallback, and only then the
        old snapshot placeholder. This keeps desktop/browser logos visible as well. */
-    return [...new Set([local,remote,snapshot].filter(Boolean))];
+    return [...new Set([snapshot,local,remote].filter(Boolean))];
   }
   async function brandRail(container){
     if(!container)return; await ensureCatalogs();
