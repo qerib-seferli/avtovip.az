@@ -1,6 +1,6 @@
 {
-  "version": 4,
-  "note": "Local brand logos only. Exact brand matching; no invented logos. Entries are checked against included asset files. Missing brands display initials.",
+  "version": 5,
+  "note": "Exact local brand assets only; verified file paths. Missing brands use initials. Category maps synced to vehicle-categories.js.",
   "categories": {
     "car": {
       "AM General": "assets/img/brand-logos/car/avtovip_am_general.png",
@@ -248,7 +248,8 @@
       "PGO": "assets/img/brand-logos/motorcycle/avtovip_pgo.png",
       "Reliant": "assets/img/brand-logos/motorcycle/avtovip_reliant.png",
       "SWM": "assets/img/brand-logos/motorcycle/avtovip_swm.png",
-      "Vandenbrink": "assets/img/brand-logos/motorcycle/avtovip_vandenbrink.png"
+      "Vandenbrink": "assets/img/brand-logos/motorcycle/avtovip_vandenbrink.png",
+      "SWM Motorcycles": "assets/img/brand-logos/motorcycle/avtovip_swm_motorcycles.png"
     },
     "aircraft": {
       "Airbus": "assets/img/brand-logos/aircraft/avtovip_airbus.svg",
@@ -259,7 +260,8 @@
       "Mitsubishi": "assets/img/brand-logos/aircraft/avtovip_mitsubishi.svg",
       "Saab": "assets/img/brand-logos/aircraft/avtovip_saab.svg",
       "General Motors": "assets/img/brand-logos/aircraft/avtovip_general_motors.png",
-      "Tatra": "assets/img/brand-logos/aircraft/avtovip_tatra.png"
+      "Tatra": "assets/img/brand-logos/aircraft/avtovip_tatra.png",
+      "Airbus Helicopters": "assets/img/brand-logos/aircraft/avtovip_airbus_helicopters.svg"
     },
     "agriculture": {
       "Caterpillar Tractors": "assets/img/brand-logos/agriculture/avtovip_caterpillar_tractors.svg",
@@ -277,7 +279,12 @@
       "JCB Tractors": "assets/img/brand-logos/agriculture/avtovip_jcb_tractors.svg",
       "Mitsubishi Tractors": "assets/img/brand-logos/agriculture/avtovip_mitsubishi_tractors.svg",
       "Renault Tractors": "assets/img/brand-logos/agriculture/avtovip_renault_tractors.svg",
-      "Volvo Tractors": "assets/img/brand-logos/agriculture/avtovip_volvo_tractors.svg"
+      "Volvo Tractors": "assets/img/brand-logos/agriculture/avtovip_volvo_tractors.svg",
+      "Ford lawn tractors Tractors": "assets/img/brand-logos/agriculture/avtovip_ford_lawn_tractors_tractors.png",
+      "Foton Tractors": "assets/img/brand-logos/agriculture/avtovip_foton_tractors.png",
+      "Honda lawn tractors Tractors": "assets/img/brand-logos/agriculture/avtovip_honda_lawn_tractors_tractors.png",
+      "Husqvarna lawn tractors Tractors": "assets/img/brand-logos/agriculture/avtovip_husqvarna_lawn_tractors_tractors.svg",
+      "John Deere lawn tractors Tractors": "assets/img/brand-logos/agriculture/avtovip_john_deere_lawn_tractors_tractors.svg"
     },
     "construction": {
       "Caterpillar": "assets/img/brand-logos/construction/avtovip_caterpillar.svg",
@@ -289,7 +296,7 @@
     },
     "commercial": {
       "Aixam": "assets/img/brand-logos/commercial/avtovip_aixam.svg",
-      "Am General": "assets/img/brand-logos/commercial/avtovip_am_general.svg",
+      "Am General": "assets/img/brand-logos/commercial/avtovip_am_general.png",
       "Austin": "assets/img/brand-logos/commercial/avtovip_austin.svg",
       "BYD": "assets/img/brand-logos/commercial/avtovip_byd.svg",
       "Cadillac": "assets/img/brand-logos/commercial/avtovip_cadillac.svg",
@@ -406,7 +413,14 @@
       "Western Star": "assets/img/brand-logos/commercial/avtovip_western_star.png",
       "Yutong": "assets/img/brand-logos/commercial/avtovip_yutong.png",
       "ZAZ": "assets/img/brand-logos/commercial/avtovip_zaz.png",
-      "Zhongtong": "assets/img/brand-logos/commercial/avtovip_zhongtong.png"
+      "Zhongtong": "assets/img/brand-logos/commercial/avtovip_zhongtong.png",
+      "GAZ Trucks": "assets/img/brand-logos/commercial/avtovip_gaz_trucks.png",
+      "Higer Bus": "assets/img/brand-logos/commercial/avtovip_higer_bus.png",
+      "International Trucks": "assets/img/brand-logos/commercial/avtovip_international_trucks.png",
+      "King Long Bus": "assets/img/brand-logos/commercial/avtovip_king_long_bus.png",
+      "UD Trucks": "assets/img/brand-logos/commercial/avtovip_ud_trucks.png",
+      "Yutong Bus": "assets/img/brand-logos/commercial/avtovip_yutong_bus.png",
+      "Zhongtong Bus": "assets/img/brand-logos/commercial/avtovip_zhongtong_bus.png"
     },
     "caravan": {
       "Hymer": "assets/img/brand-logos/caravan/avtovip_hymer.svg",
