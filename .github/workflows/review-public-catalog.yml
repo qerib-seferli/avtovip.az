@@ -6,14 +6,14 @@ permissions:
 jobs:
   review:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Fetch and match public source candidates (no live catalog modification)
-        run: python scripts/catalog/catalog_sync.py
+        run: python scripts/catalog/catalog_sync.py --wd-pages 3 --wd-page-size 500
       - name: Summarize source status
         if: always()
         run: |
@@ -24,5 +24,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: avtovip-catalog-candidates
-          path: assets/data/catalog-import-review.csv
+          path: |
+            assets/data/catalog-import-review.csv
+            assets/data/catalog-source-run-audit.csv
           if-no-files-found: error
