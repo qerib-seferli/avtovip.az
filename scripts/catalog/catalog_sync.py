@@ -59,7 +59,7 @@ def nhtsa_models(makeid):
 def main():
  p=argparse.ArgumentParser();p.add_argument('--max-add',type=int,default=500);p.add_argument('--apply',action='store_true');p.add_argument('--skip-wikidata',action='store_true');p.add_argument('--strict-sources',action='store_true',help='Fail workflow if any public source is unavailable');p.add_argument('--skip-nhtsa',action='store_true');p.add_argument('--only-empty',action='store_true',default=True);p.add_argument('--wd-pages',type=int,default=3,help='Wikidata pages per class; each page is 500 records');p.add_argument('--wd-page-size',type=int,default=500);args=p.parse_args()
  if not 1 <= args.wd_pages <= 10 or not 10 <= args.wd_page_size <= 1000:p.error('invalid Wikidata pagination limits')
- catalog_path=DATA/'avtovip-extended-catalog.json';catalog=json.loads(catalog_path.read_text('utf-8'))
+ catalog_path=DATA/'avtovip-unified-catalog.json';catalog=json.loads(catalog_path.read_text('utf-8'))
  pending=[]; failures=[]; fetched=collections.Counter(); seen=set(); stats=collections.Counter(); wdqs_last=None
  # Fetch NHTSA makes once, not once per vehicle category.
  makes_cache=None

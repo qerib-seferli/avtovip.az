@@ -6,10 +6,10 @@
 
   const GEO_BASE = 'https://cdn.jsdelivr.net/gh/srestre/world-countries-cities-db@main';
   const VEHICLE_BASE = ''; // vehicle katalogu local snapshot-first işləyir
-  const VEHICLE_INDEX_URL = ''; // local vehicle-models.csv is the authoritative runtime snapshot
+  const VEHICLE_INDEX_URL = ''; // legacy API field retained for compatibility
   const UNIFIED_CATALOG_URL = 'assets/data/avtovip-unified-catalog.json?v=20261115';
   const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json?v=20261114b';
-  const LOCAL_VEHICLE_MODELS = 'assets/data/vehicle-models.csv?v=20261114b';
+  const LOCAL_VEHICLE_MODELS = UNIFIED_CATALOG_URL; // legacy API field retained for compatibility
   const BLOCKED_COUNTRIES = new Set();
   const BLOCKED_CURRENCIES = new Set();
   const memory = new Map();
@@ -173,29 +173,8 @@
     }
 
     if(modelIndex)return modelIndex;
-    const csv=await localFirstText(LOCAL_VEHICLE_MODELS,VEHICLE_INDEX_URL,'vehicle:model-index');
-    const map=new Map();
-    if(csv){
-      const lines=csv.split(/\r?\n/).slice(1);
-      const seen=new Map();
-      for(const line of lines){
-        if(!line)continue;
-        const m=line.match(/^([^,]+),([^,]+),(?:"([^"]*(?:""[^"]*)*)"|([^,]*)),/);
-        if(!m)continue;
-        const name=(m[3]||m[4]||'').replace(/""/g,'"').trim();
-        if(!name)continue;
-        // Both CSV make_slug and make_name resolve to the same model collection.
-        const keys=[indexSlug(m[1]),indexSlug(m[2])];
-        for(const key of new Set(keys)){
-          if(!map.has(key)){map.set(key,[]);seen.set(key,new Set())}
-          const normalized=name.normalize('NFKC').toLocaleLowerCase();
-          if(!seen.get(key).has(normalized)){
-            seen.get(key).add(normalized);map.get(key).push(name);
-          }
-        }
-      }
-    }
-    modelIndex=map;return map;
+    // No separate CSV source: the unified JSON is the sole model catalog.
+    modelIndex=new Map();return modelIndex;
   }
   async function makes(lang='en'){
     let data=null; try{const r=await fetch(LOCAL_VEHICLE_MAKES,{cache:'no-cache'});if(r.ok)data=await r.json()}catch{} const arr=Array.isArray(data)?data:[];
