@@ -7,6 +7,7 @@
   const GEO_BASE = 'https://cdn.jsdelivr.net/gh/srestre/world-countries-cities-db@main';
   const VEHICLE_BASE = ''; // vehicle katalogu local snapshot-first işləyir
   const VEHICLE_INDEX_URL = ''; // local vehicle-models.csv is the authoritative runtime snapshot
+  const UNIFIED_CATALOG_URL = 'assets/data/avtovip-unified-catalog.json?v=20261115';
   const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json?v=20261114b';
   const LOCAL_VEHICLE_MODELS = 'assets/data/vehicle-models.csv?v=20261114b';
   const BLOCKED_COUNTRIES = new Set();
@@ -148,8 +149,29 @@
     try{const r=await fetch(localUrl,{cache:'no-cache'});if(r.ok){const d=await r.text();memory.set(key,d);return d}}catch{}
     return remoteUrl ? text(remoteUrl,key,{persist:true}) : null;
   }
+  let unifiedCatalogPromise=null;
+  function loadUnifiedCatalog(){
+    if(!unifiedCatalogPromise){
+      unifiedCatalogPromise=fetch(UNIFIED_CATALOG_URL,{cache:'force-cache'})
+        .then(r=>{if(!r.ok)throw new Error('Unified catalog HTTP '+r.status);return r.json()})
+        .catch(err=>{console.warn('AvtoVIP unified catalog fallback:',err.message);return null});
+    }
+    return unifiedCatalogPromise;
+  }
   let modelIndex=null;
   async function loadModelIndex(){
+    const unified=await loadUnifiedCatalog();
+    if(unified&&unified.car&&typeof unified.car==='object'){
+      if(modelIndex)return modelIndex;
+      const map=new Map();
+      for(const [brand,models] of Object.entries(unified.car)){
+        if(!Array.isArray(models))continue;
+        const key=indexSlug(brand);
+        map.set(key,[...new Map(models.filter(x=>typeof x==='string'&&x.trim()).map(x=>[x.normalize('NFKC').toLocaleLowerCase(),x])).values()]);
+      }
+      modelIndex=map;return map;
+    }
+
     if(modelIndex)return modelIndex;
     const csv=await localFirstText(LOCAL_VEHICLE_MODELS,VEHICLE_INDEX_URL,'vehicle:model-index');
     const map=new Map();

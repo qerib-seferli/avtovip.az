@@ -73,7 +73,7 @@ function avtovipUnifyBrandNames(){
  }
 }
 avtovipUnifyBrandNames();
-const CATALOG_URL='assets/data/avtovip-extended-catalog.json';
+const CATALOG_URL='assets/data/avtovip-unified-catalog.json?v=20261115';
 function mergeExtendedCatalog(data){
   if(!data||typeof data!=='object')return;
   for(const category of DATA){
@@ -150,5 +150,5 @@ rail.addEventListener('pointerdown',()=>holdUntil=performance.now()+1800,{passiv
 function tick(ts){if(selected!=='car'&&ts>brandPause&&!document.hidden&&custom.scrollWidth>custom.clientWidth){const dt=brandPrev?Math.min(40,ts-brandPrev):16;custom.scrollLeft+=dt*.025;normalizeBrandScroll()}brandPrev=ts;if(!prev)prev=ts;const dt=Math.min(40,ts-prev);prev=ts;if(selected&&ts>holdUntil&&!document.hidden&&rail.scrollWidth>rail.clientWidth){rail.scrollLeft+=dt*.025;if(categoryCycleWidth&&rail.scrollLeft>=categoryCycleWidth)rail.scrollLeft-=categoryCycleWidth}requestAnimationFrame(tick)}
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(tick);
 translate();
-fetch(CATALOG_URL,{cache:'force-cache'}).then(r=>{if(!r.ok)throw new Error('Catalog HTTP '+r.status);return r.json()}).then(mergeExtendedCatalog).catch(err=>console.warn('AvtoVIP catalog fallback:',err.message));
+fetch(CATALOG_URL,{cache:'force-cache'}).then(r=>{if(!r.ok)throw new Error('Catalog HTTP '+r.status);return r.json()}).then(mergeExtendedCatalog).catch(err=>{console.warn('AvtoVIP unified catalog fallback:',err.message);return fetch('assets/data/avtovip-extended-catalog.json',{cache:'force-cache'}).then(r=>{if(!r.ok)throw new Error('Legacy catalog HTTP '+r.status);return r.json()}).then(mergeExtendedCatalog).catch(e=>console.warn('AvtoVIP catalog fallback:',e.message));});
 })();
