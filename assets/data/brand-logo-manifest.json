@@ -617,7 +617,17 @@
       "Reims Aviation": "assets/img/brand-logos/aircraft/avtovip_reims_aviation.jpg",
       "SibNIA": "assets/img/brand-logos/aircraft/avtovip_sibnia.png",
       "SSH": "assets/img/brand-logos/aircraft/avtovip_ssh.png",
-      "Wassmer": "assets/img/brand-logos/aircraft/avtovip_wassmer.webp"
+      "Wassmer": "assets/img/brand-logos/aircraft/avtovip_wassmer.webp",
+      "British Aerospace": "assets/img/brand-logos/aircraft/avtovip_british_aerospace.png",
+      "Britten-Norman": "assets/img/brand-logos/aircraft/avtovip_britten_norman.webp",
+      "Extra Aircraft": "assets/img/brand-logos/aircraft/avtovip_extra_aircraft.webp",
+      "ICON Aircraft": "assets/img/brand-logos/aircraft/avtovip_icon_aircraft.webp",
+      "Zlín": "assets/img/brand-logos/aircraft/avtovip_zlin.png",
+      "Avantage": "assets/img/brand-logos/aircraft/avtovip_avantage.png",
+      "Schweizer Helicopters": "assets/img/brand-logos/aircraft/avtovip_schweizer_helicopters.avif",
+      "Vulcanair": "assets/img/brand-logos/aircraft/avtovip_vulcanair.png",
+      "ATR Aircraft": "assets/img/brand-logos/aircraft/avtovip_atr_aircraft.webp",
+      "De Havilland": "assets/img/brand-logos/aircraft/avtovip_de_havilland.png"
     },
     "agriculture": {
       "Caterpillar Tractors": "assets/img/brand-logos/agriculture/avtovip_caterpillar_tractors.svg",
