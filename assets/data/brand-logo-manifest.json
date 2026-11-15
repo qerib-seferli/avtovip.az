@@ -1,6 +1,6 @@
 {
-  "version": "2026-11-15-caravan-user-supplied-logos-v2",
-  "note": "Existing caravan brands mapped to newly supplied assets; catalog and other categories unchanged.",
+  "version": "2026-11-15-caravan-user-supplied-logos-v3",
+  "note": "Five verified user-supplied caravan logos synchronized with frontend; incorrect Grand Design image excluded. Other categories unchanged.",
   "categories": {
     "car": {
       "9ff": "assets/img/brand-logos/car/avtovip_9ff.png",
@@ -874,7 +874,7 @@
       "Jayco": "assets/img/brand-logos/caravan/avtovip_jayco.png",
       "inTech RV": "assets/img/brand-logos/caravan/avtovip_intech_rv.svg",
       "Holiday Rambler": "assets/img/brand-logos/caravan/avtovip_holiday_rambler.svg",
-      "Gulf Stream Coach": "assets/img/brand-logos/caravan/avtovip_gulf_stream_coach.jpg",
+      "Gulf Stream Coach": "assets/img/brand-logos/caravan/avtovip_gulf_stream_coach.png",
       "Four Wheel Campers": "assets/img/brand-logos/caravan/avtovip_four_wheel_campers.webp",
       "Fendt Caravan": "assets/img/brand-logos/caravan/avtovip_fendt_caravan.webp",
       "Escape Trailer Industries": "assets/img/brand-logos/caravan/avtovip_escape_trailer_industries.svg",
@@ -918,7 +918,7 @@
       "Trigano": "assets/img/brand-logos/caravan/avtovip_trigano.png",
       "Northwood Manufacturing": "assets/img/brand-logos/caravan/avtovip_northwood_manufacturing.png",
       "Highland Ridge RV": "assets/img/brand-logos/caravan/avtovip_highland_ridge_rv.png",
-      "Heartland RV": "assets/img/brand-logos/caravan/avtovip_heartland_rv.png",
+      "Heartland RV": "assets/img/brand-logos/caravan/avtovip_heartland_rv.jpeg",
       "Grand Design RV": "assets/img/brand-logos/caravan/avtovip_grand_design_rv.png",
       "Adria": "assets/img/brand-logos/caravan/avtovip_adria.png",
       "Black Series": "assets/img/brand-logos/caravan/avtovip_black_series.png",
@@ -929,7 +929,8 @@
       "KZ RV": "assets/img/brand-logos/caravan/avtovip_kz_rv.png",
       "Off Grid Trailers": "assets/img/brand-logos/caravan/avtovip_off_grid_trailers.webp",
       "Vanleigh RV": "assets/img/brand-logos/caravan/avtovip_vanleigh_rv.jpg",
-      "Venture RV": "assets/img/brand-logos/caravan/avtovip_venture_rv.webp"
+      "Venture RV": "assets/img/brand-logos/caravan/avtovip_venture_rv.webp",
+      "Eriba": "assets/img/brand-logos/caravan/avtovip_eriba.png"
     },
     "watercraft": {
       "Bertram Yachts": "assets/img/brand-logos/watercraft/avtovip_bertram_yachts.png",
