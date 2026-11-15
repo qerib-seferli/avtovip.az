@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-15-caravan-additional-user-logos",
+  "version": "2026-11-15-caravan-user-supplied-logos-v2",
   "note": "Existing caravan brands mapped to newly supplied assets; catalog and other categories unchanged.",
   "categories": {
     "car": {
@@ -919,7 +919,17 @@
       "Northwood Manufacturing": "assets/img/brand-logos/caravan/avtovip_northwood_manufacturing.png",
       "Highland Ridge RV": "assets/img/brand-logos/caravan/avtovip_highland_ridge_rv.png",
       "Heartland RV": "assets/img/brand-logos/caravan/avtovip_heartland_rv.png",
-      "Grand Design RV": "assets/img/brand-logos/caravan/avtovip_grand_design_rv.png"
+      "Grand Design RV": "assets/img/brand-logos/caravan/avtovip_grand_design_rv.png",
+      "Adria": "assets/img/brand-logos/caravan/avtovip_adria.png",
+      "Black Series": "assets/img/brand-logos/caravan/avtovip_black_series.png",
+      "Fleetwood RV": "assets/img/brand-logos/caravan/avtovip_fleetwood_rv.png",
+      "Hobby": "assets/img/brand-logos/caravan/avtovip_hobby.png",
+      "Casita": "assets/img/brand-logos/caravan/avtovip_casita.png",
+      "Escapod": "assets/img/brand-logos/caravan/avtovip_escapod.webp",
+      "KZ RV": "assets/img/brand-logos/caravan/avtovip_kz_rv.png",
+      "Off Grid Trailers": "assets/img/brand-logos/caravan/avtovip_off_grid_trailers.webp",
+      "Vanleigh RV": "assets/img/brand-logos/caravan/avtovip_vanleigh_rv.jpg",
+      "Venture RV": "assets/img/brand-logos/caravan/avtovip_venture_rv.webp"
     },
     "watercraft": {
       "Bertram Yachts": "assets/img/brand-logos/watercraft/avtovip_bertram_yachts.png",
