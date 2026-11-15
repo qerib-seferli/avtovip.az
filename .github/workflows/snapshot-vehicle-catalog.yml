@@ -1,78 +1,33 @@
-name: Freeze Vehicle Catalog
+name: Review Vehicle Catalog Snapshot
 
 on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  snapshot:
+  snapshot-review:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download models and build a local catalog
-        shell: bash
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate unified catalog without modifying it
         run: |
-          set -euo pipefail
-          mkdir -p assets/data/brand-logos
-          curl --fail --location --retry 3 --connect-timeout 15 \
-            'https://raw.githubusercontent.com/plowman/open-vehicle-db/refs/heads/master/data/models.csv' \
-            -o /tmp/models.csv
-          python - <<'PY'
-          import csv,json,re,html
-          from pathlib import Path
-          src=Path('/tmp/models.csv'); root=Path('assets/data'); logo_dir=root/'brand-logos';logo_dir.mkdir(parents=True,exist_ok=True)
-          rows=list(csv.DictReader(src.open(encoding='utf-8')))
-          if len(rows)<1000 or not {'make_slug','model_name'}.issubset(rows[0]): raise SystemExit('Vehicle model source is incomplete or schema changed')
-          by={}
-          for r in rows:
-              k=(r.get('make_slug') or '').strip(); model=(r.get('model_name') or '').strip()
-              if k and model: by.setdefault(k,[]).append(model)
-          current={}
-          try:
-              for m in json.loads((root/'vehicle-makes.json').read_text(encoding='utf-8')): current[m.get('id')]=m
-          except Exception: pass
-          aliases={'mercedes-benz':'Mercedes-Benz','lada-vaz':'Lada/VAZ','land-rover':'Land Rover','alfa-romeo':'Alfa Romeo','rolls-royce':'Rolls-Royce','aston-martin':'Aston Martin','am-general':'AM General'}
-          def pretty(k): return aliases.get(k,' '.join(x.upper() if len(x)<=3 else x.capitalize() for x in k.replace('_','-').split('-')))
-          makes=[]
-          for k in sorted(by,key=lambda x:pretty(x).casefold()):
-              name=pretty(k); old=current.get(k) or {}; logo=(old.get('logo') or {}) if isinstance(old.get('logo'),dict) else {}
-              local=logo.get('local_url')
-              # Download a real brand logo snapshot first. The old initials SVG remains only
-              # as a final fallback if the upstream dataset has no matching brand artwork.
-              remote_slug={'lada-vaz':'lada','mercedes-benz':'mercedes-benz','land-rover':'land-rover','rolls-royce':'rolls-royce','aston-martin':'aston-martin','alfa-romeo':'alfa-romeo','am-general':'am-general'}.get(k,k)
-              png=logo_dir/f'{k}.png'
-              if not png.exists():
-                  import urllib.request
-                  url=f'https://raw.githubusercontent.com/filippofilip95/car-logos-dataset/master/logos/optimized/{remote_slug}.png'
-                  try:
-                      req=urllib.request.Request(url,headers={'User-Agent':'AvtoVIP-catalog-snapshot/1.0'})
-                      data=urllib.request.urlopen(req,timeout=18).read()
-                      if data.startswith(b'\x89PNG') and len(data)>300:
-                          png.write_bytes(data)
-                  except Exception:
-                      pass
-              if png.exists():
-                  local=str(png)
-              elif not local or not Path(local).exists():
-                  initials=''.join(w[0] for w in re.split(r'[\s/-]+',name) if w)[:3].upper() or '?'
-                  f=logo_dir/f'{k}.svg'; f.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72"><rect x="2" y="2" width="116" height="68" rx="18" fill="#151922" stroke="#303846" stroke-width="4"/><text x="60" y="45" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="28" fill="#e9edf3">{html.escape(initials)}</text></svg>',encoding='utf-8');local=str(f)
-              makes.append({'id':k,'name':name,'logo':{'local_url':local}})
-          (root/'vehicle-makes.json').write_text(json.dumps(makes,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          with (root/'vehicle-models.csv').open('w',newline='',encoding='utf-8') as f:
-              w=csv.writer(f);w.writerow(['make_slug','make_name','model_name','source'])
-              for k,names in by.items():
-                  for model in sorted(set(names),key=str.casefold):w.writerow([k,pretty(k),model,'snapshot'])
-          (root/'brand-logo-sources.json').write_text(json.dumps([{'make':m['name'],'file':m['logo']['local_url'],'source':'local/snapshot'} for m in makes],ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          print(f'{len(makes)} makes / {sum(len(v) for v in by.values())} model records frozen locally')
-          PY
-      - name: Commit snapshot only when changed
-        shell: bash
-        run: |
-          git add assets/data/vehicle-makes.json assets/data/vehicle-models.csv assets/data/brand-logos assets/data/brand-logo-sources.json
-          if git diff --cached --quiet; then echo 'Catalog snapshot is already current.'; exit 0; fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'data: freeze vehicle catalog snapshot'
-          git push
+          python - <<'PYVALIDATE'
+          import json, pathlib
+          path=pathlib.Path('assets/data/avtovip-unified-catalog.json')
+          data=json.loads(path.read_text(encoding='utf-8'))
+          categories=('car','motorcycle','watercraft','aircraft','agriculture','construction','commercial','caravan')
+          assert set(data)==set(categories), 'Unexpected category set'
+          for category in categories:
+              assert isinstance(data[category],dict), category
+              for brand,models in data[category].items():
+                  assert isinstance(brand,str) and brand.strip(), (category,brand)
+                  assert isinstance(models,list) and all(isinstance(x,str) for x in models), (category,brand)
+              print(f'{category}: {len(data[category])} brands, {sum(map(len,data[category].values()))} models')
+          PYVALIDATE
+      - name: Summary
+        run: echo 'Unified catalog validated. No files changed or committed.' >> "$GITHUB_STEP_SUMMARY"
