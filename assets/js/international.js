@@ -7,7 +7,7 @@
   const GEO_BASE = 'https://cdn.jsdelivr.net/gh/srestre/world-countries-cities-db@main';
   const VEHICLE_BASE = ''; // vehicle katalogu local snapshot-first işləyir
   const VEHICLE_INDEX_URL = ''; // legacy API field retained for compatibility
-  const UNIFIED_CATALOG_URL = 'assets/data/avtovip-unified-catalog.json?v=20261115';
+  const UNIFIED_CATALOG_URL = 'assets/data/avtovip-unified-catalog.json?v=20261115b';
   const LOCAL_VEHICLE_MAKES = 'assets/data/vehicle-makes.json?v=20261114b';
   const LOCAL_VEHICLE_MODELS = UNIFIED_CATALOG_URL; // legacy API field retained for compatibility
   const BLOCKED_COUNTRIES = new Set();
@@ -27,76 +27,8 @@
     {iso2:'AE',name:'United Arab Emirates',currency:'AED',currency_symbol:'د.إ',emoji:'🇦🇪'}
   ];
 
-  const CORE_MODELS = {
-    'audi':['A1','A3','A4','A5','A6','A7','A8','Q2','Q3','Q4 e-tron','Q5','Q6 e-tron','Q7','Q8','e-tron GT','TT','R8','RS 3','RS 4','RS 5','RS 6','RS 7','RS Q8','S3','S4','S5','S6','S7','S8','SQ5','SQ7','SQ8'],
-    'bmw':['1 Series','2 Series','3 Series','4 Series','5 Series','6 Series','7 Series','8 Series','i3','i4','i5','i7','i8','iX','M2','M3','M4','M5','M8','X1','X2','X3','X4','X5','X6','X7','XM','Z3','Z4'],
-    'mercedes-benz':['A-Class','B-Class','C-Class','CLA','CLE','CLS','E-Class','S-Class','G-Class','GLA','GLB','GLC','GLE','GLS','AMG GT','EQA','EQB','EQC','EQE','EQS','V-Class','Vito','Sprinter'],
-    'toyota':['4Runner','Alphard','Avalon','Avensis','C-HR','Camry','Corolla','Corolla Cross','Crown','Fortuner','GR86','Hiace','Highlander','Hilux','Land Cruiser','Land Cruiser Prado','Mirai','Prius','RAV4','Sequoia','Sienna','Supra','Tacoma','Tundra','Venza','Yaris','Yaris Cross'],
-    'lexus':['CT','ES','GS','GX','IS','LC','LM','LS','LX','NX','RC','RX','RZ','TX','UX'],
-    'nissan':['350Z','370Z','Almera','Altima','Ariya','Armada','Frontier','GT-R','Juke','Kicks','Leaf','Maxima','Micra','Murano','Navara','Note','Pathfinder','Patrol','Qashqai','Rogue','Sentra','Skyline','Sunny','Teana','Terrano','Titan','X-Trail','Z'],
-    'honda':['Accord','Civic','City','Clarity','CR-V','CR-Z','e','Element','Fit/Jazz','HR-V','Insight','Odyssey','Passport','Pilot','Prelude','Ridgeline','S2000'],
-    'hyundai':['Accent','Azera/Grandeur','Bayon','Creta','Elantra','Equus','Genesis','i10','i20','i30','Ioniq','Ioniq 5','Ioniq 6','Kona','Palisade','Santa Fe','Sonata','Staria','Tucson','Veloster','Venue'],
-    'kia':['Carnival','Carens','Ceed','Cerato/Forte','EV3','EV5','EV6','EV9','K5','K8','K9','Niro','Optima','Picanto','Rio','Seltos','Sorento','Soul','Sportage','Stinger','Telluride'],
-    'volkswagen':['Amarok','Arteon','Atlas','Beetle','Bora','Caddy','Crafter','Golf','ID.3','ID.4','ID.5','ID.7','Jetta','Multivan','Passat','Phaeton','Polo','Scirocco','Taos','T-Cross','T-Roc','Tiguan','Touareg','Touran','Transporter'],
-    'ford':['Bronco','Bronco Sport','Edge','Escape','Everest','Expedition','Explorer','F-150','Fiesta','Focus','Fusion','Galaxy','Kuga','Maverick','Mondeo','Mustang','Mustang Mach-E','Puma','Ranger','S-Max','Transit'],
-    'chevrolet':['Aveo','Blazer','Bolt','Camaro','Captiva','Colorado','Corvette','Cruze','Equinox','Impala','Malibu','Niva','Onix','Orlando','Silverado','Spark','Suburban','Tahoe','Tracker','Trailblazer','Traverse','Trax'],
-    'porsche':['718 Boxster','718 Cayman','911','Cayenne','Macan','Panamera','Taycan'],
-    'land-rover':['Defender','Discovery','Discovery Sport','Freelander','Range Rover','Range Rover Evoque','Range Rover Sport','Range Rover Velar'],
-    'mazda':['2','3','5','6','CX-3','CX-30','CX-5','CX-50','CX-60','CX-70','CX-80','CX-90','MX-5','MX-30','RX-7','RX-8'],
-    'mitsubishi':['ASX','Colt','Eclipse','Eclipse Cross','Galant','L200','Lancer','Mirage','Montero','Outlander','Pajero','Pajero Sport','Xpander'],
-    'renault':['Arkana','Austral','Captur','Clio','Duster','Espace','Fluence','Kadjar','Kangoo','Koleos','Laguna','Megane','Rafale','Scenic','Symbol','Talisman','Trafic','Zoe'],
-    'opel':['Adam','Astra','Corsa','Crossland','Frontera','Grandland','Insignia','Mokka','Omega','Signum','Vectra','Vivaro','Zafira'],
-    'volvo':['C30','C40','EX30','EX40','EX90','S40','S60','S80','S90','V40','V50','V60','V70','V90','XC40','XC60','XC70','XC90'],
-    'tesla':['Cybertruck','Model 3','Model S','Model X','Model Y','Roadster'],
-    'byd':['Atto 3','Dolphin','Han','Qin Plus','Seal','Seal U','Seagull','Song Plus','Tang','Yuan Plus'],
-    'changan':['Alsvin','CS15','CS35 Plus','CS55 Plus','CS75 Plus','CS85 Coupe','CS95','Deepal S07','Eado','Hunter','UNI-K','UNI-T','UNI-V'],
-    'chery':['Arrizo 5','Arrizo 8','eQ1','Exeed TXL','Omoda 5','Tiggo 2','Tiggo 4','Tiggo 7','Tiggo 8','Tiggo 9'],
-    'geely':['Atlas','Coolray','Emgrand','Galaxy E5','Monjaro','Okavango','Preface','Tugella'],
-    'infiniti':['EX','FX','G','JX','M','Q30','Q50','Q60','Q70','QX30','QX50','QX55','QX60','QX70','QX80'],
-    'jeep':['Avenger','Cherokee','Commander','Compass','Gladiator','Grand Cherokee','Renegade','Wagoneer','Wrangler'],
-    'lada-vaz':['2101','2104','2105','2106','2107','2108','2109','21099','2110','2111','2112','2113','2114','2115','Granta','Kalina','Largus','Niva','Priora','Vesta','XRAY'],
-    'skoda':['Enyaq','Fabia','Kamiq','Karoq','Kodiaq','Octavia','Rapid','Scala','Superb','Yeti'],
-    'peugeot':['2008','208','3008','308','408','5008','508','Partner','Rifter','Traveller'],
-    'citroen':['Berlingo','C3','C3 Aircross','C4','C4 X','C5 Aircross','C5 X','Jumpy','SpaceTourer'],
-    'fiat':['500','500X','600','Doblo','Ducato','Panda','Punto','Tipo'],
-    'subaru':['Ascent','BRZ','Crosstrek','Forester','Impreza','Legacy','Outback','Solterra','WRX','XV'],
-    'suzuki':['Across','Alto','Baleno','Grand Vitara','Ignis','Jimny','S-Cross','Swift','Vitara'],
-    'isuzu':['D-Max','MU-X'],
-    'gmc':['Acadia','Canyon','Hummer EV','Sierra','Terrain','Yukon'],
-    'cadillac':['CT4','CT5','CT6','Escalade','Lyriq','Optiq','XT4','XT5','XT6'],
-    'lincoln':['Aviator','Corsair','MKC','MKX','MKZ','Nautilus','Navigator'],
-    'jaguar':['E-Pace','F-Pace','F-Type','I-Pace','XE','XF','XJ','XK'],
-    'mini':['Clubman','Cooper','Countryman','Paceman'],
-    'alfa-romeo':['4C','Giulia','Giulietta','Stelvio','Tonale'],
-    'maserati':['Ghibli','GranCabrio','GranTurismo','Grecale','Levante','MC20','Quattroporte'],
-    'bentley':['Bentayga','Continental GT','Flying Spur','Mulsanne'],
-    'aston-martin':['DB11','DB12','DBS','DBX','Rapide','Vanquish','Vantage'],
-    'ferrari':['296 GTB','488','812','F8 Tributo','Purosangue','Roma','SF90'],
-    'lamborghini':['Aventador','Gallardo','Huracan','Revuelto','Urus'],
-    'rolls-royce':['Cullinan','Dawn','Ghost','Phantom','Spectre','Wraith'],
-    'baic':['BJ20','BJ30','BJ40','BJ60','BJ80','EU5','U5 Plus','X3','X5','X7'],
-    'bestune':['B70','B70S','B90','T55','T77','T90'],
-    'geely':['Atlas','Coolray','Emgrand','Galaxy E5','Geometry C','Monjaro','Okavango','Preface','Tugella'],
-    'genesis':['G70','G80','G90','GV60','GV70','GV80'],
-    'haval':['Dargo','F7','H5','H6','H9','Jolion','M6'],
-    'hongqi':['E-HS9','H5','H6','H9','HS3','HS5','HS7'],
-    'jetour':['Dashing','T1','T2','X70','X70 Plus','X90 Plus'],
-    'leapmotor':['B10','C01','C10','C11','T03'],
-    'nio':['EC6','EC7','EL6','EL7','EL8','EP9','ES6','ES7','ES8','ET5','ET7','ET9'],
-    'polestar':['1','2','3','4','5','6'],
-    'vinfast':['VF 3','VF 5','VF 6','VF 7','VF 8','VF 9'],
-    'xpeng':['G6','G9','Mona M03','P5','P7','X9'],
-    'zeekr':['001','007','009','7X','Mix','X']
-  };
-
-  const FALLBACK_MAKES = Object.keys(CORE_MODELS).map(id => ({
-    id,
-    name: ({
-      'mercedes-benz':'Mercedes-Benz','lada-vaz':'Lada/VAZ','land-rover':'Land Rover',
-      'alfa-romeo':'Alfa Romeo','rolls-royce':'Rolls-Royce','aston-martin':'Aston Martin',
-      'great-wall':'Great Wall','gac-motor':'GAC','hongqi':'Hongqi'
-    }[id]) || id.split('-').map(x=>x==='bmw'||x==='byd'||x==='gmc'?x.toUpperCase():x.charAt(0).toUpperCase()+x.slice(1)).join(' ')
-  }));
+  // Models are maintained exclusively in avtovip-unified-catalog.json.
+  const FALLBACK_MAKES = [];
   const AZ_ADMIN = ['Abşeron rayonu','Ağcabədi rayonu','Ağdam rayonu','Ağdaş rayonu','Ağstafa rayonu','Ağsu rayonu','Astara rayonu','Babək rayonu','Balakən rayonu','Bərdə rayonu','Beyləqan rayonu','Biləsuvar rayonu','Cəbrayıl rayonu','Cəlilabad rayonu','Daşkəsən rayonu','Füzuli rayonu','Gədəbəy rayonu','Goranboy rayonu','Göyçay rayonu','Göygöl rayonu','Hacıqabul rayonu','Xaçmaz rayonu','Xızı rayonu','Xocalı rayonu','Xocavənd rayonu','İmişli rayonu','İsmayıllı rayonu','Kəlbəcər rayonu','Kəngərli rayonu','Kürdəmir rayonu','Qax rayonu','Qazax rayonu','Qəbələ rayonu','Qobustan rayonu','Quba rayonu','Qubadlı rayonu','Qusar rayonu','Laçın rayonu','Lənkəran rayonu','Lerik rayonu','Masallı rayonu','Neftçala rayonu','Oğuz rayonu','Ordubad rayonu','Saatlı rayonu','Sabirabad rayonu','Sədərək rayonu','Salyan rayonu','Samux rayonu','Siyəzən rayonu','Şabran rayonu','Şahbuz rayonu','Şamaxı rayonu','Şəmkir rayonu','Şərur rayonu','Şuşa rayonu','Tərtər rayonu','Tovuz rayonu','Ucar rayonu','Yardımlı rayonu','Yevlax rayonu','Zaqatala rayonu','Zəngilan rayonu','Zərdab rayonu','Bakı şəhəri','Gəncə şəhəri','Lənkəran şəhəri','Mingəçevir şəhəri','Naftalan şəhəri','Naxçıvan şəhəri','Şəki şəhəri','Şirvan şəhəri','Sumqayıt şəhəri','Yevlax şəhəri'];
   const AZ_MAIN_CITY = Object.fromEntries(AZ_ADMIN.map(name => [name,[name.replace(/\s+(rayonu|şəhəri)$/u,'')]]));
   AZ_MAIN_CITY['Bakı şəhəri']=['Bakı']; AZ_MAIN_CITY['Abşeron rayonu']=['Xırdalan']; AZ_MAIN_CITY['Naxçıvan şəhəri']=['Naxçıvan'];
@@ -194,7 +126,6 @@
       const key=value.normalize('NFKC').toLocaleLowerCase();
       if(!names.has(key))names.set(key,value);
     };
-    (CORE_MODELS[id]||[]).forEach(add);
     const idx=await loadModelIndex();
     const keys=[indexSlug(id),indexSlug(id.replace('mercedes-benz','mercedes_benz')),indexSlug(id.replace('lada-vaz','lada'))];
     for(const key of new Set(keys))(idx.get(key)||[]).forEach(add);
