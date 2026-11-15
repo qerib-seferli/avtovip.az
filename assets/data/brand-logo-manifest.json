@@ -1,6 +1,6 @@
 {
-  "version": "2026-11-15-caravan-official-logo-import",
-  "note": "Existing caravan makes mapped to user-supplied logo assets; other categories and catalog entries unchanged.",
+  "version": "2026-11-15-caravan-additional-user-logos",
+  "note": "Existing caravan brands mapped to newly supplied assets; catalog and other categories unchanged.",
   "categories": {
     "car": {
       "9ff": "assets/img/brand-logos/car/avtovip_9ff.png",
@@ -874,7 +874,7 @@
       "Jayco": "assets/img/brand-logos/caravan/avtovip_jayco.png",
       "inTech RV": "assets/img/brand-logos/caravan/avtovip_intech_rv.svg",
       "Holiday Rambler": "assets/img/brand-logos/caravan/avtovip_holiday_rambler.svg",
-      "Gulf Stream Coach": "assets/img/brand-logos/caravan/avtovip_gulf_stream_coach.png",
+      "Gulf Stream Coach": "assets/img/brand-logos/caravan/avtovip_gulf_stream_coach.jpg",
       "Four Wheel Campers": "assets/img/brand-logos/caravan/avtovip_four_wheel_campers.webp",
       "Fendt Caravan": "assets/img/brand-logos/caravan/avtovip_fendt_caravan.webp",
       "Escape Trailer Industries": "assets/img/brand-logos/caravan/avtovip_escape_trailer_industries.svg",
@@ -900,7 +900,26 @@
       "Alliance RV": "assets/img/brand-logos/caravan/avtovip_alliance_rv.webp",
       "Aliner": "assets/img/brand-logos/caravan/avtovip_aliner.png",
       "Airstream": "assets/img/brand-logos/caravan/avtovip_airstream.webp",
-      "ABI Caravans": "assets/img/brand-logos/caravan/avtovip_abi_caravans.svg"
+      "ABI Caravans": "assets/img/brand-logos/caravan/avtovip_abi_caravans.svg",
+      "Thor Motor Coach": "assets/img/brand-logos/caravan/avtovip_thor_motor_coach.png",
+      "Shasta RV": "assets/img/brand-logos/caravan/avtovip_shasta_rv.png",
+      "Roller Team": "assets/img/brand-logos/caravan/avtovip_roller_team.png",
+      "Rapido": "assets/img/brand-logos/caravan/avtovip_rapido.svg",
+      "Palomino RV": "assets/img/brand-logos/caravan/avtovip_palomino_rv.avif",
+      "NuCamp RV": "assets/img/brand-logos/caravan/avtovip_nucamp_rv.png",
+      "Niesmann Bischoff": "assets/img/brand-logos/caravan/avtovip_niesmann_bischoff.jpg",
+      "McLouis": "assets/img/brand-logos/caravan/avtovip_mclouis.png",
+      "Laika": "assets/img/brand-logos/caravan/avtovip_laika.png",
+      "Elnagh": "assets/img/brand-logos/caravan/avtovip_elnagh.png",
+      "Dreamer": "assets/img/brand-logos/caravan/avtovip_dreamer.webp",
+      "Crosscamp": "assets/img/brand-logos/caravan/avtovip_crosscamp.png",
+      "Concorde Motorhomes": "assets/img/brand-logos/caravan/avtovip_concorde_motorhomes.webp",
+      "Ace Caravans": "assets/img/brand-logos/caravan/avtovip_ace_caravans.webp",
+      "Trigano": "assets/img/brand-logos/caravan/avtovip_trigano.png",
+      "Northwood Manufacturing": "assets/img/brand-logos/caravan/avtovip_northwood_manufacturing.png",
+      "Highland Ridge RV": "assets/img/brand-logos/caravan/avtovip_highland_ridge_rv.png",
+      "Heartland RV": "assets/img/brand-logos/caravan/avtovip_heartland_rv.png",
+      "Grand Design RV": "assets/img/brand-logos/caravan/avtovip_grand_design_rv.png"
     },
     "watercraft": {
       "Bertram Yachts": "assets/img/brand-logos/watercraft/avtovip_bertram_yachts.png",
