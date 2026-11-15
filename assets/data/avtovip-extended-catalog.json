@@ -14923,8 +14923,7 @@
       "Adventurer"
     ],
     "Aermacchi": [
-      "AL-60",
-      "MB-326"
+      "AL-60"
     ],
     "Aero": [
       "C-104S"
@@ -15170,8 +15169,6 @@
       "A380-841",
       "A380-842",
       "A380-861",
-      "A400M",
-      "A400M Atlas",
       "ACJ318-112",
       "ACJ319 VC-1A",
       "ACJ319-115",
@@ -15199,45 +15196,6 @@
       "VAH001 Vahana"
     ],
     "Airbus Corporate Jets": [],
-    "Airbus Defence and Space": [
-      "A310-304 MRTT",
-      "A330-200 MRTT",
-      "A330-202 MRTT",
-      "A330-203 MRTT",
-      "A330-243 MRTT",
-      "A400M Atlas",
-      "A400M-180",
-      "C212",
-      "C212-100",
-      "C212-100M",
-      "C212-200",
-      "C212-300",
-      "C212-400",
-      "C212-400MP",
-      "C212-CC",
-      "C212-CD",
-      "C212-DF",
-      "C295",
-      "C295M",
-      "C295MPA",
-      "C295W",
-      "CN235",
-      "CN235-10",
-      "CN235-100",
-      "CN235-100M",
-      "CN235-100MPA",
-      "CN235-10M",
-      "CN235-110MPA",
-      "CN235-200",
-      "CN235-200M",
-      "CN235-220M",
-      "CN235-220MPA",
-      "CN235-300",
-      "CN235-300M",
-      "CN235-300MPA",
-      "HC-144A Ocean Sentry",
-      "HC-144B Minotaur"
-    ],
     "Airbus Helicopters": [
       "AS355 Écureuil 2",
       "AS365 Dauphin",
@@ -15248,13 +15206,11 @@
       "H130",
       "H135",
       "H145",
-      "H145M",
       "H155",
       "H160",
       "H175",
       "H215",
-      "H225",
-      "Tigre"
+      "H225"
     ],
     "AMX International": [
       "AMX"
@@ -15616,7 +15572,6 @@
       "V35B Bonanza"
     ],
     "Bell": [
-      "204/UH-1 Iroquois",
       "206",
       "206 JetRanger",
       "206LT TwinRanger",
@@ -15631,16 +15586,10 @@
       "429",
       "429 GlobalRanger",
       "430",
-      "47/H-13 Sioux",
       "47J Ranger",
       "505 Jet Ranger X",
       "525 Relentless",
-      "AH-1 HueyCobra",
-      "P-39 Airacobra",
-      "P-63 Kingcobra",
-      "UH-1Y Venom",
-      "XV-15",
-      "YAH-63 SuperCobra"
+      "XV-15"
     ],
     "Beoing": [
       "747-4EVFER"
@@ -16681,13 +16630,9 @@
       "787-8 Dreamliner",
       "787-9",
       "787-9 Dreamliner",
-      "AH-64 Apache",
-      "AH-64D Apache",
-      "AH-64DN Apache",
       "B-17 Flying Fortress",
       "B-17G Flying Fortress",
       "B-29 Superfortress",
-      "B-52 Stratofortress",
       "C-135 Stratolifter",
       "C-135FR Stratotanker",
       "C-135RG",
@@ -16700,22 +16645,11 @@
       "CH-147F Chinook",
       "CH-46 Sea Knight",
       "CH-46E Sea Knight",
-      "CH-47 Chinook",
-      "CH-47D Chinook",
-      "CH-47F Chinook",
       "Chinook HC.2",
       "Chinook HC.4",
       "Chinook HC.5",
       "Chinook HC.6",
       "Chinook HC.6A",
-      "E-3 Sentry (CFM56 engines)",
-      "E-3 Sentry (TF33 engines)",
-      "E-3A Sentry",
-      "E-3B Sentry",
-      "E-3C Sentry",
-      "E-3F Sentry",
-      "E-3G Sentry",
-      "E-4B NOAC",
       "E-6 Mercury",
       "E-6B Mercury",
       "E-767",
@@ -16723,8 +16657,6 @@
       "E-7T",
       "E-8A JSTARS",
       "EA-18G Growler",
-      "F/A-18E/F Super Hornet",
-      "F/A-18F Super Hornet",
       "HH-46E Sea Knight",
       "ICH-47F Chinook",
       "KC-135 Stratotanker",
@@ -16736,9 +16668,6 @@
       "KC-767J",
       "MH-47G Chinook",
       "OC-135B Open Skies",
-      "P-8 Poseidon",
-      "P-8A Poseidon",
-      "P-8I Neptune",
       "Sentry AEW.1",
       "TC-135S Cobra Ball",
       "VC-25A",
@@ -17189,12 +17118,7 @@
       "Falcon 6X",
       "Falcon 7X",
       "Falcon 8X",
-      "Falcon 900",
-      "Mirage",
-      "Mirage 2000",
-      "Mirage F1",
-      "Rafale",
-      "Super Mystère B2"
+      "Falcon 900"
     ],
     "Dassault Falcon": [
       "Falcon 10X",
@@ -17308,13 +17232,6 @@
       "175 (short wing)",
       "195",
       "195LR",
-      "A-29 Super Tucano",
-      "A-29B Super Tucano",
-      "B1 Super Tucano",
-      "C-95C",
-      "C-97",
-      "C-99A",
-      "E-99",
       "E170",
       "E170LR",
       "E170SE",
@@ -17365,7 +17282,6 @@
       "EMB-135BJ Legacy 650",
       "EMB-312 Tucano",
       "EMB-312F Tucano",
-      "EMB-314 Super Tucano",
       "EMB-500 Phenom 100",
       "EMB-500 Phenom 100EV",
       "EMB-500 Phenom T1",
@@ -17423,14 +17339,6 @@
     "ERCO": [
       "Ercoupe"
     ],
-    "Eurofighter": [
-      "EF2000",
-      "EF2000 T",
-      "Typhoon",
-      "Typhoon FGR4",
-      "Typhoon T1",
-      "Typhoon T3"
-    ],
     "Evektor": [
       "EV-97 Eurostar",
       "Harmony LSA",
@@ -17457,18 +17365,6 @@
       "F28 Fellowship"
     ],
     "Game Composites": [],
-    "General Dynamics": [
-      "F-16 Fighting Falcon",
-      "F-16AM Fighting Falcon",
-      "F-16BM Fighting Falcon",
-      "F-16C Fighting Falcon",
-      "F-16CJ Fighting Falcon",
-      "F-16CM Fighting Falcon",
-      "F-16D Fighting Falcon",
-      "F-16DG Fighting Falcon",
-      "F-16DJ Fighting Falcon",
-      "F-16XL Fighting Falcon"
-    ],
     "General Motors": [
       "FM-2 Wildcat",
       "TBM-1 Avenger",
@@ -17481,32 +17377,6 @@
     "Glasair": [],
     "Grob Aircraft": [],
     "Grumman": [
-      "A-6 Intruder",
-      "C-2 Greyhound",
-      "C-2A Greyhound",
-      "E-2 Hawkeye",
-      "E-2C Hawkeye",
-      "EA-6B Prowler",
-      "EF-111A Raven",
-      "F-14 Tomcat",
-      "F3F",
-      "F3F-2",
-      "F4F Wildcat",
-      "F4F-3 Wildcat",
-      "F6F Hellcat",
-      "F6F-3 Hellcat",
-      "F6F-5 Hellcat",
-      "F7F Tigercat",
-      "F7F-3 Tigercat",
-      "F7F-3N Tigercat",
-      "F8F Bearcat",
-      "F8F-1 Bearcat",
-      "F8F-1B Bearcat",
-      "F8F-1D Bearcat",
-      "F8F-2 Bearcat",
-      "F8F-2P Bearcat",
-      "F9F Panther",
-      "FM-2 Wildcat",
       "G-111 Albatross",
       "G-1159 Gulfstream II",
       "G-1159 Gulfstream II SP",
@@ -17682,12 +17552,6 @@
     "LET Aircraft": [],
     "Lockheed": [
       "C-121 Constellation",
-      "C-130 Hercules",
-      "C-141 Starlifter",
-      "C-5 Galaxy",
-      "C-5M Super Galaxy",
-      "F-104 Starfighter",
-      "F-117 Nighthawk",
       "L-10 Electra",
       "L-1011 Tristar",
       "L-12 Electra Junior",
@@ -17696,23 +17560,7 @@
       "L-14 Super Electra",
       "L-18 Lodestar",
       "L-188 Electra",
-      "Martin C-130J Hercules",
-      "P-2 Neptune",
-      "P-3 Orion",
-      "P-38 Lightning",
-      "S-3 Viking",
-      "SR-71 Blackbird",
-      "T-33 Silver Star",
-      "U-2",
-      "Ventura",
       "YO-3 Quiet Star"
-    ],
-    "Lockheed Martin": [
-      "C-130J Super Hercules",
-      "F-22 Raptor",
-      "F-35A Lightning II",
-      "F-35B Lightning II",
-      "X-55 ACCA"
     ],
     "Marsh Aviation": [
       "S-2F3AT Turbo Tracker"
@@ -17741,8 +17589,6 @@
       "Bo 105S CDN-BS-4"
     ],
     "McDonnell Douglas": [
-      "AV-8B Harrier II",
-      "C-17 Globemaster III",
       "DC-10",
       "DC-8-50",
       "DC-8-60",
@@ -17752,9 +17598,6 @@
       "DC-9-30",
       "DC-9-40",
       "DC-9-50",
-      "F-15 Eagle",
-      "F-4 Phantom II",
-      "F/A-18 Hornet",
       "MD-11",
       "MD-11C",
       "MD-11F",
@@ -17763,9 +17606,7 @@
       "MD-83",
       "MD-87",
       "MD-88",
-      "MD-90",
-      "T-45 Goshawk",
-      "YC-15"
+      "MD-90"
     ],
     "MD Helicopters": [
       "AH-6C Little Bird",
@@ -17812,24 +17653,6 @@
     ],
     "Nextant Aerospace": [
       "400XT"
-    ],
-    "Northrop": [
-      "C-125 Raider",
-      "F-5",
-      "F-5A Freedom Fighter",
-      "F-5B Freedom Fighter",
-      "F-5E Tiger II",
-      "F-5F Tiger II",
-      "P-61 Black Widow",
-      "T-38 Talon",
-      "T-38A Talon",
-      "T-38C Talon",
-      "T-38N Talon"
-    ],
-    "Northrop Grumman": [
-      "B-2 Spirit",
-      "RQ-4 Global Hawk",
-      "X-47B"
     ],
     "PacAero": [
       "Tradewind"
@@ -18086,8 +17909,6 @@
       "Tu-154B-2",
       "Tu-154M",
       "Tu-154M-LK-1",
-      "Tu-16",
-      "Tu-160",
       "Tu-204",
       "Tu-204-100",
       "Tu-204-100C",
@@ -18099,11 +17920,7 @@
       "Tu-204-300A",
       "Tu-204-SE",
       "Tu-204SM",
-      "Tu-22",
-      "Tu-22M",
-      "Tu-334",
-      "Tu-4",
-      "Tu-95"
+      "Tu-334"
     ],
     "Uetz": [
       "U2V"
@@ -18127,23 +17944,12 @@
       "D.120R Paris-Nice"
     ],
     "Yakovlev": [
-      "Yak-11",
       "Yak-112",
       "Yak-12",
       "Yak-12M",
-      "Yak-130",
-      "Yak-141",
       "Yak-18",
       "Yak-18A",
       "Yak-18T",
-      "Yak-28",
-      "Yak-3",
-      "Yak-30",
-      "Yak-38",
-      "Yak-3M",
-      "Yak-3U",
-      "Yak-3UA",
-      "Yak-3UTI",
       "Yak-40",
       "Yak-40D",
       "Yak-40K",
@@ -18158,9 +17964,7 @@
       "Yak-54",
       "Yak-55",
       "Yak-55M",
-      "Yak-58",
-      "Yak-9",
-      "Yak-9UM"
+      "Yak-58"
     ],
     "Zenith Aircraft": [],
     "Zlín": [
