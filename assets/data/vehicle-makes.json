@@ -1807,13 +1807,6 @@
     }
   },
   {
-    "id": "kia-motors",
-    "name": "Kia Motors",
-    "logo": {
-      "local_url": "assets/img/brand-logos/car/avtovip_kia.png"
-    }
-  },
-  {
     "id": "king-long",
     "name": "King Long",
     "logo": {

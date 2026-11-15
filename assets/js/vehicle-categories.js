@@ -61,7 +61,7 @@ const aircraftData=DATA.find(c=>c.id==='aircraft');
 if(aircraftData)aircraftData.brands=aircraftData.brands.filter(brand=>!AVTOVIP_BLOCKED_AIRCRAFT.has(brand));
 if(MODEL_CATALOG.aircraft){for(const [brand,models] of Object.entries(MODEL_CATALOG.aircraft)){if(AVTOVIP_BLOCKED_AIRCRAFT.has(brand)){delete MODEL_CATALOG.aircraft[brand];continue;}MODEL_CATALOG.aircraft[brand]=models.filter(model=>avtovipCivilAircraftAllowed(brand,model));}}
 // Canonical manufacturer names: preserve all unique models while avoiding duplicate brand cards.
-const AVTOVIP_CANONICAL_BRANDS={caravan:{"Grand Design RV":"Grand Design","Gulf Stream Coach":"Gulf Stream","Heartland RV":"Heartland","Highland Ridge RV":"Highland Ridge","Keystone RV":"Keystone","Northwood Manufacturing":"Northwood","NuCamp RV":"nuCamp"},motorcycle:{"Quadro Vehicles":"Quadro"}};
+const AVTOVIP_CANONICAL_BRANDS={caravan:{"Grand Design RV":"Grand Design","Gulf Stream Coach":"Gulf Stream","Heartland RV":"Heartland","Highland Ridge RV":"Highland Ridge","Keystone RV":"Keystone","Northwood Manufacturing":"Northwood","NuCamp RV":"nuCamp"},motorcycle:{"Quadro Vehicles":"Quadro","BMW":"BMW Motorrad"},aircraft:{"ATR":"ATR Aircraft"},commercial:{"Edward Davies Commercials":"Edward Davies"}};
 function avtovipUnifyBrandNames(){
  for(const category of DATA){
   const mapping=AVTOVIP_CANONICAL_BRANDS[category.id];if(!mapping)continue;

@@ -748,31 +748,31 @@ bmw,BMW,iX5,vehicle-makes-models
 bmw,BMW,John Cooper Works,vehiclesdb
 bmw,BMW,L7,snapshot
 bmw,BMW,M Roadster,vehiclesdb
-bmw,BMW,M1,vehicle-makes-models
-bmw,BMW,M2,snapshot
-bmw,BMW,M2 CS,vehicle-makes-models
+bmw-m,BMW M,M1,vehicle-makes-models
+bmw-m,BMW M,M2,snapshot
+bmw-m,BMW M,M2 CS,vehicle-makes-models
 bmw,BMW,M235,snapshot
 bmw,BMW,M235i,snapshot
 bmw,BMW,M240i,snapshot
-bmw,BMW,M3,snapshot
-bmw,BMW,M3 CS,vehicle-makes-models
+bmw-m,BMW M,M3,snapshot
+bmw-m,BMW M,M3 CS,vehicle-makes-models
 bmw,BMW,M340i,snapshot
-bmw,BMW,M3Ci,snapshot
-bmw,BMW,M4,snapshot
-bmw,BMW,M4 CS,vehicle-makes-models
-bmw,BMW,M4 GTS,vehicle-makes-models
+bmw-m,BMW M,M3Ci,snapshot
+bmw-m,BMW M,M4,snapshot
+bmw-m,BMW M,M4 CS,vehicle-makes-models
+bmw-m,BMW M,M4 GTS,vehicle-makes-models
 bmw,BMW,M440i,snapshot
-bmw,BMW,M5,snapshot
+bmw-m,BMW M,M5,snapshot
 bmw,BMW,M535i,vehiclesdb
 bmw,BMW,M550i,snapshot
-bmw,BMW,M6,snapshot
-bmw,BMW,M6 Cabrio,vehicle-makes-models
-bmw,BMW,M6 Gran,vehicle-makes-models
+bmw-m,BMW M,M6,snapshot
+bmw-m,BMW M,M6 Cabrio,vehicle-makes-models
+bmw-m,BMW M,M6 Gran,vehicle-makes-models
 bmw,BMW,M635CSi,vehiclesdb
 bmw,BMW,M760i,snapshot
 bmw,BMW,M760Li,snapshot
-bmw,BMW,M8,snapshot
-bmw,BMW,M8 Gran,vehicle-makes-models
+bmw-m,BMW M,M8,snapshot
+bmw-m,BMW M,M8 Gran,vehicle-makes-models
 bmw,BMW,M850i,snapshot
 bmw,BMW,Mini,vehiclesdb
 bmw,BMW,Mini Cooper,vehiclesdb
@@ -783,16 +783,16 @@ bmw,BMW,X-Reihe,vehiclesdb
 bmw,BMW,X1,snapshot
 bmw,BMW,X2,snapshot
 bmw,BMW,X3,snapshot
-bmw,BMW,X3 M,vehicle-makes-models
+bmw-m,BMW M,X3 M,vehicle-makes-models
 bmw,BMW,X4,snapshot
-bmw,BMW,X4 M,vehicle-makes-models
+bmw-m,BMW M,X4 M,vehicle-makes-models
 bmw,BMW,X5,snapshot
-bmw,BMW,X5 M,vehicle-makes-models
+bmw-m,BMW M,X5 M,vehicle-makes-models
 bmw,BMW,X6,snapshot
-bmw,BMW,X6 M,vehicle-makes-models
+bmw-m,BMW M,X6 M,vehicle-makes-models
 bmw,BMW,X7,snapshot
 bmw,BMW,XDRIVE30D,vehiclesdb
-bmw,BMW,XM,snapshot
+bmw-m,BMW M,XM,snapshot
 bmw,BMW,Z Series,vehiclesdb
 bmw,BMW,Z-3 Roadster,vehiclesdb
 bmw,BMW,Z1,vehiclesdb
@@ -3933,7 +3933,6 @@ kia,KIA,Tasman,vehicle-makes-models
 kia,KIA,Telluride,snapshot
 kia,KIA,Venga,vehiclesdb
 kia,KIA,XCeed,vehiclesdb
-kia-motors,Kia Motors,Sorento,vehiclesdb
 koenigsegg,Koenigsegg,Agera,vehicle-makes-models
 koenigsegg,Koenigsegg,CC8S,vehicle-makes-models
 koenigsegg,Koenigsegg,CCGT,vehicle-makes-models
@@ -8045,8 +8044,8 @@ bmw,BMW,735IA KAT U9,vehicle-db-open-data
 bmw,BMW,735IL AUTOMAAT U9,vehicle-db-open-data
 bmw,BMW,750I AUTOMAAT U9,vehicle-db-open-data
 bmw,BMW,750IL AUTOMAAT U9,vehicle-db-open-data
-bmw,BMW,M3 U9,vehicle-db-open-data
-bmw,BMW,M5 U9,vehicle-db-open-data
+bmw-m,BMW M,M3 U9,vehicle-db-open-data
+bmw-m,BMW M,M5 U9,vehicle-db-open-data
 bmw,BMW,Z1 U9,vehicle-db-open-data
 mini,Mini,1000 E K9,vehicle-db-open-data
 mini,Mini,1000 E S6,vehicle-db-open-data
@@ -9276,7 +9275,7 @@ bmw,BMW,520I TOURING U9,vehicle-db-open-data
 bmw,BMW,525I TOURING,vehicle-db-open-data
 bmw,BMW,525TDS,vehicle-db-open-data
 bmw,BMW,525TDS TOURING,vehicle-db-open-data
-bmw,BMW,M3 E2,vehicle-db-open-data
+bmw-m,BMW M,M3 E2,vehicle-db-open-data
 ford,Ford,E150 ECONOLINE,vehicle-db-open-data
 ford,Ford,ESCORT 1.3I CL U9,vehicle-db-open-data
 ford,Ford,ESCORT 1.4I CABRIO U9,vehicle-db-open-data
@@ -9705,7 +9704,7 @@ bmw,BMW,525IX TOURING,vehicle-db-open-data
 bmw,BMW,525TD,vehicle-db-open-data
 bmw,BMW,530I TOURING,vehicle-db-open-data
 bmw,BMW,850 CSI E2,vehicle-db-open-data
-bmw,BMW,M5 TOURING E2,vehicle-db-open-data
+bmw-m,BMW M,M5 TOURING E2,vehicle-db-open-data
 ford,Ford,ESCORT 1.8D CLX,vehicle-db-open-data
 ford,Ford,ESCORT 1.8I CABRIO,vehicle-db-open-data
 ford,Ford,ESCORT PROVENCE U9,vehicle-db-open-data
@@ -10060,7 +10059,7 @@ bmw,BMW,518I TOURING E2,vehicle-db-open-data
 bmw,BMW,520I TOURING E2,vehicle-db-open-data
 bmw,BMW,540I TOURING,vehicle-db-open-data
 bmw,BMW,7ER REIHE,vehicle-db-open-data
-bmw,BMW,M3 CABRIO,vehicle-db-open-data
+bmw-m,BMW M,M3 CABRIO,vehicle-db-open-data
 bmw,BMW,R SERIES,vehicle-db-open-data
 ford,Ford,ESCORT CLIPPER 1.8D CL,vehicle-db-open-data
 ford,Ford,ESCORT LASER U9,vehicle-db-open-data
@@ -10414,9 +10413,9 @@ bmw,BMW,525TD TOURING,vehicle-db-open-data
 bmw,BMW,5ER REIHE,vehicle-db-open-data
 bmw,BMW,8ER REIHE,vehicle-db-open-data
 bmw,BMW,F 800,vehicle-db-open-data
-bmw,BMW,M3 3ER REIHE,vehicle-db-open-data
-bmw,BMW,M3 GT COUPE,vehicle-db-open-data
-bmw,BMW,M3 SEDAN,vehicle-db-open-data
+bmw-m,BMW M,M3 3ER REIHE,vehicle-db-open-data
+bmw-m,BMW M,M3 GT COUPE,vehicle-db-open-data
+bmw-m,BMW M,M3 SEDAN,vehicle-db-open-data
 mini,Mini,ONE,vehicle-db-open-data
 ford,Ford,ECONOLINE 150,vehicle-db-open-data
 ford,Ford,ESCORT 1.3I,vehicle-db-open-data
@@ -11164,7 +11163,7 @@ bmw,BMW,323CI,vehicle-db-open-data
 bmw,BMW,346C,vehicle-db-open-data
 bmw,BMW,530D,vehicle-db-open-data
 bmw,BMW,Z3 COUPE,vehicle-db-open-data
-bmw,BMW,Z3 M,vehicle-db-open-data
+bmw-m,BMW M,Z3 M,vehicle-db-open-data
 ford,Ford,CI,vehicle-db-open-data
 ford,Ford,IXION,vehicle-db-open-data
 ford,Ford,TRANSIT 80,vehicle-db-open-data
@@ -11583,7 +11582,7 @@ mercedes-benz,Mercedes Benz,S 500 4MATIC,vehicle-db-open-data
 mercedes-benz,Mercedes Benz,VIANO CDI,vehicle-db-open-data
 bmw,BMW,6ER REIHE,vehicle-db-open-data
 bmw,BMW,730D,vehicle-db-open-data
-bmw,BMW,M3 CSL,vehicle-db-open-data
+bmw-m,BMW M,M3 CSL,vehicle-db-open-data
 bmw,BMW,X3 3.0I,vehicle-db-open-data
 bmw,BMW,Z4 2.2I,vehicle-db-open-data
 bmw,BMW,Z4 2.5I,vehicle-db-open-data
@@ -13321,13 +13320,13 @@ bmw,BMW,COOPER CABRIO,vehicle-db-open-data
 bmw,BMW,COOPER CLUBMAN,vehicle-db-open-data
 bmw,BMW,COOPER D,vehicle-db-open-data
 bmw,BMW,COOPER S CABRIO,vehicle-db-open-data
-bmw,BMW,M3 ALPINE S-A,vehicle-db-open-data
-bmw,BMW,M3 COUPE,vehicle-db-open-data
-bmw,BMW,M3 DAKAR S-A,vehicle-db-open-data
-bmw,BMW,M3 GTS,vehicle-db-open-data
-bmw,BMW,M3 MONTE CARLO S-A,vehicle-db-open-data
-bmw,BMW,M3 SEMI,vehicle-db-open-data
-bmw,BMW,M5 TOURING,vehicle-db-open-data
+bmw-m,BMW M,M3 ALPINE S-A,vehicle-db-open-data
+bmw-m,BMW M,M3 COUPE,vehicle-db-open-data
+bmw-m,BMW M,M3 DAKAR S-A,vehicle-db-open-data
+bmw-m,BMW M,M3 GTS,vehicle-db-open-data
+bmw-m,BMW M,M3 MONTE CARLO S-A,vehicle-db-open-data
+bmw-m,BMW M,M3 SEMI,vehicle-db-open-data
+bmw-m,BMW M,M5 TOURING,vehicle-db-open-data
 bmw,BMW,ONE CABRIO,vehicle-db-open-data
 bmw,BMW,ONE D,vehicle-db-open-data
 bmw,BMW,SERIE 1,vehicle-db-open-data
@@ -13368,7 +13367,7 @@ bmw,BMW,X3 XDRIVE30I,vehicle-db-open-data
 bmw,BMW,X3 XDRIVE35D,vehicle-db-open-data
 bmw,BMW,X3 XDRIVE35I,vehicle-db-open-data
 bmw,BMW,X5 3.0SD,vehicle-db-open-data
-bmw,BMW,X5 M TURBO,vehicle-db-open-data
+bmw-m,BMW M,X5 M TURBO,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE 30D AC 5S A,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE 30D MSPORT 5S A,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE 30D MSPORT 7S A,vehicle-db-open-data
@@ -13389,7 +13388,7 @@ bmw,BMW,X5 XDRIVE40D SE,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE50I,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE50I M SPORT,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE50I SE,vehicle-db-open-data
-bmw,BMW,X6 M TURBO,vehicle-db-open-data
+bmw-m,BMW M,X6 M TURBO,vehicle-db-open-data
 bmw,BMW,X6 XDRIVE 35D,vehicle-db-open-data
 bmw,BMW,X6 XDRIVE30D,vehicle-db-open-data
 bmw,BMW,X6 XDRIVE40D,vehicle-db-open-data
@@ -15660,7 +15659,7 @@ bmw,BMW,ACTIVEHYBRID,vehicle-db-open-data
 bmw,BMW,M 550D XDRIVE,vehicle-db-open-data
 bmw,BMW,M135I,vehicle-db-open-data
 bmw,BMW,M135I XDRIVE,vehicle-db-open-data
-bmw,BMW,M3 CRT,vehicle-db-open-data
+bmw-m,BMW M,M3 CRT,vehicle-db-open-data
 bmw,BMW,M550,vehicle-db-open-data
 bmw,BMW,X1 SDRIVE16D,vehicle-db-open-data
 bmw,BMW,X1 XDRIVE25D,vehicle-db-open-data
@@ -16439,9 +16438,9 @@ bmw,BMW,740LE IPERFORMANCE,vehicle-db-open-data
 bmw,BMW,740LE XDRIVE,vehicle-db-open-data
 bmw,BMW,740LE XDRIVE IPERFORMANCE,vehicle-db-open-data
 bmw,BMW,740LI XDRIVE,vehicle-db-open-data
-bmw,BMW,M1 40I XDRIVE,vehicle-db-open-data
+bmw-m,BMW M,M1 40I XDRIVE,vehicle-db-open-data
 bmw,BMW,M140I,vehicle-db-open-data
-bmw,BMW,M2 40I XDRIVE,vehicle-db-open-data
+bmw-m,BMW M,M2 40I XDRIVE,vehicle-db-open-data
 bmw,BMW,M235i xDrive Convertible,vehicle-db-open-data
 bmw,BMW,M7 SERIES,vehicle-db-open-data
 bmw,BMW,M760LI XDRIVE,vehicle-db-open-data
@@ -16936,10 +16935,10 @@ bmw,BMW,I3 EDRIVE 94AH I01 IB1,vehicle-db-open-data
 bmw,BMW,I3 RANGE EXTENDER,vehicle-db-open-data
 bmw,BMW,I3S RANGE EXTENDER,vehicle-db-open-data
 bmw,BMW,M140I SHADOW EDITION,vehicle-db-open-data
-bmw,BMW,M2 COMPETITION,vehicle-db-open-data
-bmw,BMW,M3 COMPETITION PACKAGE S-A,vehicle-db-open-data
-bmw,BMW,M4 COMPETITION PACKAGE S-A,vehicle-db-open-data
-bmw,BMW,M5 COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,M2 COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,M3 COMPETITION PACKAGE S-A,vehicle-db-open-data
+bmw-m,BMW M,M4 COMPETITION PACKAGE S-A,vehicle-db-open-data
+bmw-m,BMW M,M5 COMPETITION,vehicle-db-open-data
 bmw,BMW,M850I XDRIVE,vehicle-db-open-data
 bmw,BMW,SERIJA X,vehicle-db-open-data
 bmw,BMW,X1 SDRIVE18I SE,vehicle-db-open-data
@@ -17842,15 +17841,15 @@ bmw,BMW,I3S 94,vehicle-db-open-data
 bmw,BMW,I3S 94 REX,vehicle-db-open-data
 bmw,BMW,M SERIES,vehicle-db-open-data
 bmw,BMW,M340I XDRIVE,vehicle-db-open-data
-bmw,BMW,M8 COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,M8 COMPETITION,vehicle-db-open-data
 bmw,BMW,X1 SDRIVE 28I,vehicle-db-open-data
 bmw,BMW,X1 SDRIVE18I M SPORT,vehicle-db-open-data
 bmw,BMW,X1 SDRIVE20I M SPORT,vehicle-db-open-data
 bmw,BMW,X2 M35I,vehicle-db-open-data
 bmw,BMW,X2 SDRIVE20I SPORT,vehicle-db-open-data
-bmw,BMW,X3 M COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,X3 M COMPETITION,vehicle-db-open-data
 bmw,BMW,X3 XDRIVE20D G01 B47 ZA,vehicle-db-open-data
-bmw,BMW,X4 M COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,X4 M COMPETITION,vehicle-db-open-data
 bmw,BMW,X5 M50I,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE30D G05 B57,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE45E,vehicle-db-open-data
@@ -18321,16 +18320,16 @@ bmw,BMW,128TI,vehicle-db-open-data
 bmw,BMW,330E XDRIVE,vehicle-db-open-data
 bmw,BMW,530E XDRIVE,vehicle-db-open-data
 bmw,BMW,545E XDRIVE,vehicle-db-open-data
-bmw,BMW,M3 COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,M3 COMPETITION,vehicle-db-open-data
 bmw,BMW,M340D XDRIVE,vehicle-db-open-data
-bmw,BMW,M4 COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,M4 COMPETITION,vehicle-db-open-data
 bmw,BMW,M440I XDRIVE,vehicle-db-open-data
 bmw,BMW,X1 DRIVE25D,vehicle-db-open-data
 bmw,BMW,X1 XDRIVE25E,vehicle-db-open-data
 bmw,BMW,X2 XDRIVE25E,vehicle-db-open-data
 bmw,BMW,X3 XDRIVE30E,vehicle-db-open-data
-bmw,BMW,X5 M COMPETITION,vehicle-db-open-data
-bmw,BMW,X6 M COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,X5 M COMPETITION,vehicle-db-open-data
+bmw-m,BMW M,X6 M COMPETITION,vehicle-db-open-data
 bmw,BMW,X7 XDRIVE40D,vehicle-db-open-data
 mini,Mini,JOHN COOPER WORKS GP,vehicle-db-open-data
 mini,Mini,PADDY HOPKIRK,vehicle-db-open-data
@@ -18566,10 +18565,10 @@ bmw,BMW,I4 EDRIVE40,vehicle-db-open-data
 bmw,BMW,I4 M50,vehicle-db-open-data
 bmw,BMW,IX XDRIVE40,vehicle-db-open-data
 bmw,BMW,IX XDRIVE50,vehicle-db-open-data
-bmw,BMW,M3 COMPETITION M XDRIVE,vehicle-db-open-data
-bmw,BMW,M4 COMPETITION M XDRIVE,vehicle-db-open-data
+bmw-m,BMW M,M3 COMPETITION M XDRIVE,vehicle-db-open-data
+bmw-m,BMW M,M4 COMPETITION M XDRIVE,vehicle-db-open-data
 bmw,BMW,M440D XDRIVE,vehicle-db-open-data
-bmw,BMW,M5 CS,vehicle-db-open-data
+bmw-m,BMW M,M5 CS,vehicle-db-open-data
 mini,Mini,ONE FIRST,vehicle-db-open-data
 ford,Ford,F-SERIES,vehicle-db-open-data
 ford,Ford,MUSTANG FASTBACK GT,vehicle-db-open-data
@@ -18849,28 +18848,28 @@ bmw,BMW,IX M60,vehicle-db-open-data
 bmw,BMW,IX1 XDRIVE30,vehicle-db-open-data
 bmw,BMW,M235i xDrive Gran Coupe,vehicle-db-open-data
 bmw,BMW,M240i xDrive Coupe,vehicle-db-open-data
-bmw,BMW,M3 Competition M xDrive Sedan,vehicle-db-open-data
-bmw,BMW,M3 Competition Sedan,vehicle-db-open-data
+bmw-m,BMW M,M3 Competition M xDrive Sedan,vehicle-db-open-data
+bmw-m,BMW M,M3 Competition Sedan,vehicle-db-open-data
 bmw,BMW,M340i Sedan,vehicle-db-open-data
 bmw,BMW,M340i xDrive Sedan,vehicle-db-open-data
-bmw,BMW,M4 CSL,vehicle-db-open-data
-bmw,BMW,M4 Competition Coupe,vehicle-db-open-data
-bmw,BMW,M4 Competition M xDrive Convertible,vehicle-db-open-data
-bmw,BMW,M4 Competition M xDrive Coupe,vehicle-db-open-data
-bmw,BMW,M4 Coupe,vehicle-db-open-data
+bmw-m,BMW M,M4 CSL,vehicle-db-open-data
+bmw-m,BMW M,M4 Competition Coupe,vehicle-db-open-data
+bmw-m,BMW M,M4 Competition M xDrive Convertible,vehicle-db-open-data
+bmw-m,BMW M,M4 Competition M xDrive Coupe,vehicle-db-open-data
+bmw-m,BMW M,M4 Coupe,vehicle-db-open-data
 bmw,BMW,M440i Convertible,vehicle-db-open-data
 bmw,BMW,M440i Coupe,vehicle-db-open-data
 bmw,BMW,M440i xDrive Convertible,vehicle-db-open-data
 bmw,BMW,M440i xDrive Coupe,vehicle-db-open-data
 bmw,BMW,M440i xDrive Gran Coupe,vehicle-db-open-data
-bmw,BMW,M5 CS Sedan,vehicle-db-open-data
-bmw,BMW,M5 Competition Sedan,vehicle-db-open-data
-bmw,BMW,M5 Sedan,vehicle-db-open-data
+bmw-m,BMW M,M5 CS Sedan,vehicle-db-open-data
+bmw-m,BMW M,M5 Competition Sedan,vehicle-db-open-data
+bmw-m,BMW M,M5 Sedan,vehicle-db-open-data
 bmw,BMW,M550i xDrive Sedan,vehicle-db-open-data
 bmw,BMW,M760i xDrive Sedan,vehicle-db-open-data
-bmw,BMW,M8 Competition Convertible,vehicle-db-open-data
-bmw,BMW,M8 Competition Coupe,vehicle-db-open-data
-bmw,BMW,M8 Competition Gran Coupe,vehicle-db-open-data
+bmw-m,BMW M,M8 Competition Convertible,vehicle-db-open-data
+bmw-m,BMW M,M8 Competition Coupe,vehicle-db-open-data
+bmw-m,BMW M,M8 Competition Gran Coupe,vehicle-db-open-data
 bmw,BMW,M850i xDrive Convertible,vehicle-db-open-data
 bmw,BMW,M850i xDrive Coupe,vehicle-db-open-data
 bmw,BMW,M850i xDrive Gran Coupe,vehicle-db-open-data
@@ -19456,9 +19455,9 @@ bmw,BMW,IX1 EDRIVE20,vehicle-db-open-data
 bmw,BMW,IX1 XDRIVE30 U11 XE2,vehicle-db-open-data
 bmw,BMW,IX2 XDRIVE30,vehicle-db-open-data
 bmw,BMW,IX3 G08 HA0,vehicle-db-open-data
-bmw,BMW,M2 Coupe,vehicle-db-open-data
+bmw-m,BMW M,M2 Coupe,vehicle-db-open-data
 bmw,BMW,M240i Coupe,vehicle-db-open-data
-bmw,BMW,M4 CSL Coupe,vehicle-db-open-data
+bmw-m,BMW M,M4 CSL Coupe,vehicle-db-open-data
 bmw,BMW,M440i Gran Coupe,vehicle-db-open-data
 bmw,BMW,M760E XDRIVE,vehicle-db-open-data
 bmw,BMW,X1 M35I XDRIVE,vehicle-db-open-data
@@ -19467,7 +19466,7 @@ bmw,BMW,X5 M60I XDRIVE,vehicle-db-open-data
 bmw,BMW,X5 XDRIVE50E,vehicle-db-open-data
 bmw,BMW,X6 M60I XDRIVE,vehicle-db-open-data
 bmw,BMW,X6 XDRIVE40I M SPORT,vehicle-db-open-data
-bmw,BMW,XM LABEL,vehicle-db-open-data
+bmw-m,BMW M,XM LABEL,vehicle-db-open-data
 bmw,BMW,i4 eDrive35 Gran Coupe (18 inch Wheels),vehicle-db-open-data
 bmw,BMW,i4 eDrive35 Gran Coupe (19 inch Wheels),vehicle-db-open-data
 bmw,BMW,i7 xDrive60 Sedan (19 inch wheels),vehicle-db-open-data
@@ -19805,14 +19804,14 @@ bmw,BMW,I5 XDRIVE 40,vehicle-db-open-data
 bmw,BMW,IX1 EDRIVE20 U11 HB0,vehicle-db-open-data
 bmw,BMW,IX2 EDRIVE20,vehicle-db-open-data
 bmw,BMW,M135 XDRIVE,vehicle-db-open-data
-bmw,BMW,M2 35 XDRIVE,vehicle-db-open-data
-bmw,BMW,M3 CS Sedan,vehicle-db-open-data
+bmw-m,BMW M,M2 35 XDRIVE,vehicle-db-open-data
+bmw-m,BMW M,M3 CS Sedan,vehicle-db-open-data
 bmw,BMW,X1 M35i,vehicle-db-open-data
 bmw,BMW,X3 20 XDRIVE,vehicle-db-open-data
 bmw,BMW,X3 20D XDRIVE,vehicle-db-open-data
 bmw,BMW,X3 30E XDRIVE,vehicle-db-open-data
 bmw,BMW,X3 M50 XDRIVE,vehicle-db-open-data
-bmw,BMW,XM 50E,vehicle-db-open-data
+bmw-m,BMW M,XM 50E,vehicle-db-open-data
 bmw,BMW,i4 xDrive40 Gran Coupe (18 inch Wheels),vehicle-db-open-data
 bmw,BMW,i4 xDrive40 Gran Coupe (19 inch Wheels),vehicle-db-open-data
 bmw,BMW,i5 M60 xDrive Sedan (19 inch Wheels),vehicle-db-open-data
@@ -20220,8 +20219,8 @@ bmw,BMW,IX XDRIVE60,vehicle-db-open-data
 bmw,BMW,IX2 XDRIVE 20,vehicle-db-open-data
 bmw,BMW,IX3 50 XDRIVE,vehicle-db-open-data
 bmw,BMW,M235 xDrive Gran Coupe,vehicle-db-open-data
-bmw,BMW,M3 CS TOURING,vehicle-db-open-data
-bmw,BMW,M4 CS Coupe,vehicle-db-open-data
+bmw-m,BMW M,M3 CS TOURING,vehicle-db-open-data
+bmw-m,BMW M,M4 CS Coupe,vehicle-db-open-data
 bmw,BMW,X1 XDRIVE20D U11 B47,vehicle-db-open-data
 bmw,BMW,X3 40D XDRIVE,vehicle-db-open-data
 bmw,BMW,X3 M50i xDrive,vehicle-db-open-data
@@ -20670,7 +20669,7 @@ bmw,BMW,I3 50 XDRIVE,vehicle-db-open-data
 bmw,BMW,I7 50 XDRIVE,vehicle-db-open-data
 bmw,BMW,I7 60 XDRIVE,vehicle-db-open-data
 bmw,BMW,IX3 40,vehicle-db-open-data
-bmw,BMW,M2 Coupe CS,vehicle-db-open-data
+bmw-m,BMW M,M2 Coupe CS,vehicle-db-open-data
 bmw,BMW,X3 M50,vehicle-db-open-data
 bmw,BMW,X3 xDrive30,vehicle-db-open-data
 bmw,BMW,i4 M60 xDrive Gran Coupe (19 inch Wheels),vehicle-db-open-data
@@ -20858,7 +20857,7 @@ mercedes-benz,Mercedes Benz,GLC400 4matic electric,vehicle-db-open-data
 mercedes-benz,Mercedes Benz,GLC400 4matic electric (ST),vehicle-db-open-data
 bmw,BMW,740 Sedan,vehicle-db-open-data
 bmw,BMW,740 xDrive Sedan,vehicle-db-open-data
-bmw,BMW,M2 M xDrive Coupe,vehicle-db-open-data
+bmw-m,BMW M,M2 M xDrive Coupe,vehicle-db-open-data
 bmw,BMW,X5 40 xDrive,vehicle-db-open-data
 bmw,BMW,i7 xDrive50 Sedan (20 inch All-Season Tires),vehicle-db-open-data
 bmw,BMW,i7 xDrive50 Sedan (20 inch Summer Tires),vehicle-db-open-data
@@ -20927,7 +20926,6 @@ vinfast,VinFast,VF 7 Plus,vehicle-db-open-data
 vinfast,VinFast,VF 8 Eco,vehicle-db-open-data
 vinfast,VinFast,VF 8 Plus,vehicle-db-open-data
 vinfast,VinFast,VF 9 Plus,vehicle-db-open-data
-am-general,AM General,MV-1,vehicle-db-reviewed
 arrival,Arrival,BUS,vehicle-db-reviewed
 arrival,Arrival,VAN,vehicle-db-reviewed
 baojun,Baojun,Xiangjing,vehicle-db-reviewed
