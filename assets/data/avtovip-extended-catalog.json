@@ -14913,12 +14913,6 @@
     ]
   },
   "aircraft": {
-    "AASI": [
-      "Jetcruzer"
-    ],
-    "Aces High": [
-      "Cuby 2"
-    ],
     "Adventure Air": [
       "Adventurer"
     ],
@@ -15211,9 +15205,6 @@
       "H175",
       "H215",
       "H225"
-    ],
-    "AMX International": [
-      "AMX"
     ],
     "Antonov": [
       "An-12",
@@ -15590,9 +15581,6 @@
       "505 Jet Ranger X",
       "525 Relentless",
       "XV-15"
-    ],
-    "Beoing": [
-      "747-4EVFER"
     ],
     "Blackshape": [],
     "Boeing": [
@@ -16753,19 +16741,6 @@
       "Trislander"
     ],
     "BRM Aero": [],
-    "Bücker": [
-      "Bü 131 Jungmann",
-      "Bü 131APM Jungmann",
-      "Bü 131B Jungmann",
-      "Bü 131D Jungmann",
-      "Bü 133 Jungmeister",
-      "Bü 133C Jungmeister",
-      "Bü 133D Jungmeister",
-      "Bü 133E Jungmeister",
-      "Bü 181 B-1 Bestmann",
-      "Bü 181 Bestmann",
-      "Bü 181 C-3 Bestmann"
-    ],
     "Canadair": [
       "CF-116D Freedom Fighter",
       "NF-5B Freedom Fighter"
@@ -17336,9 +17311,6 @@
       "480B",
       "F-28"
     ],
-    "ERCO": [
-      "Ercoupe"
-    ],
     "Evektor": [
       "EV-97 Eurostar",
       "Harmony LSA",
@@ -17365,15 +17337,6 @@
       "F28 Fellowship"
     ],
     "Game Composites": [],
-    "General Motors": [
-      "FM-2 Wildcat",
-      "TBM-1 Avenger",
-      "TBM-3 Avenger",
-      "TBM-3E Avenger",
-      "TBM-3R Avenger",
-      "TBM-3S Avenger",
-      "TBM-3U Avenger"
-    ],
     "Glasair": [],
     "Grob Aircraft": [],
     "Grumman": [
@@ -17466,9 +17429,6 @@
       "HS.748 2A/266",
       "HS.748 2A/347",
       "HS.748 2B/FAA"
-    ],
-    "Heliopolis": [
-      "Gomhouria Mk.6"
     ],
     "Hindustan Aeronautics Limited": [
       "HAL.748 203",
@@ -17636,34 +17596,13 @@
       "M20 Turbo"
     ],
     "Mooney Aircraft": [],
-    "Morane Saulnier": [
-      "MS.880A Rallye",
-      "MS.880B Rallye Club",
-      "MS.881 Rallye 105",
-      "MS.882 Super Rallye",
-      "MS.885 Super Rallye",
-      "MS.886 Rallye 160",
-      "MS.890B Rallye Commodore 145",
-      "MS.892A Rallye Commodore 150",
-      "MS.893A Rallye Commodore 180",
-      "Rallye"
-    ],
-    "Nanchang": [
-      "CJ-5"
-    ],
     "Nextant Aerospace": [
       "400XT"
     ],
     "PacAero": [
       "Tradewind"
     ],
-    "Padc": [
-      "Bo 105CBS"
-    ],
     "Piaggio Aerospace": [],
-    "Piasecki": [
-      "X-49 SpeedHawk"
-    ],
     "Pilatus": [
       "PC-12",
       "PC-12 NGX",
@@ -17782,10 +17721,6 @@
     "Saab": [
       "2000"
     ],
-    "Sadler": [
-      "A-22 Piranha",
-      "Vampire"
-    ],
     "Schweizer": [
       "269A",
       "269C",
@@ -17866,18 +17801,9 @@
       "MS.894E Rallye 220GT Minerva"
     ],
     "Sonex Aircraft": [],
-    "SSH": [
-      "T-131PA Jungmann"
-    ],
     "Stemme": [],
-    "Stinson": [
-      "108"
-    ],
     "Sukhoi": [
       "Superjet 100-95"
-    ],
-    "Tatra": [
-      "T-131PA Jungmann"
     ],
     "Tecnam": [
       "P2002",
@@ -17885,9 +17811,6 @@
       "P2010",
       "P2012 Traveller",
       "P92"
-    ],
-    "Textron AirLand": [
-      "Scorpion"
     ],
     "Textron Aviation": [],
     "Thrush Aircraft": [],
@@ -17922,9 +17845,6 @@
       "Tu-204SM",
       "Tu-334"
     ],
-    "Uetz": [
-      "U2V"
-    ],
     "Vans Aircraft": [
       "RV-10",
       "RV-12",
@@ -17938,11 +17858,6 @@
     ],
     "Vulcanair": [],
     "Waco Aircraft": [],
-    "Wassmer": [
-      "D.120 Paris-Nice",
-      "D.120A Paris-Nice",
-      "D.120R Paris-Nice"
-    ],
     "Yakovlev": [
       "Yak-112",
       "Yak-12",
