@@ -1425,13 +1425,6 @@
     }
   },
   {
-    "id": "hindustan",
-    "name": "Hindustan",
-    "logo": {
-      "local_url": "assets/img/brand-logos/car/avtovip_hindustan_motors.png"
-    }
-  },
-  {
     "id": "hindustan-motors",
     "name": "Hindustan Motors",
     "logo": {
@@ -1630,13 +1623,6 @@
     "name": "Isdera",
     "logo": {
       "local_url": "assets/img/brand-logos/car/avtovip_isdera.jpg"
-    }
-  },
-  {
-    "id": "iso",
-    "name": "Iso",
-    "logo": {
-      "local_url": "assets/img/brand-logos/car/avtovip_iso.png"
     }
   },
   {
@@ -1931,13 +1917,6 @@
     }
   },
   {
-    "id": "leyland-cars",
-    "name": "Leyland Cars",
-    "logo": {
-      "local_url": "assets/img/brand-logos/car/avtovip_leyland.png"
-    }
-  },
-  {
     "id": "li-auto",
     "name": "Li Auto",
     "logo": {
@@ -2039,13 +2018,6 @@
   {
     "id": "lynk-co",
     "name": "Lynk & Co",
-    "logo": {
-      "local_url": "assets/img/brand-logos/car/avtovip_lynk_and_co.png"
-    }
-  },
-  {
-    "id": "lynk-and-co",
-    "name": "Lynk And Co",
     "logo": {
       "local_url": "assets/img/brand-logos/car/avtovip_lynk_and_co.png"
     }
@@ -2287,10 +2259,6 @@
   {
     "id": "moskvich",
     "name": "Moskvich"
-  },
-  {
-    "id": "moskvitch",
-    "name": "Moskvitch"
   },
   {
     "id": "mosler",
@@ -3408,13 +3376,6 @@
   {
     "id": "willys",
     "name": "Willys",
-    "logo": {
-      "local_url": "assets/img/brand-logos/car/avtovip_willys_overland.png"
-    }
-  },
-  {
-    "id": "willys-overland",
-    "name": "Willys Overland",
     "logo": {
       "local_url": "assets/img/brand-logos/car/avtovip_willys_overland.png"
     }
