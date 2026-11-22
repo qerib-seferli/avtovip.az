@@ -7,6 +7,41 @@
   const db = window.avtoDb;
   if (!db) return;
   const sb = db.client;
+  // Authenticated R2 URLs cannot be used directly as <img>/<video> sources.
+  // Keep blob URLs only while their owning viewer is alive; never expose JWTs in URLs.
+  const privateMediaUrls = new Map();
+  const privateMediaPattern = /^https:\/\/avtovip-media-api\.seferovqerib09\.workers\.dev\/v1\/media\/[0-9a-f-]{36}$/i;
+  async function resolvePrivateMedia(url){
+    if(!privateMediaPattern.test(String(url||'')))return url;
+    if(!privateMediaUrls.has(url)){
+      const pending=db.privateR2ObjectUrl(url).catch(error=>{privateMediaUrls.delete(url);throw error});
+      privateMediaUrls.set(url,pending);
+    }
+    return privateMediaUrls.get(url);
+  }
+  async function hydratePrivateMedia(root){
+    const elements=[...root.querySelectorAll('img[src],video[src]')].filter(el=>privateMediaPattern.test(el.getAttribute('src')||''));
+    await Promise.all(elements.map(async el=>{
+      const original=el.getAttribute('src');
+      try{const local=await resolvePrivateMedia(original);if(el.isConnected&&el.getAttribute('src')===original)el.src=local;}
+      catch(error){console.warn('[AvtoVIP private media]',error.message);if(el.isConnected)el.removeAttribute('src');}
+    }));
+  }
+  function releasePrivateMedia(url){
+    const pending=privateMediaUrls.get(url);if(!pending)return;
+    privateMediaUrls.delete(url);
+    Promise.resolve(pending).then(local=>{if(String(local).startsWith('blob:'))URL.revokeObjectURL(local)}).catch(()=>{});
+  }
+  function releaseAllPrivateMedia(){for(const url of [...privateMediaUrls.keys()])releasePrivateMedia(url)}
+  window.addEventListener('pagehide',releaseAllPrivateMedia);
+  // Never carry an authenticated media blob into another account's session.
+  let privateMediaSessionUser=null;
+  sb.auth.onAuthStateChange((event,session)=>{
+    const nextUser=session?.user?.id||null;
+    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser))releaseAllPrivateMedia();
+    privateMediaSessionUser=nextUser;
+  });
+
   const intl = window.AvtoVIPInternational || null;
   const $ = (s, p = document) => p.querySelector(s);
   const $$ = (s, p = document) => [...p.querySelectorAll(s)];
@@ -828,7 +863,53 @@
     const adv=$('#advancedFilters'),toggle=$('#toggleAdvanced');
     const savedOpen=localStorage.getItem('avtovip-filter-open')==='1'; if(adv)adv.classList.toggle('open',savedOpen); if(toggle)toggle.setAttribute('aria-expanded',String(savedOpen));
     toggle?.addEventListener('click',()=>{const open=!adv?.classList.contains('open');adv?.classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));localStorage.setItem('avtovip-filter-open',open?'1':'0')});
-    document.addEventListener('avtovip:category-car',()=>{const grid=$('#listingsGrid');if(grid){grid.dataset.ready='0';loadHomeListings()}});
+    // Non-car search must execute a real server-side query. The category rail
+    // emits filters but does not itself own Supabase credentials or render cards.
+    let categoryRequestId=0;
+    const loadCategoryListings=async({category,filters={},vipOnly=false}={})=>{
+      if(!['motorcycle','watercraft','aircraft','agriculture','construction','commercial','caravan'].includes(category))return;
+      const grid=$('#listingsGrid');if(!grid)return;
+      const requestId=++categoryRequestId;
+      grid.dataset.categoryPending=category;
+      const text=v=>String(v??'').trim();
+      let q=sb.from('elanlar').select('*').eq('status','approved').eq('vehicle_category',category);
+      if(text(filters.make))q=q.eq('brand',text(filters.make));
+      if(text(filters.model))q=q.ilike('model',`%${text(filters.model).replace(/[%,()]/g,'')}%`);
+      if(text(filters.country))q=q.eq('country_code',text(filters.country));
+      if(text(filters.city))q=q.ilike('city',`%${text(filters.city).replace(/[%,()]/g,'')}%`);
+      for(const [field,column] of [['priceMin','price'],['yearMin','year']]){
+        const n=Number(filters[field]);if(text(filters[field])&&Number.isFinite(n)&&n>=0)q=q.gte(column,n);
+      }
+      for(const [field,column] of [['priceMax','price'],['yearMax','year']]){
+        const n=Number(filters[field]);if(text(filters[field])&&Number.isFinite(n)&&n>=0)q=q.lte(column,n);
+      }
+      if(text(filters.spec0))q=q.contains('vehicle_specs',{vehicle_type:text(filters.spec0)});
+      // The second filter means a different quantity in each category.
+      // JSONB numeric comparisons use -> (jsonb), never ->> (text ordering).
+      if(text(filters.spec1)){
+        const value=Number(filters.spec1);
+        const key={motorcycle:'engine_cc',watercraft:'length_m',aircraft:'flight_hours',agriculture:'operating_hours',construction:'operating_hours',commercial:'load_capacity_kg',caravan:'sleeping_capacity'}[category];
+        if(Number.isFinite(value)&&value>=0&&key){
+          const normalized=category==='commercial'?value*1000:value;
+          q=q.filter(`vehicle_specs->${key}`,'gte',String(normalized));
+        }
+      }
+      if(filters.condition==='new')q=q.eq('is_new',true);
+      if(filters.condition==='used')q=q.eq('is_new',false);
+      if(vipOnly)q=q.eq('is_vip',true);
+      q=q.order('is_premium',{ascending:false}).order('is_vip',{ascending:false}).order('published_at',{ascending:false}).limit(60);
+      const [{data,error},favs]=await Promise.all([q,favoriteSet()]);
+      if(requestId!==categoryRequestId||grid.dataset.categoryPending!==category)return;
+      grid.innerHTML=error?`<div class="empty-state">${esc(error.message)}</div>`:
+        (data||[]).length?data.map(x=>listingCard(x,favs)).join(''):`<div class="empty-state">${t('empty')}</div>`;
+      const count=$('#resultCount');if(count)count.textContent=`${(data||[]).length} elan`;
+      grid.dataset.ready='1';
+    };
+    document.addEventListener('avtovip:category-changed',e=>{
+      if(e.detail?.category!=='car')loadCategoryListings({category:e.detail.category});
+    });
+    document.addEventListener('avtovip:category-search',e=>loadCategoryListings(e.detail||{}));
+    document.addEventListener('avtovip:category-car',()=>{categoryRequestId++;const grid=$('#listingsGrid');if(grid){grid.dataset.ready='0';loadHomeListings()}});
     $('#applyFilters')?.addEventListener('click',loadHomeListings); $('#resetFilters')?.addEventListener('click',()=>{ $$('#filterPanel input,#filterPanel select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''}); $('#vipOnly').dataset.on='0';$('#vipOnly').classList.remove('btn-gold');loadHomeListings() });
     $('#vipOnly')?.addEventListener('click',e=>{e.currentTarget.classList.toggle('btn-gold');e.currentTarget.dataset.on=e.currentTarget.dataset.on==='1'?'0':'1';loadHomeListings()});
     let filterTimer=0;const scheduleFilter=()=>{clearTimeout(filterTimer);filterTimer=setTimeout(loadHomeListings,260)};$('#filterPanel')?.addEventListener('change',e=>{if(e.target.closest('#toggleAdvanced,#applyFilters,#resetFilters,#vipOnly'))return;scheduleFilter()});$('#filterPanel')?.addEventListener('input',e=>{if(['INPUT'].includes(e.target.tagName)&&['search','number','text'].includes(e.target.type))scheduleFilter()});
@@ -864,7 +945,7 @@
     /* Keep already rendered cards in place during background/filter refreshes.
        This removes the repeated card -> skeleton -> card flashing on PWA refresh. */
     if(grid.dataset.ready!=='1')grid.innerHTML='<div class="skeleton listing-card"></div><div class="skeleton listing-card"></div><div class="skeleton listing-card"></div>';
-    let q=sb.from('elanlar').select('*').eq('status','approved'); const v=id=>$(id)?.value?.trim()||'';
+    let q=sb.from('elanlar').select('*').eq('status','approved').eq('vehicle_category','car'); const v=id=>$(id)?.value?.trim()||'';
     const smart=smartSearchText?parseSmart(smartSearchText):null;
     const country=v('#filterCountry')||v('#filterCountryAdvanced'),city=v('#filterCity')||v('#filterCityAdvanced');
     if(smart){
@@ -902,7 +983,7 @@
     const visibleStories=(data||[]).filter(x=>!storyCountry||String(profiles[x.user_id]?.country_code||'').toUpperCase()===storyCountry);
     const storyIds=visibleStories.map(x=>x.id);let viewMap={};if(storyIds.length){const counts=await Promise.all(storyIds.map(getStoryViewCount));storyIds.forEach((id,i)=>viewMap[id]=Number(counts[i]||0))}
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
-    rail.innerHTML=add+visibleStories.map(s=>{const p=profiles[s.user_id]||{},vc=Number(viewMap[s.id]||0);s.view_count=vc;const rawCaption=String(s.caption||'').trim();const railTitle=rawCaption?(rawCaption.length>22?rawCaption.slice(0,22).trimEnd()+'…':rawCaption):'Avto Hekayə';return `<button class="story-item" type="button" data-story="${s.id}"><div class="story-ring"><div class="story-ring-inner">${s.media_type==='video'?`<video src="${esc(s.media_url)}" muted></video>`:`<img src="${esc(s.media_url)}" alt="">`}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i>${vc}</span></div><span title="${esc(rawCaption||railTitle)}">${esc(railTitle)}</span></button>`}).join(''); rail.onclick=e=>{const b=e.target.closest('[data-story]');if(b){const story=visibleStories.find(x=>x.id===b.dataset.story);if(story)openStory(story,profiles[story.user_id],visibleStories,profiles)}};
+    rail.innerHTML=add+visibleStories.map(s=>{const p=profiles[s.user_id]||{},vc=Number(viewMap[s.id]||0);s.view_count=vc;const rawCaption=String(s.caption||'').trim();const railTitle=rawCaption?(rawCaption.length>22?rawCaption.slice(0,22).trimEnd()+'…':rawCaption):'Avto Hekayə';return `<button class="story-item" type="button" data-story="${s.id}"><div class="story-ring"><div class="story-ring-inner">${s.media_type==='video'?(privateMediaPattern.test(s.media_url)?`<span class="story-video-thumb"><i class="fa-solid fa-play" aria-hidden="true"></i></span>`:`<video src="${esc(s.media_url)}" muted preload="metadata"></video>`):`<img src="${esc(s.media_url)}" alt="">`}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i>${vc}</span></div><span title="${esc(rawCaption||railTitle)}">${esc(railTitle)}</span></button>`}).join(''); hydratePrivateMedia(rail).catch(error=>console.warn('[AvtoVIP story rail media]',error)); rail.onclick=e=>{const b=e.target.closest('[data-story]');if(b){const story=visibleStories.find(x=>x.id===b.dataset.story);if(story)openStory(story,profiles[story.user_id],visibleStories,profiles)}};
   }
   async function openStory(s,p={},storyList=[],storyProfiles={}){
     const modal=document.createElement('div');modal.className='story-viewer';
@@ -915,6 +996,7 @@
     const storyCaption=String(s.caption||'').trim().slice(0,50);
     modal.innerHTML=`<div class="story-shell"><div class="story-card"><div class="story-progress"></div>${s.media_type==='video'?`<video class="story-media" src="${esc(s.media_url)}" autoplay playsinline></video>`:`<img class="story-media" src="${esc(s.media_url)}" alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerIdentity}</a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${storyCaption?`<div class="story-caption">${esc(storyCaption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link story-owner-side" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerAvatar}${ownerIdentity}</a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
     document.body.append(modal);document.documentElement.classList.add('modal-open');
+    hydratePrivateMedia(modal).then(()=>{const v=modal.querySelector('video.story-media');if(v?.isConnected)v.play().catch(()=>{});}).catch(()=>{});
     /* Only portrait media that would leave black bars on the left/right is cropped vertically.
        Wider/shorter media keeps the existing contain behaviour unchanged. */
     const storyMedia=modal.querySelector('.story-media'),storyCard=modal.querySelector('.story-card');
@@ -1080,20 +1162,77 @@
     await commonFormOptions();
     const form=$('#listingForm'),files=$('#listingImages'),preview=$('#imagePreview'),editId=qsParam('edit');
     setupFriendlyFileInput(files,{kind:'images'});
+    // Preserve the original car flow; other categories use their own brand lists
+    // and JSONB specifications, without forcing car-only technical fields.
+    const categorySelect=$('#listingVehicleCategory'),specWrap=$('#listingVehicleSpecs');
+    const brandSelect=$('#brand');
+    const categoryKeys=['car','motorcycle','watercraft','aircraft','agriculture','construction','commercial','caravan'];
+    let categoryBrands={};
+    try{const r=await fetch('assets/data/vehicle-category-brands.json');if(r.ok)categoryBrands=await r.json()}catch(e){console.warn('[AvtoVIP category brands]',e)}
+    const originalBrandOptions=[...brandSelect.options].map(o=>({value:o.value,label:o.textContent}));
+    // Structured JSONB attributes shared by specialist vehicle categories.
+    // Keep these independent of car-only columns and preserve old records.
+    const categorySpecFields={
+      motorcycle:['engine_cc','engine_power_kw'],
+      watercraft:['length_m','beam_m','engine_power_kw','passenger_capacity'],
+      aircraft:['flight_hours','engine_power_kw','seat_capacity','max_takeoff_weight_kg'],
+      agriculture:['engine_power_kw','working_width_m','load_capacity_kg'],
+      construction:['engine_power_kw','operating_weight_kg','bucket_capacity_m3'],
+      commercial:['load_capacity_kg','gross_weight_kg','cargo_volume_m3'],
+      caravan:['length_m','sleeping_capacity','gross_weight_kg']
+    };
+    const specLabels={engine_cc:'Mühərrik həcmi (sm³)',engine_power_kw:'Güc (kW)',length_m:'Uzunluq (m)',beam_m:'En (m)',passenger_capacity:'Sərnişin tutumu',flight_hours:'Uçuş saatı',seat_capacity:'Oturacaq sayı',max_takeoff_weight_kg:'Maksimal qalxma çəkisi (kq)',working_width_m:'İş eni (m)',load_capacity_kg:'Yük tutumu (kq)',operating_weight_kg:'İş çəkisi (kq)',bucket_capacity_m3:'Çömçə həcmi (m³)',gross_weight_kg:'Ümumi çəki (kq)',cargo_volume_m3:'Yük həcmi (m³)',sleeping_capacity:'Yataq sayı'};
+    const specControls=new Map();
+    if(specWrap){for(const key of new Set(Object.values(categorySpecFields).flat())){
+      const holder=document.createElement('div');holder.className='field';holder.hidden=true;
+      const label=document.createElement('label');label.textContent=specLabels[key];
+      const input=document.createElement('input');input.name=`vehicle_spec_${key}`;input.type='number';input.min='0';input.step='any';input.disabled=true;
+      label.append(input);holder.append(label);specWrap.append(holder);specControls.set(key,{holder,input});
+    }}
+    const carOnlyNames=['mileage','engine_volume','engine_power','fuel','transmission','drivetrain','body_type','color','seats','owners_count','market_origin','vin'];
+    const refreshCategory=()=>{
+      const category=categoryKeys.includes(categorySelect?.value)?categorySelect.value:'car';
+      const isCar=category==='car';
+      if(specWrap)specWrap.hidden=isCar;
+      const visible=new Set(categorySpecFields[category]||[]);
+      for(const [key,{holder,input}] of specControls){holder.hidden=!visible.has(key);input.disabled=!visible.has(key);}
+
+      for(const name of carOnlyNames){const el=form.elements.namedItem(name);if(!el||el instanceof RadioNodeList)continue;
+        const field=el.closest('.field');if(field)field.hidden=!isCar;
+        el.disabled=!isCar;el.required=isCar&&name==='mileage';
+      }
+      const equipment=form.querySelector('#equipmentGrid');if(equipment){const section=equipment.closest('.form-section');if(section)section.hidden=!isCar;equipment.querySelectorAll('input').forEach(el=>el.disabled=!isCar)}
+      if(brandSelect){const old=brandSelect.value;const options=isCar?originalBrandOptions:[{value:'',label:'Seçin'},...(categoryBrands[category]||[]).map(v=>({value:v,label:v}))];
+        brandSelect.replaceChildren(...options.map(item=>{const o=document.createElement('option');o.value=item.value;o.textContent=item.label;return o}));
+        if(options.some(item=>item.value===old))brandSelect.value=old;
+      }
+    };
+    categorySelect?.addEventListener('change',refreshCategory);
+    refreshCategory();
+
     let selectedListingFiles=[],existingUrls=[],editRow=null,removedExisting=[];
+    const videoInput=$('#listingVideo'),videoStatus=$('#listingVideoStatus'),removeVideo=$('#listingRemoveVideo');
+    const videoRemoveLabel=$('#listingRemoveVideoLabel');
+    const previewUrls=new Map();
+    const previewUrl=file=>{if(!previewUrls.has(file))previewUrls.set(file,URL.createObjectURL(file));return previewUrls.get(file)};
+    const prunePreviewUrls=()=>{for(const [file,url] of previewUrls){if(!selectedListingFiles.includes(file)){URL.revokeObjectURL(url);previewUrls.delete(file)}}};
+    window.addEventListener('pagehide',()=>{for(const url of previewUrls.values())URL.revokeObjectURL(url);previewUrls.clear()},{once:true});
+    const updateVideoStatus=()=>{if(!videoStatus)return;const f=videoInput?.files?.[0];videoStatus.textContent=f?`${f.name} (${(f.size/1048576).toFixed(1)} MB)`:(editRow?.video_url&&!removeVideo?.checked?'Mövcud video saxlanılır.':'Video seçilməyib.');};
+    videoInput?.addEventListener('change',()=>{if(videoInput.files?.[0]?.size>50*1024*1024){videoInput.value='';toast('Video maksimum 50 MB ola bilər.','error')}if(videoInput.files?.length&&removeVideo)removeVideo.checked=false;updateVideoStatus()});
+    removeVideo?.addEventListener('change',()=>{if(removeVideo.checked&&videoInput)videoInput.value='';updateVideoStatus()});
     const drawEditPreview=()=>{
       if(!preview)return;
       const old=existingUrls.map((u,i)=>`<div class="upload-tile av-existing-upload"><img src="${esc(u)}" alt=""><button type="button" class="upload-remove" data-remove-existing="${i}" aria-label="Sil"><i class="fa-solid fa-xmark"></i></button></div>`).join('');
-      const fresh=selectedListingFiles.map((f,i)=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt=""><button type="button" class="upload-remove" data-remove-new="${i}" aria-label="Sil"><i class="fa-solid fa-xmark"></i></button></div>`).join('');
-      preview.innerHTML=old+fresh;
+      const fresh=selectedListingFiles.map((f,i)=>`<div class="upload-tile"><img src="${previewUrl(f)}" alt=""><button type="button" class="upload-remove" data-remove-new="${i}" aria-label="Sil"><i class="fa-solid fa-xmark"></i></button></div>`).join('');
+      preview.innerHTML=old+fresh;prunePreviewUrls();
     };
-    const syncListingFiles=()=>{const dt=new DataTransfer();selectedListingFiles.slice(0,Math.max(0,15-existingUrls.length)).forEach(f=>dt.items.add(f));files.files=dt.files;selectedListingFiles=[...dt.files];if(editId)drawEditPreview();else renderPreview(files.files,preview,index=>{selectedListingFiles.splice(index,1);syncListingFiles()})};
+    const syncListingFiles=()=>{const dt=new DataTransfer();selectedListingFiles.slice(0,Math.max(0,15-existingUrls.length)).forEach(f=>dt.items.add(f));files.files=dt.files;selectedListingFiles=[...dt.files];prunePreviewUrls();if(editId)drawEditPreview();else renderPreview(files.files,preview,index=>{selectedListingFiles.splice(index,1);syncListingFiles()})};
     files?.addEventListener('change',async()=>{const incoming=[...files.files];if(!incoming.length)return;try{for(const original of incoming){if(selectedListingFiles.length>=Math.max(0,15-existingUrls.length))break;const key=original.name+'|'+original.size+'|'+original.lastModified;if(selectedListingFiles.some(x=>(x.__avOriginalKey||`${x.name}|${x.size}|${x.lastModified}`)===key))continue;const f=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.90,maxBytes:4_000_000,progressTitle:'Şəkil hazırlanır...'});Object.defineProperty(f,'__avOriginalKey',{value:key,enumerable:false});selectedListingFiles.push(f)}syncListingFiles();db.mediaProgressHide()}catch(err){db.mediaProgressHide();toast(err.message,'error')}});
     if(editId){
       document.body.classList.add('av-edit-listing');if(files)files.required=false;
       const {data,error}=await sb.from('elanlar').select('*').eq('id',editId).eq('user_id',user.id).maybeSingle();
       if(error||!data){toast(error?.message||'Elan tapılmadı və ya bu elanı redaktə etmək icazəniz yoxdur.','error');setTimeout(()=>location.href='profile.html',900);return}
-      editRow=data;existingUrls=[...(data.image_urls||[])];form.dataset.avHydrating='1';
+      editRow=data;existingUrls=[...(data.image_urls||[])];if(videoRemoveLabel)videoRemoveLabel.hidden=!data.video_url;updateVideoStatus();form.dataset.avHydrating='1';
       const title=document.querySelector('.form-shell h1');if(title){title.textContent='Elanı redaktə et';title.insertAdjacentHTML('beforeend','<span class="av-edit-title-note"><i class="fa-solid fa-pen"></i> Mövcud elan</span>')}
       const submit=$('#submitListing');if(submit)submit.innerHTML='<i class="fa-solid fa-check"></i> Dəyişiklikləri yadda saxla';
       const imageSection=files?.closest('.form-section');imageSection?.querySelector('.form-note')?.insertAdjacentHTML('afterend','<p class="av-existing-images-note">Mövcud şəkillər saxlanılır. İstədiyinizi × ilə silə, yeni şəkil əlavə edə bilərsiniz. Ümumi maksimum 15 şəkildir.</p>');
@@ -1103,6 +1242,14 @@
       const waitOption=async(el,val,max=4000)=>{if(!el||val==null||val==='')return false;const start=performance.now();while(performance.now()-start<max){if([...el.options].some(o=>String(o.value)===String(val)))return true;await wait(80)}return false};
       /* Hydrate edit values in dependency order. Async catalog/location listeners can
          repopulate selects, so dependent values are restored only after their options exist. */
+      if(categorySelect){categorySelect.value=categoryKeys.includes(data.vehicle_category)?data.vehicle_category:'car';refreshCategory();}
+      const savedSpecs=data.vehicle_specs&&typeof data.vehicle_specs==='object'?data.vehicle_specs:{};
+      for(const [name,value] of Object.entries({vehicle_type:savedSpecs.vehicle_type,operating_hours:savedSpecs.operating_hours}))set(name,value,{event:'input'});
+      for(const key of categorySpecFields[categorySelect?.value]||[]){
+        const control=specControls.get(key)?.input;
+        if(control&&savedSpecs[key]!=null&&Number.isFinite(Number(savedSpecs[key])))control.value=String(savedSpecs[key]);
+      }
+
       set('brand',data.brand);await wait(120);
       set('model',data.model,{event:'input'});
       ['generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,data[k],{event:'input'}));
@@ -1131,7 +1278,7 @@
     }
     form?.addEventListener('submit',async e=>{
       e.preventDefault();const btn=$('#submitListing');btn.disabled=true;setStatus('#listingStatus',editId?'Dəyişikliklər saxlanılır...':'Şəkillər yüklənir...');
-      const uploadedPaths=[],newUrls=[];
+      const uploadedPaths=[],newUrls=[];let savedToDb=false;
       try{
         const imageFiles=[...files.files].slice(0,15-existingUrls.length);
         if(!editId&&imageFiles.length<3)throw new Error('Minimum 3 avtomobil şəkli əlavə edin.');
@@ -1141,28 +1288,76 @@
           const file=await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.90,maxBytes:4_000_000});
           db.mediaProgress('Yüklənir...',97,'Şəkil AvtoVİP-ə əlavə olunur...');const up=await db.upload('elan-images',user.id,file,'listings');uploadedPaths.push(up.path);newUrls.push(up.url);
         }
+        const selectedVideo=videoInput?.files?.[0]||null;
+        let newVideoUrl=null;
+        if(selectedVideo){
+          if(selectedVideo.size>50*1024*1024)throw new Error('Video maksimum 50 MB ola bilər.');
+          if(!['video/mp4','video/webm'].includes(selectedVideo.type))throw new Error('Video MP4 və ya WebM formatında olmalıdır.');
+          const prepared=await db.transcodeVideo(selectedVideo,{maxWidth:1280,maxHeight:1280,progressTitle:'Video hazırlanır...'});
+          if(prepared.size>50*1024*1024)throw new Error('Hazırlanmış video 50 MB limitini keçir.');
+          const videoUp=await db.upload('elan-images',user.id,prepared,'listings');
+          uploadedPaths.push(videoUp.path);newVideoUrl=videoUp.url;
+        }
         const fd=new FormData(form);
         const vinValue=String(fd.get('vin')||'').trim().toUpperCase();
         const payload={brand:fd.get('brand'),model:fd.get('model')?.trim(),generation:fd.get('generation')?.trim(),trim:fd.get('trim')?.trim(),year:Number(fd.get('year')),price:Number(fd.get('price')),currency:fd.get('currency'),country_code:fd.get('country_code')||'AZ',state_name:fd.get('state_name')||null,city:fd.get('city'),district:fd.get('district')?.trim()||null,body_type:fd.get('body_type'),color:fd.get('color'),fuel:fd.get('fuel'),transmission:fd.get('transmission'),drivetrain:fd.get('drivetrain'),engine_volume:fd.get('engine_volume')?Number(fd.get('engine_volume')):null,engine_power:fd.get('engine_power')?Number(fd.get('engine_power')):null,mileage:Number(fd.get('mileage')||0),seats:fd.get('seats')?Number(fd.get('seats')):null,owners_count:fd.get('owners_count')?Number(fd.get('owners_count')):null,market_origin:fd.get('market_origin')?.trim()||null,vin:vinValue||null,description:fd.get('description')?.trim()||null,phone:fd.get('phone')?.trim(),whatsapp_phone:fd.get('whatsapp_phone')?.trim()||null,is_new:fd.get('condition')==='new',is_credit:fd.get('is_credit')==='on',is_barter:fd.get('is_barter')==='on',has_accident:fd.get('has_accident')==='on',is_painted:fd.get('is_painted')==='on',equipment:fd.getAll('equipment'),image_urls:[...existingUrls,...newUrls]};
+        const category=categoryKeys.includes(fd.get('vehicle_category'))?fd.get('vehicle_category'):'car';
+        payload.video_url=newVideoUrl||(editId&&!removeVideo?.checked?editRow?.video_url:'')||'';
+        // Existing elanlar schema has NOT NULL text columns. Never send null
+        // for optional fields: a single null rejects the entire media listing.
+        for(const field of ['generation','trim','market_origin','vin','description','whatsapp_phone','video_url']){
+          if(payload[field] == null)payload[field]='';
+        }
+        payload.vehicle_category=category;
+        payload.vehicle_specs=category==='car'?{}:{
+          vehicle_type:String(fd.get('vehicle_type')||'').trim(),
+          operating_hours:fd.get('operating_hours')!==''&&fd.get('operating_hours')!=null?Number(fd.get('operating_hours')):null
+        };
+        if(category!=='car')for(const key of categorySpecFields[category]||[]){
+          const raw=fd.get(`vehicle_spec_${key}`);
+          if(raw===null||String(raw).trim()==='')continue;
+          const value=Number(raw);
+          if(!Number.isFinite(value)||value<0)throw new Error(`${specLabels[key]} düzgün daxil edilməyib.`);
+          payload.vehicle_specs[key]=value;
+        }
+        // Existing elanlar columns may be NOT NULL; use empty strings rather
+        // than null for car-only selectors in non-car categories.
+        if(category!=='car')for(const name of ['body_type','color','fuel','transmission','drivetrain'])payload[name]='';
         if(!payload.brand||!payload.model||!payload.year||!payload.price||!payload.phone)throw new Error('Vacib sahələri doldurun.');
         if(payload.country_code==='AM'||payload.currency==='AMD')throw new Error('Bu ölkə/valyuta bazarda aktiv deyil.');
         if(editId){
-          const {error}=await sb.from('elanlar').update(payload).eq('id',editId).eq('user_id',user.id);if(error)throw error;
-          if(removedExisting.length)await db.removeUrls('elan-images',removedExisting).catch(()=>{});
+          const {error}=await sb.from('elanlar').update(payload).eq('id',editId).eq('user_id',user.id);if(error)throw error;savedToDb=true;
+          for(const mediaUrl of [...newUrls,...(newVideoUrl?[newVideoUrl]:[])]){try{await db.linkR2Media(mediaUrl,'listing',editId)}catch(linkError){console.warn('[AvtoVIP listing link] reconciliation needed',linkError)}}
+          const staleMedia=[...removedExisting];
+          if(editRow?.video_url&&editRow.video_url!==payload.video_url)staleMedia.push(editRow.video_url);
+          if(staleMedia.length)await db.removeUrls('elan-images',staleMedia).catch(err=>console.warn('[AvtoVIP stale listing media]',err));
           db.mediaProgressHide();localStorage.removeItem('avtovip-listing-draft-v2');setStatus('#listingStatus','Elan yeniləndi.','success');toast('Elan məlumatları yeniləndi.','success');setTimeout(()=>location.href=`elan.html?id=${editId}`,700)
         }else{
           const createPayload={...payload,user_id:user.id,status:'approved',published_at:new Date().toISOString()};
-          const {data,error}=await sb.from('elanlar').insert(createPayload).select('id').single();if(error)throw error;
+          const {data,error}=await sb.from('elanlar').insert(createPayload).select('id').single();if(error)throw error;savedToDb=true;for(const mediaUrl of [...newUrls,...(newVideoUrl?[newVideoUrl]:[])]){try{await db.linkR2Media(mediaUrl,'listing',data.id)}catch(linkError){console.warn('[AvtoVIP listing link] reconciliation needed',linkError)}}
           db.mediaProgressHide();localStorage.removeItem('avtovip-listing-draft-v2');setStatus('#listingStatus','Elan uğurla yerləşdirildi.','success');toast('Elan yayımlandı.','success');setTimeout(()=>location.href=`profile.html?created=${data.id}`,900)
         }
       }catch(err){
         db.mediaProgressHide();
-        if(uploadedPaths.length)await db.removePaths('elan-images',uploadedPaths).catch(()=>{});
+        if(!savedToDb&&uploadedPaths.length)await db.removePaths('elan-images',uploadedPaths).catch(()=>{});
         setStatus('#listingStatus',err.message,'error');toast(err.message,'error')
       }finally{btn.disabled=false}
     });
   }
-  function renderPreview(files,root,onRemove){if(!root)return;root.innerHTML=[...files].slice(0,15).map((f,i)=>`<div class="upload-tile"><img src="${URL.createObjectURL(f)}" alt="">${onRemove?`<button type="button" class="upload-remove" data-remove-upload="${i}" aria-label="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}</div>`).join('');if(onRemove)root.onclick=e=>{const b=e.target.closest('[data-remove-upload]');if(b)onRemove(Number(b.dataset.removeUpload))}}
+  // New-listing preview URLs are stable between rerenders and revoked on removal.
+  const createListingPreviewUrls=new Map();
+  window.addEventListener('pagehide',()=>{for(const url of createListingPreviewUrls.values())URL.revokeObjectURL(url);createListingPreviewUrls.clear()});
+  function renderPreview(files,root,onRemove){
+    if(!root)return;
+    const selected=[...files].slice(0,15);
+    for(const [file,url] of createListingPreviewUrls){if(!selected.includes(file)){URL.revokeObjectURL(url);createListingPreviewUrls.delete(file)}}
+    root.innerHTML=selected.map((f,i)=>{
+      let url=createListingPreviewUrls.get(f);
+      if(!url){url=URL.createObjectURL(f);createListingPreviewUrls.set(f,url)}
+      return `<div class="upload-tile"><img src="${url}" alt="">${onRemove?`<button type="button" class="upload-remove" data-remove-upload="${i}" aria-label="Remove"><i class="fa-solid fa-xmark"></i></button>`:''}</div>`
+    }).join('');
+    if(onRemove)root.onclick=e=>{const b=e.target.closest('[data-remove-upload]');if(b)onRemove(Number(b.dataset.removeUpload))};
+  }
 
   async function normalizeStoryVideo(file){
     return db.transcodeVideo(file,{maxWidth:720,maxHeight:1280,progressTitle:'Hekayə videosu hazırlanır...'});
@@ -1174,10 +1369,10 @@
     const updateCaptionCount=()=>{if(captionCount)captionCount.textContent=String(Math.min(50,(caption?.value||'').length))};
     caption?.addEventListener('input',()=>{if(caption.value.length>50)caption.value=caption.value.slice(0,50);updateCaptionCount()});
     updateCaptionCount();
-    let storyPreviewUrl='',storyPreparedFile=null;
+    let storyPreviewUrl='',storyPreparedFile=null,storySelectionVersion=0;
     const clearStoryPreviewUrl=()=>{if(storyPreviewUrl){URL.revokeObjectURL(storyPreviewUrl);storyPreviewUrl=''}};
     media?.addEventListener('change',async()=>{
-      const f=media.files[0],box=$('#storyPreview');if(!box)return;storyPreparedFile=null;clearStoryPreviewUrl();box.innerHTML='';if(!f)return;
+      const f=media.files[0],box=$('#storyPreview');if(!box)return;const selectionVersion=++storySelectionVersion;storyPreparedFile=null;clearStoryPreviewUrl();box.innerHTML='';if(!f)return;
       storyPreviewUrl=URL.createObjectURL(f);
       const previewIsVideo=f.type.startsWith('video/')||/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(f.name||'');
       if(previewIsVideo){
@@ -1186,24 +1381,26 @@
         v.addEventListener('error',()=>{box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Video seçildi. Göndərilərkən avtomatik hazırlanacaq.</div>'},{once:true});
       }else if(f.type.startsWith('image/')||db.isHeicFile(f)){
         const img=document.createElement('img');img.alt='Hekayə önbaxışı';box.append(img);
-        if(db.isHeicFile(f)){db.prepareImage(f,{maxWidth:1440,maxHeight:1920,quality:.92,maxBytes:3500000,progressTitle:'Hekayə şəkli hazırlanır...'}).then(prepared=>{storyPreparedFile=prepared;clearStoryPreviewUrl();storyPreviewUrl=URL.createObjectURL(prepared);img.src=storyPreviewUrl;db.mediaProgressHide()}).catch(()=>{img.alt='Şəkil seçildi';db.mediaProgressHide()})}else img.src=storyPreviewUrl;
+        if(db.isHeicFile(f)){db.prepareImage(f,{maxWidth:1440,maxHeight:1920,quality:.92,maxBytes:3500000,progressTitle:'Hekayə şəkli hazırlanır...'}).then(prepared=>{if(selectionVersion!==storySelectionVersion||media.files[0]!==f)return;storyPreparedFile=prepared;clearStoryPreviewUrl();storyPreviewUrl=URL.createObjectURL(prepared);img.src=storyPreviewUrl;db.mediaProgressHide()}).catch(()=>{img.alt='Şəkil seçildi';db.mediaProgressHide()})}else img.src=storyPreviewUrl;
       }else box.innerHTML='<div class="muted small" style="padding:14px;text-align:center">Şəkil və ya video seçin.</div>';
     });
     form?.addEventListener('submit',async e=>{
       e.preventDefault();const btn=$('#storySubmit');btn.disabled=true;let uploaded=null,storyId=null;
       try{
-        const original=media.files[0];if(!original)throw new Error('Şəkil və ya video seçin.');
+        const original=media.files[0];if(!original)throw new Error('Şəkil və ya video seçin.');const submittedSelection=storySelectionVersion;
         const captionText=String(caption?.value||'').trim();if(!captionText)throw new Error('Qısa mətn boş qala bilməz.');if(captionText.length>50)throw new Error('Qısa mətn maksimum 50 simvol ola bilər.');
         const looksVideo=original.type.startsWith('video/')||/\.(mp4|mov|m4v|webm|mkv|avi|3gp|3g2|mpeg|mpg|mts|m2ts|ts)$/i.test(original.name||'');
-        if(looksVideo&&original.size>80*1024*1024)throw new Error('Video faylı çox böyükdür. Daha qısa video seçin.');
+        if(looksVideo&&original.size>50*1024*1024)throw new Error('Video maksimum 50 MB ola bilər.');
         const file=(original.type.startsWith('image/')||db.isHeicFile(original))
           ?(storyPreparedFile||await db.prepareImage(original,{maxWidth:1440,maxHeight:1920,quality:.92,maxBytes:3_500_000,progressTitle:'Hekayə şəkli hazırlanır...'}))
           :looksVideo?await normalizeStoryVideo(original):original;
         if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))throw new Error('Şəkil və ya video seçin.');
+        if(file.size>50*1024*1024)throw new Error('Hazırlanmış media 50 MB limitini keçir.');
+        if(storySelectionVersion!==submittedSelection||media.files[0]!==original)throw new Error('Seçilmiş media dəyişib. Yenidən göndərin.');
         db.mediaProgress('Yüklənir...',97,'Hekayə AvtoVİP-ə əlavə olunur...');uploaded=await db.upload('story-media',user.id,file,'stories');db.mediaProgressHide();
         const activeAt=new Date(),expiresAt=new Date(activeAt.getTime()+24*60*60*1000);
         const payload={user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:captionText,status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()};
-        const {data:story,error}=await sb.from('stories').insert(payload).select('id,status,active_at,expires_at').single();if(error)throw error;storyId=story.id;
+        const {data:story,error}=await sb.from('stories').insert(payload).select('id,status,active_at,expires_at').single();if(error)throw error;storyId=story.id;try{await db.linkR2Media(uploaded.url,'story',storyId)}catch(linkError){console.warn('[AvtoVIP story link] reconciliation needed',linkError)}
 
         /* Free stories must be active immediately for every authenticated owner.
            DB migration v159 also enforces this at INSERT time. This RPC is only a
@@ -1227,7 +1424,7 @@
         await sb.from('payment_requests').delete().eq('user_id',user.id).eq('target_type','story').eq('target_id',storyId).eq('status','pending').then(()=>{}).catch(()=>{});
 
         toast('Hekayə paylaşıldı.','success');setStatus('#storyStatus','','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
-      }catch(err){db.mediaProgressHide();if(storyId)await sb.from('stories').delete().eq('id',storyId);if(uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
+      }catch(err){db.mediaProgressHide();let storyRolledBack=!storyId;if(storyId){try{const rollback=await sb.from('stories').delete().eq('id',storyId).eq('user_id',user.id).select('id');storyRolledBack=!rollback.error&&rollback.data?.some(row=>row.id===storyId)}catch(rollbackError){console.warn('[AvtoVIP story rollback]',rollbackError)}}if(storyRolledBack&&uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false}
     });
     const {data:list}=await sb.from('elanlar').select('id,brand,model,year').eq('user_id',user.id).eq('status','approved').order('created_at',{ascending:false});const sel=$('#storyListing');if(sel)sel.innerHTML=`<option value="">${esc(staticText('Elana bağlama'))}</option>`+(list||[]).map(x=>`<option value="${x.id}">${esc(x.brand)} ${esc(x.model)} ${x.year}</option>`).join('');
   }
@@ -1262,13 +1459,13 @@
     const walletCurrency=currencyForProfile(profile);if($('#walletBalance'))$('#walletBalance').textContent=money(profile?.wallet_balance||0,walletCurrency);localizeFinanceCurrencyHint(walletCurrency);
     $('#profileForm')?.addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(e.currentTarget);const payload={name:fd.get('name')?.trim(),surname:fd.get('surname')?.trim(),phone:fd.get('phone')?.trim(),whatsapp_phone:fd.get('whatsapp_phone')?.trim(),country_code:fd.get('country_code')||'AZ',preferred_currency:COUNTRY_CURRENCY[String(fd.get('country_code')||'AZ').toUpperCase()]||'USD',city:fd.get('city')?.trim(),address:fd.get('address')?.trim(),bio:fd.get('bio')?.trim()};const {error}=await sb.from('users').update(payload).eq('id',user.id);if(error)toast(error.message,'error');else{localStorage.setItem('avtovip-country',String(payload.country_code).toUpperCase());toast('Profil yeniləndi.','success');loadCurrent()}});
     $('#walletTopupBtn')?.addEventListener('click',async()=>{const currency=currencyForProfile(currentProfile||profile);const value=await uiDialog({title:runtimeText('Balansı artır'),message:`${runtimeText('Balansa əlavə etmək istədiyiniz məbləği yazın')} (${currency}):`,input:true,confirmText:runtimeText('Sorğu yarat')});const amount=Number(String(value||'').replace(',','.'));if(!Number.isFinite(amount)||amount<=0)return;const {error}=await sb.from('payment_requests').insert({user_id:user.id,target_type:'wallet_topup',plan_code:'wallet_topup',amount,currency,payment_method:'payment_request',payer_note:''});if(error)toast(error.message,'error');else{toast(runtimeText('Balans artırma sorğusu yaradıldı.'),'success');loadOwnPayments(user.id)}});
-    $('#avatarInput')?.addEventListener('change',async e=>{const original=e.target.files[0];if(!original)return;let up=null;try{const oldUrl=profile?.avatar_url||null;const f=await db.prepareImage(original,{maxWidth:512,maxHeight:512,quality:.78,maxBytes:350_000});up=await db.upload('avatars',user.id,f,'profile');const {error}=await sb.from('users').update({avatar_url:up.url}).eq('id',user.id);if(error)throw error;$('#profileAvatar').src=up.url;if(oldUrl&&oldUrl!==up.url)await db.removeUrls('avatars',[oldUrl]).catch(()=>{});toast('Profil şəkli yeniləndi.','success')}catch(err){if(up?.path)await db.removePaths('avatars',[up.path]).catch(()=>{});toast(err.message,'error')}});
+    $('#avatarInput')?.addEventListener('change',async e=>{const original=e.target.files[0];if(!original)return;let up=null,persisted=false;try{const oldUrl=profile?.avatar_url||null;const f=await db.prepareImage(original,{maxWidth:512,maxHeight:512,quality:.78,maxBytes:350_000});up=await db.upload('avatars',user.id,f,'profile');const {error}=await sb.from('users').update({avatar_url:up.url}).eq('id',user.id);if(error)throw error;persisted=true;try{await db.linkR2Media(up.url,'profile',user.id)}catch(linkError){console.warn('[AvtoVIP avatar link] reconciliation needed',linkError)}$('#profileAvatar').src=up.url;if(oldUrl&&oldUrl!==up.url)await db.removeUrls('avatars',[oldUrl]).catch(()=>{});toast('Profil şəkli yeniləndi.','success')}catch(err){if(!persisted&&up?.path)await db.removePaths('avatars',[up.path]).catch(()=>{});toast(err.message,'error')}});
     $('#logoutBtn')?.addEventListener('click',async()=>{await sb.auth.signOut();location.href='index.html'});
     await Promise.all([loadOwnListings(user.id),loadOwnPayments(user.id),loadWalletTransactions(user.id)]);
   }
   async function loadOwnListings(uid){
     const {data,error}=await sb.from('elanlar').select('*').eq('user_id',uid).order('created_at',{ascending:false});const root=$('#myListings');if(error){root.textContent=error.message;return}$('#myListingCount').textContent=(data||[]).length;const unit=$('#myListingUnit');if(unit)unit.textContent=({az:'elan',en:'ads',ru:'объявл.',tr:'ilan',ka:'განცხ.'})[lang]||'ads';root.innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="profile-listing"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-192.png')}" alt=""><div class="grow"><div class="space-between"><a href="elan.html?id=${x.id}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a><span class="status-pill ${x.status}">${esc(t(x.status)||x.status)}</span></div><div class="muted small">${money(x.price,x.currency)} • ${x.year} • ${x.view_count||0} ${esc(staticText('Baxış'))}</div>${x.rejection_reason?`<div class="small" style="color:var(--danger)">${esc(x.rejection_reason)}</div>`:''}<div class="row-wrap" style="margin-top:5px">${x.status==='approved'?`<button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_vip"><i class="fa-solid fa-crown"></i> VIP</button><button class="btn btn-outline btn-sm" data-promote="${x.id}" data-kind="listing_premium"><i class="fa-solid fa-gem"></i> Premium</button><button class="btn btn-outline btn-sm" data-sold="${x.id}">${esc(staticText('Satıldı'))}</button>`:''}<button class="btn btn-outline btn-sm" data-delete-listing="${x.id}">${esc(staticText('Sil'))}</button></div></div></div>`).join(''):`<div class="empty-state">${esc(staticText('Hələ elan yerləşdirməmisiniz.'))}</div>`;
-    root.onclick=async e=>{const p=e.target.closest('[data-promote]');if(p){openPromotion(p.dataset.promote,p.dataset.kind);return}const s=e.target.closest('[data-sold]');if(s&&await uiDialog({title:'Təsdiq',message:'Elanı “Satılıb” statusuna keçirək?',confirmText:'Təsdiq et'})){const {error}=await sb.from('elanlar').update({status:'sold'}).eq('id',s.dataset.sold);if(error)toast(error.message,'error');else loadOwnListings(uid);return}const d=e.target.closest('[data-delete-listing]');if(d&&await uiDialog({title:'Təsdiq',message:'Bu elanı silmək istəyirsiniz?',confirmText:'Sil',danger:true})){const row=(data||[]).find(x=>x.id===d.dataset.deleteListing);const {error}=await sb.from('elanlar').delete().eq('id',d.dataset.deleteListing);if(error)toast(error.message,'error');else{if(row?.image_urls?.length)await db.removeUrls('elan-images',row.image_urls).catch(()=>{});loadOwnListings(uid)}}};
+    root.onclick=async e=>{const p=e.target.closest('[data-promote]');if(p){openPromotion(p.dataset.promote,p.dataset.kind);return}const s=e.target.closest('[data-sold]');if(s&&await uiDialog({title:'Təsdiq',message:'Elanı “Satılıb” statusuna keçirək?',confirmText:'Təsdiq et'})){const {error}=await sb.from('elanlar').update({status:'sold'}).eq('id',s.dataset.sold);if(error)toast(error.message,'error');else loadOwnListings(uid);return}const d=e.target.closest('[data-delete-listing]');if(d&&await uiDialog({title:'Təsdiq',message:'Bu elanı silmək istəyirsiniz?',confirmText:'Sil',danger:true})){const row=(data||[]).find(x=>x.id===d.dataset.deleteListing);const {error}=await sb.from('elanlar').delete().eq('id',d.dataset.deleteListing);if(error)toast(error.message,'error');else{const oldMedia=[...(row?.image_urls||[]),...(row?.video_url?[row.video_url]:[])];if(oldMedia.length)await db.removeUrls('elan-images',oldMedia).catch(err=>console.warn('[AvtoVIP listing cleanup]',err));loadOwnListings(uid)}}};
   }
   function openPromotion(id,kind){
     const premium=kind==='listing_premium'; const modal=document.createElement('div');modal.className='modal';modal.innerHTML=`<div class="modal-card"><div class="modal-head"><h3>${premium?'Premium':'VIP'} irəli çəkmə</h3><button class="modal-close"><i class="fa-solid fa-xmark"></i></button></div><div class="modal-body stack"><p class="muted small">Ödəniş üsulu bütün ölkələr üçün universal göstərilir. Mövcud mərhələdə sorğu təhlükəsiz yoxlamaya göndərilir.</p><div class="field"><label>Paket</label><select id="promoPlan"><option value="1d" data-price="${premium?4:3}">1 gün — ${premium?4:3} AZN</option><option value="7d" data-price="${premium?15:10}">7 gün — ${premium?15:10} AZN</option><option value="30d" data-price="${premium?35:25}">30 gün — ${premium?35:25} AZN</option></select></div><div class="field"><label>Ödəniş üsulu</label><select id="promoMethod"><option value="payment_request">Ödəniş sorğusu</option></select></div><div class="field"><label>Qeyd / əməliyyat məlumatı</label><textarea id="promoNote" placeholder="Ödəniş etdikdən sonra qeyd yaza bilərsiniz"></textarea></div><button class="btn btn-block" id="promoSend">Sorğu göndər</button></div></div>`;document.body.append(modal);document.documentElement.classList.add('modal-open');const close=()=>{modal.remove();document.documentElement.classList.remove('modal-open')};modal.querySelector('.modal-close').onclick=close;modal.onclick=e=>{if(e.target===modal)close()};modal.querySelector('#promoSend').onclick=async()=>{const plan=modal.querySelector('#promoPlan');const price=Number(plan.selectedOptions[0].dataset.price);const {error}=await sb.from('payment_requests').insert({user_id:currentUser.id,target_type:kind,target_id:id,plan_code:plan.value,amount:price,payment_method:modal.querySelector('#promoMethod').value,payer_note:modal.querySelector('#promoNote').value.trim()});if(error)toast(error.message,'error');else{toast('Ödəniş sorğusu göndərildi.','success');close();loadOwnPayments(currentUser.id)}};
@@ -1323,15 +1520,32 @@
   }
   async function openConversation(peer,listing=''){
     $('#messagesShell').classList.add('chat-selected');const pane=$('#chatPane');pane.classList.add('open');pane.dataset.peer=peer;pane.dataset.listing=listing||'';
-    const earlyForm=$('#chatForm');if(earlyForm)earlyForm.hidden=false;
-    const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').eq('id',peer).maybeSingle();const peerName=$('#chatPeerName');if(peerName){peerName.innerHTML=`${p?.is_verified?verifiedBadge():''}<span>${esc([p?.name,p?.surname].filter(Boolean).join(' ')||staticText('İstifadəçi'))}</span>`};const peerSub=$('#chatPeerLink .muted.tiny');if(peerSub)peerSub.textContent=window.__avOnlineUsers?.has?.(peer)?'Onlayn':'Oflayn';$('#chatPeerAvatar').src=p?.avatar_url||'assets/img/brand/icon-192.png';const peerShell=$('#chatPeerAvatarShell');if(peerShell){peerShell.className=`chat-peer-avatar-shell avatar-shell ${p?.membership_tier||'free'}${avatarVerifiedClass(p?.is_verified)}`;peerShell.querySelectorAll('.avatar-crown,.avatar-gem').forEach(x=>x.remove());if(p?.membership_tier==='vip')peerShell.insertAdjacentHTML('beforeend','<i class="fa-solid fa-crown avatar-crown"></i>');else if(p?.membership_tier==='premium')peerShell.insertAdjacentHTML('beforeend','<i class="fa-solid fa-gem avatar-gem"></i>')};const peerLink=$('#chatPeerLink');if(peerLink)peerLink.href=`user.html?id=${encodeURIComponent(peer)}`;
+    const earlyForm=$('#chatForm');
+    // Attachments belong to the conversation in which they were selected.
+    // Never carry an uploaded private file into a different recipient's chat.
+    const conversationKey=`${peer}|${listing||''}`;
+    if(earlyForm){
+      if(earlyForm.dataset.mediaConversation&&earlyForm.dataset.mediaConversation!==conversationKey){
+        const abandoned=Array.isArray(earlyForm._avMediaItems)?earlyForm._avMediaItems.splice(0):[];
+        for(const item of abandoned)if(item.previewUrl)URL.revokeObjectURL(item.previewUrl);
+        $('#chatMediaPreview')?.replaceChildren();
+        // Cleanup is best-effort; the orphan sweep remains the safe fallback.
+        if(abandoned.length)db.removeUrls('chat-media',abandoned.map(item=>item.url)).then(result=>{
+          if(result?.error)console.warn('[AvtoVIP abandoned attachment cleanup]',result.error);
+        }).catch(error=>console.warn('[AvtoVIP abandoned attachment cleanup]',error));
+      }
+      earlyForm.dataset.mediaConversation=conversationKey;
+      earlyForm.hidden=false;
+    }
+    const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').eq('id',peer).maybeSingle();if(pane.dataset.peer!==peer||pane.dataset.listing!==(listing||''))return;const peerName=$('#chatPeerName');if(peerName){peerName.innerHTML=`${p?.is_verified?verifiedBadge():''}<span>${esc([p?.name,p?.surname].filter(Boolean).join(' ')||staticText('İstifadəçi'))}</span>`};const peerSub=$('#chatPeerLink .muted.tiny');if(peerSub)peerSub.textContent=window.__avOnlineUsers?.has?.(peer)?'Onlayn':'Oflayn';$('#chatPeerAvatar').src=p?.avatar_url||'assets/img/brand/icon-192.png';const peerShell=$('#chatPeerAvatarShell');if(peerShell){peerShell.className=`chat-peer-avatar-shell avatar-shell ${p?.membership_tier||'free'}${avatarVerifiedClass(p?.is_verified)}`;peerShell.querySelectorAll('.avatar-crown,.avatar-gem').forEach(x=>x.remove());if(p?.membership_tier==='vip')peerShell.insertAdjacentHTML('beforeend','<i class="fa-solid fa-crown avatar-crown"></i>');else if(p?.membership_tier==='premium')peerShell.insertAdjacentHTML('beforeend','<i class="fa-solid fa-gem avatar-gem"></i>')};const peerLink=$('#chatPeerLink');if(peerLink)peerLink.href=`user.html?id=${encodeURIComponent(peer)}`;
     const avatar=$('#chatPeerAvatar');avatar?.classList.toggle('vip-avatar',p?.membership_tier==='vip');avatar?.classList.toggle('premium-avatar',p?.membership_tier==='premium');
-    const form=$('#chatForm'),rel=await blockedRelationship(peer),notice=$('#chatBlockedNotice');if(form)form.hidden=rel.blocked;if(notice){notice.hidden=!rel.blocked;notice.textContent=rel.byMe?runtimeText('Bu istifadəçini blokdan çıxarmadan mesaj yaza bilməzsiniz.'):rel.byPeer?runtimeText('Bu istifadəçi sizi bloklayıb. Mesaj göndərmək mümkün deyil.'):''}
+    const form=$('#chatForm'),rel=await blockedRelationship(peer),notice=$('#chatBlockedNotice');if(pane.dataset.peer!==peer||pane.dataset.listing!==(listing||''))return;if(form)form.hidden=rel.blocked;if(notice){notice.hidden=!rel.blocked;notice.textContent=rel.byMe?runtimeText('Bu istifadəçini blokdan çıxarmadan mesaj yaza bilməzsiniz.'):rel.byPeer?runtimeText('Bu istifadəçi sizi bloklayıb. Mesaj göndərmək mümkün deyil.'):''}
     await renderThread(peer,listing);
+    if(pane.dataset.peer!==peer||pane.dataset.listing!==(listing||''))return;
     if(window.__avPeerSyncChannel){await sb.removeChannel(window.__avPeerSyncChannel).catch(()=>{});window.__avPeerSyncChannel=null}
     const syncTopic='chat-peer-'+[currentUser.id,peer].sort().join('-');
     window.__avPeerSyncChannel=sb.channel(syncTopic,{config:{broadcast:{self:false}}}).on('broadcast',{event:'changed'},()=>{if($('#chatPane')?.dataset.peer===peer){renderThread(peer,listing);renderConversations(currentUser.id)}}).subscribe();
-    if(form)form.onsubmit=async e=>{e.preventDefault();const current=await blockedRelationship(peer);if(current.blocked){form.hidden=true;if(notice){notice.hidden=false;notice.textContent=current.byMe?runtimeText('Bu istifadəçini blokdan çıxarmadan mesaj yaza bilməzsiniz.'):runtimeText('Bu istifadəçi sizi bloklayıb. Mesaj göndərmək mümkün deyil.')}return}const input=$('#chatInput');const body=input.value.trim();const mediaItems=Array.isArray(form._avMediaItems)?form._avMediaItems:[];if(!body&&!mediaItems.length)return;const sendButton=form.querySelector('[type=submit]');if(sendButton?.disabled)return;if(sendButton)sendButton.disabled=true;try{const rows=mediaItems.length?mediaItems.map((m,i)=>({listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body:i===0?body:'',media_url:m.url,media_type:m.type})): [{listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body}];const {error}=await sb.from('messages').insert(rows);if(error){toast(error.message==='AVTOVIP_BLOCKED_MESSAGE'?runtimeText('Bu istifadəçi ilə mesajlaşma mümkün deyil.'):error.message,'error');return}input.value='';form._avMediaItems=[];$('#chatMediaPreview')?.replaceChildren();window.__avLastLocalMessageSend=Date.now();window.__avPeerSyncChannel?.send({type:'broadcast',event:'changed',payload:{kind:'message'}}).catch(()=>{});await renderThread(peer,listing);await renderConversations(currentUser.id)}finally{if(sendButton)sendButton.disabled=false}};
+    if(form)form.onsubmit=async e=>{e.preventDefault();if(form.dataset.mediaConversation!==conversationKey||pane.dataset.peer!==peer||pane.dataset.listing!==(listing||''))return;const current=await blockedRelationship(peer);if(form.dataset.mediaConversation!==conversationKey||pane.dataset.peer!==peer)return;if(current.blocked){form.hidden=true;if(notice){notice.hidden=false;notice.textContent=current.byMe?runtimeText('Bu istifadəçini blokdan çıxarmadan mesaj yaza bilməzsiniz.'):runtimeText('Bu istifadəçi sizi bloklayıb. Mesaj göndərmək mümkün deyil.')}return}const input=$('#chatInput');const body=input.value.trim();const mediaItems=Array.isArray(form._avMediaItems)?form._avMediaItems:[];if(!body&&!mediaItems.length)return;const sendButton=form.querySelector('[type=submit]');if(sendButton?.disabled)return;if(sendButton)sendButton.disabled=true;try{const rows=mediaItems.length?mediaItems.map((m,i)=>({listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body:i===0?body:'',media_url:m.url,media_type:m.type})): [{listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body}];const {data:createdMessages,error}=await sb.from('messages').insert(rows).select('id,media_url');if(error){toast(error.message==='AVTOVIP_BLOCKED_MESSAGE'?runtimeText('Bu istifadəçi ilə mesajlaşma mümkün deyil.'):error.message,'error');return}for(const message of createdMessages||[]){if(message.media_url){try{await db.linkR2Media(message.media_url,'message',message.id)}catch(linkError){console.warn('[AvtoVIP message link] reconciliation needed',linkError)}}}input.value='';for(const item of mediaItems)if(item.previewUrl)URL.revokeObjectURL(item.previewUrl);form._avMediaItems=[];$('#chatMediaPreview')?.replaceChildren();window.__avLastLocalMessageSend=Date.now();window.__avPeerSyncChannel?.send({type:'broadcast',event:'changed',payload:{kind:'message'}}).catch(()=>{});await renderThread(peer,listing);await renderConversations(currentUser.id)}finally{if(sendButton)sendButton.disabled=false}};
     initChatMedia(peer,listing);
   }
   function initChatMedia(peer,listing){
@@ -1339,8 +1553,9 @@
     const file=$('#chatMediaInput'),camera=$('#chatCameraInput'),preview=$('#chatMediaPreview');
     $('#chatMediaBtn')?.addEventListener('click',()=>file?.click());$('#chatCameraBtn')?.addEventListener('click',()=>camera?.click());
     form._avMediaItems=[];
-    const paintMedia=()=>{if(!preview)return;preview.innerHTML=form._avMediaItems.map((m,i)=>`<span class="av-attach-tile">${m.type==='video'?`<video src="${esc(m.url)}" muted playsinline preload="metadata"></video>`:`<img src="${esc(m.url)}" alt="Şəkil ${i+1}">`}<button type="button" class="av-attach-preview" data-preview-media="${i}" aria-label="Önizləmə"></button><button type="button" data-remove-media="${i}" aria-label="Sil">×</button></span>`).join('');};
-    preview?.addEventListener('click',async e=>{const btn=e.target.closest('[data-remove-media]');if(btn){const item=form._avMediaItems.splice(Number(btn.dataset.removeMedia),1)[0];paintMedia();if(item)await db.removeUrls('chat-media',[item.url]).catch(()=>{});return}const open=e.target.closest('[data-preview-media]');if(!open)return;const item=form._avMediaItems[Number(open.dataset.previewMedia)];if(!item)return;const back=document.createElement('div');back.className='av-attach-lightbox';const media=document.createElement(item.type==='video'?'video':'img');media.src=item.url;if(item.type==='video'){media.controls=true;media.playsInline=true;}back.append(media);
+    window.addEventListener('pagehide',()=>{for(const item of form._avMediaItems||[])if(item.previewUrl)URL.revokeObjectURL(item.previewUrl)},{once:true});
+    const paintMedia=()=>{if(!preview)return;preview.innerHTML=form._avMediaItems.map((m,i)=>`<span class="av-attach-tile">${m.type==='video'?`<video src="${esc(m.previewUrl||m.url)}" muted playsinline preload="metadata"></video>`:`<img src="${esc(m.previewUrl||m.url)}" alt="Şəkil ${i+1}">`}<button type="button" class="av-attach-preview" data-preview-media="${i}" aria-label="Önizləmə"></button><button type="button" data-remove-media="${i}" aria-label="Sil">×</button></span>`).join('');};
+    preview?.addEventListener('click',async e=>{const btn=e.target.closest('[data-remove-media]');if(btn){const item=form._avMediaItems.splice(Number(btn.dataset.removeMedia),1)[0];paintMedia();if(item?.previewUrl)URL.revokeObjectURL(item.previewUrl);if(item)await db.removeUrls('chat-media',[item.url]).catch(()=>{});return}const open=e.target.closest('[data-preview-media]');if(!open)return;const item=form._avMediaItems[Number(open.dataset.previewMedia)];if(!item)return;const back=document.createElement('div');back.className='av-attach-lightbox';const media=document.createElement(item.type==='video'?'video':'img');media.src=item.previewUrl||item.url;if(item.type==='video'){media.controls=true;media.playsInline=true;}back.append(media);
       const previewToken='av-attach-'+Date.now();
       let previewHistoryOpen=true;
       const onPreviewPop=()=>{previewHistoryOpen=false;closePreview(true)};
@@ -1352,7 +1567,7 @@
       history.pushState({...(history.state||{}),avAttachPreview:previewToken},'',location.href);
       back.addEventListener('click',event=>{if(event.target===back)closePreview()});
       document.body.append(back);});
-    const handleMedia=async inputEl=>{const originals=[...(inputEl.files||[])];inputEl.value='';if(!originals.length)return;const isVideo=f=>db.isVideoFile(f),isImage=f=>f.type.startsWith('image/')||db.isHeicFile(f);if(originals.some(f=>!isImage(f)&&!isVideo(f))){toast('Şəkil və ya video seçin.','error');return}if(originals.some(isVideo)&&(originals.length!==1||form._avMediaItems.length)){toast('Video yalnız bir ədəd göndərilə bilər.','error');return}if(form._avMediaItems.some(m=>m.type==='video')){toast('Video ayrıca göndərilməlidir.','error');return}if(form._avMediaItems.length+originals.length>10){toast('Maksimum 10 şəkil seçilə bilər.','error');return}for(const original of originals){let up=null;try{const video=isVideo(original);if(video&&original.size>50*1024*1024)throw new Error('Video maksimum 50 MB ola bilər.');if(!video&&original.size>10*1024*1024)throw new Error('Şəkil 10 MB-dan böyük ola bilməz.');const media=video?await db.transcodeVideo(original,{maxWidth:1280,maxHeight:1280,progressTitle:'Video hazırlanır...'}):await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.84,maxBytes:2_500_000,progressTitle:'Şəkil hazırlanır...'});up=await db.upload('chat-media',currentUser.id,media,'messages');form._avMediaItems.push({url:up.url,type:video?'video':'image'});paintMedia()}catch(err){if(up?.url)await db.removeUrls('chat-media',[up.url]).catch(()=>{});toast(err.message,'error');break}finally{db.mediaProgressHide()}}};
+    const handleMedia=async inputEl=>{const originals=[...(inputEl.files||[])];inputEl.value='';if(!originals.length)return;const isVideo=f=>db.isVideoFile(f),isImage=f=>f.type.startsWith('image/')||db.isHeicFile(f);if(originals.some(f=>!isImage(f)&&!isVideo(f))){toast('Şəkil və ya video seçin.','error');return}if(originals.some(isVideo)&&(originals.length!==1||form._avMediaItems.length)){toast('Video yalnız bir ədəd göndərilə bilər.','error');return}if(form._avMediaItems.some(m=>m.type==='video')){toast('Video ayrıca göndərilməlidir.','error');return}if(form._avMediaItems.length+originals.length>10){toast('Maksimum 10 şəkil seçilə bilər.','error');return}for(const original of originals){if(form.dataset.mediaConversation!==`${peer}|${listing||''}`)break;let up=null;try{const video=isVideo(original);if(video&&original.size>50*1024*1024)throw new Error('Video maksimum 50 MB ola bilər.');if(!video&&original.size>10*1024*1024)throw new Error('Şəkil 10 MB-dan böyük ola bilməz.');const media=video?await db.transcodeVideo(original,{maxWidth:1280,maxHeight:1280,progressTitle:'Video hazırlanır...'}):await db.prepareImage(original,{maxWidth:1800,maxHeight:1800,quality:.84,maxBytes:2_500_000,progressTitle:'Şəkil hazırlanır...'});if(media.size>50*1024*1024)throw new Error('Hazırlanmış media 50 MB limitini keçir.');up=await db.upload('chat-media',currentUser.id,media,'messages');if(form.dataset.mediaConversation!==`${peer}|${listing||''}`){await db.removeUrls('chat-media',[up.url]).catch(()=>{});break;}form._avMediaItems.push({url:up.url,type:video?'video':'image',previewUrl:URL.createObjectURL(media)});paintMedia()}catch(err){if(up?.url)await db.removeUrls('chat-media',[up.url]).catch(()=>{});toast(err.message,'error');break}finally{db.mediaProgressHide()}}};
     file?.addEventListener('change',()=>handleMedia(file));camera?.addEventListener('change',()=>handleMedia(camera));
     let chatEmojiSelStart=0,chatEmojiSelEnd=0;const rememberChatEmojiCaret=()=>{const input=$('#chatInput');if(!input)return;chatEmojiSelStart=input.selectionStart??input.value.length;chatEmojiSelEnd=input.selectionEnd??chatEmojiSelStart};$('#chatInput')?.addEventListener('keyup',rememberChatEmojiCaret);$('#chatInput')?.addEventListener('click',rememberChatEmojiCaret);$('#chatInput')?.addEventListener('select',rememberChatEmojiCaret);$('#chatEmojiBtn')?.addEventListener('click',()=>{rememberChatEmojiCaret();const box=$('#chatEmojiPicker');box.hidden=!box.hidden;$('#chatInput')?.focus({preventScroll:true})});$('#chatEmojiPicker')?.addEventListener('pointerdown',e=>{if(e.target.closest('[data-emoji]'))e.preventDefault()},{passive:false});
     $('#chatEmojiPicker')?.addEventListener('click',e=>{const b=e.target.closest('[data-emoji]'),input=$('#chatInput');if(!b||!input)return;const a=Math.min(chatEmojiSelStart,input.value.length),z=Math.min(chatEmojiSelEnd,input.value.length),emoji=b.dataset.emoji;input.value=input.value.slice(0,a)+emoji+input.value.slice(z);const pos=a+emoji.length;chatEmojiSelStart=chatEmojiSelEnd=pos;input.focus({preventScroll:true});try{input.setSelectionRange(pos,pos)}catch{}e.currentTarget.hidden=false});
@@ -1385,6 +1600,7 @@
     if(root.dataset.avRenderSignature===renderSignature)return;
     root.dataset.avRenderSignature=renderSignature;
     let lastDay='';const today=new Date(),yesterday=new Date();yesterday.setDate(today.getDate()-1);const dayKey=d=>`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;root.innerHTML=visibleMessages.map(m=>{const d=new Date(m.created_at),key=dayKey(d);let sep='';if(key!==lastDay){lastDay=key;const label=key===dayKey(today)?runtimeText('Bu gün'):key===dayKey(yesterday)?runtimeText('Dünən'):d.toLocaleDateString(document.documentElement.lang||'az',{day:'2-digit',month:'long',year:d.getFullYear()===today.getFullYear()?undefined:'numeric'});sep=`<div class="chat-date-separator"><span>${esc(label)}</span></div>`}const mine=m.sender_id===currentUser.id;const chips=(reactionsByMessage.get(String(m.id))||[]).map(r=>`<button type="button" class="av-reaction-chip ${r.user_id===currentUser.id?'selected':''}" data-reaction-message="${m.id}" title="İfadəni dəyiş">${esc(r.emoji)}</button>`).join('');const status=mine?`<span class="av-message-status ${m.is_read?'read':'sent'}" title="${m.is_read?'Oxunub':'Göndərilib'}">${m.is_read?'✓✓':'✓'}</span>`:'';return sep+`<div class="bubble ${mine?'mine':''}" data-message-id="${m.id}" data-media-url="${esc(m.media_url||'')}">${m.media_url?(m.media_type==='video'?`<div class="av-chat-video-wrap" data-media-video="${esc(m.media_url)}"><video class="chat-media chat-video" src="${esc(m.media_url)}" playsinline preload="metadata" tabindex="-1"></video><span class="av-video-play"><i class="fa-solid fa-play"></i></span></div>`:`<button type="button" class="chat-media-open" data-media-open="${esc(m.media_url)}" aria-label="Şəkli böyüt"><img class="chat-media" src="${esc(m.media_url)}" alt=""></button>`):''}${m.body?`<p>${esc(m.body)}</p>`:''}<div class="av-message-footer ${mine?'mine':''}">${mine?`<span class="av-footer-reactions">${chips}</span><span class="av-footer-spacer"></span><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button><button type="button" data-edit-message="${m.id}" title="Redaktə"><i class="fa-solid fa-pen"></i></button><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><time>${timeText(m.created_at)}${m.edited_at?' · ✎':''}</time>${status}`:`<span class="av-foreign-controls"><time>${timeText(m.created_at)}</time><span class="av-foreign-buttons"><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button></span></span><span class="av-footer-spacer"></span><span class="av-footer-reactions">${chips}</span>`}</div></div>`}).join('');const newLast=root.querySelector('.bubble:last-of-type')?.dataset.messageId;const shouldBottom=nearBottom||(!oldLast)||oldLast!==newLast;root.scrollTop=shouldBottom?root.scrollHeight:oldScroll;
+    hydratePrivateMedia(root).catch(error=>console.warn('[AvtoVIP chat media]',error));
     // Media dimensions may settle after render; keep the newest message visible.
     const stayAtLatest=()=>{if(root.isConnected){if(shouldBottom)root.scrollTop=root.scrollHeight;else root.scrollTop=oldScroll+(root.scrollHeight-oldHeight)}};
     root.querySelectorAll('img.chat-media,video.chat-video').forEach(media=>{
@@ -1405,14 +1621,32 @@
       const back=document.createElement('div');back.className='chat-lightbox av-chat-gallery';
       back.innerHTML=`<div class="av-chat-gallery-toolbar"><button type="button" class="av-chat-gallery-download" aria-label="Yüklə" title="Yüklə"><i class="fa-solid fa-download"></i></button><button type="button" class="chat-lightbox-close" aria-label="Bağla">×</button></div><div class="av-chat-gallery-stage"></div><span data-gallery-count></span>`;
       const stage=back.querySelector('.av-chat-gallery-stage');
-      const draw=()=>{const item=items[index];stage.querySelector('video')?.pause();stage.replaceChildren();const el=document.createElement(item.video?'video':'img');el.src=item.url;if(item.video){el.controls=true;el.playsInline=true;el.autoplay=true;el.play().catch(()=>{});}else el.alt='';stage.append(el);back.querySelector('[data-gallery-count]').textContent=items.length>1?`${index+1}/${items.length}`:''};
+      const draw=()=>{const item=items[index];stage.querySelector('video')?.pause();stage.replaceChildren();const el=document.createElement(item.video?'video':'img');el.src=item.url;resolvePrivateMedia(item.url).then(local=>{if(el.isConnected)el.src=local}).catch(()=>{});if(item.video){el.controls=true;el.playsInline=true;el.autoplay=true;el.play().catch(()=>{});}else el.alt='';stage.append(el);back.querySelector('[data-gallery-count]').textContent=items.length>1?`${index+1}/${items.length}`:''};
       const galleryToken='av-gallery-'+Date.now();let galleryHistoryOpen=true;history.pushState({...(history.state||{}),avMediaGallery:galleryToken},'',location.href);const close=(fromHistory=false)=>{stage.querySelector('video')?.pause();back.remove();document.removeEventListener('keydown',onKey);window.removeEventListener('popstate',onGalleryPop);if(!fromHistory&&galleryHistoryOpen&&history.state?.avMediaGallery===galleryToken){galleryHistoryOpen=false;history.back()}};const onGalleryPop=()=>{galleryHistoryOpen=false;close(true)};window.addEventListener('popstate',onGalleryPop);
       const move=delta=>{index=(index+delta+items.length)%items.length;draw()};
       const onKey=x=>{if(x.key==='Escape')close();else if(x.key==='ArrowLeft')move(-1);else if(x.key==='ArrowRight')move(1)};
       let touchStart=null;
       stage.addEventListener('touchstart',e=>{if(e.touches.length===1)touchStart={x:e.touches[0].clientX,y:e.touches[0].clientY}},{passive:true});
       stage.addEventListener('touchend',e=>{if(!touchStart||!e.changedTouches.length)return;const dx=e.changedTouches[0].clientX-touchStart.x,dy=e.changedTouches[0].clientY-touchStart.y;touchStart=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.3&&items.length>1)move(dx<0?1:-1)},{passive:true});
-      back.onclick=async x=>{if(x.target===back||x.target.closest('.chat-lightbox-close')){close();return}if(x.target.closest('.av-chat-gallery-download')){const item=items[index];try{const u=new URL(item.url,location.href);const marker='/storage/v1/object/public/chat-media/';if(u.origin!==new URL(sb.supabaseUrl||location.origin).origin||!u.pathname.includes(marker))throw Error('Fayl ünvanı uyğun deyil');const path=decodeURIComponent(u.pathname.split(marker)[1]);const {data,error}=await sb.storage.from('chat-media').download(path);if(error)throw error;const url=URL.createObjectURL(data);const a=document.createElement('a');a.href=url;a.download=path.split('/').pop()||'avtovip-media';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)}catch(err){toast('Faylı yükləmək mümkün olmadı.','error');console.warn(err)}}};
+      back.onclick=async x=>{if(x.target===back||x.target.closest('.chat-lightbox-close')){close();return}if(x.target.closest('.av-chat-gallery-download')){
+        const item=items[index];try{
+          let blob,filename;
+          if(privateMediaPattern.test(item.url)){
+            ({blob,filename}=await db.downloadR2Media(item.url));
+          }else{
+            const u=new URL(item.url,location.href);
+            const marker='/storage/v1/object/public/chat-media/';
+            if(u.origin!==new URL(sb.supabaseUrl||location.origin).origin||!u.pathname.includes(marker))throw Error('Fayl ünvanı uyğun deyil');
+            const path=decodeURIComponent(u.pathname.split(marker)[1]);
+            const result=await sb.storage.from('chat-media').download(path);
+            if(result.error)throw result.error;
+            blob=result.data;filename=path.split('/').pop()||'avtovip-media';
+          }
+          const objectUrl=URL.createObjectURL(blob),a=document.createElement('a');
+          a.href=objectUrl;a.download=filename;document.body.append(a);a.click();a.remove();
+          setTimeout(()=>URL.revokeObjectURL(objectUrl),30000);
+        }catch(err){toast('Faylı yükləmək mümkün olmadı.','error');console.warn(err)}
+      }};
       root.querySelectorAll('video.chat-video').forEach(v=>v.pause());document.querySelector('.chat-lightbox')?.remove();document.body.append(back);draw();document.addEventListener('keydown',onKey);return;
     }
     const existingPicker=document.querySelector('.av-chat-reaction-picker');if(existingPicker&&!e.target.closest('[data-react-message],[data-reaction-message]'))existingPicker.remove();
@@ -1420,7 +1654,7 @@
     if(react){const id=react.dataset.reactMessage||react.dataset.reactionMessage;const bubble=react.closest('.bubble');document.querySelector('.av-chat-reaction-picker')?.remove();const picker=document.createElement('div');picker.className='av-chat-reaction-picker';picker.innerHTML='<button type="button" data-pick-reaction="" title="İfadəni sil">×</button>'+['😁','😂','😊','😉','😍','😘','😋','😎','😔','😢','😡','🫡','🤝','👍','👎','⭐','🔥','❤️','🛞'].map(v=>`<button type="button" data-pick-reaction="${v}">${v}</button>`).join('');document.body.append(picker);const r=react.getBoundingClientRect();picker.style.position='fixed';picker.style.left=Math.max(8,Math.min(r.left,innerWidth-310))+'px';picker.style.top=Math.max(8,Math.min(r.bottom+6,innerHeight-190))+'px';picker.onclick=async ev=>{const btn=ev.target.closest('[data-pick-reaction]');if(!btn)return;const emoji=btn.dataset.pickReaction;const query=sb.from('message_reactions');const {error}=emoji?await query.upsert({message_id:id,user_id:currentUser.id,emoji},{onConflict:'message_id,user_id'}):await query.delete().eq('message_id',id).eq('user_id',currentUser.id);if(error){toast('İfadəni yadda saxlamaq olmadı.','error');return}window.__avPeerSyncChannel?.send({type:'broadcast',event:'changed',payload:{kind:'reaction'}}).catch(()=>{});picker.remove();const target=bubble.querySelector('.av-footer-reactions');if(target){const existing=target.querySelector('.av-reaction-chip.selected');if(existing)existing.remove();if(emoji){const chip=document.createElement('button');chip.type='button';chip.className='av-reaction-chip selected';chip.dataset.reactionMessage=id;chip.textContent=emoji;target.append(chip)}}};return;
     }
     document.querySelector('.av-chat-reaction-picker')?.remove();
-    const del=e.target.closest('[data-delete-message]'),edit=e.target.closest('[data-edit-message]');if(del){const id=del.dataset.deleteMessage,b=del.closest('.bubble'),own=b?.classList.contains('mine');const choice=await avMessageDeleteChoice(own);if(!choice)return;if(choice==='me'){const {error}=await sb.from('message_user_deletions').insert({message_id:id,user_id:currentUser.id});if(error){toast(error.message,'error');return}b?.remove();await renderConversations(currentUser.id);return}const {data:changed,error}=await sb.rpc('av_delete_own_message',{p_message_id:id});if(error){toast(error.message,'error');return}if(!changed?.length){toast('Mesaj silinmədi.','error');return}const mediaUrl=b?.dataset.mediaUrl;if(mediaUrl)await db.removeUrls('chat-media',[mediaUrl]).catch(err=>console.warn('[AvtoVIP chat-media remove]',err));b?.remove();await renderConversations(currentUser.id)}if(edit){const id=edit.dataset.editMessage,b=edit.closest('.bubble'),old=b.querySelector('p')?.textContent||'';const text=await avMessageDialog({mode:'prompt',title:runtimeText('Mesajı redaktə edin'),value:old,confirmText:runtimeText('Yadda saxla')});if(text===null)return;const clean=text.trim();if(!clean)return;const {data:changed,error}=await sb.from('messages').update({body:clean,edited_at:new Date().toISOString()}).eq('id',id).eq('sender_id',currentUser.id).select('id,body,edited_at');if(error)toast(error.message,'error');else if(!changed?.length)toast(runtimeText('Mesaj Supabase-də dəyişdirilmədi. SQL icazəsini yoxlayın.'),'error');else{const para=b?.querySelector('p');if(para)para.textContent=changed[0].body;const tm=b?.querySelector('time');if(tm&&!tm.textContent.includes('✎'))tm.textContent+=' · ✎';await renderConversations(currentUser.id)}}};
+    const del=e.target.closest('[data-delete-message]'),edit=e.target.closest('[data-edit-message]');if(del){const id=del.dataset.deleteMessage,b=del.closest('.bubble'),own=b?.classList.contains('mine');const choice=await avMessageDeleteChoice(own);if(!choice)return;if(choice==='me'){const {error}=await sb.from('message_user_deletions').insert({message_id:id,user_id:currentUser.id});if(error){toast(error.message,'error');return}b?.remove();await renderConversations(currentUser.id);return}const {data:changed,error}=await sb.rpc('av_delete_own_message',{p_message_id:id});if(error){toast(error.message,'error');return}if(!changed?.length){toast('Mesaj silinmədi.','error');return}const mediaUrl=b?.dataset.mediaUrl;if(mediaUrl){releasePrivateMedia(mediaUrl);await db.removeUrls('chat-media',[mediaUrl]).catch(err=>console.warn('[AvtoVIP chat-media remove]',err));}b?.remove();await renderConversations(currentUser.id)}if(edit){const id=edit.dataset.editMessage,b=edit.closest('.bubble'),old=b.querySelector('p')?.textContent||'';const text=await avMessageDialog({mode:'prompt',title:runtimeText('Mesajı redaktə edin'),value:old,confirmText:runtimeText('Yadda saxla')});if(text===null)return;const clean=text.trim();if(!clean)return;const {data:changed,error}=await sb.from('messages').update({body:clean,edited_at:new Date().toISOString()}).eq('id',id).eq('sender_id',currentUser.id).select('id,body,edited_at');if(error)toast(error.message,'error');else if(!changed?.length)toast(runtimeText('Mesaj Supabase-də dəyişdirilmədi. SQL icazəsini yoxlayın.'),'error');else{const para=b?.querySelector('p');if(para)para.textContent=changed[0].body;const tm=b?.querySelector('time');if(tm&&!tm.textContent.includes('✎'))tm.textContent+=' · ✎';await renderConversations(currentUser.id)}}};
     const unread=(data||[]).filter(m=>m.receiver_id===currentUser.id&&!m.is_read).map(m=>m.id);if(unread.length){await sb.from('messages').update({is_read:true}).in('id',unread);await renderConversations(currentUser.id)}updateMessageBadge()}
 
 

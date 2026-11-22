@@ -75,8 +75,197 @@
       .slice(-90);
   }
 
+  // R2 production adapter for public media. Private messages/stories stay on legacy
+  // Storage until recipient-authorized reads and expiry cleanup are deployed.
+  const R2_API = 'https://avtovip-media-api.seferovqerib09.workers.dev';
+  const R2_CATEGORIES = Object.freeze({avatars:'profile','elan-images':'listing','social-media':'post','story-media':'story','chat-media':'message','place-media':'place'});
+  // Safety switch: production migration is enabled only after coordinated deployment.
+  const R2_PUBLIC_UPLOADS_ENABLED = window.AV_R2_UPLOADS_ENABLED !== false;
+  const R2_URL_RE = /^https:\/\/avtovip-media-api\.seferovqerib09\.workers\.dev\/v1\/media\/([0-9a-f-]{36})$/i;
+  async function r2Token(){
+    const {data,error}=await client.auth.getSession();
+    if(error||!data?.session?.access_token)throw new Error('R2 üçün aktiv giriş tələb olunur');
+    return data.session.access_token;
+  }
+  async function r2Upload(file,category){
+    const jwt=await r2Token();
+    const response=await fetch(`${R2_API}/v1/media?category=${encodeURIComponent(category)}`,{
+      method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':file.type},body:file
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.id||!data.url)throw new Error(data.error||`R2 upload HTTP ${response.status}`);
+    return {path:`r2:${data.id}`,url:data.url,provider:'r2',mediaId:data.id};
+  }
+  // A DB row is persisted before linking. Retry only transient failures; never
+  // retry authorization/ownership or "URL not persisted" failures.
+  // A persisted entity must remain usable when its /link call encounters a
+  // transient outage. Queue only R2 identifiers (never JWTs or media bytes),
+  // and reconcile them on the next online/visible session in the same tab.
+  const R2_PENDING_LINKS_KEY='avtovip-r2-pending-links-v2';
+  const R2_PENDING_MAX_AGE=48*60*60*1000;
+  const R2_ENTITY_TYPES=new Set(['profile','listing','post','reel','story','message','place']);
+  let r2PendingOwner=null;
+  function pendingR2Links(owner=r2PendingOwner){
+    if(!owner)return [];
+    try{
+      const items=JSON.parse(sessionStorage.getItem(R2_PENDING_LINKS_KEY)||'[]');
+      if(!Array.isArray(items))return [];
+      return items.filter(x=>x&&x.owner===owner&&R2_URL_RE.test(x.url)&&R2_ENTITY_TYPES.has(x.type)&&
+        /^[0-9a-f-]{36}$/i.test(x.id)&&Number.isFinite(x.at)&&Date.now()-x.at<R2_PENDING_MAX_AGE).slice(-100);
+    }catch{return []}
+  }
+  function savePendingR2Links(items){
+    try{sessionStorage.setItem(R2_PENDING_LINKS_KEY,JSON.stringify(items.slice(-100)))}catch{}
+  }
+  function enqueueR2Link(url,type,id,owner){
+    if(!owner||!R2_URL_RE.test(String(url||''))||!R2_ENTITY_TYPES.has(type))return;
+    // A delayed upload/link response must never create work under a different account.
+    if(owner!==r2PendingOwner)return;
+    const items=pendingR2Links(owner).filter(x=>!(x.url===url&&x.type===type&&x.id===id));
+    items.push({url,type,id,owner,at:Date.now()});savePendingR2Links(items);
+  }
+  function clearPendingR2Link(url,type,id,owner){
+    if(!owner||owner!==r2PendingOwner)return;
+    const items=pendingR2Links(owner);
+    if(items.some(x=>x.url===url&&x.type===type&&x.id===id))
+      savePendingR2Links(items.filter(x=>!(x.url===url&&x.type===type&&x.id===id)));
+  }
+  async function linkR2MediaRequest(mediaUrl,entityType,entityId){
+    const match=R2_URL_RE.exec(String(mediaUrl||''));
+    if(!match)return null;
+    const jwt=await r2Token();
+    for(let attempt=0;attempt<3;attempt++){
+      let response;
+      try{
+        response=await fetch(`${R2_API}/v1/media/${match[1]}/link`,{
+          method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':'application/json'},
+          body:JSON.stringify({entity_type:entityType,entity_id:entityId})
+        });
+      }catch(error){
+        if(attempt===2){error.retryable=true;throw error;}
+        await new Promise(resolve=>setTimeout(resolve,250*(attempt+1)));
+        continue;
+      }
+      if(response.ok)return match[1];
+      const data=await response.json().catch(()=>({}));
+      if(![429,500,502,503,504].includes(response.status)||attempt===2){
+        const error=new Error(data.error||`R2 media link HTTP ${response.status}`);
+        error.retryable=[429,500,502,503,504].includes(response.status);
+        throw error;
+      }
+      await new Promise(resolve=>setTimeout(resolve,250*(attempt+1)));
+    }
+    throw new Error('R2 media link retry exhausted');
+  }
+  async function linkR2Media(mediaUrl,entityType,entityId){
+    const {data:authData}=await client.auth.getSession();
+    const owner=authData?.session?.user?.id||null;
+    if(!owner)throw new Error('R2 media əlaqələndirməsi üçün aktiv hesab tələb olunur');
+    if(!r2PendingOwner)r2PendingOwner=owner;
+    if(r2PendingOwner!==owner)throw new Error('R2 hesabı dəyişib; media əlaqələndirməsi dayandırıldı');
+    try{
+      const result=await linkR2MediaRequest(mediaUrl,entityType,entityId);
+      clearPendingR2Link(mediaUrl,entityType,entityId,owner);
+      return result;
+    }catch(error){
+      if(error.retryable)enqueueR2Link(mediaUrl,entityType,entityId,owner);
+      throw error;
+    }
+  }
+  let reconcilingR2Links=false;
+  async function reconcilePendingR2Links(){
+    if(reconcilingR2Links||document.visibilityState==='hidden'||!navigator.onLine)return;
+    const {data:authData}=await client.auth.getSession();
+    const owner=authData?.session?.user?.id||null;
+    if(!owner||owner!==r2PendingOwner)return;
+    const items=pendingR2Links(owner);if(!items.length)return;
+    reconcilingR2Links=true;
+    try{
+      for(const item of items){
+        if(owner!==r2PendingOwner)break;
+        try{await linkR2MediaRequest(item.url,item.type,item.id);clearPendingR2Link(item.url,item.type,item.id,owner)}
+        catch(error){
+          // A permanent rejection means the entity was deleted, ownership
+          // changed, or the persisted URL no longer matches: do not retry.
+          if(!error.retryable)clearPendingR2Link(item.url,item.type,item.id,owner);
+        }
+      }
+    }finally{reconcilingR2Links=false;}
+  }
+  window.addEventListener('online',()=>{reconcilePendingR2Links().catch(()=>{})});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')reconcilePendingR2Links().catch(()=>{})});
+  // Wait until auth has restored its session; avoid racing page initialization.
+  client.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_OUT'){r2PendingOwner=null;savePendingR2Links([]);return;}
+    if(event==='INITIAL_SESSION'||event==='SIGNED_IN'||event==='TOKEN_REFRESHED'){
+      r2PendingOwner=session?.user?.id||null;
+      setTimeout(()=>reconcilePendingR2Links().catch(()=>{}),1000);
+    }
+  });
+  async function unlinkR2Media(mediaUrl,entityType,entityId){
+    const match=R2_URL_RE.exec(String(mediaUrl||''));if(!match)return null;
+    const jwt=await r2Token();
+    const response=await fetch(`${R2_API}/v1/media/${match[1]}/unlink`,{
+      method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':'application/json'},
+      body:JSON.stringify({entity_type:entityType,entity_id:entityId})
+    });
+    if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||`R2 unlink HTTP ${response.status}`);}
+    return match[1];
+  }
+  async function r2Remove(id){
+    const jwt=await r2Token();
+    const response=await fetch(`${R2_API}/v1/media/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${jwt}`}});
+    if(response.status===423)return {deferred:true};
+    if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||`R2 delete HTTP ${response.status}`);}
+  }
+
+  // Authenticated private R2 media: never put JWT in a URL or localStorage.
+  // Caller must revoke returned object URL when the preview is closed.
+  // Download private R2 media with the same authenticated endpoint as previews.
+  // Do not place access tokens in query strings, download links or browser history.
+  async function downloadR2Media(mediaUrl){
+    const match=R2_URL_RE.exec(String(mediaUrl||''));
+    if(!match)throw new Error('Invalid R2 media URL');
+    const jwt=await r2Token();
+    const response=await fetch(mediaUrl,{headers:{Authorization:`Bearer ${jwt}`},cache:'no-store'});
+    if(!response.ok)throw new Error(`Media download failed (${response.status})`);
+    const declared=Number(response.headers.get('Content-Length'));
+    if(declared>50*1024*1024)throw new Error('Media exceeds 50 MB');
+    const blob=await response.blob();
+    if(blob.size>50*1024*1024)throw new Error('Media exceeds 50 MB');
+    return {blob,filename:`avtovip-${match[1]}.${blob.type.includes('video/mp4')?'mp4':blob.type.includes('video/webm')?'webm':blob.type.includes('png')?'png':blob.type.includes('webp')?'webp':blob.type.includes('gif')?'gif':'jpg'}`};
+  }
+
+  async function privateR2ObjectUrl(mediaUrl){
+    const m=R2_URL_RE.exec(String(mediaUrl||''));
+    if(!m)throw new Error('Invalid R2 media URL');
+    const jwt=await r2Token();
+    const response=await fetch(mediaUrl,{headers:{Authorization:`Bearer ${jwt}`},cache:'no-store'});
+    if(!response.ok)throw new Error(`Private media access failed (${response.status})`);
+    const declared=Number(response.headers.get('Content-Length'));
+    if(declared>50*1024*1024)throw new Error('Private media exceeds 50 MB');
+    const blob=await response.blob();
+    if(blob.size>50*1024*1024)throw new Error('Private media exceeds 50 MB');
+    return URL.createObjectURL(blob);
+  }
+
   async function upload(bucket, userId, file, prefix = '') {
     if (!file || !userId) throw new Error('Fayl və istifadəçi tələb olunur.');
+    // Enable only public, directly renderable media. Large videos retain legacy flow.
+    const category=bucket==='social-media'&&/^reels?(?:\/|$)/i.test(prefix)?'reel':R2_CATEGORIES[bucket];
+    if(R2_PUBLIC_UPLOADS_ENABLED){
+      if(!category)throw new Error('R2 media bölməsi tanınmadı; köhnə Storage-a səssiz keçid bloklandı.');
+      if(!Number.isSafeInteger(file.size)||file.size<1)throw new Error('Boş və ya etibarsız media faylı.');
+      if(['profile','place'].includes(category)&&file.type.startsWith('video/'))throw new Error('Profil və Məkanlar yalnız şəkil qəbul edir.');
+      // Once enabled, never silently send an unsupported/oversized file to legacy Storage.
+      if(file.size>50*1024*1024)throw new Error('R2 fayl ölçüsü maksimum 50 MB ola bilər.');
+      if(!['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'].includes(file.type))
+        throw new Error('R2 bu media formatını qəbul etmir.');
+      const {data}=await client.auth.getSession();
+      if(data?.session?.user?.id!==userId)throw new Error('R2 istifadəçi təsdiqi uğursuz oldu.');
+      return r2Upload(file,category);
+    }
+
     const ext = (file.name?.split('.').pop() || 'bin').toLowerCase();
     const stem = cleanName(file.name?.replace(/\.[^.]+$/, '') || 'media');
     const fileName = `${Date.now()}-${crypto.randomUUID?.() || Math.random().toString(36).slice(2)}-${stem}.${ext}`;
@@ -103,11 +292,28 @@
   async function removePaths(bucket, paths=[]) {
     const clean=[...new Set((paths||[]).filter(Boolean))];
     if(!clean.length)return {data:[],error:null};
-    return client.storage.from(bucket).remove(clean);
+    const r2Ids=clean.filter(p=>/^r2:[0-9a-f-]{36}$/i.test(p)).map(p=>p.slice(3));
+    const legacy=clean.filter(p=>!/^r2:[0-9a-f-]{36}$/i.test(p));
+    // Never pass an unknown R2 reference to Supabase Storage deletion.
+    if(legacy.some(p=>String(p).startsWith('r2:')))return {data:[],error:new Error('Invalid R2 media reference')};
+    // Process every R2 object even if an earlier deletion fails. Returning the
+    // first error preserves the existing {data,error} contract for callers.
+    let firstError=null;
+    for(const id of r2Ids){try{await r2Remove(id)}catch(error){firstError??=error}}
+    if(!legacy.length)return {data:[],error:firstError};
+    try{
+      const result=await client.storage.from(bucket).remove(legacy);
+      return {data:result.data||[],error:firstError||result.error||null};
+    }catch(error){return {data:[],error:firstError||error}}
+
   }
 
   async function removeUrls(bucket, urls=[]) {
-    return removePaths(bucket,(urls||[]).map(u=>storagePathFromPublicUrl(bucket,u)).filter(Boolean));
+    const paths=(urls||[]).map(u=>{
+      const match=R2_URL_RE.exec(String(u||''));
+      return match?`r2:${match[1]}`:storagePathFromPublicUrl(bucket,u);
+    }).filter(Boolean);
+    return removePaths(bucket,paths);
   }
 
   /*
@@ -272,6 +478,10 @@
     storagePathFromPublicUrl,
     removePaths,
     removeUrls,
+    privateR2ObjectUrl,
+    downloadR2Media,
+    linkR2Media,
+    unlinkR2Media,
     prepareImage,
     transcodeVideo,
     prepareMedia,
