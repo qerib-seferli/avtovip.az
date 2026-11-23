@@ -215,7 +215,7 @@
   async function r2Remove(id){
     const jwt=await r2Token();
     const response=await fetch(`${R2_API}/v1/media/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${jwt}`}});
-    if(response.status===423)return {deferred:true};
+    if(response.status===423)throw new Error('R2 media hələ aktiv əlaqəyə malikdir (HTTP 423); silinmə təxirə salındı.');
     if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||`R2 delete HTTP ${response.status}`);}
   }
 
@@ -308,12 +308,24 @@
 
   }
 
-  async function removeUrls(bucket, urls=[]) {
+  async function removeUrls(bucket, urls=[], entityType=null, entityId=null) {
+    // Detach the exact entity reference before requesting physical deletion.
+    // Never unlink a different entity or bypass server-side ownership checks.
+    if(entityType&&entityId){
+      for(const url of [...new Set((urls||[]).filter(Boolean))]){
+        if(R2_URL_RE.test(String(url))){
+          try{await unlinkR2Media(url,entityType,entityId)}
+          catch(error){console.warn('[AvtoVIP R2 unlink]',entityType,entityId,error);return {data:[],error};}
+        }
+      }
+    }
     const paths=(urls||[]).map(u=>{
       const match=R2_URL_RE.exec(String(u||''));
       return match?`r2:${match[1]}`:storagePathFromPublicUrl(bucket,u);
     }).filter(Boolean);
-    return removePaths(bucket,paths);
+    const result=await removePaths(bucket,paths);
+    if(result?.error)throw result.error;
+    return result;
   }
 
   /*
