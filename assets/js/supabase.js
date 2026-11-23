@@ -209,14 +209,45 @@
       method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':'application/json'},
       body:JSON.stringify({entity_type:entityType,entity_id:entityId})
     });
-    if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||`R2 unlink HTTP ${response.status}`);}
+    const data=await response.json().catch(()=>null);
+    if(!response.ok)throw new Error(data?.error||`R2 unlink HTTP ${response.status}`);
+    // A 2xx response is not proof that the requested link was removed.
+    if(data?.unlinked!==true || data?.id!==match[1])throw new Error('R2 unlink confirmation missing or mismatched');
     return match[1];
   }
   async function r2Remove(id){
-    const jwt=await r2Token();
-    const response=await fetch(`${R2_API}/v1/media/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${jwt}`}});
-    if(response.status===423)throw new Error('R2 media hələ aktiv əlaqəyə malikdir (HTTP 423); silinmə təxirə salındı.');
-    if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||`R2 delete HTTP ${response.status}`);}
+    // Network interruption or a temporary Worker/DB failure should not leave
+    // an uploaded object orphaned after the domain row has been removed.
+    // Retrying DELETE is safe because the Worker verifies ownership, checks
+    // authoritative references, and treats an already-deleted ID idempotently.
+    // Never retry a 409/423: another live reference may still exist.
+    let lastError=null;
+    for(let attempt=0;attempt<3;attempt++){
+      try{
+        const jwt=await r2Token();
+        const response=await fetch(`${R2_API}/v1/media/${id}`,{
+          method:'DELETE',headers:{Authorization:`Bearer ${jwt}`},cache:'no-store'
+        });
+        const data=await response.json().catch(()=>null);
+        if(response.status===423)throw Object.assign(new Error('R2 media hələ aktiv əlaqəyə malikdir (HTTP 423); silinmə təxirə salındı.'),{retryable:false});
+        if(!response.ok){
+          const error=new Error(data?.error||`R2 delete HTTP ${response.status}`);
+          // Retry only transient failures, not authorization or active links.
+          error.retryable=[408,429,500,502,503,504].includes(response.status);
+          throw error;
+        }
+        if(data?.deleted!==true || data?.id!==id)
+          throw Object.assign(new Error('R2 deletion confirmation missing or mismatched'),{retryable:false});
+        return;
+      }catch(error){
+        lastError=error;
+        if(error?.retryable===false||attempt===2)break;
+        // fetch() network errors are retryable; unknown HTTP failures above
+        // are explicitly classified before reaching this point.
+        await new Promise(resolve=>setTimeout(resolve,350*(attempt+1)));
+      }
+    }
+    throw lastError;
   }
 
   // Authenticated private R2 media: never put JWT in a URL or localStorage.
@@ -282,10 +313,23 @@
 
 
   function storagePathFromPublicUrl(bucket, url='') {
+    // Never derive a local deletion key from a URL belonging to another host,
+    // or from a lookalike path containing the bucket name.
     try {
+      const raw=String(url);
+      // URL() normalizes dot-segments, so reject encoded traversal before parsing.
+      if(/%2e|%2f|%5c/i.test(raw) || /(?:^|\/)\.{1,2}(?:\/|\?|#|$)/.test(raw))return null;
+      const source=new URL(raw);
+      const project=new URL(SUPABASE_URL);
+      if(source.origin!==project.origin || source.username || source.password)return null;
       const marker=`/storage/v1/object/public/${bucket}/`;
-      const i=String(url).indexOf(marker);
-      return i>=0 ? decodeURIComponent(String(url).slice(i+marker.length).split('?')[0]) : null;
+      if(!source.pathname.startsWith(marker))return null;
+      const encoded=source.pathname.slice(marker.length);
+      if(!encoded || /%2f|%5c/i.test(encoded))return null;
+      const path=decodeURIComponent(encoded);
+      const segments=path.split('/');
+      if(segments.some(segment=>!segment || segment==='.' || segment==='..' || segment.includes('\\')))return null;
+      return path;
     } catch { return null; }
   }
 
@@ -293,12 +337,22 @@
     const clean=[...new Set((paths||[]).filter(Boolean))];
     if(!clean.length)return {data:[],error:null};
     const r2Ids=clean.filter(p=>/^r2:[0-9a-f-]{36}$/i.test(p)).map(p=>p.slice(3));
-    const legacy=clean.filter(p=>!/^r2:[0-9a-f-]{36}$/i.test(p));
-    // Never pass an unknown R2 reference to Supabase Storage deletion.
-    if(legacy.some(p=>String(p).startsWith('r2:')))return {data:[],error:new Error('Invalid R2 media reference')};
-    // Process every R2 object even if an earlier deletion fails. Returning the
-    // first error preserves the existing {data,error} contract for callers.
-    let firstError=null;
+    // A malformed R2 identifier must never be forwarded to Supabase Storage.
+    // But it must not prevent cleanup of other, valid files in the same batch.
+    const malformedR2=clean.filter(p=>String(p).startsWith('r2:')&&!/^r2:[0-9a-f-]{36}$/i.test(p));
+    // Storage paths must be relative object keys, never absolute paths or
+    // traversal sequences. Validate here as well as in URL extraction because
+    // removePaths() is also called directly by other application modules.
+    const validLegacyPath=p=>typeof p==='string' && p.length>0 &&
+      !p.startsWith('/') && !p.includes('\\') && !/[?#\x00-\x1f]/.test(p) &&
+      !/%(?:2e|2f|5c)/i.test(p) &&
+      p.split('/').every(part=>part && part!=='.' && part!=='..');
+    const legacyCandidates=clean.filter(p=>!String(p).startsWith('r2:'));
+    const invalidLegacy=legacyCandidates.filter(p=>!validLegacyPath(p));
+    const legacy=legacyCandidates.filter(validLegacyPath);
+    // Process every valid object even if another item is invalid or fails.
+    // Preserve the existing {data,error} contract so callers see a partial failure.
+    let firstError=malformedR2.length?new Error('Invalid R2 media reference'):(invalidLegacy.length?new Error('Invalid Storage media path'):null);
     for(const id of r2Ids){try{await r2Remove(id)}catch(error){firstError??=error}}
     if(!legacy.length)return {data:[],error:firstError};
     try{
@@ -309,22 +363,39 @@
   }
 
   async function removeUrls(bucket, urls=[], entityType=null, entityId=null) {
-    // Detach the exact entity reference before requesting physical deletion.
-    // Never unlink a different entity or bypass server-side ownership checks.
-    if(entityType&&entityId){
-      for(const url of [...new Set((urls||[]).filter(Boolean))]){
-        if(R2_URL_RE.test(String(url))){
-          try{await unlinkR2Media(url,entityType,entityId)}
-          catch(error){console.warn('[AvtoVIP R2 unlink]',entityType,entityId,error);return {data:[],error};}
+    // A failed unlink must not prevent cleanup of other, unrelated media.
+    // Never attempt physical deletion of an object whose unlink failed.
+    const unique=[...new Set((urls||[]).filter(Boolean))];
+    const safe=[];
+    let firstError=null;
+    for(const mediaUrl of unique){
+      const r2=R2_URL_RE.exec(String(mediaUrl));
+      if(r2&&entityType&&entityId){
+        try{await unlinkR2Media(mediaUrl,entityType,entityId)}
+        catch(error){
+          firstError??=error;
+          console.warn('[AvtoVIP R2 unlink]',entityType,entityId,error);
+          continue;
         }
       }
+      safe.push(mediaUrl);
     }
-    const paths=(urls||[]).map(u=>{
-      const match=R2_URL_RE.exec(String(u||''));
-      return match?`r2:${match[1]}`:storagePathFromPublicUrl(bucket,u);
-    }).filter(Boolean);
+    // A malformed, foreign, or unsupported URL must not be treated as a
+    // successful cleanup. Previously map/filter silently discarded it, which
+    // caused callers to report that every old media object was removed.
+    const paths=[];
+    for(const mediaUrl of safe){
+      const match=R2_URL_RE.exec(String(mediaUrl||''));
+      const path=match?`r2:${match[1]}`:storagePathFromPublicUrl(bucket,mediaUrl);
+      if(path)paths.push(path);
+      else{
+        firstError??=new Error('Media URL is not an AvtoVIP R2 or Supabase Storage URL');
+        console.warn('[AvtoVIP media cleanup] Unsupported URL:',String(mediaUrl).slice(0,180));
+      }
+    }
     const result=await removePaths(bucket,paths);
-    if(result?.error)throw result.error;
+    if(result?.error)firstError??=result.error;
+    if(firstError)throw firstError;
     return result;
   }
 
