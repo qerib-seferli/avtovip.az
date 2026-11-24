@@ -79,8 +79,7 @@
   // Storage until recipient-authorized reads and expiry cleanup are deployed.
   const R2_API = 'https://avtovip-media-api.seferovqerib09.workers.dev';
   const R2_CATEGORIES = Object.freeze({avatars:'profile','elan-images':'listing','social-media':'post','story-media':'story','chat-media':'message','place-media':'place'});
-  // Safety switch: production migration is enabled only after coordinated deployment.
-  const R2_PUBLIC_UPLOADS_ENABLED = window.AV_R2_UPLOADS_ENABLED !== false;
+  // All supported user-media buckets are R2-only; no legacy upload switch.
   const R2_URL_RE = /^https:\/\/avtovip-media-api\.seferovqerib09\.workers\.dev\/v1\/media\/([0-9a-f-]{36})$/i;
   async function r2Token(){
     const {data,error}=await client.auth.getSession();
@@ -282,10 +281,12 @@
 
   async function upload(bucket, userId, file, prefix = '') {
     if (!file || !userId) throw new Error('Fayl və istifadəçi tələb olunur.');
-    // Enable only public, directly renderable media. Large videos retain legacy flow.
+    // Route every supported user-media bucket to R2; fail closed otherwise.
     const category=bucket==='social-media'&&/^reels?(?:\/|$)/i.test(prefix)?'reel':R2_CATEGORIES[bucket];
-    if(R2_PUBLIC_UPLOADS_ENABLED){
-      if(!category)throw new Error('R2 media bölməsi tanınmadı; köhnə Storage-a səssiz keçid bloklandı.');
+    // All seven supported user-media buckets are R2-only. A stale global
+    // AV_R2_UPLOADS_ENABLED=false must not silently redirect new uploads to
+    // Supabase Storage (especially on cached PWA clients).
+    if(category){
       if(!Number.isSafeInteger(file.size)||file.size<1)throw new Error('Boş və ya etibarsız media faylı.');
       if(['profile','place'].includes(category)&&file.type.startsWith('video/'))throw new Error('Profil və Məkanlar yalnız şəkil qəbul edir.');
       // Once enabled, never silently send an unsupported/oversized file to legacy Storage.
@@ -297,18 +298,10 @@
       return r2Upload(file,category);
     }
 
-    const ext = (file.name?.split('.').pop() || 'bin').toLowerCase();
-    const stem = cleanName(file.name?.replace(/\.[^.]+$/, '') || 'media');
-    const fileName = `${Date.now()}-${crypto.randomUUID?.() || Math.random().toString(36).slice(2)}-${stem}.${ext}`;
-    const path = `${userId}/${prefix ? `${prefix}/` : ''}${fileName}`;
-    const { error } = await client.storage.from(bucket).upload(path, file, {
-      cacheControl: '3600',
-      upsert: false,
-      contentType: file.type || undefined
-    });
-    if (error) throw error;
-    const { data } = client.storage.from(bucket).getPublicUrl(path);
-    return { path, url: data.publicUrl };
+    // Fail closed for unknown buckets: no unexpected user-media uploads
+    // should fall through to Supabase Storage.
+    throw new Error('Naməlum media bölməsi: R2-yə yükləmə dayandırıldı.');
+
   }
 
 
@@ -517,7 +510,7 @@
        repeated feed/Reels playback does not transfer the original camera file.
        This only changes newly uploaded media; existing Storage files are untouched. */
     const MAX_DIRECT_MP4_BYTES=20*1024*1024;
-    if(ext==='mp4' && String(file.type||'video/mp4').toLowerCase().includes('mp4') && file.size<=MAX_DIRECT_MP4_BYTES){
+    if(ext==='mp4' && String(file.type||'').toLowerCase()==='video/mp4' && file.size<=MAX_DIRECT_MP4_BYTES){
       mediaProgress(progressTitle,100,'Video hazırdır.');onProgress?.(100);mediaProgressHide(100);return file;
     }
     mediaProgress(progressTitle,6,'Video uyğunluğu yoxlanılır...');
@@ -535,7 +528,8 @@
       const data=ffmpeg.FS('readFile',output);if(!data?.length)throw new Error('empty-output');
       const out=new File([data.buffer],`${base}.mp4`,{type:'video/mp4',lastModified:Date.now()});
       // Never replace a valid MP4 with a larger encoded copy.
-      const result=(ext==='mp4' && out.size>=file.size)?file:out;
+      const originalIsSupportedMp4=ext==='mp4' && String(file.type||'').toLowerCase()==='video/mp4';
+      const result=(originalIsSupportedMp4 && out.size>=file.size)?file:out;
       mediaProgress(progressTitle,100,'Video hazırdır.');return result;
     }catch(e){
       console.error('[AvtoVIP media] video conversion failed',e);

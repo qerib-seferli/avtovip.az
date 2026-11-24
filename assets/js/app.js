@@ -1299,7 +1299,7 @@
         let newVideoUrl=null;
         if(selectedVideo){
           if(selectedVideo.size>50*1024*1024)throw new Error('Video maksimum 50 MB ola bilər.');
-          if(!['video/mp4','video/webm'].includes(selectedVideo.type))throw new Error('Video MP4 və ya WebM formatında olmalıdır.');
+          if(!db.isVideoFile(selectedVideo))throw new Error('Video MP4 və ya WebM formatında olmalıdır.');
           const prepared=await db.transcodeVideo(selectedVideo,{maxWidth:1280,maxHeight:1280,progressTitle:'Video hazırlanır...'});
           if(prepared.size>50*1024*1024)throw new Error('Hazırlanmış video 50 MB limitini keçir.');
           const videoUp=await db.upload('elan-images',user.id,prepared,'listings');
@@ -1687,7 +1687,7 @@
     if('serviceWorker' in navigator){
       window.addEventListener('load',async()=>{
         try{
-          const reg=await navigator.serviceWorker.register('./service-worker.js?v=119',{scope:'./',updateViaCache:'none'});
+          const reg=await navigator.serviceWorker.register('./service-worker.js?v=120',{scope:'./',updateViaCache:'none'});
           await reg.update();
           await navigator.serviceWorker.ready;
           let reloading=false;
