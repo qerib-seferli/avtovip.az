@@ -994,16 +994,26 @@
     const ownerAvatar=`<span class="avatar-shell story-owner-avatar ${ownerTier}${avatarVerifiedClass(p?.is_verified)}"><img src="${esc(p?.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${ownerTierMark}</span>`;
     const ownerIdentity=`<span class="story-owner-name">${ownerVerified}<span>${ownerName}</span></span>`;
     const storyCaption=String(s.caption||'').trim().slice(0,50);
-    modal.innerHTML=`<div class="story-shell"><div class="story-card"><div class="story-progress"></div>${s.media_type==='video'?`<video class="story-media" src="${esc(s.media_url)}" autoplay playsinline></video>`:`<img class="story-media" src="${esc(s.media_url)}" alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerIdentity}</a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${storyCaption?`<div class="story-caption">${esc(storyCaption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link story-owner-side" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerAvatar}${ownerIdentity}</a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
+    modal.innerHTML=`<div class="story-shell"><div class="story-card"><div class="story-progress"></div>${s.media_type==='video'?`<video class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} playsinline preload="metadata"></video>`:`<img class="story-media" src="${esc(s.media_url)}" alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerIdentity}</a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${storyCaption?`<div class="story-caption">${esc(storyCaption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link story-owner-side" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerAvatar}${ownerIdentity}</a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
     document.body.append(modal);document.documentElement.classList.add('modal-open');
     // Do not start a private video until its authenticated blob URL is ready.
-    const storyMediaReady=hydratePrivateMedia(modal).then(()=>{
+    const storyMediaReady=(async()=>{
       const v=modal.querySelector('video.story-media');
-      if(v?.isConnected&&v.getAttribute('src')?.startsWith('blob:')){
+      if(v?.dataset.privateStory==='1'){
+        // A private R2 URL must never be assigned directly to <video>:
+        // the browser would make an unauthenticated request and fire a false codec error.
+        const local=await resolvePrivateMedia(s.media_url);
+        if(!v.isConnected)return;
+        v.src=local;
         v.load();
-        return v.play().catch(()=>{});
+        // Browser autoplay policy may require a user tap; do not report codec failure.
+        await v.play().catch(()=>{});
+      }else if(v?.isConnected){
+        await v.play().catch(()=>{});
+      }else{
+        await hydratePrivateMedia(modal);
       }
-    }).catch(error=>console.warn('[AvtoVIP story media]',error));
+    })().catch(error=>console.warn('[AvtoVIP story media]',error));
     /* Only portrait media that would leave black bars on the left/right is cropped vertically.
        Wider/shorter media keeps the existing contain behaviour unchanged. */
     const storyMedia=modal.querySelector('.story-media'),storyCard=modal.querySelector('.story-card');

@@ -1,4 +1,4 @@
-const CACHE='avtovip-chat-layout-v138-logos-20261114';
+const CACHE='avtovip-r2-media-sync-20261125b';
 const STATIC=[
   './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
   './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js','./assets/css/places/places.css','./assets/js/places/global-entry.js','./assets/js/places/place-i18n.js','./assets/js/places/profile-places.js','./assets/data/places/categories.js',
@@ -15,8 +15,21 @@ self.addEventListener('fetch',e=>{
   if(r.mode==='navigate'||/\.html$/.test(u.pathname))return;
   if(!/\.(?:css|js|webmanifest|png|jpg|jpeg|webp|svg|ico)$/.test(u.pathname))return;
   // Brand assets and their renderers must not remain stuck on an old PWA cache.
-  if(/\/assets\/img\/brand-logos\//.test(u.pathname)||/\/assets\/js\/(?:app|vehicle-categories)\.js$/.test(u.pathname)){
-    e.respondWith(fetch(r,{cache:'no-cache'}).catch(()=>caches.match(r).then(hit=>hit||Response.error())));
+  if(/\/assets\/img\/brand-logos\//.test(u.pathname)||/\/assets\/js\/(?:app|supabase|profile-final|feed-v20|vehicle-categories)\.js$/.test(u.pathname)||/\/assets\/js\/places\/(?:place-add|profile-places)\.js$/.test(u.pathname)){
+    e.respondWith((async()=>{
+      try{
+        const fresh=await fetch(r,{cache:'no-cache'});
+        // Never replace a working cached script with an HTTP error response.
+        // Keep the offline fallback in sync with the latest successfully fetched code.
+        if(fresh.ok){
+          const cache=await caches.open(CACHE);
+          await cache.put(r,fresh.clone()).catch(err=>console.warn('[AvtoVIP SW cache]',err));
+        }
+        return fresh;
+      }catch{
+        return (await caches.match(r))||Response.error();
+      }
+    })());
     return;
   }
   e.respondWith(caches.open(CACHE).then(async c=>{

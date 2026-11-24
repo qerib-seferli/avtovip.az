@@ -203,18 +203,81 @@
   });
   async function unlinkR2Media(mediaUrl,entityType,entityId){
     const match=R2_URL_RE.exec(String(mediaUrl||''));if(!match)return null;
-    const jwt=await r2Token();
-    const response=await fetch(`${R2_API}/v1/media/${match[1]}/unlink`,{
-      method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':'application/json'},
-      body:JSON.stringify({entity_type:entityType,entity_id:entityId})
-    });
-    const data=await response.json().catch(()=>null);
-    if(!response.ok)throw new Error(data?.error||`R2 unlink HTTP ${response.status}`);
-    // A 2xx response is not proof that the requested link was removed.
-    if(data?.unlinked!==true || data?.id!==match[1])throw new Error('R2 unlink confirmation missing or mismatched');
-    return match[1];
+    // The entity may already have been removed from the DB. Retry only
+    // temporary transport/server errors; 403/409 mean deletion is unsafe.
+    for(let attempt=0;attempt<3;attempt++){
+      try{
+        const jwt=await r2Token();
+        const response=await fetch(`${R2_API}/v1/media/${match[1]}/unlink`,{
+          method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':'application/json'},
+          body:JSON.stringify({entity_type:entityType,entity_id:entityId}),cache:'no-store'
+        });
+        const data=await response.json().catch(()=>null);
+        if(!response.ok){
+          const error=new Error(`R2 unlink HTTP ${response.status}: ${data?.error||'Unknown error'} [${entityType}/${entityId}, ${match[1]}]`);
+          error.retryable=[408,429,500,502,503,504].includes(response.status);
+          throw error;
+        }
+        if(data?.unlinked!==true||data?.id!==match[1])
+          throw Object.assign(new Error('R2 unlink confirmation missing or mismatched'),{retryable:false});
+        return match[1];
+      }catch(error){
+        if(error?.retryable===false||attempt===2)throw error;
+        await new Promise(resolve=>setTimeout(resolve,350*(attempt+1)));
+      }
+    }
   }
-  async function r2Remove(id){
+  // Retry only transient R2 deletion failures while the same authenticated
+  // owner is active. Never persist tokens or bypass Worker reference checks.
+  const R2_PENDING_DELETES_KEY='avtovip-r2-pending-deletes-v1';
+  const R2_PENDING_DELETES_AGE=24*60*60*1000;
+  let reconcilingR2Deletes=false;
+  function pendingR2Deletes(owner){
+    if(!owner)return [];
+    try{
+      const items=JSON.parse(sessionStorage.getItem(R2_PENDING_DELETES_KEY)||'[]');
+      return Array.isArray(items)?items.filter(x=>x&&x.owner===owner&&
+        /^[0-9a-f-]{36}$/i.test(x.id)&&Number.isFinite(x.at)&&
+        Date.now()-x.at>=0&&Date.now()-x.at<R2_PENDING_DELETES_AGE).slice(-100):[];
+    }catch{return []}
+  }
+  function savePendingR2Deletes(items){
+    try{sessionStorage.setItem(R2_PENDING_DELETES_KEY,JSON.stringify(items.slice(-100)))}catch{}
+  }
+  function queueR2Delete(id,owner){
+    if(!owner||owner!==r2PendingOwner)return;
+    const items=pendingR2Deletes(owner).filter(x=>x.id!==id);
+    items.push({id,owner,at:Date.now()});savePendingR2Deletes(items);
+  }
+  function clearR2Delete(id,owner){
+    if(owner&&owner===r2PendingOwner)
+      savePendingR2Deletes(pendingR2Deletes(owner).filter(x=>x.id!==id));
+  }
+  async function reconcilePendingR2Deletes(){
+    if(reconcilingR2Deletes||!r2PendingOwner)return;
+    reconcilingR2Deletes=true;
+    const owner=r2PendingOwner;
+    try{
+      for(const item of pendingR2Deletes(owner)){
+        if(owner!==r2PendingOwner)break;
+        try{await r2Remove(item.id,{skipQueue:true});clearR2Delete(item.id,owner)}
+        catch(error){
+          // 409/423/403 are not transient. Keep no retry work for those.
+          if(error?.retryable===false)clearR2Delete(item.id,owner);
+        }
+      }
+    }finally{reconcilingR2Deletes=false}
+  }
+  window.addEventListener('online',()=>reconcilePendingR2Deletes().catch(()=>{}));
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible')reconcilePendingR2Deletes().catch(()=>{});
+  });
+  client.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_OUT'){savePendingR2Deletes([]);return;}
+    if(['INITIAL_SESSION','SIGNED_IN','TOKEN_REFRESHED'].includes(event)&&session?.user?.id)
+      setTimeout(()=>reconcilePendingR2Deletes().catch(()=>{}),1500);
+  });
+  async function r2Remove(id,{skipQueue=false}={}){
     // Network interruption or a temporary Worker/DB failure should not leave
     // an uploaded object orphaned after the domain row has been removed.
     // Retrying DELETE is safe because the Worker verifies ownership, checks
@@ -228,11 +291,20 @@
           method:'DELETE',headers:{Authorization:`Bearer ${jwt}`},cache:'no-store'
         });
         const data=await response.json().catch(()=>null);
-        if(response.status===423)throw Object.assign(new Error('R2 media hələ aktiv əlaqəyə malikdir (HTTP 423); silinmə təxirə salındı.'),{retryable:false});
+        // HTTP 423 means the Worker deployment has deletion disabled, NOT
+        // that another database row references the media. Distinguish this
+        // from HTTP 409 (a real live reference) in production diagnostics.
+        if(response.status===423){
+          throw Object.assign(new Error(`R2 DELETE disabled (HTTP 423): ${data?.error||'R2_DELETE_ENABLED is not true'} [${id}]`),{retryable:false,httpStatus:423});
+        }
+        if(response.status===409){
+          throw Object.assign(new Error(`R2 media still referenced (HTTP 409): ${data?.error||'Active database/media_links reference'} [${id}]`),{retryable:false,httpStatus:409});
+        }
         if(!response.ok){
-          const error=new Error(data?.error||`R2 delete HTTP ${response.status}`);
+          const error=new Error(`R2 DELETE HTTP ${response.status}: ${data?.error||'Unknown error'} [${id}]`);
           // Retry only transient failures, not authorization or active links.
           error.retryable=[408,429,500,502,503,504].includes(response.status);
+          error.httpStatus=response.status;
           throw error;
         }
         if(data?.deleted!==true || data?.id!==id)
@@ -245,6 +317,10 @@
         // are explicitly classified before reaching this point.
         await new Promise(resolve=>setTimeout(resolve,350*(attempt+1)));
       }
+    }
+    if(!skipQueue&&lastError?.retryable!==false&&r2PendingOwner){
+      queueR2Delete(id,r2PendingOwner);
+      console.warn('[AvtoVIP R2] Transient DELETE queued for retry',id,lastError);
     }
     throw lastError;
   }
@@ -327,7 +403,8 @@
   }
 
   async function removePaths(bucket, paths=[]) {
-    const clean=[...new Set((paths||[]).filter(Boolean))];
+    const input=Array.isArray(paths)?paths:(paths==null?[]:[paths]);
+    const clean=[...new Set(input.filter(p=>typeof p==='string'&&p.trim()))];
     if(!clean.length)return {data:[],error:null};
     const r2Ids=clean.filter(p=>/^r2:[0-9a-f-]{36}$/i.test(p)).map(p=>p.slice(3));
     // A malformed R2 identifier must never be forwarded to Supabase Storage.
@@ -356,40 +433,48 @@
   }
 
   async function removeUrls(bucket, urls=[], entityType=null, entityId=null) {
-    // A failed unlink must not prevent cleanup of other, unrelated media.
-    // Never attempt physical deletion of an object whose unlink failed.
-    const unique=[...new Set((urls||[]).filter(Boolean))];
-    const safe=[];
-    let firstError=null;
-    for(const mediaUrl of unique){
-      const r2=R2_URL_RE.exec(String(mediaUrl));
-      if(r2&&entityType&&entityId){
-        try{await unlinkR2Media(mediaUrl,entityType,entityId)}
-        catch(error){
-          firstError??=error;
-          console.warn('[AvtoVIP R2 unlink]',entityType,entityId,error);
-          continue;
+    const input=Array.isArray(urls)?urls:(urls==null?[]:[urls]);
+    const unique=[...new Set(input.filter(u=>typeof u==='string'&&u.trim()))];
+    if(!unique.length)return {data:[],error:null};
+    // Multiple images from one listing must not cause a long chain of serial
+    // network round trips. Keep concurrency bounded for Worker and Supabase.
+    // Every R2 object still gets its own authoritative ownership/reference check.
+    const results=new Array(unique.length);
+    let cursor=0;
+    await Promise.all(Array.from({length:Math.min(3,unique.length)},async()=>{
+      while(cursor<unique.length){
+        const index=cursor++;
+        const mediaUrl=unique[index];
+        const r2=R2_URL_RE.exec(mediaUrl);
+        try{
+          if(r2){
+            if(entityType&&entityId){
+              try{await unlinkR2Media(mediaUrl,entityType,entityId)}
+              catch(error){
+                // An already deleted DB entity can leave stale media_links.
+                // The Worker DELETE endpoint independently checks all domain
+                // references and prunes stale links; never bypass those checks.
+                console.warn('[AvtoVIP R2 unlink]',entityType,entityId,error);
+              }
+            }
+            await r2Remove(r2[1]);
+            results[index]={data:[],error:null};
+          }else{
+            const path=storagePathFromPublicUrl(bucket,mediaUrl);
+            if(!path)throw new Error('Media URL is not an AvtoVIP R2 or Supabase Storage URL');
+            const result=await removePaths(bucket,[path]);
+            if(result?.error)throw result.error;
+            results[index]=result;
+          }
+        }catch(error){
+          console.warn('[AvtoVIP media cleanup]',entityType,entityId,mediaUrl,error);
+          results[index]={data:[],error};
         }
       }
-      safe.push(mediaUrl);
-    }
-    // A malformed, foreign, or unsupported URL must not be treated as a
-    // successful cleanup. Previously map/filter silently discarded it, which
-    // caused callers to report that every old media object was removed.
-    const paths=[];
-    for(const mediaUrl of safe){
-      const match=R2_URL_RE.exec(String(mediaUrl||''));
-      const path=match?`r2:${match[1]}`:storagePathFromPublicUrl(bucket,mediaUrl);
-      if(path)paths.push(path);
-      else{
-        firstError??=new Error('Media URL is not an AvtoVIP R2 or Supabase Storage URL');
-        console.warn('[AvtoVIP media cleanup] Unsupported URL:',String(mediaUrl).slice(0,180));
-      }
-    }
-    const result=await removePaths(bucket,paths);
-    if(result?.error)firstError??=result.error;
+    }));
+    const firstError=results.find(x=>x?.error)?.error;
     if(firstError)throw firstError;
-    return result;
+    return {data:results.flatMap(x=>x?.data||[]),error:null};
   }
 
   /*
