@@ -623,7 +623,28 @@
     return prepareImage(file,opts);
   }
 
+  // Scope covers the complete mutation, not just the upload request.
+  const loaderBase=new URL('../img/',document.currentScript.src);
+  let busyCount=0, busyStart=0, busyNode=null, busyTimer=0;
+  const preloadWorld=new Image();preloadWorld.src=new URL('loading/world.webp',loaderBase).href;
+  const preloadLogo=new Image();preloadLogo.src=new URL('brand/logo.png',loaderBase).href;
+  function beginMediaOperation(){
+    clearTimeout(busyTimer);
+    if(!busyCount++){
+      busyStart=performance.now();
+      if(!busyNode){
+        const style=document.createElement('style');style.textContent='#avMediaBusy{position:fixed;inset:0;z-index:2147483647;background:rgba(10,15,24,.46);backdrop-filter:blur(3px);display:grid;place-items:center;touch-action:none}#avMediaBusy[hidden]{display:none}#avMediaBusy>div{position:relative;width:112px;height:112px;display:grid;place-items:center}#avMediaBusy .world{width:112px;height:112px}#avMediaBusy .brand{position:absolute;width:64px;max-height:44px;object-fit:contain;filter:drop-shadow(0 1px 4px #000)}body:has(#avMediaBusy:not([hidden])) #avMediaProgress{visibility:hidden}';document.head.append(style);
+        busyNode=document.createElement('div');busyNode.id='avMediaBusy';busyNode.setAttribute('role','status');busyNode.setAttribute('aria-busy','true');const inner=document.createElement('div');for(const [cls,src] of [['world',preloadWorld.src],['brand',preloadLogo.src]]){const img=document.createElement('img');img.className=cls;img.src=src;img.alt='';inner.append(img)}busyNode.append(inner);document.body.append(busyNode);
+      }
+      busyNode.hidden=false;
+    }
+    let ended=false;return ()=>{if(ended)return;ended=true;if(--busyCount===0){busyTimer=setTimeout(()=>{if(!busyCount)busyNode.hidden=true},Math.max(0,2000-(performance.now()-busyStart)))}};
+  }
+  const mediaBusy=()=>!!busyNode&&!busyNode.hidden;
+  window.addEventListener('beforeunload',e=>{if(busyCount>0){e.preventDefault();e.returnValue=''}});
+  for(const type of ['click','pointerdown','touchstart','keydown','submit','wheel'])window.addEventListener(type,e=>{if(mediaBusy()){e.preventDefault();e.stopImmediatePropagation()}},{capture:true,passive:false});
   window.avtoDb = {
+    beginMediaOperation, mediaBusy,
     client,
     url: SUPABASE_URL,
     adminEmail: ADMIN_EMAIL,
