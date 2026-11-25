@@ -12,12 +12,14 @@ function useLocation(){navigator.geolocation?.getCurrentPosition(p=>{center={lng
 async function findAddress(){const fd=new FormData($('#placeForm')),q=[fd.get('address'),fd.get('city'),fd.get('region'),$('#placeCountry').selectedOptions[0]?.text].filter(Boolean).join(', ');if(!q)return;try{const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(q)}`),j=await r.json();if(!j.length)return toast('Ünvan tapılmadı.','error');center={lng:+j[0].lon,lat:+j[0].lat};map.flyTo({center:[center.lng,center.lat],zoom:17,pitch:0})}catch{toast('Ünvan axtarışı alınmadı.','error')}}
 let placePreviewUrls=[];
 function clearPlacePreviewUrls(){for(const url of placePreviewUrls)URL.revokeObjectURL(url);placePreviewUrls=[]}
-function previews(){
+let previewGeneration=0;
+async function previews(){
+ const generation=++previewGeneration;
  clearPlacePreviewUrls();
  const files=[...$('#placePhotos').files].slice(0,8);
  $('#placePhotosName').textContent=files.length?`${files.length} şəkil seçildi`:'Şəkil seçilməyib';
  const target=$('#placeMediaPreview');target.replaceChildren();
- for(const file of files){const url=URL.createObjectURL(file);placePreviewUrls.push(url);const img=document.createElement('img');img.src=url;img.alt='';target.append(img)}
+ for(const file of files){let bitmap;try{bitmap=await createImageBitmap(file,{imageOrientation:'from-image'});const ratio=Math.min(1,480/Math.max(bitmap.width,bitmap.height));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(bitmap.width*ratio));canvas.height=Math.max(1,Math.round(bitmap.height*ratio));canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);const blob=await new Promise(r=>canvas.toBlob(r,'image/webp',.85));if(generation!==previewGeneration)return;const url=URL.createObjectURL(blob||file);placePreviewUrls.push(url);const img=document.createElement('img');img.src=url;img.alt='';target.append(img)}catch{if(generation!==previewGeneration)return;const url=URL.createObjectURL(file);placePreviewUrls.push(url);const img=document.createElement('img');img.style.imageOrientation='from-image';img.src=url;img.alt='';target.append(img)}finally{bitmap?.close?.()}}
 }
 window.addEventListener('pagehide',clearPlacePreviewUrls);
 function hours(){const hide=$('[name="hours_mode"]').value==='24_7';document.querySelectorAll('.place-hours-field').forEach(x=>x.hidden=hide)}

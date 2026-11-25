@@ -633,16 +633,17 @@
     if(!busyCount++){
       busyStart=performance.now();
       if(!busyNode){
-        const style=document.createElement('style');style.textContent='#avMediaBusy{position:fixed;inset:0;z-index:2147483647;background:rgba(10,15,24,.46);backdrop-filter:blur(3px);display:grid;place-items:center;touch-action:none}#avMediaBusy[hidden]{display:none}#avMediaBusy>div{position:relative;width:112px;height:112px;display:grid;place-items:center}#avMediaBusy .world{width:112px;height:112px}#avMediaBusy .brand{position:absolute;width:64px;max-height:44px;object-fit:contain;filter:drop-shadow(0 1px 4px #000)}body:has(#avMediaBusy:not([hidden])) #avMediaProgress{visibility:hidden}';document.head.append(style);
-        busyNode=document.createElement('div');busyNode.id='avMediaBusy';busyNode.setAttribute('role','status');busyNode.setAttribute('aria-busy','true');const inner=document.createElement('div');for(const [cls,src] of [['world',preloadWorld.src],['brand',preloadLogo.src]]){const img=document.createElement('img');img.className=cls;img.src=src;img.alt='';inner.append(img)}busyNode.append(inner);document.body.append(busyNode);
+        const style=document.createElement('style');style.textContent='#avMediaBusy{position:fixed;inset:0;z-index:2147483647;background:rgba(10,15,24,.22);backdrop-filter:blur(1px);display:grid;place-items:center;touch-action:none}#avMediaBusy[hidden]{display:none}#avMediaBusy>div{position:relative;width:112px;height:112px;display:grid;place-items:center}#avMediaBusy .world{width:112px;height:112px}#avMediaBusy .brand{position:absolute;width:64px;max-height:44px;object-fit:contain;filter:drop-shadow(0 1px 4px #000)}body:has(#avMediaBusy:not([hidden])) #avMediaProgress{visibility:hidden}body:has(#avMediaBusy:not([hidden])) #toastStack{position:fixed;z-index:2147483647!important;pointer-events:none!important}#avMediaBusy .busy-warning{position:absolute;top:calc(50% + 70px);max-width:85vw;width:max-content;padding:10px 16px;border-radius:12px;background:#202733;color:#fff;border:1px solid #e5a126;text-align:center;font-size:14px}#avMediaBusy .busy-warning[hidden]{display:none}';document.head.append(style);
+        busyNode=document.createElement('div');busyNode.id='avMediaBusy';busyNode.setAttribute('role','status');busyNode.setAttribute('aria-busy','true');const inner=document.createElement('div');for(const [cls,src] of [['world',preloadWorld.src],['brand',preloadLogo.src]]){const img=document.createElement('img');img.className=cls;img.src=src;img.alt='';inner.append(img)}busyNode.append(inner);const warning=document.createElement("span");warning.className="busy-warning";warning.hidden=true;warning.setAttribute("role","alert");busyNode.append(warning);document.body.append(busyNode);
       }
-      busyNode.hidden=false;
+      busyNode.hidden=false;busyNode.querySelector(".busy-warning").hidden=true;const stack=document.getElementById("toastStack");if(stack?.parentNode===document.body)document.body.append(stack);
     }
     let ended=false;return ()=>{if(ended)return;ended=true;if(--busyCount===0){busyTimer=setTimeout(()=>{if(!busyCount)busyNode.hidden=true},Math.max(0,2000-(performance.now()-busyStart)))}};
   }
   const mediaBusy=()=>!!busyNode&&!busyNode.hidden;
   window.addEventListener('beforeunload',e=>{if(busyCount>0){e.preventDefault();e.returnValue=''}});
-  for(const type of ['click','pointerdown','touchstart','keydown','submit','wheel'])window.addEventListener(type,e=>{if(mediaBusy()){e.preventDefault();e.stopImmediatePropagation()}},{capture:true,passive:false});
+  function busyWarning(){if(!mediaBusy())return;const w=busyNode.querySelector('.busy-warning');const messages={az:'Əməliyyat davam edir. Zəhmət olmasa gözləyin.',en:'Operation in progress. Please wait.',ru:'Операция выполняется. Пожалуйста, подождите.',tr:'İşlem devam ediyor. Lütfen bekleyin.',ka:'ოპერაცია მიმდინარეობს. გთხოვთ, დაელოდოთ.'};w.textContent=messages[localStorage.getItem('avtovip-lang')]||messages.az;w.hidden=false;}
+  for(const type of ['click','pointerdown','touchstart','keydown','submit','wheel'])window.addEventListener(type,e=>{if(mediaBusy()){if(['click','pointerdown','keydown'].includes(type))busyWarning();e.preventDefault();e.stopImmediatePropagation()}},{capture:true,passive:false});
   window.avtoDb = {
     beginMediaOperation, mediaBusy,
     client,
