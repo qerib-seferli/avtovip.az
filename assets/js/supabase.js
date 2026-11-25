@@ -448,14 +448,10 @@
         const r2=R2_URL_RE.exec(mediaUrl);
         try{
           if(r2){
-            if(entityType&&entityId){
-              try{await unlinkR2Media(mediaUrl,entityType,entityId)}
-              catch(error){
-                // An already deleted DB entity can leave stale media_links.
-                // The Worker DELETE endpoint independently checks all domain
-                // references and prunes stale links; never bypass those checks.
-                console.warn('[AvtoVIP R2 unlink]',entityType,entityId,error);
-              }
+            // DELETE already verifies ownership, domain references and prunes stale links.
+            // Avoid a redundant unlink round trip for these cleanup paths only.
+            if(!['post','reel','story','place'].includes(entityType)&&entityType&&entityId){
+              try{await unlinkR2Media(mediaUrl,entityType,entityId)}catch(error){console.warn('[AvtoVIP R2 unlink]',entityType,entityId,error);}
             }
             await r2Remove(r2[1]);
             results[index]={data:[],error:null};
