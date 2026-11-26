@@ -20,33 +20,75 @@
     return privateMediaUrls.get(url);
   }
   async function hydratePrivateMedia(root){
-    const elements=[...root.querySelectorAll('img[src],video[src]')].filter(el=>privateMediaPattern.test(el.getAttribute('src')||''));
+    const elements=[...root.querySelectorAll('[data-private-media],img[src],video[src]')].filter(el=>privateMediaPattern.test(el.dataset.privateMedia||el.getAttribute('src')||''));
     await Promise.all(elements.map(async el=>{
-      const original=el.getAttribute('src');
-      try{const local=await resolvePrivateMedia(original);if(el.isConnected&&el.getAttribute('src')===original)el.src=local;}
-      catch(error){console.warn('[AvtoVIP private media]',error.message);if(el.isConnected)el.removeAttribute('src');}
+      if(el.dataset.mediaHydrated==='1')return;
+      el.dataset.mediaHydrated='1';
+      const original=el.dataset.privateMedia||el.getAttribute('src');
+      try{const local=await resolvePrivateMedia(original);if(el.isConnected&&(el.dataset.privateMedia||el.getAttribute('src'))===original&&el.src!==local)el.src=local;}
+      catch(error){console.warn('[AvtoVIP private media]',error.message);delete el.dataset.mediaHydrated;if(el.isConnected)el.removeAttribute('src');}
     }));
   }
-  // Story-only previews: bounded concurrent authenticated downloads, shared with viewer.
-  const storyPreviewQueue=[]; let storyPreviewActive=0;
-  function pumpStoryPreviews(){
-    while(storyPreviewActive<3&&storyPreviewQueue.length){
-      const el=storyPreviewQueue.shift(); if(!el.isConnected)continue;
-      storyPreviewActive++;
-      const original=el.dataset.storyMedia;
-      resolvePrivateMedia(original).then(local=>{
-        if(!el.isConnected||el.dataset.storyMedia!==original)return;
-        if(el.tagName==='VIDEO'){el.muted=true;el.playsInline=true;el.preload='metadata';el.src=local+'#t=0.1';}
-        else el.src=local;
-      }).catch(error=>{delete el.dataset.storyQueued;console.warn('[Story preview]',error.message)}).finally(()=>{storyPreviewActive--;pumpStoryPreviews()});
-    }
-  }
-  window.AvtoVIPHydrateStoryPreviews=root=>{
-    for(const el of root.querySelectorAll('[data-story-media]')){
-      if(el.dataset.storyQueued||!privateMediaPattern.test(el.dataset.storyMedia))continue;
-      el.dataset.storyQueued='1';storyPreviewQueue.push(el);
+  const storyPreviewQueue = [];
+  let storyPreviewActive = 0;
+  const storyPreviews = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    for (const {target, isIntersecting} of entries) {
+      if (!isIntersecting) continue;
+      storyPreviews.unobserve(target);
+      storyPreviewQueue.push(target);
     }
     pumpStoryPreviews();
+  }, {rootMargin: '100px'}) : null;
+  function pumpStoryPreviews() {
+    while (storyPreviewActive < 3 && storyPreviewQueue.length) {
+      const image = storyPreviewQueue.shift();
+      if (!image.isConnected || Date.parse(image.dataset.storyExpires) <= Date.now()) continue;
+      storyPreviewActive++;
+      const original = image.dataset.storyMedia;
+      resolvePrivateMedia(original).then(local => {
+        if (image.isConnected && Date.parse(image.dataset.storyExpires) > Date.now()) image.src = local;
+      }).catch(() => {
+        // A signed-out visitor or a removed Story keeps its avatar fallback.
+      }).finally(() => {
+        storyPreviewActive--;
+        pumpStoryPreviews();
+      });
+    }
+  }
+  window.AvtoVIPHydrateStoryPreviews = root => {
+    for (const image of root.querySelectorAll('img[data-story-media]:not([data-story-queued])')) {
+      image.dataset.storyQueued = '1';
+      if (storyPreviews) storyPreviews.observe(image);
+      else storyPreviewQueue.push(image);
+    }
+    pumpStoryPreviews();
+  };
+  window.AvtoVIPStoryThumb = (story, avatar) => {
+    const fallback = avatar || 'assets/img/brand/icon-192.png';
+    if (String(story.media_type).startsWith('video') || !story.media_url) {
+      return `<img src="${esc(fallback)}" loading="lazy" decoding="async" alt="">`;
+    }
+    if (privateMediaPattern.test(story.media_url)) {
+      return `<img src="${esc(fallback)}" data-story-media="${esc(story.media_url)}" data-story-expires="${esc(story.expires_at)}" decoding="async" alt="">`;
+    }
+    return `<img src="${esc(story.media_url)}" loading="lazy" decoding="async" alt="">`;
+  };
+  const storyActive = story => Date.parse(story.expires_at) > Date.now();
+  window.AvtoVIPReleaseStoryMedia = releasePrivateMedia;
+  window.AvtoVIPStoryExpiry = (rows, expire) => {
+    let timer = 0;
+    const schedule = () => {
+      clearTimeout(timer);
+      const next = Math.min(...rows().map(row => Date.parse(row.expires_at)).filter(Number.isFinite));
+      if (Number.isFinite(next)) timer = setTimeout(check, Math.min(2147483647, Math.max(0, next - Date.now())));
+    };
+    function check() {
+      expire();
+      schedule();
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+    window.addEventListener('pageshow', event => { if (event.persisted) check(); });
+    return schedule;
   };
   function releasePrivateMedia(url){
     const pending=privateMediaUrls.get(url);if(!pending)return;
@@ -847,18 +889,13 @@
   }
   function scheduleSmartSearch(immediate=false){clearTimeout(smartSearchTimer);const run=()=>{smartSearchText=$('#smartSearchInput')?.value?.trim()||'';const out=$('#smartSearchResult');if(out)out.textContent=smartSearchText?smartMessage(parseSmart(smartSearchText)):'';loadHomeListings()};if(immediate)run();else smartSearchTimer=setTimeout(run,220)}
   async function initHome(){
+    const profileCountry = String(currentProfile?.country_code || '').toUpperCase();
+    if (profileCountry) localStorage.setItem('avtovip-country', profileCountry);
+    const storyLoad = loadStories().catch(error => console.warn('[AvtoVIP Stories]',error.message));
     await brandRail($('#brandsRail')); await ensureCatalogs(); await populateMakes($('#filterBrand')); await populateCurrencies($('#filterCurrency'),''); fillSelect($('#filterFuel'),FUELS); fillSelect($('#filterTransmission'),TRANSMISSIONS); fillSelect($('#filterDrivetrain'),DRIVETRAINS); fillColorSelect($('#filterColor'),'Hamısı'); fillSelect($('#filterBody'),BODY_TYPES);
     const eq=$('#filterEquipmentGrid'); renderEquipment(eq,'');
     await populateCountries($('#filterCountry'),$('#filterCountryAdvanced'));
-    /* The signed-in profile is authoritative for the initial home country. */
-    let pref=localStorage.getItem('avtovip-country')||'';
-    if(currentUser){
-      try{
-        const savedProfile=await db.getProfile(currentUser.id);
-        const profileCountry=String(savedProfile?.country_code||'').toUpperCase();
-        if(profileCountry){pref=profileCountry;localStorage.setItem('avtovip-country',profileCountry)}
-      }catch(e){console.warn('[AvtoVIP home country]',e)}
-    }
+    const pref=localStorage.getItem('avtovip-country')||'';
     if(pref){if($('#filterCountry'))$('#filterCountry').value=pref;if($('#filterCountryAdvanced'))$('#filterCountryAdvanced').value=pref}
     await bindLocation($('#filterCountryAdvanced'),$('#filterState'),$('#filterCityAdvanced'),$('#filterCityAdvancedList'),{mirror:$('#filterCountry')});
     /* Apply the saved country as the initial filter, but preserve the user's
@@ -939,7 +976,7 @@
     $('#smartSearchInput')?.addEventListener('input',()=>scheduleSmartSearch(false));
     $('#smartSearchInput')?.addEventListener('search',()=>scheduleSmartSearch(true));
     $('#smartSearchInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();scheduleSmartSearch(true)}}); initVoice();
-    bindCardActions($('#listingsGrid')||document); await loadStories(); await loadHomeListings();
+    bindCardActions($('#listingsGrid')||document); await Promise.all([storyLoad, loadHomeListings()]);
   }
   function applySmartSearch(text){
     const input=$('#smartSearchInput');if(input&&input.value!==text)input.value=text||'';smartSearchText=String(text||'').trim();
@@ -955,9 +992,6 @@
     rec.onresult=e=>{let transcript='';let finalText='';for(let i=e.resultIndex;i<e.results.length;i++){const part=e.results[i][0]?.transcript||'';transcript+=part;if(e.results[i].isFinal)finalText+=part}const input=$('#smartSearchInput');if(input)input.value=(finalText||transcript).trim();if(finalText.trim())applySmartSearch(finalText.trim())};
     rec.onend=()=>{btn.classList.remove('is-listening');const val=$('#smartSearchInput')?.value?.trim();if(val)applySmartSearch(val)};
     rec.onerror=e=>{btn.classList.remove('is-listening');if(e.error!=='aborted'&&e.error!=='no-speech')toast(runtimeText('Səs tanınmadı. Yenidən cəhd edin.'),'error')};
-  }
-  async function loadHomeStats(){
-    const {count}=await sb.from('elanlar').select('*',{count:'exact',head:true}).eq('status','approved'); $('#statListings') && ($('#statListings').textContent=count||0); if(currentUser){const {count:f}=await sb.from('favorites').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);$('#statFavorites')&&($('#statFavorites').textContent=f||0)}
   }
   let homeListingsRequestId=0;
   async function loadHomeListings(){
@@ -998,15 +1032,38 @@
     const rail=$('#storiesRail');if(!rail)return;
     /* Expired story rows + media are cleaned server-side. Failure must never block the home rail. */
     /* Expiry is filtered by expires_at; scheduled Worker performs server-side cleanup. */
-    const {data,error}=await sb.from('stories').select('*').eq('status','active').gt('expires_at',new Date().toISOString()).order('active_at',{ascending:false}).limit(300); if(error){console.warn(error.message);return}
+    const {data,error}=await sb.from('stories').select('id,user_id,listing_id,media_url,media_type,caption,expires_at').eq('status','active').gt('expires_at',new Date().toISOString()).order('active_at',{ascending:false}).limit(300); if(error){console.warn(error.message);return}
     const userIds=[...new Set((data||[]).map(x=>x.user_id))]; let profiles={}; if(userIds.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified,country_code').in('id',userIds);(p||[]).forEach(x=>profiles[x.id]=x)}
     const storyCountry=String(localStorage.getItem('avtovip-country')||'').toUpperCase();
-    const visibleStories=(data||[]).filter(x=>!storyCountry||String(profiles[x.user_id]?.country_code||'').toUpperCase()===storyCountry);
-    const storyIds=visibleStories.map(x=>x.id);let viewMap={};if(storyIds.length){const counts=await Promise.all(storyIds.map(getStoryViewCount));storyIds.forEach((id,i)=>viewMap[id]=Number(counts[i]||0))}
+    const visibleStories=(data||[]).filter(x=>storyActive(x)&&(!storyCountry||String(profiles[x.user_id]?.country_code||'').toUpperCase()===storyCountry));
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
-    rail.innerHTML=add+visibleStories.map(s=>{const p=profiles[s.user_id]||{},vc=Number(viewMap[s.id]||0);s.view_count=vc;const rawCaption=String(s.caption||'').trim();const railTitle=rawCaption?(rawCaption.length>22?rawCaption.slice(0,22).trimEnd()+'…':rawCaption):'Avto Hekayə';return `<button class="story-item" type="button" data-story="${s.id}"><div class="story-ring"><div class="story-ring-inner">${s.media_type==='video'?(privateMediaPattern.test(s.media_url)?`<video data-story-media="${esc(s.media_url)}" muted playsinline preload="metadata"></video>`:`<video src="${esc(s.media_url)}" muted preload="metadata"></video>`):`<img ${privateMediaPattern.test(s.media_url)?`data-story-media="${esc(s.media_url)}"`:`src="${esc(s.media_url)}"`} alt="">`}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i>${vc}</span></div><span title="${esc(rawCaption||railTitle)}">${esc(railTitle)}</span></button>`}).join(''); window.AvtoVIPHydrateStoryPreviews(rail); rail.onclick=e=>{const b=e.target.closest('[data-story]');if(b){const story=visibleStories.find(x=>x.id===b.dataset.story);if(story)openStory(story,profiles[story.user_id],visibleStories,profiles)}};
+    rail.innerHTML = add + visibleStories.map(story => {
+      const rawCaption = String(story.caption || '').trim();
+      const title = rawCaption.length > 22 ? rawCaption.slice(0,22).trimEnd()+'…' : rawCaption || 'Avto Hekayə';
+      return `<button class="story-item" type="button" data-story="${esc(story.id)}"><div class="story-ring"><div class="story-ring-inner">${window.AvtoVIPStoryThumb(story, profiles[story.user_id]?.avatar_url)}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i><span data-story-views></span></span></div><span title="${esc(rawCaption || title)}">${esc(title)}</span></button>`;
+    }).join('');
+    const storyButtons = new Map([...rail.querySelectorAll('[data-story]')].map(button => [button.dataset.story, button]));
+    window.AvtoVIPHydrateStoryPreviews(rail);
+    const scheduleExpiry = window.AvtoVIPStoryExpiry(() => visibleStories, () => {
+      for (let index = visibleStories.length - 1; index >= 0; index--) {
+        const story = visibleStories[index];
+        if (storyActive(story)) continue;
+        storyButtons.get(story.id)?.remove();
+        storyButtons.delete(story.id);
+        releasePrivateMedia(story.media_url);
+        visibleStories.splice(index, 1);
+      }
+    });
+    scheduleExpiry();
+    rail.onclick = event => {
+      const story = visibleStories.find(row => row.id === event.target.closest('[data-story]')?.dataset.story);
+      if (story && storyActive(story)) openStory(story, profiles[story.user_id], visibleStories, profiles);
+    };
+    const counts = await db.storyViewCounts(visibleStories.map(story => story.id), getStoryViewCount);
+    for (const [id, button] of storyButtons) button.querySelector('[data-story-views]').textContent = counts.get(id) || 0;
   }
   async function openStory(s,p={},storyList=[],storyProfiles={}){
+    if (!storyActive(s)) return;
     const modal=document.createElement('div');modal.className='story-viewer';
     const ownerName=esc([p?.name,p?.surname].filter(Boolean).join(' ')||'AvtoVİP');
     const ownerVerified=p?.is_verified?verifiedBadge():'';
@@ -1044,7 +1101,8 @@
     if(storyMedia){storyMedia.addEventListener(storyMedia.tagName==='VIDEO'?'loadedmetadata':'load',fitStoryMedia,{once:true});requestAnimationFrame(fitStoryMedia);window.addEventListener('resize',fitStoryMedia,{passive:true});}
     const storyHistoryToken=`story-${s.id}-${Date.now()}`;let storyHistoryActive=true;
     history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
-    const close=(fromHistory=false)=>{if(!modal.isConnected)return;modal.remove();document.documentElement.classList.remove('modal-open');window.removeEventListener('popstate',onStoryPop);window.removeEventListener('resize',fitStoryMedia);if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
+    const expiryTimer = setTimeout(() => close(), Math.max(0, Date.parse(s.expires_at) - Date.now()));
+    const close=(fromHistory=false)=>{if(!modal.isConnected)return;clearTimeout(expiryTimer);if(modal.querySelector('video'))releasePrivateMedia(s.media_url);modal.remove();document.documentElement.classList.remove('modal-open');window.removeEventListener('popstate',onStoryPop);window.removeEventListener('resize',fitStoryMedia);if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
     const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));if(video){video.controls=false;requestAnimationFrame(()=>{fitStoryMedia();video.play().catch(()=>{})})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
     const onStoryPop=()=>{if(!modal.isConnected){window.removeEventListener('popstate',onStoryPop);return}if(modal.classList.contains('story-comments-open')){closeComments();history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);return}storyHistoryActive=false;close(true);window.removeEventListener('popstate',onStoryPop)};window.addEventListener('popstate',onStoryPop);
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
@@ -1064,6 +1122,7 @@
       const touch=e.changedTouches?.[0];if(!touch)return;
       const dx=touch.clientX-storyTouchX,dy=touch.clientY-storyTouchY;
       if(Math.abs(dx)<55||Math.abs(dx)<=Math.abs(dy))return;
+      storyList=storyList.filter(row=>row.id===s.id||storyActive(row));
       const idx=(storyList||[]).findIndex(x=>x.id===s.id);if(idx<0)return;
       const nextIdx=dx<0?idx+1:idx-1;if(nextIdx<0||nextIdx>=storyList.length)return;
       const next=storyList[nextIdx],nextProfile=storyProfiles?.[next.user_id]||{};
@@ -1526,22 +1585,46 @@
     await renderConversations(user.id);
     const withId=qsParam('with'),listingId=qsParam('listing');if(withId)await openConversation(withId,listingId);else if(matchMedia('(min-width:901px)').matches){const first=$('#conversationList [data-peer]');if(first)await openConversation(first.dataset.peer,first.dataset.listing||'')}
     // Coalesce bursts of Realtime events into one refresh; keep the active chat live.
-    let refreshTimer=0;
-    let lastRefresh=Date.now(),pendingRefresh=false;
-    const refresh=()=>{if(document.hidden){pendingRefresh=true;return}if(refreshTimer)return;refreshTimer=setTimeout(()=>{refreshTimer=0;lastRefresh=Date.now();pendingRefresh=false;renderConversations(user.id);const pane=$('#chatPane');if(pane?.dataset.peer)renderThread(pane.dataset.peer,pane.dataset.listing||'')},120)};
-    // A quick tab switch must not re-fetch the entire chat. Reconcile only after a long absence.
-    const onVisible=()=>{if(!document.hidden&&pendingRefresh)refresh()};
+    let refreshTimer=0, refreshList=false, refreshThread=false;
+    const refresh=(list=true,thread=true)=>{
+      refreshList ||= list;
+      refreshThread ||= thread;
+      if (document.hidden || refreshTimer) return;
+      refreshTimer=setTimeout(()=>{
+        refreshTimer=0;
+        const listPending=refreshList, threadPending=refreshThread;
+        refreshList=refreshThread=false;
+        if(listPending){renderConversations(user.id);updateMessageBadge()}
+        const pane=$('#chatPane');
+        if(threadPending&&pane?.dataset.peer)renderThread(pane.dataset.peer,pane.dataset.listing||'');
+      },120);
+    };
+    const onVisible=()=>{if(refreshList||refreshThread)refresh(false,false)};
     document.addEventListener('visibilitychange',onVisible);
     if(activeRealtimeChannel)await sb.removeChannel(activeRealtimeChannel).catch(()=>{});
     activeRealtimeChannel=sb.channel(`messages-live-${user.id}`,{config:{broadcast:{self:false}}})
-      .on('postgres_changes',{event:'*',schema:'public',table:'message_reactions'},payload=>{const pane=$('#chatPane');if(pane?.dataset.peer)refresh()})
-      .on('postgres_changes',{event:'*',schema:'public',table:'messages'},payload=>{const m=payload.new?.id?payload.new:payload.old;if(!m)return;if(m.sender_id===user.id||m.receiver_id===user.id){if(m.sender_id===user.id&&Date.now()-(window.__avLastLocalMessageSend||0)<10000)return;refresh()}})
+      .on('postgres_changes',{event:'*',schema:'public',table:'message_reactions'},payload=>{
+        const id=payload.new?.message_id||payload.old?.message_id;
+        if($('#chatPane')?.dataset.peer&&(!id||$('#chatMessages')?.querySelector(`[data-message-id="${CSS.escape(id)}"]`)))refresh(false,true);
+      })
+      .on('postgres_changes',{event:'*',schema:'public',table:'messages'},payload=>{
+        const m=payload.new?.id?payload.new:payload.old;
+        if(!m)return;
+        const pane=$('#chatPane'),peer=pane?.dataset.peer,listing=pane?.dataset.listing;
+        if(!m.sender_id&&!m.receiver_id&&m.id){
+          if($('#chatMessages')?.querySelector(`[data-message-id="${CSS.escape(m.id)}"]`))refresh();
+          return;
+        }
+        if(m.sender_id!==user.id&&m.receiver_id!==user.id)return;
+        const other=m.sender_id===user.id?m.receiver_id:m.sender_id;
+        refresh(true,peer===other&&(!listing||m.listing_id===listing));
+      })
       .on('broadcast',{event:'chat-updated'},()=>refresh())
-      .subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){console.warn('[AvtoVIP realtime] messages',status)}else if(status==='SUBSCRIBED'){document.body.dataset.realtime='on'}});
+      .subscribe(status=>{if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status)){document.body.dataset.realtime='retry';console.warn('[AvtoVIP realtime] messages',status)}else if(status==='SUBSCRIBED'){document.body.dataset.realtime='on'}});
     const chatSyncInterval=setInterval(()=>{if(!document.hidden&&$('#chatPane')?.dataset.peer&&document.body.dataset.realtime!=='on')refresh()},30000);
     const closeChatOnBack=()=>{if(!history.state?.avChat){const shell=$('#messagesShell'),pane=$('#chatPane');shell?.classList.remove('chat-selected');pane?.classList.remove('open');if(pane){delete pane.dataset.peer;delete pane.dataset.listing}}};window.addEventListener('popstate',closeChatOnBack);
     const cleanup=()=>{clearInterval(chatSyncInterval);clearTimeout(refreshTimer);document.removeEventListener('visibilitychange',onVisible);if(activeRealtimeChannel){sb.removeChannel(activeRealtimeChannel).catch(()=>{});activeRealtimeChannel=null}if(window.__avPeerSyncChannel){sb.removeChannel(window.__avPeerSyncChannel).catch(()=>{});window.__avPeerSyncChannel=null}};
-    window.addEventListener('pagehide',cleanup,{once:true});window.addEventListener('beforeunload',cleanup,{once:true});
+    window.addEventListener('pagehide',event=>{if(!event.persisted)cleanup()});
   }
   let conversationsInFlight=null;
   async function renderConversations(uid){
@@ -1550,7 +1633,7 @@
     try{return await conversationsInFlight}finally{conversationsInFlight=null}
   }
   async function renderConversationsNow(uid){
-    const root=$('#conversationList');const [{data,error},{data:clears}]=await Promise.all([sb.from('messages').select('*').or(`sender_id.eq.${uid},receiver_id.eq.${uid}`).is('deleted_at',null).order('created_at',{ascending:false}).limit(500),sb.from('conversation_clears').select('peer_id,cleared_at').eq('user_id',uid)]);if(error){root.innerHTML=esc(error.message);return}const clearMap=new Map((clears||[]).map(x=>[x.peer_id,new Date(x.cleared_at).getTime()]));const groups=new Map();for(const m of data||[]){const peer=m.sender_id===uid?m.receiver_id:m.sender_id;if(new Date(m.created_at).getTime()<=Number(clearMap.get(peer)||0))continue;const key=`${peer}|${m.listing_id||''}`;if(!groups.has(key))groups.set(key,{peer,listing:m.listing_id,last:m,unread:0});if(m.receiver_id===uid&&!m.is_read)groups.get(key).unread++}const peers=[...new Set([...groups.values()].map(g=>g.peer))];let pmap={};if(peers.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').in('id',peers);(p||[]).forEach(x=>pmap[x.id]=x)}const listingIds=[...new Set([...groups.values()].map(g=>g.listing).filter(Boolean))];let sellerMap={};if(listingIds.length){const {data:ls}=await sb.from('elanlar').select('id,user_id').in('id',listingIds);(ls||[]).forEach(x=>sellerMap[x.id]=x.user_id)}const nextConversationMarkup=groups.size?[...groups.values()].map(g=>{const p=pmap[g.peer]||{},online=window.__avOnlineUsers?.has?.(g.peer),mediaLabel=g.last.media_type==='video'?'🎥 Video':g.last.media_url?'🖼️ Şəkil':'',preview=g.last.body||mediaLabel,sellerId=sellerMap[g.listing]||'',role=sellerId?(sellerId===uid?'buyer':sellerId===g.peer?'seller':'') : '';return `<button class="conversation-item ${g.unread?'has-unread':''}" type="button" data-peer="${g.peer}" data-listing="${g.listing||''}" data-unread="${g.unread||0}" data-role="${role}"><span class="avatar-shell ${p.membership_tier||'free'}${avatarVerifiedClass(p.is_verified)}"><img class="conversation-avatar" src="${esc(p.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${p.membership_tier==='vip'?'<i class="fa-solid fa-crown avatar-crown"></i>':p.membership_tier==='premium'?'<i class="fa-solid fa-gem avatar-gem"></i>':''}<i class="presence-dot ${online?'online':'offline'}" aria-label="${online?'Onlayn':'Oflayn'}"></i></span><div class="conversation-copy"><strong>${p.is_verified?verifiedBadge():''}<span class="conversation-name-text">${esc([p.name,p.surname].filter(Boolean).join(' ')||staticText('İstifadəçi'))}</span></strong><span>${esc(preview)}</span></div><div class="conversation-meta"><time class="tiny muted">${timeText(g.last.created_at)}</time>${g.unread?`<b class="conversation-unread-count">${g.unread>99?'99+':g.unread}</b>`:''}</div><span class="conversation-delete" role="button" tabindex="0" data-delete-conversation="${g.peer}" aria-label="Yazışmanı sil" title="Yazışmanı sil"><i class="fa-regular fa-trash-can"></i></span></button>`}).join(''):`<div class="empty-state" style="margin:10px">${esc(staticText('Mesaj yoxdur.'))}</div>`;if(root.innerHTML!==nextConversationMarkup)root.innerHTML=nextConversationMarkup;window.__avApplyMessageSearch=()=>{const fold=v=>String(v||'').trim().toLocaleLowerCase('az').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ə/g,'e').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g').replace(/ş/g,'s').replace(/ç/g,'c');const q=fold(window.__avMessageSearchQuery||$('#avMessageSearch')?.value||''),filter=window.__avMessageFilter||'all';$$('.conversation-item',root).forEach(x=>{const searchOk=!q||fold(x.textContent).includes(q),filterOk=filter==='all'||(filter==='unread'&&Number(x.dataset.unread||0)>0)||(filter==='buyers'&&x.dataset.role==='buyer')||(filter==='sellers'&&x.dataset.role==='seller');x.hidden=!(searchOk&&filterOk)})};window.__avApplyMessageSearch();root.onclick=async e=>{const del=e.target.closest('[data-delete-conversation]');if(del){e.preventDefault();e.stopPropagation();const peer=del.dataset.deleteConversation;const ok=await avMessageDialog({mode:'confirm',title:runtimeText('Yazışmanı sil'),text:'',confirmText:runtimeText('Sil')});if(!ok)return;const {error}=await sb.rpc('av_clear_conversation',{p_peer_id:peer});if(error)toast(error.message,'error');else{sb.functions.invoke('chat-cleanup',{body:{peer_id:peer}}).then(({data:cleanupData,error:cleanupError})=>{if(cleanupError){console.warn('[AvtoVIP chat cleanup]',cleanupError);toast('Mesaj fayllarının təmizlənməsi alınmadı.','error')}else console.info('[AvtoVIP chat cleanup]',cleanupData)}).catch(err=>{console.warn('[AvtoVIP chat cleanup]',err);toast('Mesaj fayllarının təmizlənməsi alınmadı.','error')});threadClearCache.delete(uid+'|'+peer);await sb.from('messages').update({is_read:true}).eq('receiver_id',uid).eq('sender_id',peer).eq('is_read',false);await renderConversations(uid);updateMessageBadge()}return}const b=e.target.closest('[data-peer]');if(b){if(!history.state?.avChat)history.pushState({avChat:true},'',location.pathname+'#chat');openConversation(b.dataset.peer,b.dataset.listing)}};
+    const root=$('#conversationList');const [{data,error},{data:clears}]=await Promise.all([sb.from('messages').select('sender_id,receiver_id,listing_id,created_at,is_read,media_type,media_url,body').or(`sender_id.eq.${uid},receiver_id.eq.${uid}`).is('deleted_at',null).order('created_at',{ascending:false}).limit(500),sb.from('conversation_clears').select('peer_id,cleared_at').eq('user_id',uid)]);if(error){root.innerHTML=esc(error.message);return}const clearMap=new Map((clears||[]).map(x=>[x.peer_id,new Date(x.cleared_at).getTime()]));const groups=new Map();for(const m of data||[]){const peer=m.sender_id===uid?m.receiver_id:m.sender_id;if(new Date(m.created_at).getTime()<=Number(clearMap.get(peer)||0))continue;const key=`${peer}|${m.listing_id||''}`;if(!groups.has(key))groups.set(key,{peer,listing:m.listing_id,last:m,unread:0});if(m.receiver_id===uid&&!m.is_read)groups.get(key).unread++}const peers=[...new Set([...groups.values()].map(g=>g.peer))];let pmap={};if(peers.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified').in('id',peers);(p||[]).forEach(x=>pmap[x.id]=x)}const listingIds=[...new Set([...groups.values()].map(g=>g.listing).filter(Boolean))];let sellerMap={};if(listingIds.length){const {data:ls}=await sb.from('elanlar').select('id,user_id').in('id',listingIds);(ls||[]).forEach(x=>sellerMap[x.id]=x.user_id)}const nextConversationMarkup=groups.size?[...groups.values()].map(g=>{const p=pmap[g.peer]||{},online=window.__avOnlineUsers?.has?.(g.peer),mediaLabel=g.last.media_type==='video'?'🎥 Video':g.last.media_url?'🖼️ Şəkil':'',preview=g.last.body||mediaLabel,sellerId=sellerMap[g.listing]||'',role=sellerId?(sellerId===uid?'buyer':sellerId===g.peer?'seller':'') : '';return `<button class="conversation-item ${g.unread?'has-unread':''}" type="button" data-peer="${g.peer}" data-listing="${g.listing||''}" data-unread="${g.unread||0}" data-role="${role}"><span class="avatar-shell ${p.membership_tier||'free'}${avatarVerifiedClass(p.is_verified)}"><img class="conversation-avatar" src="${esc(p.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${p.membership_tier==='vip'?'<i class="fa-solid fa-crown avatar-crown"></i>':p.membership_tier==='premium'?'<i class="fa-solid fa-gem avatar-gem"></i>':''}<i class="presence-dot ${online?'online':'offline'}" aria-label="${online?'Onlayn':'Oflayn'}"></i></span><div class="conversation-copy"><strong>${p.is_verified?verifiedBadge():''}<span class="conversation-name-text">${esc([p.name,p.surname].filter(Boolean).join(' ')||staticText('İstifadəçi'))}</span></strong><span>${esc(preview)}</span></div><div class="conversation-meta"><time class="tiny muted">${timeText(g.last.created_at)}</time>${g.unread?`<b class="conversation-unread-count">${g.unread>99?'99+':g.unread}</b>`:''}</div><span class="conversation-delete" role="button" tabindex="0" data-delete-conversation="${g.peer}" aria-label="Yazışmanı sil" title="Yazışmanı sil"><i class="fa-regular fa-trash-can"></i></span></button>`}).join(''):`<div class="empty-state" style="margin:10px">${esc(staticText('Mesaj yoxdur.'))}</div>`;if(root.innerHTML!==nextConversationMarkup)root.innerHTML=nextConversationMarkup;window.__avApplyMessageSearch=()=>{const fold=v=>String(v||'').trim().toLocaleLowerCase('az').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ə/g,'e').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g').replace(/ş/g,'s').replace(/ç/g,'c');const q=fold(window.__avMessageSearchQuery||$('#avMessageSearch')?.value||''),filter=window.__avMessageFilter||'all';$$('.conversation-item',root).forEach(x=>{const searchOk=!q||fold(x.textContent).includes(q),filterOk=filter==='all'||(filter==='unread'&&Number(x.dataset.unread||0)>0)||(filter==='buyers'&&x.dataset.role==='buyer')||(filter==='sellers'&&x.dataset.role==='seller');x.hidden=!(searchOk&&filterOk)})};window.__avApplyMessageSearch();root.onclick=async e=>{const del=e.target.closest('[data-delete-conversation]');if(del){e.preventDefault();e.stopPropagation();const peer=del.dataset.deleteConversation;const ok=await avMessageDialog({mode:'confirm',title:runtimeText('Yazışmanı sil'),text:'',confirmText:runtimeText('Sil')});if(!ok)return;const {error}=await sb.rpc('av_clear_conversation',{p_peer_id:peer});if(error)toast(error.message,'error');else{sb.functions.invoke('chat-cleanup',{body:{peer_id:peer}}).then(({data:cleanupData,error:cleanupError})=>{if(cleanupError){console.warn('[AvtoVIP chat cleanup]',cleanupError);toast('Mesaj fayllarının təmizlənməsi alınmadı.','error')}else console.info('[AvtoVIP chat cleanup]',cleanupData)}).catch(err=>{console.warn('[AvtoVIP chat cleanup]',err);toast('Mesaj fayllarının təmizlənməsi alınmadı.','error')});threadClearCache.delete(uid+'|'+peer);await sb.from('messages').update({is_read:true}).eq('receiver_id',uid).eq('sender_id',peer).eq('is_read',false);await renderConversations(uid);updateMessageBadge()}return}const b=e.target.closest('[data-peer]');if(b){if(!history.state?.avChat)history.pushState({avChat:true},'',location.pathname+'#chat');openConversation(b.dataset.peer,b.dataset.listing)}};
   }
   async function blockedRelationship(peer){
     if(!currentUser||!peer)return {blocked:false,byMe:false,byPeer:false};
@@ -1631,18 +1714,86 @@
     threadRequests.set(key,task);
     try{return await task}finally{threadRequests.delete(key)}
   }
+  const threadNodeMarkup = new WeakMap();
+  function patchThreadMarkup(root,markup) {
+    const template=document.createElement('template');
+    template.innerHTML=markup;
+    const existing=new Map([...root.children].filter(node=>node.dataset.messageId||node.dataset.chatDate)
+      .map(node=>[node.dataset.messageId||node.dataset.chatDate,node]));
+    const incoming=[...template.content.children];
+    const keys=new Set(incoming.map(node=>node.dataset.messageId||node.dataset.chatDate));
+    for(const node of [...root.children]){
+      if(!keys.has(node.dataset.messageId||node.dataset.chatDate))node.remove();
+    }
+    const keep=new Set();
+    let anchor=root.firstElementChild;
+    for(const next of incoming){
+      const previous=existing.get(next.dataset.messageId||next.dataset.chatDate);
+      const signature=next.outerHTML;
+      let node=next;
+      if(previous&&threadNodeMarkup.get(previous)===signature){
+        node=previous;
+      }else if(previous&&next.dataset.messageId){
+        const oldMedia=previous.querySelector('.chat-media');
+        const newMedia=next.querySelector('.chat-media');
+        if(oldMedia&&newMedia&&oldMedia.tagName===newMedia.tagName&&previous.dataset.mediaUrl===next.dataset.mediaUrl){
+          const oldFooter=previous.querySelector('.av-message-footer');
+          const newFooter=next.querySelector('.av-message-footer');
+          const oldBody=previous.querySelector(':scope > p'),newBody=next.querySelector(':scope > p');
+          if(oldBody?.outerHTML===newBody?.outerHTML&&oldFooter&&newFooter){
+            if(oldFooter.outerHTML!==newFooter.outerHTML)oldFooter.replaceWith(newFooter);
+            node=previous;
+          }
+        }
+      }
+      threadNodeMarkup.set(node,signature);
+      keep.add(node);
+      if(node!==anchor){
+        if(previous&&previous===anchor)previous.replaceWith(node);
+        else root.insertBefore(node,anchor);
+      }
+      anchor=node.nextElementSibling;
+    }
+    for(const node of [...root.children])if(!keep.has(node))node.remove();
+  }
   async function renderThreadNow(peer,listing=''){
-    const clearRow=await getThreadClearRow(currentUser.id,peer);let q=sb.from('messages').select('*').or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${peer}),and(sender_id.eq.${peer},receiver_id.eq.${currentUser.id})`).is('deleted_at',null).order('created_at',{ascending:true}).limit(500);if(clearRow?.cleared_at)q=q.gt('created_at',clearRow.cleared_at); if(listing)q=q.eq('listing_id',listing);const {data,error}=await q;const root=$('#chatMessages');if(error){root.innerHTML=esc(error.message);return}const hiddenRes=await sb.from('message_user_deletions').select('message_id').eq('user_id',currentUser.id);if(hiddenRes.error){root.textContent=hiddenRes.error.message;return}const hiddenIds=new Set((hiddenRes.data||[]).map(x=>String(x.message_id)));const visibleMessages=(data||[]).filter(m=>!hiddenIds.has(String(m.id)));
-    const oldScroll=root.scrollTop,oldHeight=root.scrollHeight,nearBottom=root.scrollHeight-root.scrollTop-root.clientHeight<100;const oldLast=root.querySelector('.bubble:last-of-type')?.dataset.messageId;const ids=visibleMessages.map(m=>m.id);let reactionRows=[];
+    const uid=currentUser?.id, pane=$('#chatPane'), root=$('#chatMessages');
+    const isCurrent=()=>uid===currentUser?.id&&pane?.dataset.peer===peer&&(pane.dataset.listing||'')===(listing||'');
+    if(!uid||!root||!isCurrent())return;
+    const clearRow=await getThreadClearRow(uid,peer);
+    let q=sb.from('messages').select('id,sender_id,receiver_id,listing_id,created_at,body,media_url,media_type,is_read,edited_at')
+      .or(`and(sender_id.eq.${uid},receiver_id.eq.${peer}),and(sender_id.eq.${peer},receiver_id.eq.${uid})`)
+      .is('deleted_at',null).order('created_at',{ascending:false}).order('id',{ascending:false}).limit(500);
+    if(clearRow?.cleared_at)q=q.gt('created_at',clearRow.cleared_at);
+    if(listing)q=q.eq('listing_id',listing);
+    const [{data,error},hiddenRes]=await Promise.all([
+      q,sb.from('message_user_deletions').select('message_id').eq('user_id',uid)
+    ]);
+    if(!isCurrent())return;
+    if(error||hiddenRes.error){root.textContent=(error||hiddenRes.error).message;delete root.dataset.avRenderSignature;return}
+    const hiddenIds=new Set((hiddenRes.data||[]).map(x=>String(x.message_id)));
+    const visibleMessages=(data||[]).slice().reverse().filter(m=>!hiddenIds.has(String(m.id)));
+    const ids=visibleMessages.map(m=>m.id);let reactionRows=[];
     if(ids.length){const rr=await sb.from('message_reactions').select('message_id,user_id,emoji').in('message_id',ids);if(!rr.error)reactionRows=rr.data||[];else if(!window.__avReactionWarning){window.__avReactionWarning=true;console.warn('Message reactions not available:',rr.error.message)}}
+    if(!isCurrent())return;
     const reactionsByMessage=new Map();reactionRows.forEach(r=>{const a=reactionsByMessage.get(String(r.message_id))||[];const ix=a.findIndex(x=>x.user_id===r.user_id);if(ix>=0)a[ix]=r;else a.push(r);reactionsByMessage.set(String(r.message_id),a)});
-    const renderSignature=JSON.stringify([visibleMessages.map(m=>[m.id,m.body,m.media_url,m.media_type,m.is_read,m.edited_at]),reactionRows.map(r=>[r.message_id,r.user_id,r.emoji])]);
+    const renderSignature=JSON.stringify([peer,listing,lang,visibleMessages.map(m=>[m.id,m.body,m.media_url,m.media_type,m.is_read,m.edited_at]),reactionRows.map(r=>[r.message_id,r.user_id,r.emoji])]);
     if(root.dataset.avRenderSignature===renderSignature)return;
     root.dataset.avRenderSignature=renderSignature;
-    let lastDay='';const today=new Date(),yesterday=new Date();yesterday.setDate(today.getDate()-1);const dayKey=d=>`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;root.innerHTML=visibleMessages.map(m=>{const d=new Date(m.created_at),key=dayKey(d);let sep='';if(key!==lastDay){lastDay=key;const label=key===dayKey(today)?runtimeText('Bu gün'):key===dayKey(yesterday)?runtimeText('Dünən'):d.toLocaleDateString(document.documentElement.lang||'az',{day:'2-digit',month:'long',year:d.getFullYear()===today.getFullYear()?undefined:'numeric'});sep=`<div class="chat-date-separator"><span>${esc(label)}</span></div>`}const mine=m.sender_id===currentUser.id;const chips=(reactionsByMessage.get(String(m.id))||[]).map(r=>`<button type="button" class="av-reaction-chip ${r.user_id===currentUser.id?'selected':''}" data-reaction-message="${m.id}" title="İfadəni dəyiş">${esc(r.emoji)}</button>`).join('');const status=mine?`<span class="av-message-status ${m.is_read?'read':'sent'}" title="${m.is_read?'Oxunub':'Göndərilib'}">${m.is_read?'✓✓':'✓'}</span>`:'';return sep+`<div class="bubble ${mine?'mine':''}" data-message-id="${m.id}" data-media-url="${esc(m.media_url||'')}">${m.media_url?(m.media_type==='video'?`<div class="av-chat-video-wrap" data-media-video="${esc(m.media_url)}"><video class="chat-media chat-video" src="${esc(m.media_url)}" playsinline preload="metadata" tabindex="-1"></video><span class="av-video-play"><i class="fa-solid fa-play"></i></span></div>`:`<button type="button" class="chat-media-open" data-media-open="${esc(m.media_url)}" aria-label="Şəkli böyüt"><img class="chat-media" src="${esc(m.media_url)}" alt=""></button>`):''}${m.body?`<p>${esc(m.body)}</p>`:''}<div class="av-message-footer ${mine?'mine':''}">${mine?`<span class="av-footer-reactions">${chips}</span><span class="av-footer-spacer"></span><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button><button type="button" data-edit-message="${m.id}" title="Redaktə"><i class="fa-solid fa-pen"></i></button><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><time>${timeText(m.created_at)}${m.edited_at?' · ✎':''}</time>${status}`:`<span class="av-foreign-controls"><time>${timeText(m.created_at)}</time><span class="av-foreign-buttons"><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button></span></span><span class="av-footer-spacer"></span><span class="av-footer-reactions">${chips}</span>`}</div></div>`}).join('');const newLast=root.querySelector('.bubble:last-of-type')?.dataset.messageId;const shouldBottom=nearBottom||(!oldLast)||oldLast!==newLast;root.scrollTop=shouldBottom?root.scrollHeight:oldScroll;
+    const oldScroll=root.scrollTop, nearBottom=root.scrollHeight-root.scrollTop-root.clientHeight<100;
+    const oldLast=root.querySelector('.bubble:last-of-type')?.dataset.messageId;
+    const top=root.getBoundingClientRect().top;
+    const visibleAnchor=[...root.children].find(node=>node.dataset.messageId&&node.getBoundingClientRect().bottom>top);
+    const anchorId=visibleAnchor?.dataset.messageId, anchorTop=visibleAnchor?.getBoundingClientRect().top;
+    let lastDay='';const today=new Date(),yesterday=new Date();yesterday.setDate(today.getDate()-1);const dayKey=d=>`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;const markup=visibleMessages.map(m=>{const d=new Date(m.created_at),key=dayKey(d);let sep='';if(key!==lastDay){lastDay=key;const label=key===dayKey(today)?runtimeText('Bu gün'):key===dayKey(yesterday)?runtimeText('Dünən'):d.toLocaleDateString(document.documentElement.lang||'az',{day:'2-digit',month:'long',year:d.getFullYear()===today.getFullYear()?undefined:'numeric'});sep=`<div class="chat-date-separator" data-chat-date="${key}"><span>${esc(label)}</span></div>`}const mine=m.sender_id===currentUser.id;const chips=(reactionsByMessage.get(String(m.id))||[]).map(r=>`<button type="button" class="av-reaction-chip ${r.user_id===currentUser.id?'selected':''}" data-reaction-message="${m.id}" title="İfadəni dəyiş">${esc(r.emoji)}</button>`).join('');const status=mine?`<span class="av-message-status ${m.is_read?'read':'sent'}" title="${m.is_read?'Oxunub':'Göndərilib'}">${m.is_read?'✓✓':'✓'}</span>`:'';return sep+`<div class="bubble ${mine?'mine':''}" data-message-id="${m.id}" data-media-url="${esc(m.media_url||'')}">${m.media_url?(m.media_type==='video'?`<div class="av-chat-video-wrap" data-media-video="${esc(m.media_url)}"><video class="chat-media chat-video" ${privateMediaPattern.test(m.media_url)?'data-private-media':'src'}="${esc(m.media_url)}" playsinline preload="metadata" tabindex="-1"></video><span class="av-video-play"><i class="fa-solid fa-play"></i></span></div>`:`<button type="button" class="chat-media-open" data-media-open="${esc(m.media_url)}" aria-label="Şəkli böyüt"><img class="chat-media" ${privateMediaPattern.test(m.media_url)?'data-private-media':'src'}="${esc(m.media_url)}" alt=""></button>`):''}${m.body?`<p>${esc(m.body)}</p>`:''}<div class="av-message-footer ${mine?'mine':''}">${mine?`<span class="av-footer-reactions">${chips}</span><span class="av-footer-spacer"></span><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button><button type="button" data-edit-message="${m.id}" title="Redaktə"><i class="fa-solid fa-pen"></i></button><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><time>${timeText(m.created_at)}${m.edited_at?' · ✎':''}</time>${status}`:`<span class="av-foreign-controls"><time>${timeText(m.created_at)}</time><span class="av-foreign-buttons"><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button></span></span><span class="av-footer-spacer"></span><span class="av-footer-reactions">${chips}</span>`}</div></div>`}).join('');patchThreadMarkup(root,markup);const shouldBottom=nearBottom||!oldLast;root.scrollTop=shouldBottom?root.scrollHeight:oldScroll;
     hydratePrivateMedia(root).catch(error=>console.warn('[AvtoVIP chat media]',error));
     // Media dimensions may settle after render; keep the newest message visible.
-    const stayAtLatest=()=>{if(root.isConnected){if(shouldBottom)root.scrollTop=root.scrollHeight;else root.scrollTop=oldScroll+(root.scrollHeight-oldHeight)}};
+    const stayAtLatest=()=>{
+      if(!root.isConnected||!isCurrent()||root.dataset.avRenderSignature!==renderSignature)return;
+      if(shouldBottom){root.scrollTop=root.scrollHeight;return}
+      const node=anchorId&&root.querySelector(`[data-message-id="${CSS.escape(anchorId)}"]`);
+      if(node)root.scrollTop+=node.getBoundingClientRect().top-anchorTop;
+    };
     root.querySelectorAll('img.chat-media,video.chat-video').forEach(media=>{
       if(media.tagName==='IMG'&&!media.complete)media.addEventListener('load',stayAtLatest,{once:true});
       if(media.tagName==='VIDEO')media.addEventListener('loadedmetadata',stayAtLatest,{once:true});
@@ -1661,7 +1812,7 @@
       const back=document.createElement('div');back.className='chat-lightbox av-chat-gallery';
       back.innerHTML=`<div class="av-chat-gallery-toolbar"><button type="button" class="av-chat-gallery-download" aria-label="Yüklə" title="Yüklə"><i class="fa-solid fa-download"></i></button><button type="button" class="chat-lightbox-close" aria-label="Bağla">×</button></div><div class="av-chat-gallery-stage"></div><span data-gallery-count></span>`;
       const stage=back.querySelector('.av-chat-gallery-stage');
-      const draw=()=>{const item=items[index];stage.querySelector('video')?.pause();stage.replaceChildren();const el=document.createElement(item.video?'video':'img');el.src=item.url;resolvePrivateMedia(item.url).then(local=>{if(el.isConnected)el.src=local}).catch(()=>{});if(item.video){el.controls=true;el.playsInline=true;el.autoplay=true;el.play().catch(()=>{});}else el.alt='';stage.append(el);back.querySelector('[data-gallery-count]').textContent=items.length>1?`${index+1}/${items.length}`:''};
+      const draw=()=>{const item=items[index];stage.querySelector('video')?.pause();stage.replaceChildren();const el=document.createElement(item.video?'video':'img');if(!privateMediaPattern.test(item.url))el.src=item.url;resolvePrivateMedia(item.url).then(local=>{if(el.isConnected)el.src=local}).catch(()=>{});if(item.video){el.controls=true;el.playsInline=true;el.autoplay=true;el.play().catch(()=>{});}else el.alt='';stage.append(el);back.querySelector('[data-gallery-count]').textContent=items.length>1?`${index+1}/${items.length}`:''};
       const galleryToken='av-gallery-'+Date.now();let galleryHistoryOpen=true;history.pushState({...(history.state||{}),avMediaGallery:galleryToken},'',location.href);const close=(fromHistory=false)=>{stage.querySelector('video')?.pause();back.remove();document.removeEventListener('keydown',onKey);window.removeEventListener('popstate',onGalleryPop);if(!fromHistory&&galleryHistoryOpen&&history.state?.avMediaGallery===galleryToken){galleryHistoryOpen=false;history.back()}};const onGalleryPop=()=>{galleryHistoryOpen=false;close(true)};window.addEventListener('popstate',onGalleryPop);
       const move=delta=>{index=(index+delta+items.length)%items.length;draw()};
       const onKey=x=>{if(x.key==='Escape')close();else if(x.key==='ArrowLeft')move(-1);else if(x.key==='ArrowRight')move(1)};
@@ -1695,7 +1846,7 @@
     }
     document.querySelector('.av-chat-reaction-picker')?.remove();
     const del=e.target.closest('[data-delete-message]'),edit=e.target.closest('[data-edit-message]');if(del){const id=del.dataset.deleteMessage,b=del.closest('.bubble'),own=b?.classList.contains('mine');const choice=await avMessageDeleteChoice(own);if(!choice)return;if(choice==='me'){const {error}=await sb.from('message_user_deletions').insert({message_id:id,user_id:currentUser.id});if(error){toast(error.message,'error');return}b?.remove();await renderConversations(currentUser.id);return}const finish=b?.dataset.mediaUrl?db.beginMediaOperation():()=>{};try{const {data:changed,error}=await sb.rpc('av_delete_own_message',{p_message_id:id});if(error){toast(error.message,'error');return}if(!changed?.length){toast('Mesaj silinmədi.','error');return}const mediaUrl=b?.dataset.mediaUrl;b?.remove();toast(runtimeText('Mesaj silindi.'),'success');if(mediaUrl){releasePrivateMedia(mediaUrl);await (async()=>{let lastError=null;for(let attempt=0;attempt<3;attempt++){try{await db.removeUrls('chat-media',[mediaUrl],'message',id);return}catch(err){lastError=err;if(attempt<2)await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)))}}console.warn('[AvtoVIP chat-media remove]',lastError);toast('Mesaj hər iki tərəfdən silindi, lakin media faylının R2-dən silinməsi təsdiqlənmədi.','error')})()}await renderConversations(currentUser.id)}finally{finish()}}if(edit){const id=edit.dataset.editMessage,b=edit.closest('.bubble'),old=b.querySelector('p')?.textContent||'';const text=await avMessageDialog({mode:'prompt',title:runtimeText('Mesajı redaktə edin'),value:old,confirmText:runtimeText('Yadda saxla')});if(text===null)return;const clean=text.trim();if(!clean)return;const {data:changed,error}=await sb.from('messages').update({body:clean,edited_at:new Date().toISOString()}).eq('id',id).eq('sender_id',currentUser.id).select('id,body,edited_at');if(error)toast(error.message,'error');else if(!changed?.length)toast(runtimeText('Mesaj Supabase-də dəyişdirilmədi. SQL icazəsini yoxlayın.'),'error');else{const para=b?.querySelector('p');if(para)para.textContent=changed[0].body;const tm=b?.querySelector('time');if(tm&&!tm.textContent.includes('✎'))tm.textContent+=' · ✎';await renderConversations(currentUser.id)}}};
-    const unread=(data||[]).filter(m=>m.receiver_id===currentUser.id&&!m.is_read).map(m=>m.id);if(unread.length){await sb.from('messages').update({is_read:true}).in('id',unread);await renderConversations(currentUser.id)}updateMessageBadge()}
+    const unread=visibleMessages.filter(m=>m.receiver_id===uid&&!m.is_read).map(m=>m.id);if(unread.length){await sb.from('messages').update({is_read:true}).in('id',unread);await renderConversations(currentUser.id)}updateMessageBadge()}
 
 
   async function initPresence(){
@@ -1703,7 +1854,7 @@
     window.__avOnlineUsers=new Set();
     const ch=sb.channel('avtovip-online-v1',{config:{presence:{key:currentUser.id}}});
     const sync=()=>{const state=ch.presenceState(),set=new Set();Object.keys(state||{}).forEach(k=>set.add(k));window.__avOnlineUsers=set;window.dispatchEvent(new CustomEvent('avtovip:presence'));};
-    ch.on('presence',{event:'sync'},sync).on('presence',{event:'join'},sync).on('presence',{event:'leave'},sync).subscribe(async status=>{if(status==='SUBSCRIBED')await ch.track({user_id:currentUser.id,at:new Date().toISOString()})});
+    ch.on('presence',{event:'sync'},sync).subscribe(async status=>{if(status==='SUBSCRIBED')await ch.track({user_id:currentUser.id,at:new Date().toISOString()})});
     window.__avPresenceChannel=ch;
     window.addEventListener('avtovip:presence',()=>{if(document.body.dataset.page==='messages'){const pane=$('#chatPane');if(pane?.dataset.peer){const sub=$('#chatPeerLink .muted.tiny');if(sub)sub.textContent=window.__avOnlineUsers.has(pane.dataset.peer)?'Onlayn':'Oflayn';}}});
   }
@@ -1720,11 +1871,7 @@
     if('serviceWorker' in navigator){
       window.addEventListener('load',async()=>{
         try{
-          const reg=await navigator.serviceWorker.register('./service-worker.js?v=120',{scope:'./',updateViaCache:'none'});
-          await reg.update();
-          await navigator.serviceWorker.ready;
-          let reloading=false;
-          navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloading)return;reloading=true;console.info('AvtoVIP yeniləməsi aktivdir.')});
+          await navigator.serviceWorker.register('./service-worker.js',{scope:'./',updateViaCache:'none'});
         }catch(e){console.warn(e)}
       });
     }
@@ -1748,8 +1895,8 @@
 
   async function boot(){
     initThemeLang();observeDynamicI18n();initBottomNav();initPWA();
-    /* Theme/language are now stable; reveal immediately and load data progressively. */
-    document.documentElement.classList.remove('av-preboot');
+    // Reveal after all synchronous DOMContentLoaded layout patches have run.
+    requestAnimationFrame(() => document.documentElement.classList.remove('av-preboot'));
     await loadCurrent();
     /* Presence is useful, but it must never block the first usable paint/page init. */
     initPresence().catch(err=>console.warn('[AvtoVIP presence]',err));

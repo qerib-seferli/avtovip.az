@@ -144,18 +144,16 @@
   async function refreshProfileLive(userId){
     if(document.body.dataset.page!=='profile'||!userId)return;
     try{
-      const [{data:p},{count:followers},{count:following},{count:blocked},{data:payments},{data:walletTx}]=await Promise.all([
+      const [{data:p},{count:followers},{count:following},{count:blocked}]=await Promise.all([
         sb.from('users').select('wallet_balance,wallet_currency,preferred_currency,country_code,membership_tier,is_verified').eq('id',userId).maybeSingle(),
         sb.from('user_follows').select('*',{count:'exact',head:true}).eq('following_id',userId),
         sb.from('user_follows').select('*',{count:'exact',head:true}).eq('follower_id',userId),
-        sb.from('user_blocks').select('*',{count:'exact',head:true}).eq('blocker_id',userId),
-        sb.from('payment_requests').select('id').eq('user_id',userId).order('created_at',{ascending:false}).limit(1),
-        sb.from('wallet_transactions').select('id').eq('user_id',userId).order('created_at',{ascending:false}).limit(1)
+        sb.from('user_blocks').select('*',{count:'exact',head:true}).eq('blocker_id',userId)
       ]);
       const links=$$('#ownSocialStats [data-show-social]'); if(links[0])links[0].querySelector('b').textContent=followers||0;if(links[1])links[1].querySelector('b').textContent=following||0;if(links[2])links[2].querySelector('b').textContent=blocked||0;
       const currency=p?.wallet_currency||p?.preferred_currency||({AZ:'AZN',RU:'RUB',TR:'TRY',GE:'GEL',US:'USD',GB:'GBP'}[String(p?.country_code||'').toUpperCase()])||'USD';
       const wb=$('#walletBalance');if(wb)try{wb.textContent=new Intl.NumberFormat(undefined,{style:'currency',currency,maximumFractionDigits:2}).format(Number(p?.wallet_balance||0))}catch{wb.textContent=`${Number(p?.wallet_balance||0)} ${currency}`}
-      if(window.AvtoVIPUI?.loadOwnPayments&&payments)window.AvtoVIPUI.loadOwnPayments(userId); if(window.AvtoVIPUI?.loadWalletTransactions&&walletTx)window.AvtoVIPUI.loadWalletTransactions(userId);
+      window.AvtoVIPUI?.loadOwnPayments?.(userId);window.AvtoVIPUI?.loadWalletTransactions?.(userId);
     }catch(e){console.warn('[Patch11 profile realtime]',e)}
   }
 
@@ -167,9 +165,9 @@
     const refreshNotif=()=>document.dispatchEvent(new CustomEvent('avtovip:p11-notifications'));
     const refreshProfile=()=>refreshProfileLive(uid);const refreshBlocks=()=>{refreshProfileLive(uid);refreshMsg();syncBlockedComposer(uid)};
     const status=(name)=>s=>{if(s==='SUBSCRIBED')document.documentElement.dataset.realtime='on'; if(s==='CHANNEL_ERROR'||s==='TIMED_OUT'||s==='CLOSED'){console.warn(`[AvtoVIP realtime:${name}]`,s);document.documentElement.dataset.realtime='retry';clearTimeout(rtRetry);rtRetry=setTimeout(()=>{rtUser=null;setupRealtime()},2500)}};
-    const msg=sb.channel(`p11-msg-${uid}-${Date.now()}`)
+    const msg=document.body.dataset.page==='messages'?null:sb.channel(`p11-msg-${uid}-${Date.now()}`)
       .on('postgres_changes',{event:'*',schema:'public',table:'messages',filter:`receiver_id=eq.${uid}`},refreshMsg)
-      .on('postgres_changes',{event:'*',schema:'public',table:'messages',filter:`sender_id=eq.${uid}`},refreshMsg).subscribe(status('messages'));
+      .subscribe(status('messages'));
     const note=sb.channel(`p11-note-${uid}-${Date.now()}`).on('postgres_changes',{event:'*',schema:'public',table:'notifications',filter:`user_id=eq.${uid}`},refreshNotif).subscribe(status('notifications'));
     const social=sb.channel(`p11-social-${uid}-${Date.now()}`)
       .on('postgres_changes',{event:'*',schema:'public',table:'user_follows',filter:`follower_id=eq.${uid}`},refreshProfile)
@@ -180,7 +178,7 @@
       .on('postgres_changes',{event:'*',schema:'public',table:'payment_requests',filter:`user_id=eq.${uid}`},refreshProfile)
       .on('postgres_changes',{event:'*',schema:'public',table:'wallet_transactions',filter:`user_id=eq.${uid}`},refreshProfile)
       .on('postgres_changes',{event:'UPDATE',schema:'public',table:'users',filter:`id=eq.${uid}`},refreshProfile).subscribe(status('finance'));
-    rtChannels=[msg,note,social,finance];
+    rtChannels=[msg,note,social,finance].filter(Boolean);
   }
 
   async function syncBlockedComposer(uid){
@@ -223,5 +221,5 @@
     document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(!rtChannels.length)setupRealtime();refreshNotificationBadge()}});window.addEventListener('online',()=>{rtUser=null;setupRealtime()});
     setupRealtime();refreshNotificationBadge();if(document.body.dataset.page!=='messages')setTimeout(refreshLanguageBoundData,120);setTimeout(()=>{patchAll();decorateTierCards();syncCountrySelectFlags();},450);
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,80),{once:true});else setTimeout(boot,80);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();

@@ -22,20 +22,49 @@
     realtime: { params: { eventsPerSecond: 10 } }
   });
 
-  async function getUser() {
-    /* Fast path: persisted session is enough for UI; RLS still validates every DB request. */
-    const { data: sessionData } = await client.auth.getSession();
-    if (sessionData?.session?.user) return sessionData.session.user;
-    const { data, error } = await client.auth.getUser();
-    if (error) return null;
-    return data?.user || null;
+  let pendingUser;
+  function getUser() {
+    if (!pendingUser) {
+      pendingUser = client.auth.getSession()
+        .then(({data}) => data?.session?.user || null)
+        .finally(() => { pendingUser = null; });
+    }
+    return pendingUser;
   }
 
-  async function getProfile(id) {
-    if (!id) return null;
-    const { data, error } = await client.from('users').select('*').eq('id', id).maybeSingle();
-    if (error) console.warn('Profil oxunmadı:', error.message);
-    return data || null;
+  const pendingProfiles = new Map();
+  function getProfile(id) {
+    if (!id) return Promise.resolve(null);
+    if (!pendingProfiles.has(id)) {
+      const request = Promise.resolve(client.from('users').select('*').eq('id', id).maybeSingle())
+        .then(({data, error}) => {
+          if (error) console.warn('Profil oxunmadı:', error.message);
+          return data || null;
+        }).finally(() => {
+          if (pendingProfiles.get(id) === request) pendingProfiles.delete(id);
+        });
+      pendingProfiles.set(id, request);
+    }
+    return pendingProfiles.get(id);
+  }
+
+  client.auth.onAuthStateChange((event) => {
+    if (event === 'SIGNED_OUT') pendingProfiles.clear();
+  });
+
+  async function storyViewCounts(ids, fallback) {
+    if (!ids.length) return new Map();
+    const {data, error} = await client.rpc('av_story_view_counts', {p_ids: ids});
+    if (error?.code === 'PGRST202') {
+      const result = new Map();
+      for (let start = 0; start < ids.length; start += 8) {
+        const batch = ids.slice(start, start + 8);
+        const counts = await Promise.all(batch.map(fallback));
+        batch.forEach((id, index) => result.set(id, counts[index]));
+      }
+      return result;
+    }
+    return new Map((data || []).map(row => [row.story_id, Number(row.view_count)]));
   }
 
   async function current() {
@@ -86,8 +115,7 @@
     if(error||!data?.session?.access_token)throw new Error('R2 üçün aktiv giriş tələb olunur');
     return data.session.access_token;
   }
-  async function r2Upload(file,category){
-    const jwt=await r2Token();
+  async function r2Upload(file,category,jwt){
     const response=await fetch(`${R2_API}/v1/media?category=${encodeURIComponent(category)}`,{
       method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':file.type},body:file
     });
@@ -371,7 +399,7 @@
         throw new Error('R2 bu media formatını qəbul etmir.');
       const {data}=await client.auth.getSession();
       if(data?.session?.user?.id!==userId)throw new Error('R2 istifadəçi təsdiqi uğursuz oldu.');
-      return r2Upload(file,category);
+      return r2Upload(file,category,data.session.access_token);
     }
 
     // Fail closed for unknown buckets: no unexpected user-media uploads
@@ -537,19 +565,19 @@
     return new File([blob],`${String(file.name||'image').replace(/\.[^.]+$/,'')}.jpg`,{type:'image/jpeg',lastModified:Date.now()});
   }
 
-  async function prepareImage(file,{maxWidth=2400,maxHeight=2400,quality=.90,maxBytes=4_000_000,progressTitle='Şəkil hazırlanır...'}={}){
+  async function prepareImage(file,{maxWidth=2400,maxHeight=2400,quality=.90,maxBytes=4_000_000,reportProgress=true,progressTitle='Şəkil hazırlanır...'}={}){
     if(!file)return file;
     if(isVideoFile(file))return file;
     let src=file;
-    mediaProgress(progressTitle,8,'Şəkil oxunur...');
+    reportProgress && mediaProgress(progressTitle,8,'Şəkil oxunur...');
     if(isHeicFile(src)){
-      mediaProgress('Şəkil çevrilir...',18,'Telefon formatı uyğun formata hazırlanır...');
+      reportProgress && mediaProgress('Şəkil çevrilir...',18,'Telefon formatı uyğun formata hazırlanır...');
       src=await heicToJpeg(src);
     }
     const type=String(src.type||'').toLowerCase();
     if(!type.startsWith('image/'))throw new Error('Bu fayl şəkil kimi oxuna bilmədi.');
-    if(src.size<=maxBytes && type==='image/webp'){
-      mediaProgress(progressTitle,100,'Şəkil hazırdır.');mediaProgressHide(100);return src;
+    if(reportProgress && src.size<=maxBytes && type==='image/webp'){
+      reportProgress && mediaProgress(progressTitle,100,'Şəkil hazırdır.');reportProgress && mediaProgressHide(100);return src;
     }
     let bitmap;
     try{bitmap=await createImageBitmap(src,{imageOrientation:'from-image'});}catch{try{bitmap=await createImageBitmap(src)}catch{throw new Error('Şəkil oxuna bilmədi. Telefon formatı çevrilərkən xəta baş verdi.')}}
@@ -560,14 +588,14 @@
     ctx.drawImage(bitmap,0,0,w,h);bitmap.close?.();
     let qualityNow=quality,blob=null;
     for(let i=0;i<4;i++){
-      mediaProgress('Şəkil hazırlanır...',55+i*9,`${w}×${h}`);
+      reportProgress && mediaProgress('Şəkil hazırlanır...',55+i*9,`${w}×${h}`);
       blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',qualityNow));
       if(!blob)break;if(blob.size<=maxBytes)break;qualityNow=Math.max(.68,qualityNow-.06);
     }
     if(!blob)throw new Error('Şəkil düzgün formata çevrilə bilmədi.');
     const base=String(src.name||'image').replace(/\.[^.]+$/,'');
     const out=new File([blob],`${base}.webp`,{type:'image/webp',lastModified:Date.now()});
-    mediaProgress(progressTitle,100,'Şəkil hazırdır.');mediaProgressHide(100);return out;
+    reportProgress && mediaProgress(progressTitle,100,'Şəkil hazırdır.');reportProgress && mediaProgressHide(100);return out;
   }
 
   async function loadFFmpeg(){
@@ -625,20 +653,51 @@
 
   // Scope covers the complete mutation, not just the upload request.
   const loaderBase=new URL('../img/',document.currentScript.src);
-  let busyCount=0, busyStart=0, busyNode=null, busyTimer=0;
+  let busyCount=0, busyNode=null, busyHistory=null, retiringHistory=null;
+  function armBusyHistory() {
+    const guard = { url: location.href, token: crypto.randomUUID() };
+    try {
+      history.pushState({...history.state, avMediaBusy: guard.token}, '', guard.url);
+      busyHistory = guard;
+    } catch { /* Browser-managed navigation can still use beforeunload. */ }
+  }
+  window.addEventListener('popstate', event => {
+    if (retiringHistory && location.href === retiringHistory.url) {
+      const guard = retiringHistory;
+      retiringHistory = null;
+      if (event.state?.avMediaBusy !== guard.token) event.stopImmediatePropagation();
+      if (busyCount && !busyHistory) armBusyHistory();
+      return;
+    }
+    if (!busyCount || !busyHistory || location.href !== busyHistory.url) return;
+    event.stopImmediatePropagation();
+    busyWarning();
+    if (event.state?.avMediaBusy !== busyHistory.token) armBusyHistory();
+  }, true);
   const preloadWorld=new Image();preloadWorld.src=new URL('loading/world.webp',loaderBase).href;
   const preloadLogo=new Image();preloadLogo.src=new URL('brand/logo.png',loaderBase).href;
   function beginMediaOperation(){
-    clearTimeout(busyTimer);
     if(!busyCount++){
-      busyStart=performance.now();
+      if (!retiringHistory) armBusyHistory();
       if(!busyNode){
         const style=document.createElement('style');style.textContent='#avMediaBusy{position:fixed;inset:0;z-index:2147483647;background:rgba(10,15,24,.22);backdrop-filter:blur(1px);display:grid;place-items:center;touch-action:none}#avMediaBusy[hidden]{display:none}#avMediaBusy>div{position:relative;width:112px;height:112px;display:grid;place-items:center}#avMediaBusy .world{width:112px;height:112px}#avMediaBusy .brand{position:absolute;width:64px;max-height:44px;object-fit:contain;filter:drop-shadow(0 1px 4px #000)}body:has(#avMediaBusy:not([hidden])) #avMediaProgress{visibility:hidden}body:has(#avMediaBusy:not([hidden])) #toastStack{position:fixed;z-index:2147483647!important;pointer-events:none!important}#avMediaBusy .busy-warning{position:absolute;top:calc(50% + 70px);max-width:85vw;width:max-content;padding:10px 16px;border-radius:12px;background:#202733;color:#fff;border:1px solid #e5a126;text-align:center;font-size:14px}#avMediaBusy .busy-warning[hidden]{display:none}';document.head.append(style);
         busyNode=document.createElement('div');busyNode.id='avMediaBusy';busyNode.setAttribute('role','status');busyNode.setAttribute('aria-busy','true');const inner=document.createElement('div');for(const [cls,src] of [['world',preloadWorld.src],['brand',preloadLogo.src]]){const img=document.createElement('img');img.className=cls;img.src=src;img.alt='';inner.append(img)}busyNode.append(inner);const warning=document.createElement("span");warning.className="busy-warning";warning.hidden=true;warning.setAttribute("role","alert");busyNode.append(warning);document.body.append(busyNode);
       }
       busyNode.hidden=false;busyNode.querySelector(".busy-warning").hidden=true;const stack=document.getElementById("toastStack");if(stack?.parentNode===document.body)document.body.append(stack);
     }
-    let ended=false;return ()=>{if(ended)return;ended=true;if(--busyCount===0){busyTimer=setTimeout(()=>{if(!busyCount)busyNode.hidden=true},Math.max(0,2000-(performance.now()-busyStart)))}};
+    let ended = false;
+    return () => {
+      if (ended) return;
+      ended = true;
+      if (--busyCount) return;
+      busyNode.hidden = true;
+      const guard = busyHistory;
+      busyHistory = null;
+      if (guard && history.state?.avMediaBusy === guard.token) {
+        retiringHistory = guard;
+        history.back();
+      }
+    };
   }
   const mediaBusy=()=>!!busyNode&&!busyNode.hidden;
   window.addEventListener('beforeunload',e=>{if(busyCount>0){e.preventDefault();e.returnValue=''}});
@@ -651,6 +710,7 @@
     adminEmail: ADMIN_EMAIL,
     getUser,
     getProfile,
+    storyViewCounts,
     current,
     requireAuth,
     requireAdmin,

@@ -10,21 +10,39 @@ async function loadPrice(){const cc=$('#placeCountry').value;const local=country
 function initMap(){map=new maplibregl.Map({container:'placeAddMap',style:'https://tiles.openfreemap.org/styles/liberty',center:[center.lng,center.lat],zoom:6,pitch:0,attributionControl:false});map.addControl(new maplibregl.AttributionControl({compact:true}),'bottom-right');map.on('moveend',()=>{const c=map.getCenter();center={lng:c.lng,lat:c.lat};$('#placeCoordinates').textContent=`${center.lat.toFixed(6)}, ${center.lng.toFixed(6)} — pini obyektin giriş nöqtəsinə gətirin.`})}
 function useLocation(){navigator.geolocation?.getCurrentPosition(p=>{center={lng:p.coords.longitude,lat:p.coords.latitude};map.flyTo({center:[center.lng,center.lat],zoom:17,pitch:0})},()=>toast('Konum icazəsi alınmadı.','error'),{enableHighAccuracy:true,timeout:10000})}
 async function findAddress(){const fd=new FormData($('#placeForm')),q=[fd.get('address'),fd.get('city'),fd.get('region'),$('#placeCountry').selectedOptions[0]?.text].filter(Boolean).join(', ');if(!q)return;try{const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(q)}`),j=await r.json();if(!j.length)return toast('Ünvan tapılmadı.','error');center={lng:+j[0].lon,lat:+j[0].lat};map.flyTo({center:[center.lng,center.lat],zoom:17,pitch:0})}catch{toast('Ünvan axtarışı alınmadı.','error')}}
-let placePreviewUrls=[];
-function clearPlacePreviewUrls(){for(const url of placePreviewUrls)URL.revokeObjectURL(url);placePreviewUrls=[]}
-let previewGeneration=0;
-async function previews(){
- const generation=++previewGeneration;
- clearPlacePreviewUrls();
- const files=[...$('#placePhotos').files].slice(0,8);
- $('#placePhotosName').textContent=files.length?`${files.length} şəkil seçildi`:'Şəkil seçilməyib';
- const target=$('#placeMediaPreview');target.replaceChildren();
- for(const file of files){let bitmap;try{bitmap=await createImageBitmap(file,{imageOrientation:'from-image'});const ratio=Math.min(1,480/Math.max(bitmap.width,bitmap.height));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(bitmap.width*ratio));canvas.height=Math.max(1,Math.round(bitmap.height*ratio));canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);const blob=await new Promise(r=>canvas.toBlob(r,'image/webp',.85));if(generation!==previewGeneration)return;const url=URL.createObjectURL(blob||file);placePreviewUrls.push(url);const img=document.createElement('img');img.src=url;img.alt='';target.append(img)}catch{if(generation!==previewGeneration)return;const url=URL.createObjectURL(file);placePreviewUrls.push(url);const img=document.createElement('img');img.style.imageOrientation='from-image';img.src=url;img.alt='';target.append(img)}finally{bitmap?.close?.()}}
+const placePreviewUrls = new Set();
+let previewGeneration = 0;
+function clearPlacePreviewUrls() {
+  previewGeneration++;
+  for (const url of placePreviewUrls) URL.revokeObjectURL(url);
+  placePreviewUrls.clear();
 }
-window.addEventListener('pagehide',clearPlacePreviewUrls);
+async function previews() {
+  clearPlacePreviewUrls();
+  const generation = previewGeneration;
+  const files = [...$('#placePhotos').files].slice(0, 8);
+  $('#placePhotosName').textContent = files.length ? `${files.length} şəkil seçildi` : 'Şəkil seçilməyib';
+  const target = $('#placeMediaPreview');
+  target.replaceChildren();
+  for (const file of files) {
+    const prepared = await db.prepareImage(file, {
+      maxWidth: 480, maxHeight: 480, quality: .85, maxBytes: 220000, reportProgress: false
+    }).catch(() => file);
+    if (generation !== previewGeneration) return;
+    const url = URL.createObjectURL(prepared);
+    placePreviewUrls.add(url);
+    const img = document.createElement('img');
+    img.alt = '';
+    img.style.imageOrientation = 'from-image';
+    img.src = url;
+    target.append(img);
+  }
+}
+window.addEventListener('pagehide', clearPlacePreviewUrls);
+window.addEventListener('pageshow', event => { if (event.persisted) previews(); });
 function hours(){const hide=$('[name="hours_mode"]').value==='24_7';document.querySelectorAll('.place-hours-field').forEach(x=>x.hidden=hide)}
 async function uploadImage(file,prefix){if(!file)return null;const ready=await db.prepareImage(file,{maxWidth:1400,maxHeight:1400,quality:.78,maxBytes:850000,progressTitle:'Şəkil hazırlanır...'});return db.upload('place-media',me.id,ready,prefix)}
-async function submit(e){e.preventDefault();const btn=$('#placeSubmit');if(db.mediaBusy())return;const finish=db.beginMediaOperation();btn.disabled=true;let uploaded=[],savedToDb=false;try{if(map?.isMoving())await new Promise(resolve=>map.once('moveend',resolve));const exactCenter=map.getCenter();center={lng:exactCenter.lng,lat:exactCenter.lat};const fd=new FormData(e.currentTarget),logo=await uploadImage($('#placeLogo').files[0],'logos');if(logo)uploaded.push(logo);const photos=[];for(const f of [...$('#placePhotos').files].slice(0,8)){const u=await uploadImage(f,'photos');uploaded.push(u);photos.push(u.url)}db.mediaProgressHide();const payload={name:fd.get('name').trim(),category_key:fd.get('category_key'),subcategory:fd.get('subcategory'),country_code:fd.get('country_code'),region:fd.get('region')||null,city:fd.get('city'),address:fd.get('address').trim(),latitude:center.lat,longitude:center.lng,phone:fd.get('phone').trim()||null,whatsapp:fd.get('whatsapp').trim()||null,website:fd.get('website').trim()||null,description:fd.get('description').trim()||null,hours_mode:fd.get('hours_mode'),open_time:fd.get('hours_mode')==='24_7'?null:fd.get('open_time'),close_time:fd.get('hours_mode')==='24_7'?null:fd.get('close_time'),delivery:fd.get('delivery')==='true',delivery_radius_km:Number(fd.get('delivery_radius_km')||0)||null,logo_url:logo?.url||editRow?.logo_url||null,photo_urls:photos.length?photos:(editRow?.photo_urls||[])};let data,error;if(editId){({data,error}=await sb.from('places').update({...payload,updated_at:new Date().toISOString()}).eq('id',editId).eq('owner_id',me.id).select('id').single());data=data?.id}else({data,error}=await sb.rpc('create_paid_place',{p_place:payload}));if(error)throw error;savedToDb=true;
+async function submit(e){e.preventDefault();const btn=$('#placeSubmit');if(db.mediaBusy())return;const form=e.currentTarget;const finish=db.beginMediaOperation();btn.disabled=true;let uploaded=[],savedToDb=false;try{if(map?.isMoving())await new Promise(resolve=>map.once('moveend',resolve));const exactCenter=map.getCenter();center={lng:exactCenter.lng,lat:exactCenter.lat};const fd=new FormData(form),logo=await uploadImage($('#placeLogo').files[0],'logos');if(logo)uploaded.push(logo);const photos=[];for(const f of [...$('#placePhotos').files].slice(0,8)){const u=await uploadImage(f,'photos');uploaded.push(u);photos.push(u.url)}db.mediaProgressHide();const payload={name:fd.get('name').trim(),category_key:fd.get('category_key'),subcategory:fd.get('subcategory'),country_code:fd.get('country_code'),region:fd.get('region')||null,city:fd.get('city'),address:fd.get('address').trim(),latitude:center.lat,longitude:center.lng,phone:fd.get('phone').trim()||null,whatsapp:fd.get('whatsapp').trim()||null,website:fd.get('website').trim()||null,description:fd.get('description').trim()||null,hours_mode:fd.get('hours_mode'),open_time:fd.get('hours_mode')==='24_7'?null:fd.get('open_time'),close_time:fd.get('hours_mode')==='24_7'?null:fd.get('close_time'),delivery:fd.get('delivery')==='true',delivery_radius_km:Number(fd.get('delivery_radius_km')||0)||null,logo_url:logo?.url||editRow?.logo_url||null,photo_urls:photos.length?photos:(editRow?.photo_urls||[])};let data,error;if(editId){({data,error}=await sb.from('places').update({...payload,updated_at:new Date().toISOString()}).eq('id',editId).eq('owner_id',me.id).select('id').single());data=data?.id}else({data,error}=await sb.rpc('create_paid_place',{p_place:payload}));if(error)throw error;savedToDb=true;
 // The paid-place RPC may return the UUID directly; link only after the
 // persisted row exists. A link failure must not undo a successful purchase.
 const savedPlaceId=typeof data==='string'?data:data?.id;
@@ -32,5 +50,5 @@ if(savedPlaceId){for(const mediaUrl of [logo?.url,...photos].filter(Boolean)){
  try{await db.linkR2Media(mediaUrl,'place',savedPlaceId)}
  catch(linkError){console.warn('[AvtoVIP place media link] reconciliation needed',linkError)}
 }}
-let cleanupError=null;if(editId&&editRow){const retained=new Set([payload.logo_url,...(payload.photo_urls||[])].filter(Boolean));const stale=[...new Set([editRow.logo_url,...(Array.isArray(editRow.photo_urls)?editRow.photo_urls:[])].filter(u=>u&&!retained.has(u)))];if(stale.length)try{await db.removeUrls('place-media',stale,'place',savedPlaceId)}catch(err){cleanupError=err;console.warn('[AvtoVIP place media cleanup]',err)}}toast(cleanupError?'Məkan yeniləndi, lakin köhnə media fayllarının silinməsi təsdiqlənmədi.':editId?'Məkan məlumatları yeniləndi.':'Məkan ödənişlə aktiv edildi.',cleanupError?'error':'success');setTimeout(()=>location.href=`places.html?place=${data}`,900)}catch(err){if(!savedToDb)for(const u of uploaded)await db.removePaths('place-media',[u.path]).catch(()=>{});db.mediaProgressHide();toast(err.message||'Məkan əlavə edilmədi.','error')}finally{btn.disabled=false;finish()}}
+let cleanupError=null;if(editId&&editRow){const retained=new Set([payload.logo_url,...(payload.photo_urls||[])].filter(Boolean));const stale=[...new Set([editRow.logo_url,...(Array.isArray(editRow.photo_urls)?editRow.photo_urls:[])].filter(u=>u&&!retained.has(u)))];if(stale.length)try{await db.removeUrls('place-media',stale,'place',savedPlaceId)}catch(err){cleanupError=err;console.warn('[AvtoVIP place media cleanup]',err)}}toast(cleanupError?'Məkan yeniləndi, lakin köhnə media fayllarının silinməsi təsdiqlənmədi.':editId?'Məkan məlumatları yeniləndi.':'Məkan ödənişlə aktiv edildi.',cleanupError?'error':'success');setTimeout(()=>location.href=`places.html?place=${encodeURIComponent(savedPlaceId||'')}`,900)}catch(err){if(!savedToDb)for(const u of uploaded)await db.removePaths('place-media',[u.path]).catch(()=>{});db.mediaProgressHide();toast(err.message||'Məkan əlavə edilmədi.','error')}finally{btn.disabled=false;finish()}}
 async function boot(){if(!db)return;me=await db.requireAuth();if(!me)return;profile=await db.getProfile(me.id);fillCategories();await fillCountries();await loadPrice();initMap();$('[name="hours_mode"]').addEventListener('change',hours);hours();if(editId){const r=await sb.from('places').select('*').eq('id',editId).eq('owner_id',me.id).maybeSingle();if(r.data){editRow=r.data;const f=$('#placeForm');for(const [k,v] of Object.entries(editRow)){const el=f.elements[k];if(el&&v!=null&&!['photo_urls','logo_url','region','city','subcategory'].includes(k))el.value=typeof v==='boolean'?String(v):v}$('#placeCountry').value=editRow.country_code||'AZ';await fillRegions();$('#placeRegion').value=editRow.region||'';$('#placeRegion').dispatchEvent(new Event('change'));setTimeout(()=>{$('#placeCity').value=editRow.city||''},0);$('#placeCategory').dispatchEvent(new Event('change'));$('#placeSubcategory').value=editRow.subcategory||'';center={lng:+editRow.longitude,lat:+editRow.latitude};map.jumpTo({center:[center.lng,center.lat],zoom:17,pitch:0});$('#placeSubmit').innerHTML='<i class="fa-solid fa-check"></i> Dəyişiklikləri yadda saxla';$('.places-price-box').style.display='none';hours()}}else setTimeout(useLocation,500);$('#useCurrentLocation').onclick=useLocation;$('#findAddress').onclick=findAddress;$('#placePhotos').onchange=previews;$('#placeLogo').onchange=()=>{$('#placeLogoName').textContent=$('#placeLogo').files[0]?.name||'Şəkil seçilməyib'};$('#placeForm').onsubmit=submit}boot();

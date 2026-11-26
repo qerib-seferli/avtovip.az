@@ -1,78 +1,109 @@
-const CACHE='avtovip-media-loading-20261126b';
-const STATIC=[
-  './assets/css/app.css','./assets/css/patch11.css','./assets/css/ui-pro.css','./assets/css/profile-final.css','./assets/css/detail-final-v124.css',
-  './assets/js/supabase.js','./assets/js/international.js','./assets/js/app.js','./assets/js/social.js','./assets/js/patch11.js','./assets/js/ui-pro.js','./assets/js/feed-v20.js','./assets/js/profile-final.js','./assets/css/places/places.css','./assets/js/places/global-entry.js','./assets/js/places/place-i18n.js','./assets/js/places/profile-places.js','./assets/data/places/categories.js',
-  './assets/img/loading/world.webp','./assets/img/brand/logo.png','./assets/img/brand/icon-192.png','./assets/img/brand/icon-512.png','./assets/img/identity/vip-frame.svg','./assets/img/identity/premium-frame.svg','./site.webmanifest'
+const CACHE = 'avtovip-shell-78d13bd02173';
+const STATIC = [
+  "./admin/css/admin.css?av=f023cef9b6ef",
+  "./admin/js/admin-places.js?av=103a0beace13",
+  "./admin/js/admin.js?av=1670f37948d1",
+  "./assets/css/app.css?av=bbc3e5953344",
+  "./assets/css/detail-final-v124.css?av=c6e8f0bcabd1",
+  "./assets/css/patch11.css?av=81fb66fa4811",
+  "./assets/css/places/places.css?av=7e6009a64a42",
+  "./assets/css/profile-final.css?av=b2504f0cf435",
+  "./assets/css/ui-pro.css?av=084786bb9d47",
+  "./assets/css/vehicle-categories.css?av=b24d89a4d0f0",
+  "./assets/data/places/categories.js?av=a4cbb381928a",
+  "./assets/img/brand/icon-192.png",
+  "./assets/img/brand/icon-512.png",
+  "./assets/img/brand/logo.png",
+  "./assets/img/loading/world.webp",
+  "./assets/js/app.js?av=3239aaa104f3",
+  "./assets/js/feed-v20.js?av=ecf97610d935",
+  "./assets/js/international.js?av=2095b2581442",
+  "./assets/js/patch11.js?av=a35df378e874",
+  "./assets/js/places/place-add.js?av=b36d930723c9",
+  "./assets/js/places/place-i18n.js?av=b653a4a80b4a",
+  "./assets/js/places/places.js?av=90a18e483b97",
+  "./assets/js/places/profile-places.js?av=e1e0c81d7191",
+  "./assets/js/profile-final.js?av=da7a8c56ad39",
+  "./assets/js/social.js?av=14fae04619c2",
+  "./assets/js/supabase.js?av=c1ddeef2039b",
+  "./assets/js/ui-pro.js?av=114d8ffde768",
+  "./assets/js/vehicle-categories.js?av=c909790a6597",
+  "./site.webmanifest"
 ];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC).catch(()=>{})).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
-self.addEventListener('fetch',e=>{
-  const r=e.request;if(r.method!=='GET')return;
-  const u=new URL(r.url);if(u.origin!==location.origin)return;
-  /* Let HTML/navigation use the browser's normal HTTP cache. This avoids the extra
-     service-worker cache lookup + background network request that made page changes feel heavy. */
-  if(r.mode==='navigate'||/\.html$/.test(u.pathname))return;
-  if(!/\.(?:css|js|webmanifest|png|jpg|jpeg|webp|svg|ico)$/.test(u.pathname))return;
-  // Brand assets and their renderers must not remain stuck on an old PWA cache.
-  if(/\/assets\/img\/brand-logos\//.test(u.pathname)||/\/assets\/js\/(?:app|supabase|profile-final|feed-v20|vehicle-categories)\.js$/.test(u.pathname)||/\/assets\/js\/places\/(?:place-add|profile-places)\.js$/.test(u.pathname)){
-    e.respondWith((async()=>{
-      try{
-        const fresh=await fetch(r,{cache:'no-cache'});
-        // Never replace a working cached script with an HTTP error response.
-        // Keep the offline fallback in sync with the latest successfully fetched code.
-        if(fresh.ok){
-          const cache=await caches.open(CACHE);
-          await cache.put(r,fresh.clone()).catch(err=>console.warn('[AvtoVIP SW cache]',err));
-        }
-        return fresh;
-      }catch{
-        return (await caches.match(r))||Response.error();
-      }
-    })());
-    return;
-  }
-  e.respondWith(caches.open(CACHE).then(async c=>{
-    const hit=await c.match(r,{ignoreSearch:true});
-    if(hit)return hit;
-    try{const res=await fetch(r);if(res.ok)c.put(r,res.clone());return res}catch{return Response.error()}
-  }));
+const scope = self.registration.scope;
+const shellUrls = new Set([
+  "./ayarlar.html",
+  "./elan-ver.html",
+  "./elan.html",
+  "./explore.html",
+  "./hekaye-ver.html",
+  "./index.html",
+  "./lent.html",
+  "./login.html",
+  "./logo-yoxlama-8f3c.html",
+  "./mesajlar.html",
+  "./muqayise.html",
+  "./place-add.html",
+  "./places.html",
+  "./post-ver.html",
+  "./profile.html",
+  "./reels.html",
+  "./reset-password.html",
+  "./sevimliler.html",
+  "./user.html"
+].map(path => new URL(path, scope).href));
+shellUrls.add(scope);
+const staticUrls = new Set(STATIC.map(path => new URL(path, scope).href));
+
+self.addEventListener('install', event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    // Fetch all release assets together. An incomplete release leaves the active Worker intact.
+    await cache.addAll([...staticUrls].map(url => new Request(url, {cache:'reload'})));
+    await self.skipWaiting();
+  })());
 });
 
-// AvtoVIP media controls cache refresh 2026-10-03
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    for (const name of await caches.keys()) {
+      if (name !== CACHE && name.startsWith('avtovip-')) await caches.delete(name);
+    }
+    await self.clients.claim();
+  })());
+});
 
-// AvtoVIP Lent inset + composer bottom alignment cache refresh 2026-10-03
+async function networkFirst(request, cacheKey) {
+  const cache = await caches.open(CACHE);
+  try {
+    const response = await fetch(request, {cache:'no-cache'});
+    if (response.ok && !response.redirected) await cache.put(cacheKey,response.clone()).catch(() => {});
+    return response;
+  } catch {
+    return await cache.match(cacheKey) || Response.error();
+  }
+}
 
-// AvtoVIP Lent clean media/count + composer seam refresh 2026-10-03
+self.addEventListener('fetch', event => {
+  const request = event.request;
+  if (request.method !== 'GET' || request.headers.has('Authorization')) return;
+  const url = new URL(request.url);
+  if (!url.href.startsWith(scope)) return;
 
-// AvtoVIP Lent edge/date/counter/hashtags cache refresh 2026-10-03
+  if (request.mode === 'navigate') {
+    const shell = new URL(url.pathname,url.origin).href;
+    if (shellUrls.has(shell)) {
+      // Never persist redirects or callback/query-specific responses.
+      if (!url.search) event.respondWith(networkFirst(request,shell));
+      else event.respondWith(fetch(request,{cache:'no-cache'}).catch(async () => (await caches.open(CACHE)).match(shell).then(hit => hit || Response.error())));
+    }
+    return;
+  }
 
-// AvtoVIP home listing footer anchoring cache refresh 2026-10-03
-
-// AvtoVIP profile saved/liked 3-col + public profile 4-col/icon/bottom refresh 2026-10-03
-
-// AvtoVIP profile saved/liked 3-column density + bottom clearance refresh 2026-10-03
-
-// AvtoVIP profile media compact alignment + public view badge refresh 2026-10-03
-
-// AvtoVIP owner profile media footer/badge alignment refresh 2026-10-03
-
-// AvtoVIP profile own-media uniform footer + PWA date-only + saved bookmark plate refresh 2026-10-03
-
-// AvtoVIP profile own-card information-flow refresh 2026-10-04
-
-// AvtoVIP own listings card order + sold stamp refresh 2026-10-04
-
-// AvtoVIP own listings spacing + PWA date/button alignment refresh 2026-10-04
-
-// AvtoVIP own listings image/social/divider symmetric spacing refresh 2026-10-04
-
-// AvtoVIP profile sold library stamp + post footer clearance refresh 2026-10-04
-
-// AvtoVIP free 24h story + required 50-char caption + rail headline refresh 2026-10-04
-
-// AvtoVIP story auto-publish for every authenticated user + clean composer copy 2026-10-04
-
-// AvtoVIP authenticated owner story publish RPC refresh 2026-10-04
-
-// AvtoVIP free story DB trigger/RPC v159 refresh 2026-10-04
+  if (!/\.(?:css|js|webmanifest|png|jpg|jpeg|webp|svg|ico)$/.test(url.pathname)) return;
+  if (staticUrls.has(url.href)) {
+    event.respondWith((async () => (await (await caches.open(CACHE)).match(request)) || fetch(request))());
+  } else {
+    event.respondWith(networkFirst(request,request));
+  }
+});
