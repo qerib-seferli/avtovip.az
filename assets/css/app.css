@@ -735,3 +735,6 @@ body[data-page="auth"] .auth-logo{
     transform:translateX(46px)!important;
   }
 }
+
+.story-item:disabled{cursor:default;opacity:1}
+.story-ring-inner .av-story-locked-thumb{filter:blur(6px);transform:scale(1.19);opacity:.65}

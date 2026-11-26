@@ -232,3 +232,8 @@ body[data-page="places"] #placesList,body[data-page="places"] #savedPlacesList{f
 body[data-page="places"] #placesList::-webkit-scrollbar,body[data-page="places"] #savedPlacesList::-webkit-scrollbar{width:5px}
 body[data-page="places"] #placesList::-webkit-scrollbar-thumb,body[data-page="places"] #savedPlacesList::-webkit-scrollbar-thumb{background:#b6192c;border-radius:8px}
 @media(max-width:900px){body[data-page="places"] .av-route-alternatives button{font-size:10px!important}}
+
+.place-upload-progress:not([hidden]){display:grid;gap:5px;margin:.35rem 0;font-size:.82rem}
+.place-upload-progress progress{width:100%;height:.6rem;accent-color:#299fd7}
+body.av-place-upload-active #avMediaBusy{background:rgba(10,15,24,.09);backdrop-filter:none}
+body.av-place-upload-active .place-upload-progress:not([hidden]){position:relative;z-index:2147483647;pointer-events:none}

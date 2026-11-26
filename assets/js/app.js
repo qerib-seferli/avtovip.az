@@ -30,7 +30,9 @@
     }));
   }
   const storyPreviewQueue = [];
-  let storyPreviewActive = 0;
+  const storyPosters = new Map();
+  const warmStoryVideos = new Set();
+  let storyPreviewActive = 0, storySessionGeneration = 0;
   const storyPreviews = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
     for (const {target, isIntersecting} of entries) {
       if (!isIntersecting) continue;
@@ -38,18 +40,60 @@
       storyPreviewQueue.push(target);
     }
     pumpStoryPreviews();
-  }, {rootMargin: '100px'}) : null;
+  }, {rootMargin: '72px'}) : null;
+  async function videoStoryPoster(url) {
+    const source = await resolvePrivateMedia(url);
+    const video = document.createElement('video');
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    if(!privateMediaPattern.test(url))video.crossOrigin='anonymous';
+    try {
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error('Story frame timed out')), 8000);
+        video.onloadeddata = () => { clearTimeout(timer); resolve(); };
+        video.onerror = () => { clearTimeout(timer); reject(new Error('Story frame unavailable')); };
+        video.src = source;
+      });
+      const canvas = document.createElement('canvas');
+      const scale = Math.min(1, 224 / Math.max(video.videoWidth, video.videoHeight));
+      canvas.width = Math.max(1, Math.round(video.videoWidth * scale));
+      canvas.height = Math.max(1, Math.round(video.videoHeight * scale));
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/jpeg', .77);
+    } finally {
+      video.removeAttribute('src');
+      video.load();
+      if (privateMediaPattern.test(url) && privateMediaUrls.has(url)) {
+        warmStoryVideos.delete(url);
+        warmStoryVideos.add(url);
+        if (warmStoryVideos.size > 3) {
+          const oldest = warmStoryVideos.values().next().value;
+          warmStoryVideos.delete(oldest);
+          if (document.querySelector('.story-viewer')?.dataset.mediaUrl !== oldest) releasePrivateMedia(oldest);
+        }
+      }
+    }
+  }
   function pumpStoryPreviews() {
-    while (storyPreviewActive < 3 && storyPreviewQueue.length) {
+    while (storyPreviewActive < 2 && storyPreviewQueue.length) {
       const image = storyPreviewQueue.shift();
-      if (!image.isConnected || Date.parse(image.dataset.storyExpires) <= Date.now()) continue;
-      storyPreviewActive++;
+      if (!image.isConnected || !storyActive({expires_at:image.dataset.storyExpires})) continue;
       const original = image.dataset.storyMedia;
-      resolvePrivateMedia(original).then(local => {
-        if (image.isConnected && Date.parse(image.dataset.storyExpires) > Date.now()) image.src = local;
-      }).catch(() => {
-        // A signed-out visitor or a removed Story keeps its avatar fallback.
-      }).finally(() => {
+      const video = image.dataset.storyVideo === '1';
+      storyPreviewActive++;
+      if (video && !storyPosters.has(original)) {
+        storyPosters.set(original, videoStoryPoster(original).catch(error => {
+          storyPosters.delete(original);
+          throw error;
+        }));
+      }
+      const owner = currentUser?.id || privateMediaSessionUser;
+      const generation=storySessionGeneration;
+      const preview = video ? storyPosters.get(original) : resolvePrivateMedia(original);
+      preview.then(local => {
+        if (generation===storySessionGeneration && image.isConnected && owner && (privateMediaSessionUser || currentUser?.id) === owner && storyActive({expires_at:image.dataset.storyExpires})) image.src = local;
+      }).catch(() => {}).finally(() => {
         storyPreviewActive--;
         pumpStoryPreviews();
       });
@@ -63,18 +107,23 @@
     }
     pumpStoryPreviews();
   };
-  window.AvtoVIPStoryThumb = (story, avatar) => {
+  window.AvtoVIPStoryThumb = (story, avatar, locked = false) => {
     const fallback = avatar || 'assets/img/brand/icon-192.png';
-    if (String(story.media_type).startsWith('video') || !story.media_url) {
-      return `<img src="${esc(fallback)}" loading="lazy" decoding="async" alt="">`;
+    if (locked) return '<img class="av-story-locked-thumb" src="assets/img/brand/icon-192.png" alt="">';
+    const url = story.media_url;
+    const video = String(story.media_type).startsWith('video');
+    if (!url || video || privateMediaPattern.test(url)) {
+      return `<img src="${esc(video?'assets/img/brand/icon-192.png':fallback)}" ${url?`data-story-media="${esc(url)}" data-story-video="${video?1:0}" data-story-expires="${esc(story.expires_at)}"`:''} decoding="async" alt="">`;
     }
-    if (privateMediaPattern.test(story.media_url)) {
-      return `<img src="${esc(fallback)}" data-story-media="${esc(story.media_url)}" data-story-expires="${esc(story.expires_at)}" decoding="async" alt="">`;
-    }
-    return `<img src="${esc(story.media_url)}" loading="lazy" decoding="async" alt="">`;
+    return `<img src="${esc(url)}" loading="lazy" decoding="async" alt="">`;
   };
   const storyActive = story => Date.parse(story.expires_at) > Date.now();
-  window.AvtoVIPReleaseStoryMedia = releasePrivateMedia;
+  function releaseStoryMedia(url) {
+    storyPosters.delete(url);
+    warmStoryVideos.delete(url);
+    releasePrivateMedia(url);
+  }
+  window.AvtoVIPReleaseStoryMedia = releaseStoryMedia;
   window.AvtoVIPStoryExpiry = (rows, expire) => {
     let timer = 0;
     const schedule = () => {
@@ -96,12 +145,13 @@
     Promise.resolve(pending).then(local=>{if(String(local).startsWith('blob:'))URL.revokeObjectURL(local)}).catch(()=>{});
   }
   function releaseAllPrivateMedia(){for(const url of [...privateMediaUrls.keys()])releasePrivateMedia(url)}
-  window.addEventListener('pagehide',releaseAllPrivateMedia);
+  window.addEventListener('pagehide',event=>{if(!event.persisted){storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia()}});
   // Never carry an authenticated media blob into another account's session.
   let privateMediaSessionUser=null;
   sb.auth.onAuthStateChange((event,session)=>{
     const nextUser=session?.user?.id||null;
-    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser))releaseAllPrivateMedia();
+    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
+      document.querySelectorAll('img[data-story-media]').forEach(img=>{img.src='assets/img/brand/icon-192.png';img.classList.add('av-story-locked-thumb')});}
     privateMediaSessionUser=nextUser;
   });
 
@@ -1036,11 +1086,12 @@
     const userIds=[...new Set((data||[]).map(x=>x.user_id))]; let profiles={}; if(userIds.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified,country_code').in('id',userIds);(p||[]).forEach(x=>profiles[x.id]=x)}
     const storyCountry=String(localStorage.getItem('avtovip-country')||'').toUpperCase();
     const visibleStories=(data||[]).filter(x=>storyActive(x)&&(!storyCountry||String(profiles[x.user_id]?.country_code||'').toUpperCase()===storyCountry));
+    const locked=!currentUser;
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
     rail.innerHTML = add + visibleStories.map(story => {
       const rawCaption = String(story.caption || '').trim();
       const title = rawCaption.length > 22 ? rawCaption.slice(0,22).trimEnd()+'…' : rawCaption || 'Avto Hekayə';
-      return `<button class="story-item" type="button" data-story="${esc(story.id)}"><div class="story-ring"><div class="story-ring-inner">${window.AvtoVIPStoryThumb(story, profiles[story.user_id]?.avatar_url)}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i><span data-story-views></span></span></div><span title="${esc(rawCaption || title)}">${esc(title)}</span></button>`;
+      return `<button class="story-item" type="button" data-story="${esc(story.id)}" ${locked?'disabled aria-disabled="true"':''}><div class="story-ring"><div class="story-ring-inner">${window.AvtoVIPStoryThumb(story, profiles[story.user_id]?.avatar_url,locked)}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i><span data-story-views></span></span></div><span title="${esc(rawCaption || title)}">${esc(title)}</span></button>`;
     }).join('');
     const storyButtons = new Map([...rail.querySelectorAll('[data-story]')].map(button => [button.dataset.story, button]));
     window.AvtoVIPHydrateStoryPreviews(rail);
@@ -1050,7 +1101,7 @@
         if (storyActive(story)) continue;
         storyButtons.get(story.id)?.remove();
         storyButtons.delete(story.id);
-        releasePrivateMedia(story.media_url);
+        releaseStoryMedia(story.media_url);
         visibleStories.splice(index, 1);
       }
     });
@@ -1063,8 +1114,8 @@
     for (const [id, button] of storyButtons) button.querySelector('[data-story-views]').textContent = counts.get(id) || 0;
   }
   async function openStory(s,p={},storyList=[],storyProfiles={}){
-    if (!storyActive(s)) return;
-    const modal=document.createElement('div');modal.className='story-viewer';
+    if (!storyActive(s) || !await db.getUser() || !storyActive(s)) return;
+    const modal=document.createElement('div');modal.className='story-viewer';modal.dataset.mediaUrl=s.media_url;
     const ownerName=esc([p?.name,p?.surname].filter(Boolean).join(' ')||'AvtoVİP');
     const ownerVerified=p?.is_verified?verifiedBadge():'';
     const ownerTier=String(p?.membership_tier||'free').toLowerCase();
@@ -1080,6 +1131,7 @@
       if(v?.dataset.privateStory==='1'){
         // A private R2 URL must never be assigned directly to <video>:
         // the browser would make an unauthenticated request and fire a false codec error.
+        storyPosters.get(s.media_url)?.then(poster=>{if(v.isConnected&&!v.currentTime)v.poster=poster}).catch(()=>{});
         const local=await resolvePrivateMedia(s.media_url);
         if(!v.isConnected)return;
         v.src=local;
@@ -1102,7 +1154,7 @@
     const storyHistoryToken=`story-${s.id}-${Date.now()}`;let storyHistoryActive=true;
     history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
     const expiryTimer = setTimeout(() => close(), Math.max(0, Date.parse(s.expires_at) - Date.now()));
-    const close=(fromHistory=false)=>{if(!modal.isConnected)return;clearTimeout(expiryTimer);if(modal.querySelector('video'))releasePrivateMedia(s.media_url);modal.remove();document.documentElement.classList.remove('modal-open');window.removeEventListener('popstate',onStoryPop);window.removeEventListener('resize',fitStoryMedia);if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
+    const close=(fromHistory=false)=>{if(!modal.isConnected)return;clearTimeout(expiryTimer);if(modal.querySelector('video')&&!warmStoryVideos.has(s.media_url)&&!storyPosters.has(s.media_url))releasePrivateMedia(s.media_url);modal.remove();document.documentElement.classList.remove('modal-open');window.removeEventListener('popstate',onStoryPop);window.removeEventListener('resize',fitStoryMedia);if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
     const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));if(video){video.controls=false;requestAnimationFrame(()=>{fitStoryMedia();video.play().catch(()=>{})})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
     const onStoryPop=()=>{if(!modal.isConnected){window.removeEventListener('popstate',onStoryPop);return}if(modal.classList.contains('story-comments-open')){closeComments();history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);return}storyHistoryActive=false;close(true);window.removeEventListener('popstate',onStoryPop)};window.addEventListener('popstate',onStoryPop);
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
@@ -1668,7 +1720,17 @@
     if(window.__avPeerSyncChannel){await sb.removeChannel(window.__avPeerSyncChannel).catch(()=>{});window.__avPeerSyncChannel=null}
     const syncTopic='chat-peer-'+[currentUser.id,peer].sort().join('-');
     window.__avPeerSyncChannel=sb.channel(syncTopic,{config:{broadcast:{self:false}}}).on('broadcast',{event:'changed'},()=>{if($('#chatPane')?.dataset.peer===peer){renderThread(peer,listing);renderConversations(currentUser.id)}}).subscribe();
-    if(form)form.onsubmit=async e=>{e.preventDefault();if(form.dataset.mediaConversation!==conversationKey||pane.dataset.peer!==peer||pane.dataset.listing!==(listing||''))return;const current=await blockedRelationship(peer);if(form.dataset.mediaConversation!==conversationKey||pane.dataset.peer!==peer)return;if(current.blocked){form.hidden=true;if(notice){notice.hidden=false;notice.textContent=current.byMe?runtimeText('Bu istifadəçini blokdan çıxarmadan mesaj yaza bilməzsiniz.'):runtimeText('Bu istifadəçi sizi bloklayıb. Mesaj göndərmək mümkün deyil.')}return}const input=$('#chatInput');const body=input.value.trim();const mediaItems=Array.isArray(form._avMediaItems)?form._avMediaItems:[];if(!body&&!mediaItems.length)return;const sendButton=form.querySelector('[type=submit]');if(sendButton?.disabled)return;if(sendButton)sendButton.disabled=true;const finish=mediaItems.length?db.beginMediaOperation():()=>{};try{const rows=mediaItems.length?mediaItems.map((m,i)=>({listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body:i===0?body:'',media_url:m.url,media_type:m.type})): [{listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body}];const {data:createdMessages,error}=await sb.from('messages').insert(rows).select('id,media_url');if(error){toast(error.message==='AVTOVIP_BLOCKED_MESSAGE'?runtimeText('Bu istifadəçi ilə mesajlaşma mümkün deyil.'):error.message,'error');return}for(const message of createdMessages||[]){if(message.media_url){try{await db.linkR2Media(message.media_url,'message',message.id)}catch(linkError){console.warn('[AvtoVIP message link] reconciliation needed',linkError)}}}input.value='';for(const item of mediaItems)if(item.previewUrl)URL.revokeObjectURL(item.previewUrl);form._avMediaItems=[];$('#chatMediaPreview')?.replaceChildren();window.__avLastLocalMessageSend=Date.now();window.__avPeerSyncChannel?.send({type:'broadcast',event:'changed',payload:{kind:'message'}}).catch(()=>{});await renderThread(peer,listing);await renderConversations(currentUser.id)}finally{if(sendButton)sendButton.disabled=false;finish()}};
+    if(form)form.onsubmit=async e=>{e.preventDefault();if(form.dataset.mediaConversation!==conversationKey||pane.dataset.peer!==peer||pane.dataset.listing!==(listing||''))return;const current=await blockedRelationship(peer);if(form.dataset.mediaConversation!==conversationKey||pane.dataset.peer!==peer)return;if(current.blocked){form.hidden=true;if(notice){notice.hidden=false;notice.textContent=current.byMe?runtimeText('Bu istifadəçini blokdan çıxarmadan mesaj yaza bilməzsiniz.'):runtimeText('Bu istifadəçi sizi bloklayıb. Mesaj göndərmək mümkün deyil.')}return}const input=$('#chatInput');const body=input.value.trim();const mediaItems=Array.isArray(form._avMediaItems)?form._avMediaItems:[];if(!body&&!mediaItems.length)return;const sendButton=form.querySelector('[type=submit]');if(sendButton?.disabled)return;if(sendButton)sendButton.disabled=true;const finish=mediaItems.length?db.beginMediaOperation():()=>{};try{const rows=mediaItems.length?mediaItems.map((m,i)=>({listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body:i===0?body:'',media_url:m.url,media_type:m.type})): [{listing_id:listing||null,sender_id:currentUser.id,receiver_id:peer,body}];const {data:createdMessages,error}=await sb.from('messages').insert(rows).select('id,media_url');if(error){toast(error.message==='AVTOVIP_BLOCKED_MESSAGE'?runtimeText('Bu istifadəçi ilə mesajlaşma mümkün deyil.'):error.message,'error');return}for(const message of createdMessages||[]){if(message.media_url){try{await db.linkR2Media(message.media_url,'message',message.id)}catch(linkError){console.warn('[AvtoVIP message link] reconciliation needed',linkError)}}}input.value='';for(const item of mediaItems)if(item.previewUrl)URL.revokeObjectURL(item.previewUrl);form._avMediaItems=[];$('#chatMediaPreview')?.replaceChildren();window.__avLastLocalMessageSend=Date.now();window.__avPeerSyncChannel?.send({type:'broadcast',event:'changed',payload:{kind:'message'}}).catch(()=>{});await renderThread(peer,listing);
+      const sent=createdMessages?.at(-1)?.id;
+      if(sent&&pane.dataset.peer===peer&&(pane.dataset.listing||'')===(listing||'')){
+        const root=$('#chatMessages');
+        if(root?.querySelector(`[data-message-id="${CSS.escape(sent)}"]`))root.scrollTop=root.scrollHeight;
+        else {
+          await renderThread(peer,listing);
+          if(pane.dataset.peer===peer&&(pane.dataset.listing||'')===(listing||''))root.scrollTop=root.scrollHeight;
+        }
+      }
+      await renderConversations(currentUser.id)}finally{if(sendButton)sendButton.disabled=false;finish()}};
     initChatMedia(peer,listing);
   }
   function initChatMedia(peer,listing){

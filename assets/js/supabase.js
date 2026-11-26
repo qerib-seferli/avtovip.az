@@ -115,12 +115,22 @@
     if(error||!data?.session?.access_token)throw new Error('R2 üçün aktiv giriş tələb olunur');
     return data.session.access_token;
   }
-  async function r2Upload(file,category,jwt){
-    const response=await fetch(`${R2_API}/v1/media?category=${encodeURIComponent(category)}`,{
-      method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':file.type},body:file
-    });
-    const data=await response.json().catch(()=>({}));
-    if(!response.ok||!data.id||!data.url)throw new Error(data.error||`R2 upload HTTP ${response.status}`);
+  async function r2Upload(file,category,jwt,onProgress){
+    const url = `${R2_API}/v1/media?category=${encodeURIComponent(category)}`;
+    const result = onProgress ? await new Promise((resolve,reject)=>{
+      const upload = new XMLHttpRequest();
+      upload.open('POST',url);
+      upload.responseType = 'json';
+      upload.setRequestHeader('Authorization',`Bearer ${jwt}`);
+      upload.setRequestHeader('Content-Type',file.type);
+      upload.upload.onprogress = event => {if(event.lengthComputable&&event.total)onProgress(event.loaded/event.total)};
+      upload.onload = () => resolve({status:upload.status,ok:upload.status>=200&&upload.status<300,data:upload.response});
+      upload.onerror = upload.onabort = () => reject(new Error('R2 upload interrupted'));
+      upload.send(file);
+    }) : await fetch(url,{method:'POST',headers:{Authorization:`Bearer ${jwt}`,'Content-Type':file.type},body:file})
+      .then(async response=>({status:response.status,ok:response.ok,data:await response.json().catch(()=>null)}));
+    const {data}=result;
+    if(!result.ok||!data?.id||!data.url)throw new Error(data?.error||`R2 upload HTTP ${result.status}`);
     return {path:`r2:${data.id}`,url:data.url,provider:'r2',mediaId:data.id};
   }
   // A DB row is persisted before linking. Retry only transient failures; never
@@ -383,7 +393,7 @@
     return URL.createObjectURL(blob);
   }
 
-  async function upload(bucket, userId, file, prefix = '') {
+  async function upload(bucket, userId, file, prefix = '', onProgress) {
     if (!file || !userId) throw new Error('Fayl və istifadəçi tələb olunur.');
     // Route every supported user-media bucket to R2; fail closed otherwise.
     const category=bucket==='social-media'&&/^reels?(?:\/|$)/i.test(prefix)?'reel':R2_CATEGORIES[bucket];
@@ -399,7 +409,7 @@
         throw new Error('R2 bu media formatını qəbul etmir.');
       const {data}=await client.auth.getSession();
       if(data?.session?.user?.id!==userId)throw new Error('R2 istifadəçi təsdiqi uğursuz oldu.');
-      return r2Upload(file,category,data.session.access_token);
+      return r2Upload(file,category,data.session.access_token,onProgress);
     }
 
     // Fail closed for unknown buckets: no unexpected user-media uploads
