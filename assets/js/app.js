@@ -227,9 +227,30 @@
       validatedStoryPosters.set(id,poster);
     }catch{writtenStoryPosters.delete(id)}
   }
+  const pendingGuestPosterRepairs=new Map();
+  function repairGuestPosterFromStored(image,poster){
+    const id=image.dataset.storyId;
+    const owner=privateMediaSessionUser||currentUser?.id;
+    if(!owner||image.dataset.storyOwner!==owner||savedGuestPreviews.has(id)||pendingGuestPosterRepairs.has(id))return;
+    const generation=storySessionGeneration;
+    const task=(async()=>{
+      const {data,error}=await sb.from('story_guest_previews').select('preview').eq('story_id',id).maybeSingle();
+      if(error||generation!==storySessionGeneration)return;
+      const existing=data?.preview;
+      const valid=guestPreviewSafe(existing)&&
+        (image.dataset.storyVideo!=='1'||await validateVideoPoster(existing).catch(()=>false));
+      if(generation!==storySessionGeneration||!storyActive({expires_at:image.dataset.storyExpires}))return;
+      if(valid)savedGuestPreviews.add(id);
+      else await saveGuestStoryPreview(id,poster,Boolean(data));
+    })().catch(()=>{}).finally(()=>{
+      if(pendingGuestPosterRepairs.get(id)===task)pendingGuestPosterRepairs.delete(id);
+    });
+    pendingGuestPosterRepairs.set(id,task);
+  }
   function showStoryPoster(image,poster){
     image.src=poster;
     image.classList.remove('av-story-initial-thumb');
+    repairGuestPosterFromStored(image,poster);
   }
   function applyStoredStoryPoster(image){
     const id=image.dataset.storyId;
@@ -268,7 +289,11 @@
       const video = image.dataset.storyVideo === '1';
       storyPreviewActive++;
       if (video && !storyPosters.has(original)) {
-        storyPosters.set(original, videoStoryPoster(original).catch(error => {
+        storyPosters.set(original, (async()=>{
+          const frame=await loadStoryViewerFrame(id);
+          if(frame&&await validateVideoPoster(frame).catch(()=>false))return frame;
+          return videoStoryPoster(original);
+        })().catch(error => {
           storyPosters.delete(original);
           throw error;
         }));
@@ -282,7 +307,7 @@
           if(video)image.dataset.storyCheckedPoster=local
           image.classList.remove('av-story-initial-thumb');
           if(image.dataset.storyOwner===owner){
-            saveGuestStoryPreview(id,local,repairStoryPosters.has(id));
+            repairGuestPosterFromStored(image,local);
             saveStoryPoster(image.dataset.storyId,local);
           }
         }
@@ -343,7 +368,7 @@
   let privateMediaSessionUser=null;
   sb.auth.onAuthStateChange((event,session)=>{
     const nextUser=session?.user?.id||null;
-    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;viewedStoryVideos.clear();posterLookups.length=0;viewerFrames.clear();cachedStoryPosters.clear();writtenStoryPosters.clear();repairStoryPosters.clear();validatedStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
+    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;savedGuestPreviews.clear();pendingGuestPosterRepairs.clear();viewedStoryVideos.clear();posterLookups.length=0;viewerFrames.clear();cachedStoryPosters.clear();writtenStoryPosters.clear();repairStoryPosters.clear();validatedStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
       document.querySelectorAll('img[data-story-media]').forEach(img=>{img.src='assets/img/brand/icon-192.png';img.classList.add('av-story-locked-thumb')});}
     privateMediaSessionUser=nextUser;
   });
@@ -1293,7 +1318,7 @@
       const byId=new Map((previews||[]).map(row=>[row.story_id,row.preview]));
       await Promise.all(visibleStories.map(async row=>{
         const preview=byId.get(row.id);
-        if(guestPreviewSafe(preview)&&await validateVideoPoster(preview).catch(()=>false))row.guestPreview=preview;
+        if(guestPreviewSafe(preview)&&(row.media_type!=='video'||await validateVideoPoster(preview).catch(()=>false)))row.guestPreview=preview;
       }));
     }
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
