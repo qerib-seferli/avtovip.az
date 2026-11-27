@@ -130,7 +130,7 @@
   const savedGuestPreviews = new Set();
   const guestPreviewSafe = value => typeof value==='string' && value.length<=1800 &&
     /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(value);
-  async function saveGuestStoryPreview(id, source){
+  async function saveGuestStoryPreview(id, source, repair=false){
     if(!id || savedGuestPreviews.has(id))return;
     savedGuestPreviews.add(id);
     try{
@@ -144,7 +144,7 @@
       canvas.getContext('2d').drawImage(image,(image.naturalWidth-side)/2,(image.naturalHeight-side)/2,side,side,0,0,12,12);
       const preview=canvas.toDataURL('image/jpeg',.55);
       if(!guestPreviewSafe(preview))return;
-      const {error}=await sb.from('story_guest_previews').upsert({story_id:id,preview},{onConflict:'story_id',ignoreDuplicates:true});
+      const {error}=await sb.from('story_guest_previews').upsert({story_id:id,preview},{onConflict:'story_id',ignoreDuplicates:!repair});
       if(error)throw error;
     }catch{
       savedGuestPreviews.delete(id);
@@ -188,7 +188,9 @@
       const generation=storySessionGeneration;
       if(ids.length)await lookupStoryPosters(ids,generation).catch(()=>{});
       if(generation!==storySessionGeneration)continue;
-      storyPreviewQueue.push(...images);
+      for(const image of images){
+        if(image.isConnected&&storyActive({expires_at:image.dataset.storyExpires}))applyStoredStoryPoster(image);
+      }
       pumpStoryPreviews();
     }
     posterLookupRunning=false;
@@ -225,31 +227,43 @@
       validatedStoryPosters.set(id,poster);
     }catch{writtenStoryPosters.delete(id)}
   }
+  function showStoryPoster(image,poster){
+    image.src=poster;
+    image.classList.remove('av-story-initial-thumb');
+  }
+  function applyStoredStoryPoster(image){
+    const id=image.dataset.storyId;
+    const stored=cachedStoryPosters.get(id);
+    if(!stored){
+      storyPreviewQueue.push(image);
+      return;
+    }
+    if(image.dataset.storyVideo!=='1'||validatedStoryPosters.get(id)===stored){
+      showStoryPoster(image,stored);
+      return;
+    }
+    const generation=storySessionGeneration;
+    validateVideoPoster(stored).catch(()=>false).then(valid=>{
+      if(generation!==storySessionGeneration||!image.isConnected||!storyActive({expires_at:image.dataset.storyExpires}))return;
+      if(valid){
+        validatedStoryPosters.set(id,stored);
+        showStoryPoster(image,stored);
+        return;
+      }
+      if(cachedStoryPosters.get(id)===stored){
+        repairStoryPosters.add(id);
+        cachedStoryPosters.delete(id);
+      }
+      storyPreviewQueue.push(image);
+      pumpStoryPreviews();
+    });
+  }
   function pumpStoryPreviews() {
     while (storyPreviewActive < 2 && storyPreviewQueue.length) {
       const image = storyPreviewQueue.shift();
       if (!image.isConnected || !storyActive({expires_at:image.dataset.storyExpires})) continue;
       const id=image.dataset.storyId;
-      const stored=cachedStoryPosters.get(id);
-      if(stored&&image.dataset.storyVideo==='1'&&validatedStoryPosters.get(id)!==stored){
-        const generation=storySessionGeneration;
-        storyPreviewActive++;
-        validateVideoPoster(stored).catch(()=>false).then(valid=>{
-          if(generation!==storySessionGeneration)return;
-          if(valid)validatedStoryPosters.set(id,stored);
-          else if(cachedStoryPosters.get(id)===stored){
-            repairStoryPosters.add(id);
-            cachedStoryPosters.delete(id);
-          }
-          storyPreviewQueue.unshift(image);
-        }).finally(()=>{storyPreviewActive--;pumpStoryPreviews()});
-        continue;
-      }
-      if(stored){
-        image.src=stored;
-        image.classList.remove('av-story-initial-thumb');
-        continue;
-      }
+      if(cachedStoryPosters.has(id)){applyStoredStoryPoster(image);continue}
       const original = image.dataset.storyMedia;
       const video = image.dataset.storyVideo === '1';
       storyPreviewActive++;
@@ -268,7 +282,7 @@
           if(video)image.dataset.storyCheckedPoster=local
           image.classList.remove('av-story-initial-thumb');
           if(image.dataset.storyOwner===owner){
-            saveGuestStoryPreview(image.dataset.storyId,local);
+            saveGuestStoryPreview(id,local,repairStoryPosters.has(id));
             saveStoryPoster(image.dataset.storyId,local);
           }
         }
@@ -278,19 +292,18 @@
       });
     }
   }
-  window.AvtoVIPHydrateStoryPreviews = root => {
+  window.AvtoVIPHydrateStoryPreviews = (root,eager=0) => {
     for(const image of root.querySelectorAll('img[data-story-media]:not([data-story-queued])')){
       image.dataset.storyQueued='1';
-      if(cachedStoryPosters.has(image.dataset.storyId)||!storyPreviews)queueStoryPosterLookup(image);
+      if(eager-- > 0||cachedStoryPosters.has(image.dataset.storyId)||!storyPreviews)queueStoryPosterLookup(image);
       else storyPreviews.observe(image);
     }
   };
   window.AvtoVIPStoryThumb = (story, _avatar, locked = false) => {
     const logo='assets/img/brand/icon-192.png';
     if (locked) {
-      return guestPreviewSafe(story.guestPreview)
-        ? `<img class="av-story-locked-thumb" src="${esc(story.guestPreview)}" alt="">`
-        : '<span class="av-story-guest-unavailable" aria-hidden="true"></span>';
+      const preview=guestPreviewSafe(story.guestPreview)?story.guestPreview:logo;
+      return `<img class="av-story-locked-thumb" src="${esc(preview)}" alt="">`;
     }
     const url=story.media_url;
     const video=String(story.media_type).startsWith('video');
@@ -1265,15 +1278,23 @@
     /* Expired story rows + media are cleaned server-side. Failure must never block the home rail. */
     /* Expiry is filtered by expires_at; scheduled Worker performs server-side cleanup. */
     const {data,error}=await sb.from('stories').select('id,user_id,listing_id,media_url,media_type,caption,expires_at').eq('status','active').gt('expires_at',new Date().toISOString()).order('active_at',{ascending:false}).limit(300); if(error){console.warn(error.message);return}
-    const userIds=[...new Set((data||[]).map(x=>x.user_id))]; let profiles={}; if(userIds.length){const {data:p}=await sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified,country_code').in('id',userIds);(p||[]).forEach(x=>profiles[x.id]=x)}
-    const storyCountry=String(localStorage.getItem('avtovip-country')||'').toUpperCase();
-    const visibleStories=(data||[]).filter(x=>storyActive(x)&&(!storyCountry||String(profiles[x.user_id]?.country_code||'').toUpperCase()===storyCountry));
+    const active=(data||[]).filter(storyActive);
+    const userIds=[...new Set(active.map(row=>row.user_id))];
     const locked=!currentUser;
+    const [profileResult,guestResult]=await Promise.all([
+      userIds.length?sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified,country_code').in('id',userIds):{data:[]},
+      locked&&active.length?sb.from('story_guest_previews').select('story_id,preview').in('story_id',active.map(row=>row.id)):{data:[]}
+    ]);
+    const profiles=Object.fromEntries((profileResult.data||[]).map(row=>[row.id,row]));
+    const storyCountry=String(localStorage.getItem('avtovip-country')||'').toUpperCase();
+    const visibleStories=active.filter(row=>storyActive(row)&&(!storyCountry||String(profiles[row.user_id]?.country_code||'').toUpperCase()===storyCountry));
     if(locked&&visibleStories.length){
-      const {data:previews}=await sb.from('story_guest_previews').select('story_id,preview')
-        .in('story_id',visibleStories.map(row=>row.id));
+      const previews=guestResult.data;
       const byId=new Map((previews||[]).map(row=>[row.story_id,row.preview]));
-      for(const row of visibleStories)row.guestPreview=byId.get(row.id);
+      await Promise.all(visibleStories.map(async row=>{
+        const preview=byId.get(row.id);
+        if(guestPreviewSafe(preview)&&await validateVideoPoster(preview).catch(()=>false))row.guestPreview=preview;
+      }));
     }
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
     rail.innerHTML = add + visibleStories.map(story => {
@@ -1282,7 +1303,7 @@
       return `<button class="story-item" type="button" data-story="${esc(story.id)}" ${locked?'disabled aria-disabled="true"':''}><div class="story-ring"><div class="story-ring-inner">${window.AvtoVIPStoryThumb(story, profiles[story.user_id]?.avatar_url,locked)}</div><span class="story-rail-views"><i class="fa-regular fa-eye"></i><span data-story-views></span></span></div><span title="${esc(rawCaption || title)}">${esc(title)}</span></button>`;
     }).join('');
     const storyButtons = new Map([...rail.querySelectorAll('[data-story]')].map(button => [button.dataset.story, button]));
-    window.AvtoVIPHydrateStoryPreviews(rail);
+    window.AvtoVIPHydrateStoryPreviews(rail,5);
     const scheduleExpiry = window.AvtoVIPStoryExpiry(() => visibleStories, () => {
       for (let index = visibleStories.length - 1; index >= 0; index--) {
         const story = visibleStories[index];
