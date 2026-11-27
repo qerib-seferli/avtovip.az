@@ -225,6 +225,7 @@
   function releaseStoryMedia(url) {
     storyPosters.delete(url);
     warmStoryVideos.delete(url);
+    viewedStoryVideos.delete(url);
     releasePrivateMedia(url);
   }
   window.AvtoVIPReleaseStoryMedia = releaseStoryMedia;
@@ -254,7 +255,7 @@
   let privateMediaSessionUser=null;
   sb.auth.onAuthStateChange((event,session)=>{
     const nextUser=session?.user?.id||null;
-    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;posterLookups.length=0;viewerFrames.clear();cachedStoryPosters.clear();writtenStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
+    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;viewedStoryVideos.clear();posterLookups.length=0;viewerFrames.clear();cachedStoryPosters.clear();writtenStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
       document.querySelectorAll('img[data-story-media]').forEach(img=>{img.src='assets/img/brand/icon-192.png';img.classList.add('av-story-locked-thumb')});}
     privateMediaSessionUser=nextUser;
   });
@@ -1223,6 +1224,34 @@
     const counts = await db.storyViewCounts(visibleStories.map(story => story.id), getStoryViewCount);
     for (const [id, button] of storyButtons) button.querySelector('[data-story-views]').textContent = counts.get(id) || 0;
   }
+  let storyOpening=0;
+  const viewedStoryVideos=new Set();
+  function retainViewedStoryVideo(url){
+    if(!privateMediaPattern.test(url))return;
+    viewedStoryVideos.delete(url);
+    viewedStoryVideos.add(url);
+    if(viewedStoryVideos.size>3){
+      const oldest=viewedStoryVideos.values().next().value;
+      viewedStoryVideos.delete(oldest);
+      if(!warmStoryVideos.has(oldest))releasePrivateMedia(oldest);
+    }
+  }
+  function waitForStoryPixels(media,event){
+    return new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>finish(false),15000);
+      const ready=()=>finish(true);
+      const failed=()=>finish(false);
+      function finish(ok){
+        clearTimeout(timer);
+        media.removeEventListener(event,ready);
+        media.removeEventListener('error',failed);
+        if(ok)resolve();else reject(new Error('Story media unavailable'));
+      }
+      media.addEventListener(event,ready);
+      media.addEventListener('error',failed);
+      if(media.tagName==='VIDEO'?media.readyState>=2:media.complete&&media.naturalWidth)ready();
+    });
+  }
   async function openStory(s,p={},storyList=[],storyProfiles={}){
     if (!storyActive(s) || !await db.getUser() || !storyActive(s)) return;
     const modal=document.createElement('div');modal.className='story-viewer';modal.dataset.mediaUrl=s.media_url;
@@ -1235,48 +1264,54 @@
     const viewerFrame=s.media_type==='video'?loadStoryViewerFrame(s.id):null;
     const storyCaption=String(s.caption||'').trim().slice(0,50);
     modal.innerHTML=`<div class="story-shell"><div class="story-card"><div class="story-progress"></div>${s.media_type==='video'?`<video class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} playsinline preload="metadata"></video>`:`<img class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerIdentity}</a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${storyCaption?`<div class="story-caption">${esc(storyCaption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link story-owner-side" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerAvatar}${ownerIdentity}</a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
-    const cover=document.createElement('div');
-    cover.className='av-story-viewer-cover';
-    cover.setAttribute('aria-hidden','true');
-    const still=document.createElement('img');
-    still.alt='';
-    still.hidden=true;
-    cover.append(still);
-    modal.querySelector('.story-card').append(cover);
-    viewerFrame?.then(frame=>{
-      if(frame&&cover.isConnected){still.src=frame;still.hidden=false}
-    });
+    const opening=++storyOpening;
+    const generation=storySessionGeneration;
     const mainMedia=modal.querySelector('.story-media');
-    const removeCover=()=>cover.remove();
-    if(mainMedia.tagName==='VIDEO'){
+    const videoStory=mainMedia.tagName==='VIDEO';
+    const readyMedia=(async()=>{
+      const source=await resolvePrivateMedia(s.media_url);
+      if(videoStory)mainMedia.preload='auto';
+      mainMedia.src=source;
+      await waitForStoryPixels(mainMedia,videoStory?'loadeddata':'load');
+      if(videoStory&&generation===storySessionGeneration&&storyActive(s))retainViewedStoryVideo(s.media_url);
+    })();
+    const readyFrame=viewerFrame?.then(async frame=>{
+      if(!frame)throw new Error('No viewer frame');
+      const still=new Image();
+      still.alt='';
+      still.src=frame;
+      await still.decode();
+      return still;
+    });
+    let still;
+    try{
+      still=await Promise.any(readyFrame?[readyMedia,readyFrame]:[readyMedia]);
+    }catch(error){
+      console.warn('[AvtoVIP story media]',error);
+      if(opening===storyOpening)toast(runtimeText('Media yüklənə bilmədi.'),'error');
+      return;
+    }
+    if(opening!==storyOpening||generation!==storySessionGeneration||!storyActive(s))return;
+    let cover;
+    if(still){
+      cover=document.createElement('div');
+      cover.className='av-story-viewer-cover';
+      cover.setAttribute('aria-hidden','true');
+      cover.append(still);
+      modal.querySelector('.story-card').append(cover);
       mainMedia.addEventListener('playing',()=>{
-        if(typeof mainMedia.requestVideoFrameCallback==='function')mainMedia.requestVideoFrameCallback(removeCover);
-        else requestAnimationFrame(()=>requestAnimationFrame(removeCover));
+        const reveal=()=>cover.remove();
+        if(typeof mainMedia.requestVideoFrameCallback==='function')mainMedia.requestVideoFrameCallback(reveal);
+        else requestAnimationFrame(()=>requestAnimationFrame(reveal));
       },{once:true});
-    }else if(mainMedia.complete&&mainMedia.naturalWidth)removeCover();
-    else mainMedia.addEventListener('load',removeCover,{once:true});
-    mainMedia.addEventListener('error',removeCover,{once:true});
+    }
     document.body.append(modal);document.documentElement.classList.add('modal-open');
-    // Do not start a private video until its authenticated blob URL is ready.
-    const storyMediaReady=(async()=>{
-      const v=modal.querySelector('video.story-media');
-      if(v?.dataset.privateStory==='1'){
-        // A private R2 URL must never be assigned directly to <video>:
-        // the browser would make an unauthenticated request and fire a false codec error.
-        const local=await resolvePrivateMedia(s.media_url);
-        if(!v.isConnected)return;
-        v.src=local;
-        v.load();
-        // Browser autoplay policy may require a user tap; do not report codec failure.
-        await v.play().catch(()=>{});
-      }else if(v?.isConnected){
-        await v.play().catch(()=>{});
-      }else{
-        const img=modal.querySelector('img.story-media[data-private-story]');
-        if(img){const local=await resolvePrivateMedia(s.media_url);if(img.isConnected)img.src=local;}
-        else await hydratePrivateMedia(modal);
-      }
-    })().catch(error=>{removeCover();console.warn('[AvtoVIP story media]',error)});
+    const storyMediaReady=readyMedia.then(()=>{
+      if(videoStory&&mainMedia.isConnected&&!modal.classList.contains('story-comments-open'))return mainMedia.play().catch(()=>{});
+    }).catch(error=>{
+      if(cover)cover.remove();
+      console.warn('[AvtoVIP story media]',error);
+    });
     /* Only portrait media that would leave black bars on the left/right is cropped vertically.
        Wider/shorter media keeps the existing contain behaviour unchanged. */
     const storyMedia=modal.querySelector('.story-media'),storyCard=modal.querySelector('.story-card');
@@ -1285,7 +1320,7 @@
     const storyHistoryToken=`story-${s.id}-${Date.now()}`;let storyHistoryActive=true;
     history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
     const expiryTimer = setTimeout(() => close(), Math.max(0, Date.parse(s.expires_at) - Date.now()));
-    const close=(fromHistory=false)=>{if(!modal.isConnected)return;clearTimeout(expiryTimer);if(modal.querySelector('video')&&!warmStoryVideos.has(s.media_url)&&!storyPosters.has(s.media_url))releasePrivateMedia(s.media_url);modal.remove();document.documentElement.classList.remove('modal-open');window.removeEventListener('popstate',onStoryPop);window.removeEventListener('resize',fitStoryMedia);if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
+    const close=(fromHistory=false)=>{if(!modal.isConnected)return;clearTimeout(expiryTimer);if(modal.querySelector('video')&&!warmStoryVideos.has(s.media_url)&&!viewedStoryVideos.has(s.media_url))releasePrivateMedia(s.media_url);modal.remove();document.documentElement.classList.remove('modal-open');window.removeEventListener('popstate',onStoryPop);window.removeEventListener('resize',fitStoryMedia);if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
     const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));if(video){video.controls=false;requestAnimationFrame(()=>{fitStoryMedia();video.play().catch(()=>{})})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
     const onStoryPop=()=>{if(!modal.isConnected){window.removeEventListener('popstate',onStoryPop);return}if(modal.classList.contains('story-comments-open')){closeComments();history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);return}storyHistoryActive=false;close(true);window.removeEventListener('popstate',onStoryPop)};window.addEventListener('popstate',onStoryPop);
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
