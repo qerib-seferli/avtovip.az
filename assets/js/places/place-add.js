@@ -33,7 +33,13 @@ async function fillRegions(savedRegion='',savedCity=''){
     }
     selectSavedOption(city,selected);
   };
-  selectSavedOption(region,savedRegion);
+  const normalizeLocation=value=>String(value||'').normalize('NFKC').trim().toLocaleLowerCase('az');
+  if(!String(savedRegion||'').trim()&&savedCity){
+    const matching=states.filter(state=>(state.cities||[]).some(row=>
+      normalizeLocation(typeof row==='string'?row:row?.name)===normalizeLocation(savedCity)));
+    if(matching.length===1)savedRegion=matching[0].name;
+  }
+  selectSavedOption(region,String(savedRegion||'').trim());
   fillCities(savedCity);
   region.onchange=()=>fillCities('');
 }

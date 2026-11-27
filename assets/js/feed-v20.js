@@ -40,10 +40,11 @@ async function load(){
  const eligible = row => (reels ? row.is_reel === true && mediaFor(row).some(m => m.video) : row.is_reel !== true);
  const matchesTag = row => !tag || postText(row).tags.some(t => t.toLowerCase() === tag.toLowerCase());
  const seen = new Set();
- const more = document.createElement('button');
- more.type = 'button';
- more.className = 'btn btn-outline';
- more.textContent = moreLabel();
+ const more = document.createElement(reels?'div':'button');
+ if(!reels)more.type = 'button';
+ more.className = reels?'av-reel-page-sentinel':'btn btn-outline';
+ if(reels)more.setAttribute('aria-hidden','true');
+ else more.textContent = moreLabel();
  more.hidden = true;
  root.after(more);
  root.className = reels ? 'av-reels-grid' : 'av-feed-list';
@@ -85,12 +86,6 @@ async function load(){
     const exact = await sb.from('posts').select('*').eq('id',requestedId).eq('status','active').maybeSingle();
     if (exact.data && eligible(exact.data)) next.unshift(exact.data);
    }
-   if (reels) {
-    for (let i = next.length - 1; i > 0; i--) {
-     const j = Math.floor(Math.random() * (i + 1));
-     [next[i],next[j]] = [next[j],next[i]];
-    }
-   }
    if (next.length) {
     await loadPostDetails(next);
     const offset = posts.length;
@@ -121,16 +116,27 @@ async function load(){
    exhausted=previousExhausted;
    if (!posts.length) root.innerHTML = `<div class="empty-state">${esc(error.message)}</div>`;
    else postNotice(error.message,'error');
-   more.hidden = false;
+   more.hidden = reels;
+   if(reels)window.addEventListener('online',()=>{more.hidden=false},{once:true});
   } finally {
    more.disabled = false;
   }
  };
  let paging;
  const loadNext = () => paging ||= appendPage().finally(() => { paging=null; });
- more.onclick = loadNext;
- if(reels)loadNextReels=()=>exhausted?null:loadNext();
- window.addEventListener('avtovip:language', () => { more.textContent = moreLabel(); });
+ if(reels){
+  loadNextReels=()=>exhausted?null:loadNext();
+  let observer;
+  observer=new IntersectionObserver(entries=>{
+   if(!entries.some(entry=>entry.isIntersecting)||exhausted)return;
+   observer.unobserve(more);
+   loadNext().finally(()=>{if(!exhausted)observer.observe(more)});
+  },{rootMargin:'560px 0px'});
+  observer.observe(more);
+ }else{
+  more.onclick=loadNext;
+  window.addEventListener('avtovip:language',()=>{more.textContent=moreLabel()});
+ }
  if (reels) root.addEventListener('click',event => {
   const tile = event.target.closest('[data-reel-index]');
   if (!tile) return;
@@ -233,7 +239,7 @@ function setupCarousels(cards){
 function hardenVideo(v){if(!v)return;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');try{v.disableRemotePlayback=true}catch{}try{v.mozAllowCasting=false}catch{}try{v.setAttribute('disableRemotePlayback','')}catch{}try{v.setAttribute('controlsList','noremoteplayback nodownload noplaybackrate')}catch{}try{v.setAttribute('x-webkit-airplay','deny')}catch{}try{v.setAttribute('mozallowcasting','false')}catch{}}
 function pauseAll(except=null){$$('video').forEach(v=>{hardenVideo(v);if(v!==except){try{v.pause()}catch{}}})}
 function syncSoundIcons(){$$('.av-media-sound i').forEach(i=>i.className=`fa-solid ${soundEnabled?'fa-volume-high':'fa-volume-xmark'}`);const i=$('#avReelViewer .av-reel-sound i');if(i)i.className=`fa-solid ${soundEnabled?'fa-volume-high':'fa-volume-xmark'}`}
-function setSound(on){soundEnabled=!!on;localStorage.setItem('avtovip-social-sound',soundEnabled?'1':'0');syncSoundIcons();$$('.av-feed-video').forEach(v=>{if(!v.paused)v.muted=!soundEnabled});const vv=$('#avReelViewer video');if(vv)vv.muted=!soundEnabled}
+function setSound(on){soundEnabled=!!on;localStorage.setItem('avtovip-social-sound',soundEnabled?'1':'0');syncSoundIcons();$$('.av-feed-video').forEach(v=>{if(!v.paused)v.muted=!soundEnabled});const vv=$('#avReelViewer .av-reel-stage:not(.av-reel-outgoing):not(.av-reel-pending) video');if(vv)vv.muted=!soundEnabled}
 function bindSeek(video,bar){if(!video||!bar)return;const seek=e=>{const r=bar.getBoundingClientRect();if(!r.width||!Number.isFinite(video.duration))return;const x=Math.max(0,Math.min(r.width,e.clientX-r.left));video.currentTime=(x/r.width)*video.duration};bar.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();bar.setPointerCapture?.(e.pointerId);seek(e)});bar.addEventListener('pointermove',e=>{if(e.buttons||bar.hasPointerCapture?.(e.pointerId)){e.preventDefault();e.stopPropagation();seek(e)}});bar.addEventListener('pointerup',e=>{e.stopPropagation();bar.releasePointerCapture?.(e.pointerId)});bar.addEventListener('keydown',e=>{if(!Number.isFinite(video.duration))return;if(e.key==='ArrowLeft'){video.currentTime=Math.max(0,video.currentTime-5);e.preventDefault()}if(e.key==='ArrowRight'){video.currentTime=Math.min(video.duration,video.currentTime+5);e.preventDefault()}});bar.tabIndex=0;bar.setAttribute('role','slider')}
 function bindSmoothProgress(video,progress){if(!video||!progress)return;const fill=progress.querySelector('i');if(!fill)return;let raf=0;const paint=()=>{if(Number.isFinite(video.duration)&&video.duration>0)fill.style.transform=`scaleX(${Math.max(0,Math.min(1,video.currentTime/video.duration))})`;if(!video.paused&&!video.ended)raf=requestAnimationFrame(paint)};const start=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(paint)};const stop=()=>{cancelAnimationFrame(raf);paint()};video.addEventListener('play',start);video.addEventListener('pause',stop);video.addEventListener('ended',stop);video.addEventListener('seeking',paint);video.addEventListener('loadedmetadata',paint);paint()}
 function setupFeedPlayback(root,cards){
@@ -300,7 +306,7 @@ async function openPostComments(postId){
  modal.addEventListener('wheel',e=>{if(e.target.closest('.av-post-comments-card'))e.stopPropagation()},{passive:true});
  modal.addEventListener('touchmove',e=>e.stopPropagation(),{passive:true});
  if(!commentsHistoryPushed){history.pushState({avPostComments:true},'');commentsHistoryPushed=true}
- const finishClose=()=>{modal.remove();document.documentElement.classList.remove('av-comments-open');if(!$('#avReelViewer')?.classList.contains('open'))document.documentElement.classList.remove('modal-open');commentsHistoryPushed=false;const v=$('#avReelViewer video');if(commentsOpenedFromViewer&&v?.dataset.resumeAfterComments==='1'){delete v.dataset.resumeAfterComments;v.muted=!soundEnabled;v.play().catch(()=>{})}commentsOpenedFromViewer=false};
+ const finishClose=()=>{modal.remove();document.documentElement.classList.remove('av-comments-open');if(!$('#avReelViewer')?.classList.contains('open'))document.documentElement.classList.remove('modal-open');commentsHistoryPushed=false;const v=$('#avReelViewer .av-reel-stage:not(.av-reel-outgoing):not(.av-reel-pending) video');if(commentsOpenedFromViewer&&v?.dataset.resumeAfterComments==='1'){delete v.dataset.resumeAfterComments;v.muted=!soundEnabled;v.play().catch(()=>{})}commentsOpenedFromViewer=false};
  const requestClose=()=>{if(commentsHistoryPushed)history.back();else finishClose()};
  modal.querySelector('[data-close]').onclick=requestClose;modal.onclick=e=>{if(e.target===modal)requestClose()};
  const ep=modal.querySelector('.av-comment-emoji-picker'),eb=modal.querySelector('.av-comment-emoji'),input=modal.querySelector('input');let selStart=0,selEnd=0;const remember=()=>{selStart=input.selectionStart??input.value.length;selEnd=input.selectionEnd??selStart};input.addEventListener('keyup',remember);input.addEventListener('click',remember);input.addEventListener('select',remember);eb.onclick=e=>{e.preventDefault();e.stopPropagation();remember();ep.hidden=!ep.hidden};ep.addEventListener('pointerdown',e=>{if(e.target.closest('[data-comment-emoji]'))e.preventDefault()},{passive:false});ep.onclick=e=>{const b=e.target.closest('[data-comment-emoji]');if(!b)return;const a=Math.min(selStart,input.value.length),z=Math.min(selEnd,input.value.length),em=b.dataset.commentEmoji;input.value=input.value.slice(0,a)+em+input.value.slice(z);const pos=a+em.length;selStart=selEnd=pos;input.focus({preventScroll:true});try{input.setSelectionRange(pos,pos)}catch{}ep.hidden=false};
@@ -314,7 +320,9 @@ async function openPostComments(postId){
 }
 
 function openViewer(index){activeModalIndex=Math.max(0,Math.min(posts.length-1,index));pauseAll();let modal=$('#avReelViewer');if(!modal){modal=document.createElement('div');modal.id='avReelViewer';modal.className='av-reel-viewer';document.body.append(modal);modal.addEventListener('click',viewerClick);let y=0,x=0,moved=false;modal.addEventListener('touchstart',e=>{x=e.touches[0]?.clientX||0;y=e.touches[0]?.clientY||0;moved=false},{passive:true});modal.addEventListener('touchmove',e=>{const dx=(e.touches[0]?.clientX||0)-x,dy=(e.touches[0]?.clientY||0)-y;if(Math.hypot(dx,dy)>10)moved=true},{passive:true});modal.addEventListener('touchend',e=>{const dy=(e.changedTouches[0]?.clientY||0)-y;if(Math.abs(dy)>48)showViewer(activeModalIndex+(dy<0?1:-1),dy<0?'next':'prev');else if(!moved&&e.target.closest('video'))toggleViewerPlayback()},{passive:true});modal.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>30){e.preventDefault();showViewer(activeModalIndex+(e.deltaY>0?1:-1),e.deltaY>0?'next':'prev')}},{passive:false})}if(!viewerHistoryPushed){history.pushState({avReelViewer:true},'');viewerHistoryPushed=true}showViewer(activeModalIndex)}
-function showViewer(index,direction='next'){
+async function showViewer(index,direction='next'){
+ const modal=$('#avReelViewer');
+ if(!modal||modal.dataset.reelTransition)return;
  if(index===posts.length&&direction==='next'){
   const current=activeModalIndex;
   loadNextReels?.()?.then(()=>{
@@ -322,16 +330,53 @@ function showViewer(index,direction='next'){
   });
   return;
  }
- if(index<0||index>=posts.length)return;activeModalIndex=index;const p=posts[index],u=users[p.user_id]||{},m=mediaFor(p).find(x=>x.video);if(!m)return;const liked=myLikes.has(p.id),isFollow=following.has(p.user_id),cc=commentsCount.get(p.id)||0,parsed=postText(p),cap=parsed.text,hasTags=parsed.tags.length>0,expandable=cap.length>90||hasTags;const modal=$('#avReelViewer');modal.innerHTML=`<div class="av-reel-stage av-reel-enter ${direction==='prev'?'from-prev':'from-next'}"><button class="av-reel-close" data-view-close aria-label="Bağla">×</button><button class="av-reel-download" data-view-download aria-label="Videonu yüklə" title="Yüklə"><i class="fa-solid fa-download"></i></button><div class="av-reel-media"><video src="${esc(m.url)}" playsinline webkit-playsinline preload="metadata" loop disableRemotePlayback controlsList="noremoteplayback nodownload noplaybackrate" x-webkit-airplay="deny"></video><span class="av-reel-progress"><i></i></span><button class="av-reel-sound" type="button" aria-label="Səs"><i class="fa-solid ${soundEnabled?'fa-volume-high':'fa-volume-xmark'}"></i></button><span class="av-reel-play-state" aria-hidden="true"><i class="fa-solid fa-play"></i></span></div><div class="av-reel-overlay"><div class="av-reel-user">${author(u,p.user_id)}${p.user_id!==me?.id?`<button data-post-follow="${p.user_id}" class="av-reel-follow ${isFollow?'active':''}"><i class="fa-solid ${isFollow?'fa-user-check':'fa-user-plus'}"></i><span>${isFollow?'Takip edilir':'Takip et'}</span></button>`:''}</div>${(cap||hasTags)?`<div class="av-reel-caption${expandable?' is-collapsible':''}">${cap?`<span>${esc(cap)}</span>`:''}${expandable?'<button data-caption-more type="button">davamını oxu</button>':''}</div>`:''}${hashtagHtml(parsed.tags)}</div><div class="av-reel-actions"><button data-post-like class="${liked?'active':''}"><i class="fa-${liked?'solid':'regular'} fa-heart"></i><b>${likes.get(p.id)||0}</b></button><button data-post-comments><i class="fa-regular fa-comment"></i><b>${cc}</b></button><button data-post-share><i class="fa-solid fa-share-nodes"></i><b>${sharesCount.get(p.id)||0}</b></button><button data-post-save class="${saved.has(p.id)?'active':''}"><i class="fa-${saved.has(p.id)?'solid':'regular'} fa-bookmark"></i><b>${savesCount.get(p.id)||0}</b></button></div></div>`;modal.classList.add('open');document.documentElement.classList.add('modal-open');const v=modal.querySelector('video');hardenVideo(v);pauseAll(v);v.muted=!soundEnabled;const reelStage=modal.querySelector('.av-reel-stage');const syncReelAspect=()=>{const w=Number(v?.videoWidth||0),h=Number(v?.videoHeight||0);if(reelStage&&w&&h)reelStage.classList.toggle('av-reel-landscape',w>h)};if(v?.readyState>=1)syncReelAspect();else v?.addEventListener('loadedmetadata',syncReelAspect,{once:true});const viewerProgress=modal.querySelector('.av-reel-progress');bindSeek(v,viewerProgress);bindSmoothProgress(v,viewerProgress);v.addEventListener('play',()=>{delete v.dataset.manualPaused;modal.querySelector('.av-reel-play-state')?.classList.remove('show')});v.addEventListener('pause',()=>{const state=modal.querySelector('.av-reel-play-state');if(v.dataset.manualPaused==='1')state?.classList.add('show');else state?.classList.remove('show')});v.addEventListener('ended',()=>{v.currentTime=0;v.play().catch(()=>{})});// iOS can reject an audible play() after a swipe. Retry muted and once media is ready.
+ if(index<0||index>=posts.length)return;const p=posts[index],u=users[p.user_id]||{},m=mediaFor(p).find(x=>x.video);if(!m)return;const liked=myLikes.has(p.id),isFollow=following.has(p.user_id),cc=commentsCount.get(p.id)||0,parsed=postText(p),cap=parsed.text,hasTags=parsed.tags.length>0,expandable=cap.length>90||hasTags;const template=document.createElement('template');template.innerHTML=`<div class="av-reel-stage ${direction==='prev'?'from-prev':'from-next'}"><button class="av-reel-close" data-view-close aria-label="Bağla">×</button><button class="av-reel-download" data-view-download aria-label="Videonu yüklə" title="Yüklə"><i class="fa-solid fa-download"></i></button><div class="av-reel-media"><video src="${esc(m.url)}" playsinline webkit-playsinline preload="metadata" loop disableRemotePlayback controlsList="noremoteplayback nodownload noplaybackrate" x-webkit-airplay="deny"></video><span class="av-reel-progress"><i></i></span><button class="av-reel-sound" type="button" aria-label="Səs"><i class="fa-solid ${soundEnabled?'fa-volume-high':'fa-volume-xmark'}"></i></button><span class="av-reel-play-state" aria-hidden="true"><i class="fa-solid fa-play"></i></span></div><div class="av-reel-overlay"><div class="av-reel-user">${author(u,p.user_id)}${p.user_id!==me?.id?`<button data-post-follow="${p.user_id}" class="av-reel-follow ${isFollow?'active':''}"><i class="fa-solid ${isFollow?'fa-user-check':'fa-user-plus'}"></i><span>${isFollow?'Takip edilir':'Takip et'}</span></button>`:''}</div>${(cap||hasTags)?`<div class="av-reel-caption${expandable?' is-collapsible':''}">${cap?`<span>${esc(cap)}</span>`:''}${expandable?'<button data-caption-more type="button">davamını oxu</button>':''}</div>`:''}${hashtagHtml(parsed.tags)}</div><div class="av-reel-actions"><button data-post-like class="${liked?'active':''}"><i class="fa-${liked?'solid':'regular'} fa-heart"></i><b>${likes.get(p.id)||0}</b></button><button data-post-comments><i class="fa-regular fa-comment"></i><b>${cc}</b></button><button data-post-share><i class="fa-solid fa-share-nodes"></i><b>${sharesCount.get(p.id)||0}</b></button><button data-post-save class="${saved.has(p.id)?'active':''}"><i class="fa-${saved.has(p.id)?'solid':'regular'} fa-bookmark"></i><b>${savesCount.get(p.id)||0}</b></button></div></div>`;const stage=template.content.firstElementChild;
+ const previous=modal.querySelector('.av-reel-stage:not(.av-reel-outgoing)');
+ const v=stage.querySelector('video');
+ hardenVideo(v);
+ if(previous){
+  const token=String(performance.now());
+  modal.dataset.reelTransition=token;
+  stage.classList.add('av-reel-pending');
+  modal.append(stage);
+  v.preload='auto';
+  const ready=await new Promise(resolve=>{
+   if(v.readyState>=2){resolve(true);return}
+   const timer=setTimeout(()=>finish(false),8000);
+   const finish=ok=>{clearTimeout(timer);v.onloadeddata=v.onerror=null;resolve(ok)};
+   v.onloadeddata=()=>finish(true);
+   v.onerror=()=>finish(false);
+  });
+  if(modal.dataset.reelTransition!==token)return;
+  delete modal.dataset.reelTransition;
+  if(!ready){stage.remove();return}
+  previous.querySelector('video')?.pause();
+  previous.inert=true;
+  previous.classList.add('av-reel-outgoing');
+  stage.classList.remove('av-reel-pending');
+  const directionSign=direction==='prev'?-1:1;
+  const duration=typeof stage.animate==='function'&&!matchMedia('(prefers-reduced-motion: reduce)').matches?250:0;
+  if(duration){
+   stage.animate([{transform:`translateY(${directionSign*100}%)`},{transform:'translateY(0)'}],{duration,easing:'ease-out'});
+   const outgoing=previous.animate([{transform:'translateY(0)'},{transform:`translateY(${directionSign*-100}%)`}],{duration,easing:'ease-out',fill:'forwards'});
+   outgoing.finished.catch(()=>{}).finally(()=>previous.remove());
+
+  }else previous.remove();
+ }else modal.append(stage);
+ activeModalIndex=index;
+ if(index>=posts.length-4)loadNextReels?.();
+ modal.classList.add('open');
+ document.documentElement.classList.add('modal-open');
+ pauseAll(v);v.muted=!soundEnabled;const reelStage=stage;const syncReelAspect=()=>{const w=Number(v?.videoWidth||0),h=Number(v?.videoHeight||0);if(reelStage&&w&&h)reelStage.classList.toggle('av-reel-landscape',w>h)};if(v?.readyState>=1)syncReelAspect();else v?.addEventListener('loadedmetadata',syncReelAspect,{once:true});const viewerProgress=modal.querySelector('.av-reel-progress');bindSeek(v,viewerProgress);bindSmoothProgress(v,viewerProgress);v.addEventListener('play',()=>{delete v.dataset.manualPaused;modal.querySelector('.av-reel-play-state')?.classList.remove('show')});v.addEventListener('pause',()=>{const state=modal.querySelector('.av-reel-play-state');if(v.dataset.manualPaused==='1')state?.classList.add('show');else state?.classList.remove('show')});v.addEventListener('ended',()=>{v.currentTime=0;v.play().catch(()=>{})});// iOS can reject an audible play() after a swipe. Retry muted and once media is ready.
  const isIOSReel=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
  if(isIOSReel){
    let pending=false;
    const attempt=()=>{
-     if(!v.isConnected||modal.querySelector('video')!==v||v.dataset.manualPaused==='1'||document.hidden)return;
+     if(!v.isConnected||modal.querySelector('.av-reel-stage:not(.av-reel-outgoing):not(.av-reel-pending) video')!==v||v.dataset.manualPaused==='1'||document.hidden)return;
      if(!v.paused)return;
      const result=v.play();
      if(result&&typeof result.catch==='function')result.catch(()=>{
-       if(!v.isConnected||modal.querySelector('video')!==v||v.dataset.manualPaused==='1')return;
+       if(!v.isConnected||modal.querySelector('.av-reel-stage:not(.av-reel-outgoing):not(.av-reel-pending) video')!==v||v.dataset.manualPaused==='1')return;
        if(!v.muted){v.muted=true;const icon=modal.querySelector('.av-reel-sound i');if(icon)icon.className='fa-solid fa-volume-xmark';v.play().catch(()=>{})}
      });
    };
@@ -340,8 +385,8 @@ function showViewer(index,direction='next'){
    v.addEventListener('canplay',whenReady,{once:true});
    attempt();
  }else v.play().catch(()=>{modal.querySelector('.av-reel-play-state')?.classList.remove('show')})}
-function toggleViewerPlayback(){const v=$('#avReelViewer video'),state=$('#avReelViewer .av-reel-play-state');if(!v)return;if(v.paused){delete v.dataset.manualPaused;state?.classList.remove('show');v.muted=!soundEnabled;v.play().catch(()=>{})}else{v.dataset.manualPaused='1';v.pause();state?.classList.add('show')}}
-function closeViewer(fromHistory=false){const modal=$('#avReelViewer');if(!modal?.classList.contains('open'))return;pauseAll();modal.classList.remove('open');modal.innerHTML='';document.documentElement.classList.remove('modal-open');if(!fromHistory&&viewerHistoryPushed){viewerHistoryPushed=false;history.back()}else viewerHistoryPushed=false}
+function toggleViewerPlayback(){const v=$('#avReelViewer .av-reel-stage:not(.av-reel-outgoing):not(.av-reel-pending) video'),state=$('#avReelViewer .av-reel-play-state');if(!v)return;if(v.paused){delete v.dataset.manualPaused;state?.classList.remove('show');v.muted=!soundEnabled;v.play().catch(()=>{})}else{v.dataset.manualPaused='1';v.pause();state?.classList.add('show')}}
+function closeViewer(fromHistory=false){const modal=$('#avReelViewer');if(!modal?.classList.contains('open'))return;pauseAll();delete modal.dataset.reelTransition;modal.classList.remove('open');modal.innerHTML='';document.documentElement.classList.remove('modal-open');if(!fromHistory&&viewerHistoryPushed){viewerHistoryPushed=false;history.back()}else viewerHistoryPushed=false}
 async function viewerClick(e){const p=posts[activeModalIndex];if(!p)return;if(e.target.closest('[data-view-close]')){closeViewer();return}if(e.target.closest('[data-view-download]')){e.preventDefault();e.stopPropagation();await downloadMedia(p,'reel');return}if(e.target.closest('.av-reel-sound')){setSound(!soundEnabled);return}const hash=e.target.closest('[data-hashtag]');if(hash){location.href=hashtagHref(hash.dataset.hashtag);return}const more=e.target.closest('[data-caption-more]');if(more){const cap=more.closest('.av-reel-caption');cap.classList.toggle('expanded');more.textContent=cap.classList.contains('expanded')?'gizlət':'davamını oxu';return}const like=e.target.closest('[data-post-like]');if(like){await toggleLike(p.id,like);return}const follow=e.target.closest('[data-post-follow]');if(follow){await toggleFollow(follow.dataset.postFollow);return}const save=e.target.closest('[data-post-save]');if(save){await toggleSave(p.id,save);return}if(e.target.closest('[data-post-share]')){await sharePost(p);const n=e.target.closest('[data-post-share]').querySelector('b');if(n)n.textContent=sharesCount.get(p.id)||0;return}if(e.target.closest('[data-post-comments]'))return openPostComments(p.id)}
 
 function postNotice(message,type='info',scope=''){

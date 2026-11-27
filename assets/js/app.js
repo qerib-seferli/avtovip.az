@@ -75,6 +75,29 @@
       }
     }
   }
+  const savedGuestPreviews = new Set();
+  const guestPreviewSafe = value => typeof value==='string' && value.length<=1800 &&
+    /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(value);
+  async function saveGuestStoryPreview(id, source){
+    if(!id || savedGuestPreviews.has(id))return;
+    savedGuestPreviews.add(id);
+    try{
+      const image=new Image();
+      image.crossOrigin='anonymous';
+      image.src=source;
+      await image.decode();
+      const canvas=document.createElement('canvas');
+      canvas.width=canvas.height=12;
+      const side=Math.min(image.naturalWidth,image.naturalHeight);
+      canvas.getContext('2d').drawImage(image,(image.naturalWidth-side)/2,(image.naturalHeight-side)/2,side,side,0,0,12,12);
+      const preview=canvas.toDataURL('image/jpeg',.55);
+      if(!guestPreviewSafe(preview))return;
+      const {error}=await sb.from('story_guest_previews').upsert({story_id:id,preview},{onConflict:'story_id',ignoreDuplicates:true});
+      if(error)throw error;
+    }catch{
+      savedGuestPreviews.delete(id);
+    }
+  }
   function pumpStoryPreviews() {
     while (storyPreviewActive < 2 && storyPreviewQueue.length) {
       const image = storyPreviewQueue.shift();
@@ -92,7 +115,11 @@
       const generation=storySessionGeneration;
       const preview = video ? storyPosters.get(original) : resolvePrivateMedia(original);
       preview.then(local => {
-        if (generation===storySessionGeneration && image.isConnected && owner && (privateMediaSessionUser || currentUser?.id) === owner && storyActive({expires_at:image.dataset.storyExpires})) image.src = local;
+        if (generation===storySessionGeneration && image.isConnected && owner && (privateMediaSessionUser || currentUser?.id) === owner && storyActive({expires_at:image.dataset.storyExpires})) {
+          image.src=local;
+          image.classList.remove('av-story-initial-thumb');
+          if(image.dataset.storyOwner===owner)saveGuestStoryPreview(image.dataset.storyId,local);
+        }
       }).catch(() => {}).finally(() => {
         storyPreviewActive--;
         pumpStoryPreviews();
@@ -107,15 +134,16 @@
     }
     pumpStoryPreviews();
   };
-  window.AvtoVIPStoryThumb = (story, avatar, locked = false) => {
-    const fallback = avatar || 'assets/img/brand/icon-192.png';
-    if (locked) return '<img class="av-story-locked-thumb" src="assets/img/brand/icon-192.png" alt="">';
-    const url = story.media_url;
-    const video = String(story.media_type).startsWith('video');
-    if (!url || video || privateMediaPattern.test(url)) {
-      return `<img src="${esc(video?'assets/img/brand/icon-192.png':fallback)}" ${url?`data-story-media="${esc(url)}" data-story-video="${video?1:0}" data-story-expires="${esc(story.expires_at)}"`:''} decoding="async" alt="">`;
+  window.AvtoVIPStoryThumb = (story, _avatar, locked = false) => {
+    const logo='assets/img/brand/icon-192.png';
+    if (locked) {
+      return guestPreviewSafe(story.guestPreview)
+        ? `<img class="av-story-locked-thumb" src="${esc(story.guestPreview)}" alt="">`
+        : '<span class="av-story-guest-unavailable" aria-hidden="true"></span>';
     }
-    return `<img src="${esc(url)}" loading="lazy" decoding="async" alt="">`;
+    const url=story.media_url;
+    const video=String(story.media_type).startsWith('video');
+    return `<img class="av-story-initial-thumb" src="${logo}" ${url?`data-story-media="${esc(url)}" data-story-video="${video?1:0}" data-story-id="${esc(story.id)}" data-story-owner="${esc(story.user_id)}" data-story-expires="${esc(story.expires_at)}"`:''} decoding="async" alt="">`;
   };
   const storyActive = story => Date.parse(story.expires_at) > Date.now();
   function releaseStoryMedia(url) {
@@ -1087,6 +1115,12 @@
     const storyCountry=String(localStorage.getItem('avtovip-country')||'').toUpperCase();
     const visibleStories=(data||[]).filter(x=>storyActive(x)&&(!storyCountry||String(profiles[x.user_id]?.country_code||'').toUpperCase()===storyCountry));
     const locked=!currentUser;
+    if(locked&&visibleStories.length){
+      const {data:previews}=await sb.from('story_guest_previews').select('story_id,preview')
+        .in('story_id',visibleStories.map(row=>row.id));
+      const byId=new Map((previews||[]).map(row=>[row.story_id,row.preview]));
+      for(const row of visibleStories)row.guestPreview=byId.get(row.id);
+    }
     const add=`<a class="story-item story-add" href="hekaye-ver.html"><div class="story-ring"><div class="story-ring-inner"><i class="fa-solid fa-plus"></i></div></div><span>${t('addStory')}</span></a>`;
     rail.innerHTML = add + visibleStories.map(story => {
       const rawCaption = String(story.caption || '').trim();
@@ -1574,6 +1608,11 @@
         /* Best-effort cleanup if an old payment trigger created an obsolete pending row. */
         await sb.from('payment_requests').delete().eq('user_id',user.id).eq('target_type','story').eq('target_id',storyId).eq('status','pending').then(()=>{}).catch(()=>{});
 
+        const localPreview=URL.createObjectURL(file);
+        try{
+          const preview=file.type.startsWith('video/')?await videoStoryPoster(localPreview):localPreview;
+          await saveGuestStoryPreview(storyId,preview);
+        }catch{}finally{URL.revokeObjectURL(localPreview)}
         toast('Hekayə paylaşıldı.','success');setStatus('#storyStatus','','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
       }catch(err){db.mediaProgressHide();let storyRolledBack=!storyId;if(storyId){try{const rollback=await sb.from('stories').delete().eq('id',storyId).eq('user_id',user.id).select('id');storyRolledBack=!rollback.error&&rollback.data?.some(row=>row.id===storyId)}catch(rollbackError){console.warn('[AvtoVIP story rollback]',rollbackError)}}if(storyRolledBack&&uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false;finish()}
     });
@@ -1724,10 +1763,17 @@
       const sent=createdMessages?.at(-1)?.id;
       if(sent&&pane.dataset.peer===peer&&(pane.dataset.listing||'')===(listing||'')){
         const root=$('#chatMessages');
-        if(root?.querySelector(`[data-message-id="${CSS.escape(sent)}"]`))root.scrollTop=root.scrollHeight;
-        else {
-          await renderThread(peer,listing);
-          if(pane.dataset.peer===peer&&(pane.dataset.listing||'')===(listing||''))root.scrollTop=root.scrollHeight;
+        if(root){
+          root._avChatScrollVersion=(root._avChatScrollVersion||0)+1;
+          const focusSent=()=>{
+            if(pane.dataset.peer===peer&&(pane.dataset.listing||'')===(listing||'')){
+              root.scrollTop=root.scrollHeight;
+            }
+          };
+          if(!root.querySelector(`[data-message-id="${CSS.escape(sent)}"]`))await renderThread(peer,listing);
+          root._avChatScrollVersion++;
+          focusSent();
+          requestAnimationFrame(()=>requestAnimationFrame(focusSent));
         }
       }
       await renderConversations(currentUser.id)}finally{if(sendButton)sendButton.disabled=false;finish()}};
@@ -1850,8 +1896,9 @@
     let lastDay='';const today=new Date(),yesterday=new Date();yesterday.setDate(today.getDate()-1);const dayKey=d=>`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;const markup=visibleMessages.map(m=>{const d=new Date(m.created_at),key=dayKey(d);let sep='';if(key!==lastDay){lastDay=key;const label=key===dayKey(today)?runtimeText('Bu gün'):key===dayKey(yesterday)?runtimeText('Dünən'):d.toLocaleDateString(document.documentElement.lang||'az',{day:'2-digit',month:'long',year:d.getFullYear()===today.getFullYear()?undefined:'numeric'});sep=`<div class="chat-date-separator" data-chat-date="${key}"><span>${esc(label)}</span></div>`}const mine=m.sender_id===currentUser.id;const chips=(reactionsByMessage.get(String(m.id))||[]).map(r=>`<button type="button" class="av-reaction-chip ${r.user_id===currentUser.id?'selected':''}" data-reaction-message="${m.id}" title="İfadəni dəyiş">${esc(r.emoji)}</button>`).join('');const status=mine?`<span class="av-message-status ${m.is_read?'read':'sent'}" title="${m.is_read?'Oxunub':'Göndərilib'}">${m.is_read?'✓✓':'✓'}</span>`:'';return sep+`<div class="bubble ${mine?'mine':''}" data-message-id="${m.id}" data-media-url="${esc(m.media_url||'')}">${m.media_url?(m.media_type==='video'?`<div class="av-chat-video-wrap" data-media-video="${esc(m.media_url)}"><video class="chat-media chat-video" ${privateMediaPattern.test(m.media_url)?'data-private-media':'src'}="${esc(m.media_url)}" playsinline preload="metadata" tabindex="-1"></video><span class="av-video-play"><i class="fa-solid fa-play"></i></span></div>`:`<button type="button" class="chat-media-open" data-media-open="${esc(m.media_url)}" aria-label="Şəkli böyüt"><img class="chat-media" ${privateMediaPattern.test(m.media_url)?'data-private-media':'src'}="${esc(m.media_url)}" alt=""></button>`):''}${m.body?`<p>${esc(m.body)}</p>`:''}<div class="av-message-footer ${mine?'mine':''}">${mine?`<span class="av-footer-reactions">${chips}</span><span class="av-footer-spacer"></span><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button><button type="button" data-edit-message="${m.id}" title="Redaktə"><i class="fa-solid fa-pen"></i></button><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><time>${timeText(m.created_at)}${m.edited_at?' · ✎':''}</time>${status}`:`<span class="av-foreign-controls"><time>${timeText(m.created_at)}</time><span class="av-foreign-buttons"><button type="button" data-delete-message="${m.id}" title="Sil"><i class="fa-regular fa-trash-can"></i></button><button type="button" data-react-message="${m.id}" title="İfadə"><i class="fa-regular fa-face-smile"></i></button></span></span><span class="av-footer-spacer"></span><span class="av-footer-reactions">${chips}</span>`}</div></div>`}).join('');patchThreadMarkup(root,markup);const shouldBottom=nearBottom||!oldLast;root.scrollTop=shouldBottom?root.scrollHeight:oldScroll;
     hydratePrivateMedia(root).catch(error=>console.warn('[AvtoVIP chat media]',error));
     // Media dimensions may settle after render; keep the newest message visible.
+    const scrollVersion=root._avChatScrollVersion;
     const stayAtLatest=()=>{
-      if(!root.isConnected||!isCurrent()||root.dataset.avRenderSignature!==renderSignature)return;
+      if(!root.isConnected||!isCurrent()||root.dataset.avRenderSignature!==renderSignature||root._avChatScrollVersion!==scrollVersion)return;
       if(shouldBottom){root.scrollTop=root.scrollHeight;return}
       const node=anchorId&&root.querySelector(`[data-message-id="${CSS.escape(anchorId)}"]`);
       if(node)root.scrollTop+=node.getBoundingClientRect().top-anchorTop;

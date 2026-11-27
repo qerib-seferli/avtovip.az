@@ -3575,3 +3575,9 @@ body[data-page="messages"] .av-message-footer:not(.mine)>.av-footer-reactions{ma
 /* Chat reactions: two participants stay side by side, including short messages. */
 body[data-page="messages"] .av-message-footer .av-footer-reactions{display:inline-flex!important;flex-flow:row nowrap!important;align-items:center;gap:5px;flex:0 0 auto;max-width:none!important;white-space:nowrap;}
 body[data-page="messages"] .av-message-footer:not(.mine)>.av-footer-reactions{margin-left:auto!important;}
+
+.av-reel-page-sentinel:not([hidden]){height:1px;pointer-events:none}
+.av-reel-viewer.open{overflow:hidden}
+.av-reel-viewer.open>.av-reel-stage{grid-area:1/1}
+.av-reel-viewer .av-reel-pending{opacity:0;pointer-events:none}
+.av-reel-viewer .av-reel-outgoing{pointer-events:none}
