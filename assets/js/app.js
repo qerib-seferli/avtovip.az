@@ -1252,7 +1252,7 @@
       if(media.tagName==='VIDEO'?media.readyState>=2:media.complete&&media.naturalWidth)ready();
     });
   }
-  async function openStory(s,p={},storyList=[],storyProfiles={}){
+  async function openStory(s,p={},storyList=[],storyProfiles={},previous=null){
     if (!storyActive(s) || !await db.getUser() || !storyActive(s)) return;
     const modal=document.createElement('div');modal.className='story-viewer';modal.dataset.mediaUrl=s.media_url;
     const ownerName=esc([p?.name,p?.surname].filter(Boolean).join(' ')||'AvtoVİP');
@@ -1305,6 +1305,8 @@
         else requestAnimationFrame(()=>requestAnimationFrame(reveal));
       },{once:true});
     }
+    if(previous&&!previous.modal.isConnected)return false;
+    previous?.dispose();
     document.body.append(modal);document.documentElement.classList.add('modal-open');
     const storyMediaReady=readyMedia.then(()=>{
       if(videoStory&&mainMedia.isConnected&&!modal.classList.contains('story-comments-open'))return mainMedia.play().catch(()=>{});
@@ -1317,17 +1319,59 @@
     const storyMedia=modal.querySelector('.story-media'),storyCard=modal.querySelector('.story-card');
     const fitStoryMedia=()=>{if(!storyMedia||!storyCard)return;const mw=storyMedia.videoWidth||storyMedia.naturalWidth||0,mh=storyMedia.videoHeight||storyMedia.naturalHeight||0;if(!mw||!mh)return;const cardRatio=storyCard.clientWidth/Math.max(1,storyCard.clientHeight),mediaRatio=mw/mh;storyMedia.classList.toggle('story-media-fill-width',mediaRatio<cardRatio-.01)};
     if(storyMedia){storyMedia.addEventListener(storyMedia.tagName==='VIDEO'?'loadedmetadata':'load',fitStoryMedia,{once:true});requestAnimationFrame(fitStoryMedia);window.addEventListener('resize',fitStoryMedia,{passive:true});}
-    const storyHistoryToken=`story-${s.id}-${Date.now()}`;let storyHistoryActive=true;
-    history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
-    const expiryTimer = setTimeout(() => close(), Math.max(0, Date.parse(s.expires_at) - Date.now()));
-    const close=(fromHistory=false)=>{if(!modal.isConnected)return;clearTimeout(expiryTimer);if(modal.querySelector('video')&&!warmStoryVideos.has(s.media_url)&&!viewedStoryVideos.has(s.media_url))releasePrivateMedia(s.media_url);modal.remove();document.documentElement.classList.remove('modal-open');window.removeEventListener('popstate',onStoryPop);window.removeEventListener('resize',fitStoryMedia);if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();storyHistoryActive=false};
-    const closeComments=()=>{if(!modal.classList.contains('story-comments-open'))return false;modal.classList.remove('story-comments-open');storyInteraction=false;requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));if(video){video.controls=false;requestAnimationFrame(()=>{fitStoryMedia();video.play().catch(()=>{})})}else if(!imageTimer){imageTimer=setTimeout(()=>{if(!storyInteraction&&modal.isConnected)close()},7000)}return true};
+    const storyHistoryToken=previous?.token||`story-${s.id}-${Date.now()}`;
+    let storyHistoryActive=true;
+    if(!previous)history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
+    let storyInteraction=false, switching=false, imageHeld=false, imageTimer=null;
+    let remaining=7000, imageStarted=0;
+    const pauseImage=()=>{
+      if(video||imageTimer===null)return;
+      clearTimeout(imageTimer);
+      imageTimer=null;
+      remaining=Math.max(0,remaining-(performance.now()-imageStarted));
+      storyCard.classList.add('av-story-image-paused');
+    };
+    const resumeImage=()=>{
+      if(video||imageTimer!==null||imageHeld||switching||storyInteraction||!modal.isConnected)return;
+      storyCard.classList.remove('av-story-image-paused');
+      imageStarted=performance.now();
+      imageTimer=setTimeout(()=>close(),remaining);
+    };
+    const expiryTimer=setTimeout(()=>close(),Math.max(0,Date.parse(s.expires_at)-Date.now()));
+    const close=(fromHistory=false,replace=false)=>{
+      if(!modal.isConnected)return;
+      if(!replace)storyOpening++;
+      clearTimeout(expiryTimer);
+      clearTimeout(imageTimer);
+      if(video&&!warmStoryVideos.has(s.media_url)&&!viewedStoryVideos.has(s.media_url))releasePrivateMedia(s.media_url);
+      modal.remove();
+      if(!replace)document.documentElement.classList.remove('modal-open');
+      window.removeEventListener('popstate',onStoryPop);
+      window.removeEventListener('resize',fitStoryMedia);
+      if(storyHistoryActive&&!fromHistory&&history.state?.avStory===storyHistoryToken)history.back();
+      storyHistoryActive=false;
+    };
+    const closeComments=()=>{
+      if(!modal.classList.contains('story-comments-open'))return false;
+      modal.classList.remove('story-comments-open');
+      storyInteraction=false;
+      requestAnimationFrame(()=>requestAnimationFrame(fitStoryMedia));
+      if(video){video.controls=false;video.play().catch(()=>{})}
+      else resumeImage();
+      return true;
+    };
     const onStoryPop=()=>{if(!modal.isConnected){window.removeEventListener('popstate',onStoryPop);return}if(modal.classList.contains('story-comments-open')){closeComments();history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);return}storyHistoryActive=false;close(true);window.removeEventListener('popstate',onStoryPop)};window.addEventListener('popstate',onStoryPop);
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
     /* A story is an app-like overlay: vertical swipes must never become browser pull-to-refresh.
        The comments panel remains independently scrollable. */
     let storyTouchY=0,storyTouchX=0;
-    modal.addEventListener('touchstart',e=>{storyTouchY=e.touches?.[0]?.clientY||0;storyTouchX=e.touches?.[0]?.clientX||0},{passive:true});
+    modal.addEventListener('touchstart',e=>{
+      storyTouchY=e.touches?.[0]?.clientY||0;
+      storyTouchX=e.touches?.[0]?.clientX||0;
+      if(!video&&e.target===storyMedia){imageHeld=true;pauseImage()}
+    },{passive:true});
+    modal.addEventListener('touchcancel',()=>{imageHeld=false;resumeImage()});
+    if(!video)storyMedia.addEventListener('contextmenu',event=>event.preventDefault());
     modal.addEventListener('touchmove',e=>{
       const scroller=e.target.closest?.('.story-comments');
       if(!scroller){e.preventDefault();return}
@@ -1335,7 +1379,10 @@
       const atTop=scroller.scrollTop<=0,atBottom=scroller.scrollTop+scroller.clientHeight>=scroller.scrollHeight-1;
       if((atTop&&dy>0)||(atBottom&&dy<0))e.preventDefault();
     },{passive:false});
-    modal.addEventListener('touchend',e=>{
+    modal.addEventListener('touchend',async e=>{
+      imageHeld=false;
+      resumeImage();
+      if(switching)return;
       if(!window.matchMedia('(max-width:760px)').matches||modal.classList.contains('story-comments-open'))return;
       const touch=e.changedTouches?.[0];if(!touch)return;
       const dx=touch.clientX-storyTouchX,dy=touch.clientY-storyTouchY;
@@ -1344,13 +1391,19 @@
       const idx=(storyList||[]).findIndex(x=>x.id===s.id);if(idx<0)return;
       const nextIdx=dx<0?idx+1:idx-1;if(nextIdx<0||nextIdx>=storyList.length)return;
       const next=storyList[nextIdx],nextProfile=storyProfiles?.[next.user_id]||{};
-      if(history.state?.avStory===storyHistoryToken)history.replaceState({...history.state,avStory:null},'',location.href);
-      storyHistoryActive=false;close(true);
-      openStory(next,nextProfile,storyList,storyProfiles);
+      switching=true;
+      pauseImage();
+      const wasPlaying=video&&!video.paused;
+      if(wasPlaying)video.pause();
+      await openStory(next,nextProfile,storyList,storyProfiles,{modal,token:storyHistoryToken,dispose:()=>close(true,true)});
+      if(modal.isConnected){
+        switching=false;
+        if(wasPlaying&&!storyInteraction)video.play().catch(()=>{});
+        resumeImage();
+      }
     },{passive:true});
-    let storyInteraction=false,imageTimer=null;
-    const holdStory=()=>{storyInteraction=true;if(imageTimer){clearTimeout(imageTimer);imageTimer=null}if(video){if(!video.paused)video.pause();video.controls=false}modal.classList.add('story-comments-open')};
-    const video=modal.querySelector('video');if(video){video.controls=false;video.removeAttribute('controls');video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');if(!privateMediaPattern.test(s.media_url))video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',()=>{fitStoryMedia();storyCard?.style.setProperty('--video-progress','0%')});video.addEventListener('canplay',fitStoryMedia);video.addEventListener('timeupdate',()=>{if(video.duration&&Number.isFinite(video.duration))storyCard?.style.setProperty('--video-progress',`${Math.max(0,Math.min(100,(video.currentTime/video.duration)*100))}%`)});video.addEventListener('error',()=>{storyCard?.classList.add('story-video-error');if(storyCard&&!storyCard.querySelector('.story-video-error-message'))storyCard.insertAdjacentHTML('beforeend','<div class="story-video-error-message"><div><i class="fa-regular fa-file-video"></i><strong>Video bu brauzerdə açılmır</strong><span>Bu köhnə video uyğun olmayan kodeklə yüklənib. Yeni hekayələrdə sistem H.264 MP4/WebM uyğunluğunu əvvəlcədən yoxlayır.</span></div></div>')},{once:true});video.addEventListener('ended',()=>{if(!storyInteraction&&modal.isConnected)close()})}else {const startImageTimer=()=>{if(!storyInteraction&&modal.isConnected&&!imageTimer)imageTimer=setTimeout(()=>{imageTimer=null;if(!storyInteraction&&modal.isConnected)close()},7000)};if(storyMedia?.complete&&storyMedia.naturalWidth)startImageTimer();else storyMedia?.addEventListener('load',startImageTimer,{once:true});}
+    const holdStory=()=>{storyInteraction=true;pauseImage();if(video){video.pause();video.controls=false}modal.classList.add('story-comments-open')};
+    const video=modal.querySelector('video');if(video){video.controls=false;video.removeAttribute('controls');video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');if(!privateMediaPattern.test(s.media_url))video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',()=>{fitStoryMedia();storyCard?.style.setProperty('--video-progress','0%')});video.addEventListener('canplay',fitStoryMedia);video.addEventListener('timeupdate',()=>{if(video.duration&&Number.isFinite(video.duration))storyCard?.style.setProperty('--video-progress',`${Math.max(0,Math.min(100,(video.currentTime/video.duration)*100))}%`)});video.addEventListener('error',()=>{storyCard?.classList.add('story-video-error');if(storyCard&&!storyCard.querySelector('.story-video-error-message'))storyCard.insertAdjacentHTML('beforeend','<div class="story-video-error-message"><div><i class="fa-regular fa-file-video"></i><strong>Video bu brauzerdə açılmır</strong><span>Bu köhnə video uyğun olmayan kodeklə yüklənib. Yeni hekayələrdə sistem H.264 MP4/WebM uyğunluğunu əvvəlcədən yoxlayır.</span></div></div>')},{once:true});video.addEventListener('ended',()=>{if(!switching&&!storyInteraction&&modal.isConnected)close()})}else resumeImage();
     let key=localStorage.getItem('avtovip-viewer-key');if(!key){key=crypto.randomUUID?.()||Math.random().toString(36).slice(2);localStorage.setItem('avtovip-viewer-key',key)}
     let registeredStoryViews=null;
     try{

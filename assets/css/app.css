@@ -751,3 +751,6 @@ body[data-page="auth"] .auth-logo{
 .story-card .av-story-viewer-cover:has(img[hidden]){
  background:#191d25 url('../img/brand/icon-192.png') center/48px 48px no-repeat
 }
+
+.story-card.av-story-image-paused .story-progress::after{animation-play-state:paused!important}
+.story-card img.story-media{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}

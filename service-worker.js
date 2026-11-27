@@ -1,9 +1,9 @@
-const CACHE = 'avtovip-shell-48b23a8e8b5e';
+const CACHE = 'avtovip-shell-251d8b85eea7';
 const STATIC = [
   "./admin/css/admin.css?av=f023cef9b6ef",
   "./admin/js/admin-places.js?av=103a0beace13",
   "./admin/js/admin.js?av=1670f37948d1",
-  "./assets/css/app.css?av=577e38f516db",
+  "./assets/css/app.css?av=6ad5d0de052c",
   "./assets/css/detail-final-v124.css?av=c6e8f0bcabd1",
   "./assets/css/patch11.css?av=81fb66fa4811",
   "./assets/css/places/places.css?av=cf70c7430ebe",
@@ -15,7 +15,7 @@ const STATIC = [
   "./assets/img/brand/icon-512.png",
   "./assets/img/brand/logo.png",
   "./assets/img/loading/world.webp",
-  "./assets/js/app.js?av=846e5f532213",
+  "./assets/js/app.js?av=ae9b00abdc7c",
   "./assets/js/feed-v20.js?av=7712670b1942",
   "./assets/js/international.js?av=2095b2581442",
   "./assets/js/patch11.js?av=a35df378e874",
