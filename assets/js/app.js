@@ -1267,7 +1267,8 @@
     const opening=++storyOpening;
     const generation=storySessionGeneration;
     const mainMedia=modal.querySelector('.story-media');
-    const videoStory=mainMedia.tagName==='VIDEO';
+    const video=mainMedia.tagName==='VIDEO'?mainMedia:null;
+    const videoStory=Boolean(video);
     const readyMedia=(async()=>{
       const source=await resolvePrivateMedia(s.media_url);
       if(videoStory)mainMedia.preload='auto';
@@ -1306,8 +1307,6 @@
       },{once:true});
     }
     if(previous&&!previous.modal.isConnected)return false;
-    previous?.dispose();
-    document.body.append(modal);document.documentElement.classList.add('modal-open');
     const storyMediaReady=readyMedia.then(()=>{
       if(videoStory&&mainMedia.isConnected&&!modal.classList.contains('story-comments-open'))return mainMedia.play().catch(()=>{});
     }).catch(error=>{
@@ -1403,7 +1402,11 @@
       }
     },{passive:true});
     const holdStory=()=>{storyInteraction=true;pauseImage();if(video){video.pause();video.controls=false}modal.classList.add('story-comments-open')};
-    const video=modal.querySelector('video');if(video){video.controls=false;video.removeAttribute('controls');video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');if(!privateMediaPattern.test(s.media_url))video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',()=>{fitStoryMedia();storyCard?.style.setProperty('--video-progress','0%')});video.addEventListener('canplay',fitStoryMedia);video.addEventListener('timeupdate',()=>{if(video.duration&&Number.isFinite(video.duration))storyCard?.style.setProperty('--video-progress',`${Math.max(0,Math.min(100,(video.currentTime/video.duration)*100))}%`)});video.addEventListener('error',()=>{storyCard?.classList.add('story-video-error');if(storyCard&&!storyCard.querySelector('.story-video-error-message'))storyCard.insertAdjacentHTML('beforeend','<div class="story-video-error-message"><div><i class="fa-regular fa-file-video"></i><strong>Video bu brauzerdə açılmır</strong><span>Bu köhnə video uyğun olmayan kodeklə yüklənib. Yeni hekayələrdə sistem H.264 MP4/WebM uyğunluğunu əvvəlcədən yoxlayır.</span></div></div>')},{once:true});video.addEventListener('ended',()=>{if(!switching&&!storyInteraction&&modal.isConnected)close()})}else resumeImage();
+    if(video){video.controls=false;video.removeAttribute('controls');video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');if(!privateMediaPattern.test(s.media_url))video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',()=>{fitStoryMedia();storyCard?.style.setProperty('--video-progress','0%')});video.addEventListener('canplay',fitStoryMedia);video.addEventListener('timeupdate',()=>{if(video.duration&&Number.isFinite(video.duration))storyCard?.style.setProperty('--video-progress',`${Math.max(0,Math.min(100,(video.currentTime/video.duration)*100))}%`)});video.addEventListener('error',()=>{storyCard?.classList.add('story-video-error');if(storyCard&&!storyCard.querySelector('.story-video-error-message'))storyCard.insertAdjacentHTML('beforeend','<div class="story-video-error-message"><div><i class="fa-regular fa-file-video"></i><strong>Video bu brauzerdə açılmır</strong><span>Bu köhnə video uyğun olmayan kodeklə yüklənib. Yeni hekayələrdə sistem H.264 MP4/WebM uyğunluğunu əvvəlcədən yoxlayır.</span></div></div>')},{once:true});video.addEventListener('ended',()=>{if(!switching&&!storyInteraction&&modal.isConnected)close()})}
+    previous?.dispose();
+    document.body.append(modal);
+    document.documentElement.classList.add('modal-open');
+    resumeImage();
     let key=localStorage.getItem('avtovip-viewer-key');if(!key){key=crypto.randomUUID?.()||Math.random().toString(36).slice(2);localStorage.setItem('avtovip-viewer-key',key)}
     let registeredStoryViews=null;
     try{
