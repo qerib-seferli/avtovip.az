@@ -251,15 +251,9 @@
     const phone=String(u.phone||''),wa=String(u.whatsapp_phone||u.phone||'').replace(/\D/g,'');
     const identityHtml=`<button class="public-avatar-btn avatar-shell ${u.membership_tier||'free'}${u.is_verified?' is-verified':''}"><img src="${esc(u.avatar_url||'assets/img/brand/icon-192.png')}" alt=""></button>`;
     const bioText=String(u.bio||'').trim();
-    const locationParts = [u.state_name, u.city, u.address].map(value => String(value || '').trim()).filter(Boolean);
-    const locationParams = new URLSearchParams({
-      profileAddress: String(u.address || '').trim(),
-      city: String(u.city || '').trim(),
-      region: String(u.state_name || '').trim(),
-      country: u.country_code || ''
-    });
+    const locationParts = [u.state_name, u.city].map(value => String(value || '').trim()).filter(Boolean);
     const locationHtml = locationParts.length
-      ? `<a class="muted public-location" href="places.html?${esc(locationParams.toString())}"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>${esc(locationParts.join(' · '))}</span></a>`
+      ? `<p class="muted public-location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>${esc(locationParts.join(' · '))}</span></p>`
       : '';
     const nameHtml=`<div class="grow public-profile-copy"><div class="public-name-row"><h1><span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}</span>`:''}</h1>${tier}</div><div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`${bioText?`<div class="public-bio-wrap"><p class="public-bio">${esc(bioText)}</p><button type="button" class="public-bio-more" hidden>Davamına bax</button></div>`:''}${locationHtml}`}</div>`;
     let actionHtml='';
