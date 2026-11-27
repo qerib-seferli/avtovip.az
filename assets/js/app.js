@@ -170,6 +170,8 @@
   },{passive:true});
   const cachedStoryPosters = new Map();
   const writtenStoryPosters = new Set();
+  const repairStoryPosters = new Set();
+  const validatedStoryPosters = new Map();
   const posterLookups=[];
   let posterLookupRunning=false;
   function queueStoryPosterLookup(image){
@@ -194,7 +196,7 @@
   async function lookupStoryPosters(ids,generation){
     const {data}=await sb.from('story_posters').select('story_id,poster').in('story_id',ids);
     if(generation!==storySessionGeneration)return;
-    for(const row of data||[])if(storyPosterSafe(row.poster))cachedStoryPosters.set(row.story_id,row.poster);
+    for(const row of data||[])if(!repairStoryPosters.has(row.story_id)&&storyPosterSafe(row.poster))cachedStoryPosters.set(row.story_id,row.poster);
   }
   const storyPosterSafe = value => typeof value==='string' && value.length<=24000 &&
     /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(value);
@@ -212,9 +214,15 @@
       canvas.getContext('2d').drawImage(image,(image.naturalWidth-side)/2,(image.naturalHeight-side)/2,side,side,0,0,112,112);
       const poster=canvas.toDataURL('image/jpeg',.68);
       if(!storyPosterSafe(poster))return;
-      const {error}=await sb.from('story_posters').upsert({story_id:id,poster},{onConflict:'story_id',ignoreDuplicates:true});
-      if(error)throw error;
+      const repair=repairStoryPosters.has(id);
+      const result=repair
+        ? await sb.from('story_posters').update({poster}).eq('story_id',id).select('story_id').maybeSingle()
+        : await sb.from('story_posters').upsert({story_id:id,poster},{onConflict:'story_id',ignoreDuplicates:true});
+      if(result.error)throw result.error;
+      if(repair&&!result.data?.story_id)throw new Error('Story poster was not updated');
+      repairStoryPosters.delete(id);
       cachedStoryPosters.set(id,poster);
+      validatedStoryPosters.set(id,poster);
     }catch{writtenStoryPosters.delete(id)}
   }
   function pumpStoryPreviews() {
@@ -223,13 +231,16 @@
       if (!image.isConnected || !storyActive({expires_at:image.dataset.storyExpires})) continue;
       const id=image.dataset.storyId;
       const stored=cachedStoryPosters.get(id);
-      if(stored&&image.dataset.storyVideo==='1'&&image.dataset.storyCheckedPoster!==stored){
+      if(stored&&image.dataset.storyVideo==='1'&&validatedStoryPosters.get(id)!==stored){
         const generation=storySessionGeneration;
         storyPreviewActive++;
         validateVideoPoster(stored).catch(()=>false).then(valid=>{
           if(generation!==storySessionGeneration)return;
-          if(valid)image.dataset.storyCheckedPoster=stored;
-          else if(cachedStoryPosters.get(id)===stored)cachedStoryPosters.delete(id);
+          if(valid)validatedStoryPosters.set(id,stored);
+          else if(cachedStoryPosters.get(id)===stored){
+            repairStoryPosters.add(id);
+            cachedStoryPosters.delete(id);
+          }
           storyPreviewQueue.unshift(image);
         }).finally(()=>{storyPreviewActive--;pumpStoryPreviews()});
         continue;
@@ -319,7 +330,7 @@
   let privateMediaSessionUser=null;
   sb.auth.onAuthStateChange((event,session)=>{
     const nextUser=session?.user?.id||null;
-    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;viewedStoryVideos.clear();posterLookups.length=0;viewerFrames.clear();cachedStoryPosters.clear();writtenStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
+    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;viewedStoryVideos.clear();posterLookups.length=0;viewerFrames.clear();cachedStoryPosters.clear();writtenStoryPosters.clear();repairStoryPosters.clear();validatedStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
       document.querySelectorAll('img[data-story-media]').forEach(img=>{img.src='assets/img/brand/icon-192.png';img.classList.add('av-story-locked-thumb')});}
     privateMediaSessionUser=nextUser;
   });
