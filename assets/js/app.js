@@ -47,12 +47,30 @@
     video.playsInline = true;
     video.preload = 'auto';
     if(!privateMediaPattern.test(url))video.crossOrigin='anonymous';
+    video.setAttribute('playsinline','');
+    video.setAttribute('aria-hidden','true');
+    video.style.cssText='position:fixed;left:0;bottom:0;width:2px;height:2px;opacity:.01;pointer-events:none;z-index:-1';
+    document.body.append(video);
     try {
-      await new Promise((resolve, reject) => {
-        const timer = setTimeout(() => reject(new Error('Story frame timed out')), 8000);
-        video.onloadeddata = () => { clearTimeout(timer); resolve(); };
-        video.onerror = () => { clearTimeout(timer); reject(new Error('Story frame unavailable')); };
-        video.src = source;
+      await new Promise((resolve,reject)=>{
+        const timer=setTimeout(()=>finish(false),6500);
+        function finish(ok){
+          clearTimeout(timer);
+          video.onloadedmetadata=video.onloadeddata=video.oncanplay=video.onseeked=video.onerror=null;
+          if(ok)resolve();else reject(new Error('Story frame unavailable'));
+        }
+        const check=()=>{
+          if(video.readyState>=2&&!video.seeking&&video.videoWidth&&video.videoHeight)finish(true);
+        };
+        video.onloadedmetadata=()=>{
+          if(video.duration>.18){
+            try{video.currentTime=.10}catch{}
+          }
+          check();
+        };
+        video.onloadeddata=video.oncanplay=video.onseeked=check;
+        video.onerror=()=>finish(false);
+        video.src=source;
       });
       const canvas = document.createElement('canvas');
       const scale = Math.min(1, maxDimension / Math.max(video.videoWidth, video.videoHeight));
@@ -63,6 +81,7 @@
       if(frame.length>145000)frame=canvas.toDataURL('image/jpeg',.72);
       return frame;
     } finally {
+      video.remove();
       video.removeAttribute('src');
       video.load();
       if (privateMediaPattern.test(url) && privateMediaUrls.has(url)) {
@@ -1284,6 +1303,35 @@
     }
     return neighbors;
   }
+  function animateStoryTurn(outgoing,incoming,direction){
+    const oldFace=outgoing.querySelector('.story-shell');
+    const newFace=incoming.querySelector('.story-shell');
+    if(!oldFace?.animate||!newFace?.animate||matchMedia('(prefers-reduced-motion: reduce)').matches){
+      outgoing.remove();
+      return null;
+    }
+    const side=direction>0?1:-1;
+    const turn={duration:260,easing:'cubic-bezier(.25,.7,.26,1)',fill:'both'};
+    outgoing.inert=true;
+    incoming.classList.add('av-story-turn-in');
+    outgoing.classList.add('av-story-turn-out');
+    oldFace.style.transformOrigin=side>0?'right center':'left center';
+    newFace.style.transformOrigin=side>0?'left center':'right center';
+    const motion=[
+      oldFace.animate([{transform:'perspective(1200px) translateX(0) rotateY(0deg)'},{transform:`perspective(1200px) translateX(${-side*100}%) rotateY(${side*28}deg)`}],turn),
+      newFace.animate([{transform:`perspective(1200px) translateX(${side*100}%) rotateY(${-side*28}deg)`},{transform:'perspective(1200px) translateX(0) rotateY(0deg)'}],turn)
+    ];
+    let ended=false;
+    const finish=()=>{
+      if(ended)return;
+      ended=true;
+      for(const animation of motion)animation.cancel();
+      outgoing.remove();
+      incoming.classList.remove('av-story-turn-in');
+      newFace.style.removeProperty('transform-origin');
+    };
+    return {finish,ready:Promise.allSettled(motion.map(animation=>animation.finished)).then(finish)};
+  }
   async function openStory(s,p={},storyList=[],storyProfiles={},previous=null){
     if (!storyActive(s) || !await db.getUser() || !storyActive(s)) return;
     const modal=document.createElement('div');modal.className='story-viewer';modal.dataset.mediaUrl=s.media_url;
@@ -1340,7 +1388,7 @@
     }
     if(previous&&!previous.modal.isConnected)return false;
     const storyMediaReady=readyMedia.then(()=>{
-      if(videoStory&&mainMedia.isConnected&&!modal.classList.contains('story-comments-open'))return mainMedia.play().catch(()=>{});
+      if(videoStory&&mainMedia.isConnected&&!modal.inert&&!modal.classList.contains('story-comments-open'))return mainMedia.play().catch(()=>{});
     }).catch(error=>{
       if(cover)cover.remove();
       console.warn('[AvtoVIP story media]',error);
@@ -1355,7 +1403,7 @@
     if(!previous)history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
     let storyInteraction=false, switching=false, imageHeld=false, imageTimer=null;
     let remaining=7000, imageStarted=0;
-    let neighbors=new Map();
+    let neighbors=new Map(), turn=null;
     const pauseImage=()=>{
       if(video||imageTimer===null)return;
       clearTimeout(imageTimer);
@@ -1370,11 +1418,12 @@
       imageTimer=setTimeout(()=>close(),remaining);
     };
     const expiryTimer=setTimeout(()=>close(),Math.max(0,Date.parse(s.expires_at)-Date.now()));
-    const close=(fromHistory=false,replace=false)=>{
+    const close=(fromHistory=false,replace=false,keepVisual=false)=>{
       if(!modal.isConnected)return;
       if(!replace)storyOpening++;
       clearTimeout(expiryTimer);
       clearTimeout(imageTimer);
+      turn?.finish();
       for(const [id,entry] of neighbors){
         if(id===replace)continue;
         entry.media.dataset.storyDiscarded='1';
@@ -1383,8 +1432,8 @@
         if(!warmStoryVideos.has(entry.url)&&!viewedStoryVideos.has(entry.url))releasePrivateMedia(entry.url);
       }
       neighbors.clear();
-      if(video&&!warmStoryVideos.has(s.media_url)&&!viewedStoryVideos.has(s.media_url))releasePrivateMedia(s.media_url);
-      modal.remove();
+      if(video&&!keepVisual&&!warmStoryVideos.has(s.media_url)&&!viewedStoryVideos.has(s.media_url))releasePrivateMedia(s.media_url);
+      if(!keepVisual)modal.remove();
       if(!replace)document.documentElement.classList.remove('modal-open');
       window.removeEventListener('popstate',onStoryPop);
       window.removeEventListener('resize',fitStoryMedia);
@@ -1435,8 +1484,8 @@
       pauseImage();
       const wasPlaying=video&&!video.paused;
       if(wasPlaying)video.pause();
-      await openStory(next,nextProfile,storyList,storyProfiles,{modal,token:storyHistoryToken,prepared:neighbors.get(next.id),dispose:()=>close(true,next.id)});
-      if(modal.isConnected){
+      await openStory(next,nextProfile,storyList,storyProfiles,{modal,token:storyHistoryToken,prepared:neighbors.get(next.id),direction:dx<0?1:-1,dispose:keepVisual=>close(true,next.id,keepVisual)});
+      if(modal.isConnected&&!modal.inert){
         switching=false;
         if(wasPlaying&&!storyInteraction)video.play().catch(()=>{});
         resumeImage();
@@ -1444,10 +1493,17 @@
     },{passive:true});
     const holdStory=()=>{storyInteraction=true;pauseImage();if(video){video.pause();video.controls=false}modal.classList.add('story-comments-open')};
     if(video){video.controls=false;video.removeAttribute('controls');video.muted=false;video.volume=1;video.preload='metadata';video.setAttribute('playsinline','');if(!privateMediaPattern.test(s.media_url))video.play().catch(()=>{video.autoplay=false});video.addEventListener('loadedmetadata',()=>{fitStoryMedia();storyCard?.style.setProperty('--video-progress','0%')});video.addEventListener('canplay',fitStoryMedia);video.addEventListener('timeupdate',()=>{if(video.duration&&Number.isFinite(video.duration))storyCard?.style.setProperty('--video-progress',`${Math.max(0,Math.min(100,(video.currentTime/video.duration)*100))}%`)});video.addEventListener('error',()=>{storyCard?.classList.add('story-video-error');if(storyCard&&!storyCard.querySelector('.story-video-error-message'))storyCard.insertAdjacentHTML('beforeend','<div class="story-video-error-message"><div><i class="fa-regular fa-file-video"></i><strong>Video bu brauzerdə açılmır</strong><span>Bu köhnə video uyğun olmayan kodeklə yüklənib. Yeni hekayələrdə sistem H.264 MP4/WebM uyğunluğunu əvvəlcədən yoxlayır.</span></div></div>')},{once:true});video.addEventListener('ended',()=>{if(!switching&&!storyInteraction&&modal.isConnected)close()})}
-    previous?.dispose();
+    previous?.dispose(true);
     document.body.append(modal);
     document.documentElement.classList.add('modal-open');
-    resumeImage();
+    if(previous)turn=animateStoryTurn(previous.modal,modal,previous.direction);
+    if(turn){
+      switching=true;
+      turn.ready.then(()=>{
+        switching=false;
+        resumeImage();
+      });
+    }else resumeImage();
     neighbors=prepareNearbyStories(storyList,s.id);
     let key=localStorage.getItem('avtovip-viewer-key');if(!key){key=crypto.randomUUID?.()||Math.random().toString(36).slice(2);localStorage.setItem('avtovip-viewer-key',key)}
     let registeredStoryViews=null;
@@ -1812,6 +1868,10 @@
         if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))throw new Error('Şəkil və ya video seçin.');
         if(file.size>50*1024*1024)throw new Error('Hazırlanmış media 50 MB limitini keçir.');
         if(storySelectionVersion!==submittedSelection||media.files[0]!==original)throw new Error('Seçilmiş media dəyişib. Yenidən göndərin.');
+        const isVideo=file.type.startsWith('video/');
+        const localPreview=URL.createObjectURL(file);
+        const preparedFrame=isVideo?videoStoryPoster(localPreview,960,.84).catch(()=>null):Promise.resolve(localPreview);
+        try{
         db.mediaProgress('Yüklənir...',97,'Hekayə AvtoVİP-ə əlavə olunur...');uploaded=await db.upload('story-media',user.id,file,'stories');db.mediaProgressHide();
         const activeAt=new Date(),expiresAt=new Date(activeAt.getTime()+24*60*60*1000);
         const payload={user_id:user.id,listing_id:$('#storyListing')?.value||null,media_url:uploaded.url,media_type:file.type.startsWith('video/')?'video':'image',caption:captionText,status:'active',active_at:activeAt.toISOString(),expires_at:expiresAt.toISOString()};
@@ -1838,15 +1898,19 @@
         /* Best-effort cleanup if an old payment trigger created an obsolete pending row. */
         await sb.from('payment_requests').delete().eq('user_id',user.id).eq('target_type','story').eq('target_id',storyId).eq('status','pending').then(()=>{}).catch(()=>{});
 
-        const localPreview=URL.createObjectURL(file);
-        try{
-          const isVideo=file.type.startsWith('video/');
-          const preview=isVideo?await videoStoryPoster(localPreview,960,.84):localPreview;
+        let preview=await preparedFrame;
+        if(!preview&&isVideo&&original!==file){
+          const originalPreview=URL.createObjectURL(original);
+          try{preview=await videoStoryPoster(originalPreview,960,.84)}catch{}
+          finally{URL.revokeObjectURL(originalPreview)}
+        }
+        if(preview){
           const saveFrame=isVideo&&viewerFrameSafe(preview)
             ? sb.from('story_viewer_frames').upsert({story_id:storyId,frame:preview},{onConflict:'story_id',ignoreDuplicates:true})
             : null;
-          await Promise.all([saveGuestStoryPreview(storyId,preview),saveStoryPoster(storyId,preview),saveFrame]);
-        }catch{}finally{URL.revokeObjectURL(localPreview)}
+          await Promise.allSettled([saveStoryPoster(storyId,preview),saveGuestStoryPreview(storyId,preview),saveFrame]);
+        }
+        }finally{URL.revokeObjectURL(localPreview)}
         toast('Hekayə paylaşıldı.','success');setStatus('#storyStatus','','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
       }catch(err){db.mediaProgressHide();let storyRolledBack=!storyId;if(storyId){try{const rollback=await sb.from('stories').delete().eq('id',storyId).eq('user_id',user.id).select('id');storyRolledBack=!rollback.error&&rollback.data?.some(row=>row.id===storyId)}catch(rollbackError){console.warn('[AvtoVIP story rollback]',rollbackError)}}if(storyRolledBack&&uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false;finish()}
     });

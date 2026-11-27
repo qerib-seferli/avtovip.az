@@ -754,3 +754,8 @@ body[data-page="auth"] .auth-logo{
 
 .story-card.av-story-image-paused .story-progress::after{animation-play-state:paused!important}
 .story-card img.story-media{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+
+.story-viewer.av-story-turn-in,.story-viewer.av-story-turn-out{overflow:hidden}
+.story-viewer.av-story-turn-in{background:transparent!important}
+.story-viewer.av-story-turn-out{pointer-events:none}
+.story-viewer.av-story-turn-in .story-shell,.story-viewer.av-story-turn-out .story-shell{backface-visibility:hidden;will-change:transform}
