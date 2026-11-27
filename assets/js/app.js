@@ -40,6 +40,24 @@
       queueStoryPosterLookup(target);
     }
   }, {rootMargin: '72px'}) : null;
+  function storyFrameVisible(source){
+    const canvas=document.createElement('canvas');
+    canvas.width=canvas.height=12;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
+    ctx.drawImage(source,0,0,12,12);
+    const pixels=ctx.getImageData(0,0,12,12).data;
+    let visible=0;
+    for(let i=0;i<pixels.length;i+=4){
+      if(Math.max(pixels[i],pixels[i+1],pixels[i+2])>24)visible++;
+    }
+    return visible>=5;
+  }
+  async function validateVideoPoster(url){
+    const img=new Image();
+    img.src=url;
+    await img.decode();
+    return storyFrameVisible(img);
+  }
   async function videoStoryPoster(url, maxDimension=224, quality=.77) {
     const source = await resolvePrivateMedia(url);
     const video = document.createElement('video');
@@ -54,19 +72,33 @@
     try {
       await new Promise((resolve,reject)=>{
         const timer=setTimeout(()=>finish(false),6500);
+        let sampleIndex=0;
+        const samples=[.35,.85,1.6,2.6,.5,.8];
+        function seekNext(){
+          const duration=video.duration;
+          while(Number.isFinite(duration)&&duration>.04&&sampleIndex<samples.length){
+            const index=sampleIndex++;
+            const candidate=index<4?samples[index]:duration*samples[index];
+            const target=Math.min(duration-.02,candidate);
+            if(Math.abs(video.currentTime-target)<.025)continue;
+            try{video.currentTime=target;return true}catch{}
+          }
+          return false;
+        }
         function finish(ok){
           clearTimeout(timer);
           video.onloadedmetadata=video.onloadeddata=video.oncanplay=video.onseeked=video.onerror=null;
           if(ok)resolve();else reject(new Error('Story frame unavailable'));
         }
         const check=()=>{
-          if(video.readyState>=2&&!video.seeking&&video.videoWidth&&video.videoHeight)finish(true);
+          if(video.readyState<2||video.seeking||!video.videoWidth||!video.videoHeight)return;
+          try{
+            if(storyFrameVisible(video)){finish(true);return}
+            if(!seekNext())finish(false);
+          }catch{finish(false)}
         };
         video.onloadedmetadata=()=>{
-          if(video.duration>.18){
-            try{video.currentTime=.10}catch{}
-          }
-          check();
+          if(!seekNext())check();
         };
         video.onloadeddata=video.oncanplay=video.onseeked=check;
         video.onerror=()=>finish(false);
@@ -189,7 +221,19 @@
     while (storyPreviewActive < 2 && storyPreviewQueue.length) {
       const image = storyPreviewQueue.shift();
       if (!image.isConnected || !storyActive({expires_at:image.dataset.storyExpires})) continue;
-      const stored=cachedStoryPosters.get(image.dataset.storyId);
+      const id=image.dataset.storyId;
+      const stored=cachedStoryPosters.get(id);
+      if(stored&&image.dataset.storyVideo==='1'&&image.dataset.storyCheckedPoster!==stored){
+        const generation=storySessionGeneration;
+        storyPreviewActive++;
+        validateVideoPoster(stored).catch(()=>false).then(valid=>{
+          if(generation!==storySessionGeneration)return;
+          if(valid)image.dataset.storyCheckedPoster=stored;
+          else if(cachedStoryPosters.get(id)===stored)cachedStoryPosters.delete(id);
+          storyPreviewQueue.unshift(image);
+        }).finally(()=>{storyPreviewActive--;pumpStoryPreviews()});
+        continue;
+      }
       if(stored){
         image.src=stored;
         image.classList.remove('av-story-initial-thumb');
@@ -210,6 +254,7 @@
       preview.then(local => {
         if (generation===storySessionGeneration && image.isConnected && owner && (privateMediaSessionUser || currentUser?.id) === owner && storyActive({expires_at:image.dataset.storyExpires})) {
           image.src=local;
+          if(video)image.dataset.storyCheckedPoster=local
           image.classList.remove('av-story-initial-thumb');
           if(image.dataset.storyOwner===owner){
             saveGuestStoryPreview(image.dataset.storyId,local);
