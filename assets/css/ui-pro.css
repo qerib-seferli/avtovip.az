@@ -3581,3 +3581,6 @@ body[data-page="messages"] .av-message-footer:not(.mine)>.av-footer-reactions{ma
 .av-reel-viewer.open>.av-reel-stage{grid-area:1/1}
 .av-reel-viewer .av-reel-pending{opacity:0;pointer-events:none}
 .av-reel-viewer .av-reel-outgoing{pointer-events:none}
+.av-reel-viewer .av-reel-neighbor{opacity:0;pointer-events:none}
+.av-reel-viewer .av-reel-neighbor.av-reel-dragging{opacity:1}
+.av-reel-viewer .av-reel-dragging{transition:none!important;will-change:transform}

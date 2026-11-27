@@ -37,9 +37,8 @@
     for (const {target, isIntersecting} of entries) {
       if (!isIntersecting) continue;
       storyPreviews.unobserve(target);
-      storyPreviewQueue.push(target);
+      queueStoryPosterLookup(target);
     }
-    pumpStoryPreviews();
   }, {rootMargin: '72px'}) : null;
   async function videoStoryPoster(url) {
     const source = await resolvePrivateMedia(url);
@@ -98,10 +97,65 @@
       savedGuestPreviews.delete(id);
     }
   }
+  const cachedStoryPosters = new Map();
+  const writtenStoryPosters = new Set();
+  const posterLookups=[];
+  let posterLookupRunning=false;
+  function queueStoryPosterLookup(image){
+    posterLookups.push(image);
+    if(!posterLookupRunning){
+      posterLookupRunning=true;
+      queueMicrotask(flushStoryPosterLookups);
+    }
+  }
+  async function flushStoryPosterLookups(){
+    while(posterLookups.length){
+      const images=posterLookups.splice(0,12).filter(image=>image.isConnected);
+      const ids=[...new Set(images.map(image=>image.dataset.storyId).filter(id=>id&&!cachedStoryPosters.has(id)))];
+      const generation=storySessionGeneration;
+      if(ids.length)await lookupStoryPosters(ids,generation).catch(()=>{});
+      if(generation!==storySessionGeneration)continue;
+      storyPreviewQueue.push(...images);
+      pumpStoryPreviews();
+    }
+    posterLookupRunning=false;
+  }
+  async function lookupStoryPosters(ids,generation){
+    const {data}=await sb.from('story_posters').select('story_id,poster').in('story_id',ids);
+    if(generation!==storySessionGeneration)return;
+    for(const row of data||[])if(storyPosterSafe(row.poster))cachedStoryPosters.set(row.story_id,row.poster);
+  }
+  const storyPosterSafe = value => typeof value==='string' && value.length<=24000 &&
+    /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(value);
+  async function saveStoryPoster(id,source){
+    if(!id||writtenStoryPosters.has(id)||cachedStoryPosters.has(id))return;
+    writtenStoryPosters.add(id);
+    try{
+      const image=new Image();
+      image.crossOrigin='anonymous';
+      image.src=source;
+      await image.decode();
+      const canvas=document.createElement('canvas');
+      canvas.width=canvas.height=112;
+      const side=Math.min(image.naturalWidth,image.naturalHeight);
+      canvas.getContext('2d').drawImage(image,(image.naturalWidth-side)/2,(image.naturalHeight-side)/2,side,side,0,0,112,112);
+      const poster=canvas.toDataURL('image/jpeg',.68);
+      if(!storyPosterSafe(poster))return;
+      const {error}=await sb.from('story_posters').upsert({story_id:id,poster},{onConflict:'story_id',ignoreDuplicates:true});
+      if(error)throw error;
+      cachedStoryPosters.set(id,poster);
+    }catch{writtenStoryPosters.delete(id)}
+  }
   function pumpStoryPreviews() {
     while (storyPreviewActive < 2 && storyPreviewQueue.length) {
       const image = storyPreviewQueue.shift();
       if (!image.isConnected || !storyActive({expires_at:image.dataset.storyExpires})) continue;
+      const stored=cachedStoryPosters.get(image.dataset.storyId);
+      if(stored){
+        image.src=stored;
+        image.classList.remove('av-story-initial-thumb');
+        continue;
+      }
       const original = image.dataset.storyMedia;
       const video = image.dataset.storyVideo === '1';
       storyPreviewActive++;
@@ -118,7 +172,10 @@
         if (generation===storySessionGeneration && image.isConnected && owner && (privateMediaSessionUser || currentUser?.id) === owner && storyActive({expires_at:image.dataset.storyExpires})) {
           image.src=local;
           image.classList.remove('av-story-initial-thumb');
-          if(image.dataset.storyOwner===owner)saveGuestStoryPreview(image.dataset.storyId,local);
+          if(image.dataset.storyOwner===owner){
+            saveGuestStoryPreview(image.dataset.storyId,local);
+            saveStoryPoster(image.dataset.storyId,local);
+          }
         }
       }).catch(() => {}).finally(() => {
         storyPreviewActive--;
@@ -127,12 +184,11 @@
     }
   }
   window.AvtoVIPHydrateStoryPreviews = root => {
-    for (const image of root.querySelectorAll('img[data-story-media]:not([data-story-queued])')) {
-      image.dataset.storyQueued = '1';
-      if (storyPreviews) storyPreviews.observe(image);
-      else storyPreviewQueue.push(image);
+    for(const image of root.querySelectorAll('img[data-story-media]:not([data-story-queued])')){
+      image.dataset.storyQueued='1';
+      if(cachedStoryPosters.has(image.dataset.storyId)||!storyPreviews)queueStoryPosterLookup(image);
+      else storyPreviews.observe(image);
     }
-    pumpStoryPreviews();
   };
   window.AvtoVIPStoryThumb = (story, _avatar, locked = false) => {
     const logo='assets/img/brand/icon-192.png';
@@ -178,7 +234,7 @@
   let privateMediaSessionUser=null;
   sb.auth.onAuthStateChange((event,session)=>{
     const nextUser=session?.user?.id||null;
-    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
+    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;posterLookups.length=0;cachedStoryPosters.clear();writtenStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
       document.querySelectorAll('img[data-story-media]').forEach(img=>{img.src='assets/img/brand/icon-192.png';img.classList.add('av-story-locked-thumb')});}
     privateMediaSessionUser=nextUser;
   });
@@ -1165,6 +1221,7 @@
       if(v?.dataset.privateStory==='1'){
         // A private R2 URL must never be assigned directly to <video>:
         // the browser would make an unauthenticated request and fire a false codec error.
+        if(cachedStoryPosters.has(s.id))v.poster=cachedStoryPosters.get(s.id);
         storyPosters.get(s.media_url)?.then(poster=>{if(v.isConnected&&!v.currentTime)v.poster=poster}).catch(()=>{});
         const local=await resolvePrivateMedia(s.media_url);
         if(!v.isConnected)return;
@@ -1611,7 +1668,7 @@
         const localPreview=URL.createObjectURL(file);
         try{
           const preview=file.type.startsWith('video/')?await videoStoryPoster(localPreview):localPreview;
-          await saveGuestStoryPreview(storyId,preview);
+          await Promise.all([saveGuestStoryPreview(storyId,preview),saveStoryPoster(storyId,preview)]);
         }catch{}finally{URL.revokeObjectURL(localPreview)}
         toast('Hekayə paylaşıldı.','success');setStatus('#storyStatus','','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
       }catch(err){db.mediaProgressHide();let storyRolledBack=!storyId;if(storyId){try{const rollback=await sb.from('stories').delete().eq('id',storyId).eq('user_id',user.id).select('id');storyRolledBack=!rollback.error&&rollback.data?.some(row=>row.id===storyId)}catch(rollbackError){console.warn('[AvtoVIP story rollback]',rollbackError)}}if(storyRolledBack&&uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false;finish()}
