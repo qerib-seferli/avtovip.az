@@ -1212,8 +1212,34 @@
     const ownerTierMark=ownerTier==='vip'?'<i class="fa-solid fa-crown avatar-crown" aria-label="VIP"></i>':ownerTier==='premium'?'<i class="fa-solid fa-gem avatar-gem" aria-label="Premium"></i>':'';
     const ownerAvatar=`<span class="avatar-shell story-owner-avatar ${ownerTier}${avatarVerifiedClass(p?.is_verified)}"><img src="${esc(p?.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${ownerTierMark}</span>`;
     const ownerIdentity=`<span class="story-owner-name">${ownerVerified}<span>${ownerName}</span></span>`;
+    const thumbnail=[...document.querySelectorAll('img[data-story-id]')].find(img=>
+      img.dataset.storyId===String(s.id)&&!img.classList.contains('av-story-initial-thumb')&&img.complete&&img.naturalWidth);
+    const initialPoster=cachedStoryPosters.get(s.id)||thumbnail?.currentSrc||
+      (s.media_type!=='video'&&!privateMediaPattern.test(s.media_url)?s.media_url:'');
     const storyCaption=String(s.caption||'').trim().slice(0,50);
     modal.innerHTML=`<div class="story-shell"><div class="story-card"><div class="story-progress"></div>${s.media_type==='video'?`<video class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} playsinline preload="metadata"></video>`:`<img class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerIdentity}</a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${storyCaption?`<div class="story-caption">${esc(storyCaption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link story-owner-side" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerAvatar}${ownerIdentity}</a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
+    const cover=document.createElement('div');
+    cover.className='av-story-viewer-cover';
+    cover.setAttribute('aria-hidden','true');
+    const still=document.createElement('img');
+    still.alt='';
+    if(initialPoster)still.src=initialPoster;
+    else still.hidden=true;
+    cover.append(still);
+    modal.querySelector('.story-card').append(cover);
+    storyPosters.get(s.media_url)?.then(poster=>{
+      if(cover.isConnected&&still.hidden){still.src=poster;still.hidden=false}
+    }).catch(()=>{});
+    const mainMedia=modal.querySelector('.story-media');
+    const removeCover=()=>cover.remove();
+    if(mainMedia.tagName==='VIDEO'){
+      mainMedia.addEventListener('playing',()=>{
+        if(typeof mainMedia.requestVideoFrameCallback==='function')mainMedia.requestVideoFrameCallback(removeCover);
+        else requestAnimationFrame(()=>requestAnimationFrame(removeCover));
+      },{once:true});
+    }else if(mainMedia.complete&&mainMedia.naturalWidth)removeCover();
+    else mainMedia.addEventListener('load',removeCover,{once:true});
+    mainMedia.addEventListener('error',removeCover,{once:true});
     document.body.append(modal);document.documentElement.classList.add('modal-open');
     // Do not start a private video until its authenticated blob URL is ready.
     const storyMediaReady=(async()=>{
@@ -1236,7 +1262,7 @@
         if(img){const local=await resolvePrivateMedia(s.media_url);if(img.isConnected)img.src=local;}
         else await hydratePrivateMedia(modal);
       }
-    })().catch(error=>console.warn('[AvtoVIP story media]',error));
+    })().catch(error=>{removeCover();console.warn('[AvtoVIP story media]',error)});
     /* Only portrait media that would leave black bars on the left/right is cropped vertically.
        Wider/shorter media keeps the existing contain behaviour unchanged. */
     const storyMedia=modal.querySelector('.story-media'),storyCard=modal.querySelector('.story-card');
