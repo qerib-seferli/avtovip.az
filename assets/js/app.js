@@ -40,7 +40,7 @@
       queueStoryPosterLookup(target);
     }
   }, {rootMargin: '72px'}) : null;
-  async function videoStoryPoster(url) {
+  async function videoStoryPoster(url, maxDimension=224, quality=.77) {
     const source = await resolvePrivateMedia(url);
     const video = document.createElement('video');
     video.muted = true;
@@ -55,11 +55,13 @@
         video.src = source;
       });
       const canvas = document.createElement('canvas');
-      const scale = Math.min(1, 224 / Math.max(video.videoWidth, video.videoHeight));
+      const scale = Math.min(1, maxDimension / Math.max(video.videoWidth, video.videoHeight));
       canvas.width = Math.max(1, Math.round(video.videoWidth * scale));
       canvas.height = Math.max(1, Math.round(video.videoHeight * scale));
       canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-      return canvas.toDataURL('image/jpeg', .77);
+      let frame=canvas.toDataURL('image/jpeg',quality);
+      if(frame.length>145000)frame=canvas.toDataURL('image/jpeg',.72);
+      return frame;
     } finally {
       video.removeAttribute('src');
       video.load();
@@ -97,6 +99,24 @@
       savedGuestPreviews.delete(id);
     }
   }
+  const viewerFrames=new Map();
+  const viewerFrameSafe=frame=>typeof frame==='string'&&frame.length<=145000&&
+    /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(frame);
+  function loadStoryViewerFrame(id){
+    if(!viewerFrames.has(id)){
+      const pending=Promise.resolve(sb.from('story_viewer_frames').select('frame').eq('story_id',id).maybeSingle())
+        .then(({data})=>viewerFrameSafe(data?.frame)?data.frame:'')
+        .catch(()=>'');
+      viewerFrames.set(id,pending);
+      if(viewerFrames.size>8)viewerFrames.delete(viewerFrames.keys().next().value);
+    }
+    return viewerFrames.get(id);
+  }
+  document.addEventListener('pointerdown',event=>{
+    const button=event.target.closest?.('button.story-item:not(:disabled),button.pf-story-circle');
+    const preview=button?.querySelector('img[data-story-video="1"][data-story-id]');
+    if(preview&&storyActive({expires_at:preview.dataset.storyExpires}))loadStoryViewerFrame(preview.dataset.storyId);
+  },{passive:true});
   const cachedStoryPosters = new Map();
   const writtenStoryPosters = new Set();
   const posterLookups=[];
@@ -234,7 +254,7 @@
   let privateMediaSessionUser=null;
   sb.auth.onAuthStateChange((event,session)=>{
     const nextUser=session?.user?.id||null;
-    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;posterLookups.length=0;cachedStoryPosters.clear();writtenStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
+    if(event==='SIGNED_OUT'||(privateMediaSessionUser&&nextUser&&privateMediaSessionUser!==nextUser)){storySessionGeneration++;posterLookups.length=0;viewerFrames.clear();cachedStoryPosters.clear();writtenStoryPosters.clear();storyPreviewQueue.length=0;storyPosters.clear();warmStoryVideos.clear();releaseAllPrivateMedia();
       document.querySelectorAll('img[data-story-media]').forEach(img=>{img.src='assets/img/brand/icon-192.png';img.classList.add('av-story-locked-thumb')});}
     privateMediaSessionUser=nextUser;
   });
@@ -1212,10 +1232,7 @@
     const ownerTierMark=ownerTier==='vip'?'<i class="fa-solid fa-crown avatar-crown" aria-label="VIP"></i>':ownerTier==='premium'?'<i class="fa-solid fa-gem avatar-gem" aria-label="Premium"></i>':'';
     const ownerAvatar=`<span class="avatar-shell story-owner-avatar ${ownerTier}${avatarVerifiedClass(p?.is_verified)}"><img src="${esc(p?.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${ownerTierMark}</span>`;
     const ownerIdentity=`<span class="story-owner-name">${ownerVerified}<span>${ownerName}</span></span>`;
-    const thumbnail=[...document.querySelectorAll('img[data-story-id]')].find(img=>
-      img.dataset.storyId===String(s.id)&&!img.classList.contains('av-story-initial-thumb')&&img.complete&&img.naturalWidth);
-    const initialPoster=cachedStoryPosters.get(s.id)||thumbnail?.currentSrc||
-      (s.media_type!=='video'&&!privateMediaPattern.test(s.media_url)?s.media_url:'');
+    const viewerFrame=s.media_type==='video'?loadStoryViewerFrame(s.id):null;
     const storyCaption=String(s.caption||'').trim().slice(0,50);
     modal.innerHTML=`<div class="story-shell"><div class="story-card"><div class="story-progress"></div>${s.media_type==='video'?`<video class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} playsinline preload="metadata"></video>`:`<img class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerIdentity}</a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${storyCaption?`<div class="story-caption">${esc(storyCaption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link story-owner-side" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerAvatar}${ownerIdentity}</a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
     const cover=document.createElement('div');
@@ -1223,13 +1240,12 @@
     cover.setAttribute('aria-hidden','true');
     const still=document.createElement('img');
     still.alt='';
-    if(initialPoster)still.src=initialPoster;
-    else still.hidden=true;
+    still.hidden=true;
     cover.append(still);
     modal.querySelector('.story-card').append(cover);
-    storyPosters.get(s.media_url)?.then(poster=>{
-      if(cover.isConnected&&still.hidden){still.src=poster;still.hidden=false}
-    }).catch(()=>{});
+    viewerFrame?.then(frame=>{
+      if(frame&&cover.isConnected){still.src=frame;still.hidden=false}
+    });
     const mainMedia=modal.querySelector('.story-media');
     const removeCover=()=>cover.remove();
     if(mainMedia.tagName==='VIDEO'){
@@ -1247,8 +1263,6 @@
       if(v?.dataset.privateStory==='1'){
         // A private R2 URL must never be assigned directly to <video>:
         // the browser would make an unauthenticated request and fire a false codec error.
-        if(cachedStoryPosters.has(s.id))v.poster=cachedStoryPosters.get(s.id);
-        storyPosters.get(s.media_url)?.then(poster=>{if(v.isConnected&&!v.currentTime)v.poster=poster}).catch(()=>{});
         const local=await resolvePrivateMedia(s.media_url);
         if(!v.isConnected)return;
         v.src=local;
@@ -1693,8 +1707,12 @@
 
         const localPreview=URL.createObjectURL(file);
         try{
-          const preview=file.type.startsWith('video/')?await videoStoryPoster(localPreview):localPreview;
-          await Promise.all([saveGuestStoryPreview(storyId,preview),saveStoryPoster(storyId,preview)]);
+          const isVideo=file.type.startsWith('video/');
+          const preview=isVideo?await videoStoryPoster(localPreview,960,.84):localPreview;
+          const saveFrame=isVideo&&viewerFrameSafe(preview)
+            ? sb.from('story_viewer_frames').upsert({story_id:storyId,frame:preview},{onConflict:'story_id',ignoreDuplicates:true})
+            : null;
+          await Promise.all([saveGuestStoryPreview(storyId,preview),saveStoryPoster(storyId,preview),saveFrame]);
         }catch{}finally{URL.revokeObjectURL(localPreview)}
         toast('Hekayə paylaşıldı.','success');setStatus('#storyStatus','','success');form.reset();updateCaptionCount();clearStoryPreviewUrl();$('#storyPreview').innerHTML='';
       }catch(err){db.mediaProgressHide();let storyRolledBack=!storyId;if(storyId){try{const rollback=await sb.from('stories').delete().eq('id',storyId).eq('user_id',user.id).select('id');storyRolledBack=!rollback.error&&rollback.data?.some(row=>row.id===storyId)}catch(rollbackError){console.warn('[AvtoVIP story rollback]',rollbackError)}}if(storyRolledBack&&uploaded?.path)await db.removePaths('story-media',[uploaded.path]).catch(()=>{});toast(err.message,'error');setStatus('#storyStatus',err.message,'error')}finally{btn.disabled=false;finish()}
