@@ -3590,3 +3590,16 @@ body[data-page="messages"] .av-message-footer:not(.mine)>.av-footer-reactions{ma
 @media(max-width:800px){
  .av-reel-viewer .av-reel-stage:not(.av-reel-landscape) .av-reel-preview-frame{object-fit:cover}
 }
+
+/* The phone viewer uses display:block. All stages must share the same origin
+   so the drag offset positions them edge-to-edge instead of stacking rows. */
+@media(max-width:800px){
+ .av-reel-viewer.open > .av-reel-stage{
+  position:absolute!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  width:100%!important;
+  margin:0!important;
+ }
+}

@@ -347,11 +347,12 @@ function revealReelPlayback(stage,video){
  const frame=stage.querySelector('.av-reel-preview-frame');
  if(!frame)return;
  const reveal=()=>frame.remove();
- if(typeof video.requestVideoFrameCallback==='function'){
-  video.requestVideoFrameCallback(reveal);
- }else if(video.paused){
-  video.addEventListener('playing',()=>requestAnimationFrame(()=>requestAnimationFrame(reveal)),{once:true});
- }else requestAnimationFrame(()=>requestAnimationFrame(reveal));
+ const present=()=>{
+  if(typeof video.requestVideoFrameCallback==='function')video.requestVideoFrameCallback(reveal);
+  else requestAnimationFrame(()=>requestAnimationFrame(reveal));
+ };
+ if(video.paused)video.addEventListener('playing',present,{once:true});
+ else present();
 }
 function preloadAdjacentReels(modal,index){
  for(const node of modal.querySelectorAll('.av-reel-neighbor')){
@@ -369,7 +370,9 @@ function preloadAdjacentReels(modal,index){
   hardenVideo(video);
   const gridVideo=$('#socialFeed')?.querySelector(`[data-reel-index="${next}"] video`);
   paintReelPreview(stage,gridVideo);
-  video.addEventListener('loadeddata',()=>{if(stage.classList.contains('av-reel-neighbor'))paintReelPreview(stage,video)},{once:true});
+  const capture=()=>{if(stage.classList.contains('av-reel-neighbor')&&!stage.querySelector('.av-reel-preview-frame'))paintReelPreview(stage,video)};
+  video.addEventListener('loadeddata',capture,{once:true});
+  video.addEventListener('canplay',capture,{once:true});
   modal.append(stage);
   if(!stage.querySelector('.av-reel-preview-frame'))paintReelPreview(stage,video);
  }
@@ -396,7 +399,8 @@ function bindReelSwipe(modal){
   event.preventDefault();
   const active=activeReelStage(modal);
   const neighbor=modal.querySelector(`.av-reel-neighbor[data-reel-index="${activeModalIndex+(dy<0?1:-1)}"]`);
-  if(!active||!neighbor?.querySelector('.av-reel-preview-frame')){clearReelDrag(modal);return}
+  if(!active||!neighbor){clearReelDrag(modal);return}
+  if(!neighbor.querySelector('.av-reel-preview-frame')&&!paintReelPreview(neighbor,neighbor.querySelector('video'))){clearReelDrag(modal);return}
   const height=active.getBoundingClientRect().height;
   const offset=Math.max(-height,Math.min(height,dy));
   if(start.neighbor!==neighbor)clearReelDrag(modal);
