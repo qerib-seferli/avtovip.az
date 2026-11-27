@@ -144,7 +144,11 @@
       canvas.getContext('2d').drawImage(image,(image.naturalWidth-side)/2,(image.naturalHeight-side)/2,side,side,0,0,12,12);
       const preview=canvas.toDataURL('image/jpeg',.55);
       if(!guestPreviewSafe(preview))return;
-      const {error}=await sb.from('story_guest_previews').upsert({story_id:id,preview},{onConflict:'story_id',ignoreDuplicates:!repair});
+      const result=repair
+        ? await sb.from('story_guest_previews').update({preview}).eq('story_id',id).select('story_id').maybeSingle()
+        : await sb.from('story_guest_previews').upsert({story_id:id,preview},{onConflict:'story_id',ignoreDuplicates:true});
+      const {error}=result;
+      if(repair&&!error&&!result.data?.story_id)throw new Error('Guest preview update was not confirmed');
       if(error)throw error;
     }catch{
       savedGuestPreviews.delete(id);
@@ -1413,15 +1417,15 @@
       return null;
     }
     const side=direction>0?1:-1;
-    const turn={duration:260,easing:'cubic-bezier(.25,.7,.26,1)',fill:'both'};
+    const turn={duration:205,easing:'cubic-bezier(.2,.7,.27,1)',fill:'both'};
     outgoing.inert=true;
     incoming.classList.add('av-story-turn-in');
     outgoing.classList.add('av-story-turn-out');
     oldFace.style.transformOrigin=side>0?'right center':'left center';
     newFace.style.transformOrigin=side>0?'left center':'right center';
     const motion=[
-      oldFace.animate([{transform:'perspective(1200px) translateX(0) rotateY(0deg)'},{transform:`perspective(1200px) translateX(${-side*100}%) rotateY(${side*28}deg)`}],turn),
-      newFace.animate([{transform:`perspective(1200px) translateX(${side*100}%) rotateY(${-side*28}deg)`},{transform:'perspective(1200px) translateX(0) rotateY(0deg)'}],turn)
+      oldFace.animate([{transform:'perspective(850px) translateX(0) rotateY(0deg)'},{transform:`perspective(850px) translateX(${-side*100}%) rotateY(${side*48}deg)`}],turn),
+      newFace.animate([{transform:`perspective(850px) translateX(${side*100}%) rotateY(${-side*48}deg)`},{transform:'perspective(850px) translateX(0) rotateY(0deg)'}],turn)
     ];
     let ended=false;
     const finish=()=>{
@@ -1435,7 +1439,7 @@
     return {finish,ready:Promise.allSettled(motion.map(animation=>animation.finished)).then(finish)};
   }
   async function openStory(s,p={},storyList=[],storyProfiles={},previous=null){
-    if (!storyActive(s) || !await db.getUser() || !storyActive(s)) return;
+    if(!storyActive(s)||(!previous&&!await db.getUser())||!storyActive(s))return;
     const modal=document.createElement('div');modal.className='story-viewer';modal.dataset.mediaUrl=s.media_url;
     const ownerName=esc([p?.name,p?.surname].filter(Boolean).join(' ')||'AvtoVİP');
     const ownerVerified=p?.is_verified?verifiedBadge():'';
@@ -1555,13 +1559,16 @@
     modal.querySelectorAll('.story-close').forEach(b=>b.onclick=()=>close());modal.addEventListener('click',e=>{if(e.target===modal)close()});
     /* A story is an app-like overlay: vertical swipes must never become browser pull-to-refresh.
        The comments panel remains independently scrollable. */
-    let storyTouchY=0,storyTouchX=0;
+    let storyTouchY=0,storyTouchX=0,storyTouchId=null;
     modal.addEventListener('touchstart',e=>{
-      storyTouchY=e.touches?.[0]?.clientY||0;
-      storyTouchX=e.touches?.[0]?.clientX||0;
+      if(e.touches.length!==1||e.target.closest('button,a,input,textarea,.story-comments')){storyTouchId=null;return}
+      const touch=e.touches[0];
+      storyTouchId=touch.identifier;
+      storyTouchY=touch.clientY;
+      storyTouchX=touch.clientX;
       if(!video&&e.target===storyMedia){imageHeld=true;pauseImage()}
     },{passive:true});
-    modal.addEventListener('touchcancel',()=>{imageHeld=false;resumeImage()});
+    modal.addEventListener('touchcancel',()=>{storyTouchId=null;imageHeld=false;resumeImage()});
     if(!video)storyMedia.addEventListener('contextmenu',event=>event.preventDefault());
     modal.addEventListener('touchmove',e=>{
       const scroller=e.target.closest?.('.story-comments');
@@ -1573,15 +1580,16 @@
     modal.addEventListener('touchend',async e=>{
       imageHeld=false;
       resumeImage();
-      if(switching)return;
-      if(!window.matchMedia('(max-width:760px)').matches||modal.classList.contains('story-comments-open'))return;
-      const touch=e.changedTouches?.[0];if(!touch)return;
+      const touch=[...e.changedTouches].find(touch=>touch.identifier===storyTouchId);
+      storyTouchId=null;
+      if(!touch||switching||modal.classList.contains('story-comments-open'))return;
       const dx=touch.clientX-storyTouchX,dy=touch.clientY-storyTouchY;
-      if(Math.abs(dx)<55||Math.abs(dx)<=Math.abs(dy))return;
+      if(Math.abs(dx)<32||Math.abs(dx)<Math.abs(dy)*1.15)return;
       storyList=storyList.filter(row=>row.id===s.id||storyActive(row));
       const idx=(storyList||[]).findIndex(x=>x.id===s.id);if(idx<0)return;
       const nextIdx=dx<0?idx+1:idx-1;if(nextIdx<0||nextIdx>=storyList.length)return;
       const next=storyList[nextIdx],nextProfile=storyProfiles?.[next.user_id]||{};
+      turn?.finish();
       switching=true;
       pauseImage();
       const wasPlaying=video&&!video.paused;
@@ -1599,13 +1607,8 @@
     document.body.append(modal);
     document.documentElement.classList.add('modal-open');
     if(previous)turn=animateStoryTurn(previous.modal,modal,previous.direction);
-    if(turn){
-      switching=true;
-      turn.ready.then(()=>{
-        switching=false;
-        resumeImage();
-      });
-    }else resumeImage();
+    if(turn)turn.ready.then(resumeImage);
+    else resumeImage();
     neighbors=prepareNearbyStories(storyList,s.id);
     let key=localStorage.getItem('avtovip-viewer-key');if(!key){key=crypto.randomUUID?.()||Math.random().toString(36).slice(2);localStorage.setItem('avtovip-viewer-key',key)}
     let registeredStoryViews=null;

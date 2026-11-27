@@ -164,7 +164,7 @@ function applyProfileMap(){return setProfileMapLocation(String(profile?.country_
 function applyProfileMapFromForm(){return setProfileMapLocation(String($('#profileCountry')?.value||profile?.country_code||'AZ').toUpperCase(),String($('#profileCity')?.value||'').trim(),String($('#profileState')?.value||'').trim())}
 function bindProfileSwipe(){
  let sx=0,sy=0,started=false;
- const ignore=t=>!!t.closest('input,textarea,select,button,a,[contenteditable],.pf-own-listings-rail,.pf-dialog-backdrop,.pf-story-preview,.pf-comments-modal,.pf-detail-backdrop,.pf-library-viewport');
+ const ignore=t=>!!t.closest('input,textarea,select,button,a,[contenteditable],.pf-own-listings-rail,#pfOwnStories,.story-viewer,.pf-dialog-backdrop,.pf-story-preview,.pf-comments-modal,.pf-detail-backdrop,.pf-library-viewport');
  document.addEventListener('touchstart',e=>{if(e.touches.length!==1||ignore(e.target)){started=false;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY;started=true},{passive:true});
  document.addEventListener('touchend',e=>{if(!started||!e.changedTouches.length)return;started=false;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.25)return;const cur=document.querySelector('[data-pf-tab].active')?.dataset.pfTab||'content',i=PROFILE_TABS.indexOf(cur);if(i<0)return;if(dx<0){if(i<PROFILE_TABS.length-1)activate(PROFILE_TABS[i+1],{push:true});else location.href='ayarlar.html'}else if(i>0)activate(PROFILE_TABS[i-1],{push:true})},{passive:true});
 }
