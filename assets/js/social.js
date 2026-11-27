@@ -251,7 +251,17 @@
     const phone=String(u.phone||''),wa=String(u.whatsapp_phone||u.phone||'').replace(/\D/g,'');
     const identityHtml=`<button class="public-avatar-btn avatar-shell ${u.membership_tier||'free'}${u.is_verified?' is-verified':''}"><img src="${esc(u.avatar_url||'assets/img/brand/icon-192.png')}" alt=""></button>`;
     const bioText=String(u.bio||'').trim();
-    const nameHtml=`<div class="grow public-profile-copy"><div class="public-name-row"><h1><span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}</span>`:''}</h1>${tier}</div><div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`${bioText?`<div class="public-bio-wrap"><p class="public-bio">${esc(bioText)}</p><button type="button" class="public-bio-more" hidden>Davamına bax</button></div>`:''}<p class="muted public-location"><i class="fa-solid fa-location-dot"></i>${esc([u.state_name,u.city,u.address].filter(Boolean).join(' · '))}</p>`}</div>`;
+    const locationParts = [u.state_name, u.city, u.address].map(value => String(value || '').trim()).filter(Boolean);
+    const locationParams = new URLSearchParams({
+      profileAddress: String(u.address || '').trim(),
+      city: String(u.city || '').trim(),
+      region: String(u.state_name || '').trim(),
+      country: u.country_code || ''
+    });
+    const locationHtml = locationParts.length
+      ? `<a class="muted public-location" href="places.html?${esc(locationParams.toString())}"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>${esc(locationParts.join(' · '))}</span></a>`
+      : '';
+    const nameHtml=`<div class="grow public-profile-copy"><div class="public-name-row"><h1><span class="public-name-label">${esc([u.name,u.surname].filter(Boolean).join(' ')||L().user)}</span>${flag?`<span class="profile-country-wave" aria-label="${esc(u.country_code||'')}" title="${esc(u.country_code||'')}">${esc(flag)}</span>`:''}</h1>${tier}</div><div class="profile-stats"><span><b id="followerCount">${followers}</b>${L().followers}</span><span><b>${followingN}</b>${L().followingCount}</span></div>${trust}${restricted?'':`${bioText?`<div class="public-bio-wrap"><p class="public-bio">${esc(bioText)}</p><button type="button" class="public-bio-more" hidden>Davamına bax</button></div>`:''}${locationHtml}`}</div>`;
     let actionHtml='';
     if(me){
       if(!restricted)actionHtml+=`<button class="btn btn-sm fixed-action" id="followBtn">${following?L().following:L().follow}</button>`;
@@ -309,7 +319,7 @@
       ]);
       const list=lr.data||[],posts=pr.data||[];
       $('#publicListings').innerHTML=list.length?list.map(x=>`<a class="mini-listing ${String(x.status)==='sold'?'is-sold':''}" href="elan.html?id=${x.id}"><div class="mini-listing-media"><img src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}" alt="">${String(x.status)==='sold'?'<span class="mini-sold">SATILDI</span>':''}</div><div class="mini-listing-copy"><strong>${esc(x.brand)} ${esc(x.model)}</strong><span>${money(x.price,x.currency)}</span><time><i class="fa-regular fa-calendar"></i>${fmtDate(x.published_at||x.created_at)}</time></div></a>`).join(''):`<div class="empty-state">${L().notFound}</div>`;
-      const card=p=>{const url=p.media_urls?.[0]||'assets/img/brand/icon-512.png',isVideo=String(p.media_types?.[0]||'').startsWith('video'),href=`${p.is_reel?'reels.html':'lent.html'}#post=${encodeURIComponent(p.id)}`,views=Number(p.view_count??p.views_count??p.views??0);return `<a class="public-social-card" href="${href}">${isVideo?`<video src="${esc(url)}" muted playsinline preload="metadata"></video>`:`<img src="${esc(url)}" alt="">`}<span class="public-social-view"><i class="fa-regular fa-eye"></i><b>${views}</b></span><span class="public-social-kind"><i class="fa-solid ${p.is_reel?'fa-clapperboard':'fa-layer-group'}"></i></span></a>`};
+      const card=p=>{const url=p.media_urls?.[0]||'assets/img/brand/icon-512.png',isVideo=String(p.media_types?.[0]||'').startsWith('video'),href=`${p.is_reel?'reels.html':'lent.html'}#post=${encodeURIComponent(p.id)}&from=profile`,views=Number(p.view_count??p.views_count??p.views??0);return `<a class="public-social-card" href="${href}">${isVideo?`<video src="${esc(url)}" muted playsinline preload="metadata"></video>`:`<img src="${esc(url)}" alt="">`}<span class="public-social-view"><i class="fa-regular fa-eye"></i><b>${views}</b></span><span class="public-social-kind"><i class="fa-solid ${p.is_reel?'fa-clapperboard':'fa-layer-group'}"></i></span></a>`};
       $('#publicFeed').innerHTML=posts.filter(p=>!p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
       $('#publicReels').innerHTML=posts.filter(p=>p.is_reel).map(card).join('')||'<div class="empty-state">—</div>';
       // Safari does not reliably paint the first frame of a paused video without a seek.

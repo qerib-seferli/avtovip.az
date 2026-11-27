@@ -36,6 +36,7 @@ async function load(){
  const tag = normalizeTag(new URL(location.href).searchParams.get('tag') || '');
  const hash = new URLSearchParams(location.hash.slice(1));
  const requestedId = hash.get('post');
+ const fromProfile = hash.get('from') === 'profile';
  const openComments = hash.get('comments') === '1';
  const eligible = row => (reels ? row.is_reel === true && mediaFor(row).some(m => m.video) : row.is_reel !== true);
  const matchesTag = row => !tag || postText(row).tags.some(t => t.toLowerCase() === tag.toLowerCase());
@@ -160,10 +161,39 @@ async function load(){
  } else {
   const card = root.querySelector(`[data-post="${CSS.escape(requestedId)}"]`);
   requestAnimationFrame(() => {
-   card?.scrollIntoView({block:'center',inline:'nearest'});
+   if (fromProfile && card) centerProfilePost(card);
+   else card?.scrollIntoView({block:'center',inline:'nearest'});
    if (openComments) openPostComments(requestedId);
   });
  }
+}
+
+function centerProfilePost(card) {
+ const media = card.querySelector('.av-feed-media');
+ const viewport = window.visualViewport;
+ const header = document.querySelector('.site-header');
+ const nav = document.querySelector('.bottom-nav');
+ const viewportTop = viewport?.offsetTop || 0;
+ const viewportBottom = viewportTop + (viewport?.height || innerHeight);
+ const top = Math.max(viewportTop, header?.getBoundingClientRect().bottom || 0);
+ const navRect = nav?.getBoundingClientRect();
+ const bottom = navRect?.height && navRect.top > top ? Math.min(viewportBottom, navRect.top) : viewportBottom;
+ if (media) {
+  media.style.setProperty('min-height', '0', 'important');
+  media.style.setProperty('max-height', `${Math.max(1, bottom - top - 16)}px`, 'important');
+ }
+ const bounds = (media || card).getBoundingClientRect();
+ const scroll = document.scrollingElement;
+ let delta = (bounds.top + bounds.bottom - top - bottom) / 2;
+ const missingTop = Math.max(0, -scroll.scrollTop - delta);
+ const missingBottom = Math.max(0, scroll.scrollTop + delta - (scroll.scrollHeight - scroll.clientHeight));
+ if (missingTop || missingBottom) {
+  const list = card.parentElement;
+  if (missingTop) list.style.paddingTop = `${Math.ceil(missingTop)}px`;
+  if (missingBottom) list.style.paddingBottom = `${Math.ceil(missingBottom)}px`;
+  delta += missingTop;
+ }
+ window.scrollBy({top: delta, behavior: 'instant'});
 }
 
 async function loadPostDetails(batch){
