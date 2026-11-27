@@ -29,19 +29,36 @@ function listSource(){const q=activeSearch.trim().toLowerCase();return q?places.
 function renderList(fetchRoad=true){const root=$('#placesList');let arr=listSource().map(p=>({...p,_d:roadDistanceCache.has(p.id)?roadDistanceCache.get(p.id):(userPos?hav(userPos,{lat:+p.latitude,lng:+p.longitude}):null)})).sort((a,b)=>(a._d??1e9)-(b._d??1e9));root.innerHTML=arr.slice(0,40).map(p=>`<div class="place-row" data-place="${p.id}"><img class="place-row-logo" src="${esc(p.logo_url||'assets/img/brand/icon-192.png')}" alt=""><div><strong>${esc(p.name)}</strong><small>${esc(p.subcategory||p.category_key||'Məkan')} · ${openMarkup(p)}</small></div><span class="place-distance">${p._d!=null?fmtKm(p._d):''}</span></div>`).join('')||'<div class="places-empty">Uyğun məkan tapılmadı.</div>';root.querySelectorAll('[data-place]').forEach(x=>x.onclick=()=>selectPlace(places.find(p=>p.id===x.dataset.place)));if(fetchRoad&&userPos)roadDistances(arr)}
 async function loadPlaces(){if(!sb)return;const {data,error}=await sb.from('places').select('*').eq('status','active').limit(500);if(error){console.warn(error);return}places=data||[];renderMarkers();renderList();$('#placesStatus').textContent='';const q=locationParams.get('place');if(q){const p=places.find(x=>x.id===q);if(p)selectPlace(p,false)}await restoreNavigation()}
 function chips(){const root=$('#placeChips'),cats=window.AV_PLACE_CATEGORIES||[];root.innerHTML=`<button class="places-chip active" data-cat="">Hamısı</button>`+cats.map(c=>`<button class="places-chip" data-cat="${c[0]}"><span class="cat-emoji">${emojis[c[0]]||'📍'}</span>${c[1]}</button>`).join('');root.onclick=e=>{const b=e.target.closest('[data-cat]');if(!b)return;root.querySelectorAll('.places-chip').forEach(x=>x.classList.toggle('active',x===b));const cat=b.dataset.cat;markers.forEach(x=>x.marker.getElement().style.display=(!cat||x.cat===cat)?'':'none');const arr=!cat?places:places.filter(x=>x.category_key===cat),save=places;places=arr;renderList();places=save};root.addEventListener('wheel',e=>{const d=Math.abs(e.deltaY)>Math.abs(e.deltaX)?e.deltaY:e.deltaX;if(d){root.scrollLeft+=d;e.preventDefault()}},{passive:false});let dragging=false,startX=0,startScroll=0;root.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button===0){dragging=true;startX=e.clientX;startScroll=root.scrollLeft}});window.addEventListener('pointerup',()=>dragging=false);root.addEventListener('pointermove',e=>{if(dragging&&e.buttons===1){e.preventDefault();root.scrollLeft=startScroll-(e.clientX-startX)}});root.addEventListener('dragstart',e=>e.preventDefault())}
-async function geocode(q,countryCode=''){const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=${encodeURIComponent(lang())}&q=${encodeURIComponent(q)}${countryCode ? `&countrycodes=${encodeURIComponent(countryCode)}` : ''}`,{headers:{Accept:'application/json'}});if(!r.ok)throw Error('Ünvan axtarışı alınmadı.');return r.json()}
+async function geocode(q,countryCode='',addressDetails=false){const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=${encodeURIComponent(lang())}&q=${encodeURIComponent(q)}${addressDetails?'&addressdetails=1':''}${countryCode ? `&countrycodes=${encodeURIComponent(countryCode)}` : ''}`,{headers:{Accept:'application/json'}});if(!r.ok)throw Error('Ünvan axtarışı alınmadı.');return r.json()}
+function profileAddressMatches(result, address, city) {
+ const normalize = value => String(value || '').toLowerCase().normalize('NFKD')
+  .replace(/\p{M}/gu, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+ const details = result.address || {};
+ if (city && !['city', 'town', 'village', 'municipality', 'borough', 'city_district', 'county', 'suburb']
+  .some(key => normalize(details[key]) === normalize(city))) return false;
+ if (!address) return true;
+ const streetLine = address.split(',')[0].trim();
+ const house = streetLine.match(/^(\d+[a-z]?)\s+/i) || streetLine.match(/\b(?:no\.?\s*:?\s*)?(\d+[a-z]?)$/i);
+ const street = normalize(house ? streetLine.replace(house[0], '') : streetLine);
+ const road = normalize(details.road || details.pedestrian || details.residential);
+ const sameStreet = street && road &&
+  (` ${street} `.includes(` ${road} `) || ` ${road} `.includes(` ${street} `));
+ return !!sameStreet && (!house || normalize(house[1]) === normalize(details.house_number));
+}
+
 async function openProfileLocation() {
  const address = locationParams.get('profileAddress')?.trim();
+ const city = locationParams.get('city')?.trim();
  const area = [...new Set(['city', 'region'].map(key => locationParams.get(key)?.trim()).filter(Boolean))].join(', ');
  const code = locationParams.get('country') || '';
  const country = /^[a-z]{2}$/i.test(code) ? code.toLowerCase() : '';
  const addressQueries = address?.includes(',') ? [address, [address, area].filter(Boolean).join(', ')]
   : [[address, area].filter(Boolean).join(', '), address];
- const queries = [...new Set([...(address ? addressQueries : []), area].filter(Boolean))];
+ const queries = [...new Set((address ? addressQueries : [area]).filter(Boolean))];
  for (const query of queries) {
-  const results = await geocode(query, country);
+  const results = await geocode(query, country, true);
   const point = results.find(row => row.lat != null && row.lon != null &&
-   Math.abs(Number(row.lat)) <= 90 && Math.abs(Number(row.lon)) <= 180);
+   Math.abs(Number(row.lat)) <= 90 && Math.abs(Number(row.lon)) <= 180 && profileAddressMatches(row, address, city));
   if (!point) continue;
   const areaOnly = query === area;
   destination = {lat: Number(point.lat), lng: Number(point.lon), name: point.display_name || query};
@@ -58,7 +75,8 @@ async function openProfileLocation() {
   }
   return;
  }
- toast('Məkan və ya ünvan tapılmadı.', 'error');
+ toast(address ? 'Profil ünvanı təsdiqlənmədi. Küçə, bina nömrəsi və şəhər məlumatını yoxlayın.'
+  : 'Profildə göstərilən şəhər və ya region tapılmadı.', 'error');
 }
 
 function requestProfilePosition(target) {
