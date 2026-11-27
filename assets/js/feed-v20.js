@@ -327,6 +327,32 @@ function buildReelStage(index){
 }
 
 const activeReelStage = modal => modal.querySelector('.av-reel-stage:not(.av-reel-neighbor):not(.av-reel-outgoing):not(.av-reel-pending)');
+function paintReelPreview(stage,video){
+ if(!video||video.readyState<2||!video.videoWidth||!video.videoHeight)return false;
+ const media=stage.querySelector('.av-reel-media');
+ const canvas=media.querySelector('.av-reel-preview-frame')||document.createElement('canvas');
+ const scale=Math.min(1,640/Math.max(video.videoWidth,video.videoHeight));
+ try{
+  canvas.width=Math.max(1,Math.round(video.videoWidth*scale));
+  canvas.height=Math.max(1,Math.round(video.videoHeight*scale));
+  canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
+ }catch{return false}
+ stage.classList.toggle('av-reel-landscape',video.videoWidth>video.videoHeight);
+ canvas.className='av-reel-preview-frame';
+ canvas.setAttribute('aria-hidden','true');
+ if(!canvas.parentNode)media.prepend(canvas);
+ return true;
+}
+function revealReelPlayback(stage,video){
+ const frame=stage.querySelector('.av-reel-preview-frame');
+ if(!frame)return;
+ const reveal=()=>frame.remove();
+ if(typeof video.requestVideoFrameCallback==='function'){
+  video.requestVideoFrameCallback(reveal);
+ }else if(video.paused){
+  video.addEventListener('playing',()=>requestAnimationFrame(()=>requestAnimationFrame(reveal)),{once:true});
+ }else requestAnimationFrame(()=>requestAnimationFrame(reveal));
+}
 function preloadAdjacentReels(modal,index){
  for(const node of modal.querySelectorAll('.av-reel-neighbor')){
   if(Math.abs(Number(node.dataset.reelIndex)-index)!==1)node.remove();
@@ -341,7 +367,11 @@ function preloadAdjacentReels(modal,index){
   video.muted=true;
   video.preload='auto';
   hardenVideo(video);
+  const gridVideo=$('#socialFeed')?.querySelector(`[data-reel-index="${next}"] video`);
+  paintReelPreview(stage,gridVideo);
+  video.addEventListener('loadeddata',()=>{if(stage.classList.contains('av-reel-neighbor'))paintReelPreview(stage,video)},{once:true});
   modal.append(stage);
+  if(!stage.querySelector('.av-reel-preview-frame'))paintReelPreview(stage,video);
  }
 }
 function clearReelDrag(modal){
@@ -366,7 +396,7 @@ function bindReelSwipe(modal){
   event.preventDefault();
   const active=activeReelStage(modal);
   const neighbor=modal.querySelector(`.av-reel-neighbor[data-reel-index="${activeModalIndex+(dy<0?1:-1)}"]`);
-  if(!active||!(neighbor?.querySelector('video')?.readyState>=2)){clearReelDrag(modal);return}
+  if(!active||!neighbor?.querySelector('.av-reel-preview-frame')){clearReelDrag(modal);return}
   const height=active.getBoundingClientRect().height;
   const offset=Math.max(-height,Math.min(height,dy));
   if(start.neighbor!==neighbor)clearReelDrag(modal);
@@ -414,9 +444,9 @@ async function showViewer(index,direction='next'){
   stage.classList.remove('av-reel-neighbor');
   stage.classList.add('av-reel-pending');
   if(!stage.isConnected)modal.append(stage);
-  if(v.readyState<2)clearReelDrag(modal);
+  if(v.readyState<2&&!stage.querySelector('.av-reel-preview-frame'))clearReelDrag(modal);
   v.preload='auto';
-  const ready=await new Promise(resolve=>{
+  const ready=stage.querySelector('.av-reel-preview-frame')||await new Promise(resolve=>{
    if(v.readyState>=2){resolve(true);return}
    const timer=setTimeout(()=>finish(false),8000);
    const finish=ok=>{clearTimeout(timer);v.onloadeddata=v.onerror=null;resolve(ok)};
@@ -425,7 +455,8 @@ async function showViewer(index,direction='next'){
   });
   if(modal.dataset.reelTransition!==token)return;
   delete modal.dataset.reelTransition;
-  if(!ready){stage.remove();return}
+  if(!ready){clearReelDrag(modal);stage.remove();return}
+  if(!stage.querySelector('.av-reel-preview-frame'))paintReelPreview(stage,v);
   previous.querySelector('video')?.pause();
   previous.inert=true;
   previous.classList.add('av-reel-outgoing');
@@ -448,7 +479,7 @@ async function showViewer(index,direction='next'){
  });
  modal.classList.add('open');
  document.documentElement.classList.add('modal-open');
- pauseAll(v);v.muted=!soundEnabled;const reelStage=stage;const syncReelAspect=()=>{const w=Number(v?.videoWidth||0),h=Number(v?.videoHeight||0);if(reelStage&&w&&h)reelStage.classList.toggle('av-reel-landscape',w>h)};if(v?.readyState>=1)syncReelAspect();else v?.addEventListener('loadedmetadata',syncReelAspect,{once:true});const viewerProgress=stage.querySelector('.av-reel-progress');bindSeek(v,viewerProgress);bindSmoothProgress(v,viewerProgress);v.addEventListener('play',()=>{delete v.dataset.manualPaused;stage.querySelector('.av-reel-play-state')?.classList.remove('show')});v.addEventListener('pause',()=>{const state=stage.querySelector('.av-reel-play-state');if(v.dataset.manualPaused==='1')state?.classList.add('show');else state?.classList.remove('show')});v.addEventListener('ended',()=>{v.currentTime=0;v.play().catch(()=>{})});// iOS can reject an audible play() after a swipe. Retry muted and once media is ready.
+ pauseAll(v);revealReelPlayback(stage,v);v.muted=!soundEnabled;const reelStage=stage;const syncReelAspect=()=>{const w=Number(v?.videoWidth||0),h=Number(v?.videoHeight||0);if(reelStage&&w&&h)reelStage.classList.toggle('av-reel-landscape',w>h)};if(v?.readyState>=1)syncReelAspect();else v?.addEventListener('loadedmetadata',syncReelAspect,{once:true});const viewerProgress=stage.querySelector('.av-reel-progress');bindSeek(v,viewerProgress);bindSmoothProgress(v,viewerProgress);v.addEventListener('play',()=>{delete v.dataset.manualPaused;stage.querySelector('.av-reel-play-state')?.classList.remove('show')});v.addEventListener('pause',()=>{const state=stage.querySelector('.av-reel-play-state');if(v.dataset.manualPaused==='1')state?.classList.add('show');else state?.classList.remove('show')});v.addEventListener('ended',()=>{v.currentTime=0;v.play().catch(()=>{})});// iOS can reject an audible play() after a swipe. Retry muted and once media is ready.
  const isIOSReel=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
  if(isIOSReel){
    let pending=false;
