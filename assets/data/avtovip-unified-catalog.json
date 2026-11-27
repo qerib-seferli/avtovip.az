@@ -4,7 +4,14 @@
       "T01",
       "2026 T01",
       "Changfeng T01",
-      "P01"
+      "P01",
+      "T01 机械师",
+      "T01 探险家",
+      "T01 升级款检阅官",
+      "T01 METTA",
+      "T01 高地",
+      "T01 柴油版",
+      "T01 长风柴油"
     ],
     "9ff": [
       "GTurbo",
@@ -57,11 +64,28 @@
       "Model L",
       "Model F",
       "6-44",
-      "8-80"
+      "8-80",
+      "30",
+      "44",
+      "Six-60"
     ],
     "ABT": [
       "RS6 Legacy Edition",
-      "RS7 Legacy Edition"
+      "RS7 Legacy Edition",
+      "XGT",
+      "Urus SE",
+      "URUS Scatenato",
+      "RSQ8-LE 1.000",
+      "RSQ8 Legacy Edition",
+      "RSQ8-S",
+      "RS7-S",
+      "RS6-LE 800",
+      "RS6-S",
+      "RS5-R",
+      "RS3 630",
+      "RS3-R",
+      "CUPRA Formentor VZ5 635",
+      "RSQ8-R"
     ],
     "AC": [
       "Ace",
@@ -74,7 +98,14 @@
       "3000ME",
       "Ace Bristol",
       "Cobra 289",
-      "Cobra 427"
+      "Cobra 427",
+      "Sociable",
+      "Cobra Mk V",
+      "Cobra Mk VI",
+      "Cobra Mk II Classic",
+      "378 GT Zagato",
+      "Cobra GT Roadster",
+      "Cobra Superblower 120th Anniversary"
     ],
     "Acura": [
       "2.5TL",
@@ -134,11 +165,17 @@
       "Diplomat",
       "2.5 Litre",
       "2.5 Litre Sport",
-      "2 Liter"
+      "2 Liter",
+      "Standard 8",
+      "6/25",
+      "Trumpf AV",
+      "Trumpf 1.7 AV",
+      "Trumpf 1.7 EV",
+      "Primus 1.5 A",
+      "Primus 1.7 E"
     ],
     "Ahorn": [
-      "Agr",
-      "Van 620"
+      "Agr"
     ],
     "Aion": [
       "ES",
@@ -153,7 +190,12 @@
       "S",
       "Y",
       "S MAX",
-      "V 602 Luxury"
+      "V 602 Luxury",
+      "RT 550 智享版",
+      "RT 605 智享版",
+      "RT 605 智豪版",
+      "RT 710 智豪版",
+      "RT 710 智尊版"
     ],
     "Aiways": [
       "U5",
@@ -175,7 +217,29 @@
       "City Sport",
       "City GTO",
       "City Sport Electric",
-      "City GTO Electric"
+      "City GTO Electric",
+      "Easy Access",
+      "Easy Chic",
+      "Easy GT",
+      "Coupé Sport",
+      "Coupé GTI",
+      "Crossover Pack",
+      "Crossover Premium",
+      "Easy Access électrique",
+      "Easy Chic électrique",
+      "Easy GT électrique",
+      "City Pack électrique",
+      "City Pack électrique 7,5 kWh",
+      "City GTO électrique",
+      "Coupé Sport électrique",
+      "Coupé GTI électrique",
+      "Crossover Premium électrique",
+      "City Premium",
+      "Coupé Premium",
+      "Crossline Pack",
+      "Crossline Luxe",
+      "City S",
+      "e-Coupé Premium"
     ],
     "Alfa Romeo": [
       "1300",
@@ -518,7 +582,13 @@
       "A108",
       "A110 R Ultime",
       "A110 R 70",
-      "A110 GTS"
+      "A110 GTS",
+      "A390 GT",
+      "A390 GTS",
+      "A290 GT",
+      "A290 GT Premium",
+      "A290 GT Performance",
+      "A290 GTS"
     ],
     "Alta": [
       "2 Litre Sports"
@@ -533,11 +603,24 @@
       "TA21",
       "TC21",
       "TC21/100",
-      "TD21"
+      "TD21",
+      "12/50",
+      "TF21",
+      "12/70",
+      "Speed 25",
+      "4.3 litre",
+      "Silver Crest",
+      "Firebird",
+      "TB21",
+      "TC108/G",
+      "TB14",
+      "12/75",
+      "TE21",
+      "TE21 DHC",
+      "12/60"
     ],
     "AM General": [
       "Hummer",
-      "M998",
       "MV-1"
     ],
     "AMC": [
@@ -571,7 +654,10 @@
     ],
     "Arash": [
       "AF8",
-      "AF10"
+      "AF10",
+      "AF8 Cassini",
+      "AF10 Hybrid",
+      "AF10 Hybrid Racer"
     ],
     "Arcfox": [
       "Alpha S",
@@ -587,7 +673,9 @@
       "Kaola",
       "Kaola S",
       "Wendao V9",
-      "Lite"
+      "Lite",
+      "Alpha S5 REEV",
+      "Alpha T5 REEV"
     ],
     "Ariel": [
       "Atom",
@@ -601,7 +689,10 @@
       "Atom 4RR",
       "Nomad 2",
       "Atom 2",
-      "Nomad R"
+      "Nomad R",
+      "Atom Mugen",
+      "Atom 3S",
+      "Atom 3RS"
     ],
     "Armstrong Siddeley": [
       "Lancaster",
@@ -609,7 +700,18 @@
       "Sapphire 346",
       "Star Sapphire",
       "Typhoon",
-      "Whitley"
+      "Whitley",
+      "30hp",
+      "18hp",
+      "14hp",
+      "15hp",
+      "12hp",
+      "20hp",
+      "16hp",
+      "Siddeley Special",
+      "Hurricane",
+      "Sapphire 234",
+      "Sapphire 236"
     ],
     "Aro": [
       "10 Series",
@@ -645,12 +747,16 @@
     "Ascari": [
       "Ecosse",
       "KZ1",
-      "A10"
+      "A10",
+      "KZ1-R"
     ],
     "Asia": [
       "Rocsta",
       "Rocsta 1.8 i 4x4",
-      "Rocsta 2.2 D 4x4"
+      "Rocsta 2.2 D 4x4",
+      "Retona",
+      "Topic",
+      "Towner"
     ],
     "Aspark": [
       "Owl",
@@ -1501,7 +1607,6 @@
       "Cooper Mk",
       "Countryman",
       "Eight",
-      "FX4",
       "Gipsy",
       "Healey",
       "Healy",
@@ -1564,7 +1669,24 @@
       "100",
       "100-6",
       "3000",
-      "Sprite"
+      "Sprite",
+      "100 BN1",
+      "100 BN2",
+      "100M",
+      "100S",
+      "100-6 BN4",
+      "100-6 BN6",
+      "3000 Mk I BN7",
+      "3000 Mk I BT7",
+      "3000 Mk II BN7",
+      "3000 Mk II BT7",
+      "3000 Mk II BJ7",
+      "3000 Mk III BJ8 Phase 1",
+      "3000 Mk III BJ8 Phase 2",
+      "Sprite Mk I",
+      "Sprite Mk II",
+      "Sprite Mk III",
+      "Sprite Mk IV"
     ],
     "Austin-Morris": [
       "Mini"
@@ -1610,7 +1732,23 @@
       "Y10",
       "Bianchina Panoramica",
       "Bianchina Cabrio",
-      "A112 Abarth 58 HP"
+      "A112 Abarth 58 HP",
+      "A112 Abarth 70 HP",
+      "Bianchina Transformabile",
+      "Bianchina Furgonetta",
+      "Y10 FIRE",
+      "Y10 Touring",
+      "Y10 Turbo",
+      "Y10 4WD",
+      "Y10 Fila",
+      "Y10 Missoni",
+      "Y10 Turbo Martini",
+      "Y10 Ego",
+      "Y10 Avenue",
+      "A112 Junior",
+      "A112 Elite",
+      "A112 LX",
+      "A112 Base"
     ],
     "Avatr": [
       "11",
@@ -1621,7 +1759,14 @@
       "011",
       "012",
       "12",
-      "T09"
+      "T09",
+      "12 Max Dual-Motor REEV Edition",
+      "12 Ultra Dual-Motor REEV Edition",
+      "12 Max Dual-Motor EV Edition",
+      "12 Ultra Dual-Motor EV Edition",
+      "12 Performance Tri-Motor EV Edition",
+      "12 Master Tri-Motor EV Edition",
+      "12 Royal Edition"
     ],
     "Axon": [
       "Eco-M"
@@ -1631,7 +1776,9 @@
       "Mono R",
       "Mono Cup",
       "Mono (W)",
-      "Mono One"
+      "Mono One",
+      "Mono (2023–2025)",
+      "Mono (2027)"
     ],
     "BAIC": [
       "B30",
@@ -1681,10 +1828,6 @@
       "RC-6",
       "RM-5",
       "Valli"
-    ],
-    "Barkas": [
-      "B 1000 Kb",
-      "B1000"
     ],
     "Beauford": [
       "Open",
@@ -1737,7 +1880,6 @@
       "S3",
       "Speed Six",
       "Sports",
-      "State Limousine",
       "T",
       "T-Series",
       "T1",
@@ -1845,7 +1987,8 @@
     "Bertone": [
       "Freeclimber",
       "Freeclimber 2",
-      "X1/9"
+      "X1/9",
+      "GB110"
     ],
     "Bestune": [
       "B70",
@@ -1882,16 +2025,21 @@
       "SC Cabriolet",
       "SC Sedan",
       "Vero",
-      "Vero Sport"
+      "Vero Sport",
+      "Type 3 Cabriolet",
+      "Insignia by Bitter",
+      "Adam by Bitter",
+      "Mokka by Bitter",
+      "Cascada by Bitter",
+      "Grandland X by Bitter"
     ],
     "Bizzarrini": [
       "5300 GT Strada",
       "5300 GT America",
       "1900 GT Europa",
-      "5300 GT Corsa Revival"
-    ],
-    "Blucamp": [
-      "Sky 11"
+      "5300 GT Corsa Revival",
+      "P538",
+      "5300 GT Corsa"
     ],
     "BMW": [
       "1 Series",
@@ -3157,11 +3305,6 @@
       "2002tii",
       "2002 turbo"
     ],
-    "Bmw Alpina": [
-      "B3",
-      "B5",
-      "B7"
-    ],
     "BMW M": [
       "M1",
       "M2",
@@ -3246,7 +3389,29 @@
     "Bond": [
       "Bug",
       "Equipe",
-      "Minicar"
+      "Minicar",
+      "Minicar Mark A",
+      "Minicar Mark B",
+      "Minicar Mark C",
+      "Minicar Mark D",
+      "Minicar Mark E",
+      "Minicar Mark F",
+      "Minicar Mark G",
+      "875",
+      "Equipe GT 2+2",
+      "Bug 700",
+      "Bug 700E",
+      "Bug 700ES",
+      "Bug 750ES",
+      "Equipe GT4S 1147cc",
+      "Equipe GT4S 1300cc",
+      "Equipe 2 litre Mark I",
+      "Equipe 2 litre Mark II Saloon",
+      "Equipe 2 litre Mark II Convertible",
+      "Minicar Mark G Estate",
+      "875 Mark 1",
+      "875 Mark 2",
+      "Minicar Mark G Tourer"
     ],
     "Borgward": [
       "BX7",
@@ -3261,7 +3426,13 @@
       "P100",
       "Isabella Coupé",
       "Hansa 1800 D",
-      "Hansa 2400 Pullman"
+      "Hansa 2400 Pullman",
+      "Arabella",
+      "Isabella Combi",
+      "Hansa 1100",
+      "Hansa 2000",
+      "Hansa 2300",
+      "Hansa 3500"
     ],
     "Bowler": [
       "Wildcat",
@@ -3332,7 +3503,11 @@
     "Bufori": [
       "CS8",
       "Geneva",
-      "La Joya"
+      "La Joya",
+      "Madison",
+      "MKI Roadster",
+      "MKII Roadster",
+      "V6i"
     ],
     "Bugatti": [
       "Bolide",
@@ -3677,11 +3852,9 @@
       "V347"
     ],
     "Carbodies": [
-      "Fairway",
       "Taxi",
       "Taxi / Hire Car",
-      "London Taxi",
-      "AUSTIN FX4"
+      "London Taxi"
     ],
     "Carlsson": [
       "C25",
@@ -3758,7 +3931,6 @@
       "CS35 Plus",
       "CS75 Plus",
       "CS85 Coupe",
-      "Deepal S07",
       "Raeton",
       "UNI-Z",
       "X5 Plus",
@@ -3801,7 +3973,17 @@
       "Superba",
       "Model K",
       "Model M",
-      "A-8"
+      "A-8",
+      "A-10 Sedan",
+      "A-10 Wagon",
+      "A-12 Sedan",
+      "A-12 Wagon",
+      "A-12 Aerobus 9-Passenger",
+      "A-12 Aerobus 12-Passenger",
+      "A-3 Sedan",
+      "A-5 Sedan",
+      "A-6 Sedan",
+      "Aerobus 15-Passenger"
     ],
     "Chery": [
       "Amulet",
@@ -5108,7 +5290,10 @@
       "BIGSTER EXPRESSION HEV AUTO",
       "DUSTER EXPRESSION",
       "DUSTER EXTREME",
-      "DUSTER JOURNEY"
+      "DUSTER JOURNEY",
+      "Spring Essential electric 70",
+      "Spring Expression electric 70",
+      "Spring Extreme electric 100"
     ],
     "Daewoo": [
       "Cielo",
@@ -6006,7 +6191,13 @@
     ],
     "David Brown": [
       "Speedback GT",
-      "Mini Remastered"
+      "Mini Remastered",
+      "eMASTERED",
+      "Mini Remastered Marshall Edition",
+      "Mini Remastered Oselli Edition",
+      "Mini Remastered Inspired by Café Racers",
+      "Mini Remastered Inspired by Monte Carlo",
+      "Speedback Silverstone Edition"
     ],
     "De Soto": [
       "1937",
@@ -6028,7 +6219,21 @@
     ],
     "De Tomaso": [
       "Pantera",
-      "Pantera GT5"
+      "Pantera GT5",
+      "Vallelunga",
+      "Mangusta",
+      "P72",
+      "Guarà",
+      "Longchamp",
+      "Deauville",
+      "Pantera GT5-S",
+      "Pantera 90 Si",
+      "Pantera GTS",
+      "Guarà Barchetta",
+      "Guarà Coupe",
+      "Guarà Spider",
+      "Longchamp GTS",
+      "Longchamp Spyder"
     ],
     "Deepal": [
       "E07",
@@ -6039,7 +6244,16 @@
       "L06",
       "SL03",
       "G318",
-      "S09"
+      "S09",
+      "E07 RWD",
+      "E07 AWD Performance",
+      "S07 RWD",
+      "S05 Lite",
+      "S05 Plus",
+      "S05 Max Long Range",
+      "S05 REEV Plus",
+      "S05 REEV Max",
+      "E07 Plus"
     ],
     "Delage": [
       "D1",
@@ -6060,7 +6274,10 @@
       "Z9",
       "Z9GT",
       "N7",
-      "N8"
+      "N8",
+      "D9 AWD",
+      "B5 Leopard",
+      "Z9GT 630四驱Pro版"
     ],
     "Detroit Electric": [
       "SP:01",
@@ -6344,9 +6561,9 @@
     ],
     "Donkervoort": [
       "D8",
-      "D8GTO",
+      "D8 GTO",
       "F22",
-      "Gto-RS",
+      "D8 GTO-RS",
       "P24",
       "S8A",
       "S8AT U9",
@@ -6357,8 +6574,21 @@
       "D8-150 CABRIOLET",
       "D8-150",
       "D150",
-      "GTO-JD70",
-      "GTO-INDIVIDUAL SERIES"
+      "D8 GTO JD70",
+      "D8 GTO Individual series",
+      "F22 Bare Naked",
+      "P24 RS",
+      "D8 GT",
+      "D8 GTO-40",
+      "D8 GTO-S",
+      "D8 270 (RS)",
+      "D8 Audi (E-Gas)",
+      "D8 Audi (AGU)",
+      "S8AT",
+      "D10",
+      "S8",
+      "S7",
+      "F22 Final Five"
     ],
     "DR": [
       "DR 5",
@@ -6452,14 +6682,36 @@
       "S900",
       "S400 HEV",
       "S700 PHEV",
-      "S800 PHEV"
+      "S800 PHEV",
+      "S900 PHEV",
+      "s900 PHEV Luxury",
+      "s400 HEV Premium",
+      "s400 HEV Excellence",
+      "s700 PHEV Premium",
+      "s700 PHEV Luxury",
+      "s800 PHEV Premium",
+      "s800 PHEV Luxury"
     ],
     "Edsel": [
       "Citation",
       "Corsair",
       "Pacer",
       "Ranger",
-      "Villager"
+      "Villager",
+      "Bermuda",
+      "Roundup",
+      "Roundup 2-door Wagon",
+      "Ranger 4-door Hardtop",
+      "Ranger 2-door Hardtop",
+      "Ranger 4-door Sedan",
+      "Ranger 2-door Sedan",
+      "Ranger 2-door Convertible",
+      "Corsair 4-door Hardtop",
+      "Corsair 2-door Hardtop",
+      "Corsair 4-door Sedan",
+      "Corsair 2-door Convertible",
+      "Villager 6-passenger Wagon",
+      "Villager 9-passenger Wagon"
     ],
     "Eicher": [
       "Pro 2055",
@@ -6547,13 +6799,37 @@
     "Eunos": [
       "Cosmo",
       "Roadster",
-      "PRESSO"
+      "PRESSO",
+      "100",
+      "300",
+      "500",
+      "800",
+      "Roadster Special Package",
+      "Roadster V Special",
+      "Roadster J Limited",
+      "Roadster S Special",
+      "Roadster S Limited",
+      "Roadster V Special Type II",
+      "Roadster J Limited II",
+      "Roadster RS Limited",
+      "Roadster G Limited",
+      "Roadster R Limited",
+      "Roadster S Special Type I",
+      "Roadster S Special Type II",
+      "Roadster B2 Limited",
+      "Roadster R2 Limited",
+      "Roadster SR Limited"
     ],
     "Evo": [
       "Cuatro",
       "EVO6",
       "EVO7",
-      "Spazio"
+      "Spazio",
+      "EVO 6 HEV",
+      "EVO 7 Kairos",
+      "EVO 5",
+      "EVO 3",
+      "EVO 4"
     ],
     "Excalibur": [
       "Phaeton",
@@ -6574,7 +6850,8 @@
       "EX6",
       "ET5",
       "Sterra ES",
-      "Sterra ET"
+      "Sterra ET",
+      "MX"
     ],
     "Facel Vega": [
       "FV",
@@ -6602,7 +6879,8 @@
       "Tai 7 EV"
     ],
     "Faraday Future": [
-      "FF 91"
+      "FF 91",
+      "FF 91 2.0 Futurist Alliance"
     ],
     "FAW": [
       "E-HS9",
@@ -7469,7 +7747,9 @@
       "Ocean Extreme/One",
       "Ocean One",
       "Ocean Sport 20in",
-      "Ocean Sport 22in"
+      "Ocean Sport 22in",
+      "Ocean Ultra",
+      "Ocean Extreme"
     ],
     "Fleetwood": [
       "Revolution"
@@ -8734,7 +9014,9 @@
       "XCS Chassis"
     ],
     "Fsm": [
-      "126P"
+      "126P",
+      "Syrena 105",
+      "Syrena 105L"
     ],
     "FSO": [
       "125",
@@ -8742,7 +9024,15 @@
       "Polonez Atu",
       "Polonez Caro",
       "Polonez Kombi",
-      "Prima"
+      "Prima",
+      "Syrena 100",
+      "Syrena 101",
+      "Syrena 103",
+      "Syrena 104",
+      "Syrena 102",
+      "Syrena 102S",
+      "Syrena 103S",
+      "Syrena 105"
     ],
     "GAC": [
       "Aion",
@@ -8875,7 +9165,12 @@
     "Gilbern": [
       "GT",
       "Genie",
-      "Invader"
+      "Invader",
+      "1800GT",
+      "Invader MkI",
+      "Invader MkII",
+      "Invader MkII Estate",
+      "Invader MkIII"
     ],
     "Gillet": [
       "Vertigo",
@@ -9094,7 +9389,8 @@
       "Scorpion IV"
     ],
     "Gumpert": [
-      "Apollo"
+      "Apollo",
+      "Apollo S"
     ],
     "Hafei": [
       "Baili",
@@ -9185,7 +9481,23 @@
       "Imp",
       "Imp Super",
       "Minx",
-      "Super Minx"
+      "Super Minx",
+      "Minx Tourer",
+      "Minx Mark I",
+      "Minx Mark IV",
+      "Minx Mark VIII",
+      "Minx Californian",
+      "Minx Series I",
+      "Minx Series II",
+      "Minx Series IIIA",
+      "Minx Series V",
+      "Minx Series VI",
+      "Super Minx Series I",
+      "Super Minx Series II",
+      "Super Minx Series III",
+      "Husky Series I",
+      "Husky Series II",
+      "Husky Series III"
     ],
     "Hindustan Motors": [
       "Ambassador",
@@ -9978,7 +10290,27 @@
       "951A"
     ],
     "Hotchkiss": [
-      "480"
+      "480",
+      "AM2",
+      "Anjou 1350",
+      "Anjou 1350 Sport",
+      "Anjou 2050",
+      "Anjou 2050 Sport",
+      "Artois",
+      "Gascogne",
+      "Basque",
+      "Biarritz",
+      "Cabourg",
+      "Champagne",
+      "Chantilly",
+      "Côte-d’Azur",
+      "Hossegor",
+      "Languedoc",
+      "Megève",
+      "Pullman",
+      "Riviera",
+      "Saint-Germain",
+      "Vichy"
     ],
     "HSV": [
       "Avalanche",
@@ -9996,7 +10328,38 @@
       "Super",
       "Super Six",
       "Terraplane",
-      "Wasp"
+      "Wasp",
+      "Italia",
+      "Metropolitan",
+      "Jet 1D 4-Door Sedan",
+      "Hornet 7D 4-Door Sedan",
+      "Hornet 7D Club Coupe",
+      "Hornet 7D Convertible Brougham",
+      "Hornet 7D Hollywood Hardtop",
+      "Hornet Special 6D 4-Door Sedan",
+      "Hornet Special 6D Club Coupe",
+      "Hornet Special 6D Club Sedan",
+      "Super Wasp 5C 2-Door Sedan",
+      "Super Wasp 5C 4-Door Sedan",
+      "Super Wasp 5C Club Coupe",
+      "Super Wasp 5C Convertible Brougham",
+      "Super Wasp 5C Hollywood Hardtop",
+      "Super Wasp 5D 4-Door Sedan",
+      "Super Wasp 5D Club Coupe",
+      "Super Wasp 5D Club Sedan",
+      "Super Wasp 5D Convertible Brougham",
+      "Super Wasp 5D Hollywood Hardtop",
+      "Wasp 4C 2-Door Sedan",
+      "Wasp 4C 4-Door Sedan",
+      "Wasp 4C Club Coupe",
+      "Wasp 4D 4-Door Sedan",
+      "Wasp 4D Club Coupe",
+      "Wasp 4D Club Sedan",
+      "Wasp 5B 2-Door Brougham",
+      "Wasp 5B 4-Door Sedan",
+      "Wasp 5B Club Coupe",
+      "Wasp 5B Convertible Brougham",
+      "Wasp 5B Hollywood Hardtop"
     ],
     "Humber": [
       "12",
@@ -10006,7 +10369,20 @@
       "Pullman",
       "Sceptre",
       "Snipe",
-      "Super Snipe"
+      "Super Snipe",
+      "Super Snipe Series I 4-Door Saloon",
+      "Super Snipe Series I Estate Car",
+      "Super Snipe Series I Touring Limousine",
+      "Super Snipe Series II 4-Door Saloon",
+      "Super Snipe Series II Estate Car",
+      "Super Snipe Series II Touring Limousine",
+      "Super Snipe Series III 4-Door Saloon",
+      "Super Snipe Series III Estate Car",
+      "Super Snipe Series III Touring Limousine",
+      "Super Snipe Series IV 4-Door Saloon",
+      "Super Snipe Series IV Estate Car",
+      "Super Snipe Series V 4-Door Saloon",
+      "Super Snipe Series V Estate Car"
     ],
     "Hummer": [
       "H1",
@@ -10023,7 +10399,75 @@
     ],
     "Hupmobile": [
       "E1",
-      "Model 20 Runabout"
+      "Model 20 Runabout",
+      "32H",
+      "K",
+      "N",
+      "R-1",
+      "R-2",
+      "R-3",
+      "R-4",
+      "R-5",
+      "R-6",
+      "R-7",
+      "R-8",
+      "R-9",
+      "R-10",
+      "R-11",
+      "R-12",
+      "R-13",
+      "R-14",
+      "R-15",
+      "E",
+      "A",
+      "E2",
+      "E3",
+      "E4",
+      "M",
+      "S",
+      "C",
+      "H",
+      "U",
+      "137U",
+      "125H",
+      "121C",
+      "118L",
+      "114S",
+      "216B",
+      "222F",
+      "226I",
+      "237U",
+      "225H",
+      "221C",
+      "218L",
+      "214S",
+      "326I",
+      "322F",
+      "321K",
+      "321KK",
+      "316B",
+      "427T",
+      "421J",
+      "426I",
+      "422F",
+      "421K",
+      "421KK",
+      "417W",
+      "517S/W",
+      "518D",
+      "521J",
+      "521O",
+      "T",
+      "618D",
+      "618G",
+      "621N",
+      "621O",
+      "822E",
+      "825H",
+      "915R",
+      "922E",
+      "925H",
+      "015R"
     ],
     "Hyundai": [
       "Accent",
@@ -10434,7 +10878,12 @@
       "THERRY T45"
     ],
     "Ikco": [
-      "Samand"
+      "Samand",
+      "Tara",
+      "Rana Plus",
+      "Soren Plus",
+      "Dena Plus",
+      "Rira"
     ],
     "IM Motors": [
       "L6",
@@ -10446,7 +10895,14 @@
       "Crown",
       "Crown Southampton",
       "Custom",
-      "Le Baron"
+      "Le Baron",
+      "Crown Imperial Limousine",
+      "Crown Imperial Sedan",
+      "Newport 2-Door Hardtop",
+      "Imperial Sedan",
+      "Southampton 2-Door",
+      "Southampton 4-Door",
+      "LeBaron 4-Door Southampton"
     ],
     "Ineos": [
       "Grenadier",
@@ -10458,7 +10914,15 @@
       "Grenadier Trialmaster Edition",
       "Grenadier Quartermaster Fieldmaster Edition",
       "Grenadier Quartermaster Trialmaster Edition",
-      "Grenadier Trialmaster X"
+      "Grenadier Trialmaster X",
+      "Grenadier 1924",
+      "Grenadier Quartermaster Chassis Cab",
+      "Grenadier Station Wagon Black Edition",
+      "Grenadier Quartermaster Black Edition",
+      "Grenadier Detour",
+      "Grenadier Station Wagon Trialmaster X LETECH",
+      "Grenadier Quartermaster Trialmaster X LETECH",
+      "Grenadier Quartermaster Trialmaster X"
     ],
     "Infiniti": [
       "EX",
@@ -10607,7 +11071,11 @@
     ],
     "Iso Rivolta": [
       "Grifo",
-      "Lele"
+      "Lele",
+      "GT 300",
+      "Fidia",
+      "Grifo 7 Liter",
+      "Lele GL 300"
     ],
     "Isuzu": [
       "117",
@@ -11702,7 +12170,6 @@
       "X70",
       "X70 Plus",
       "X90",
-      "KAIYI",
       "X90 Plus",
       "T2 i-DM"
     ],
@@ -11716,7 +12183,11 @@
       "PICKUP"
     ],
     "Jmev": [
-      "Easy 3"
+      "Easy 3",
+      "EWIND",
+      "ELIGHT",
+      "EV3",
+      "EV2"
     ],
     "Joa Camp": [
       "75T"
@@ -12235,7 +12706,19 @@
       "LG6",
       "M45",
       "Rapier",
-      "V12"
+      "V12",
+      "11.9",
+      "14/60",
+      "16/65",
+      "3-litre",
+      "16/80",
+      "3½-litre",
+      "DB 2.6-litre",
+      "DB 3-litre",
+      "11.1",
+      "M45 Rapide",
+      "2 Litre Speed",
+      "Continental"
     ],
     "Lamborghini": [
       "140 Gallardo",
@@ -12636,7 +13119,16 @@
       "Defender 110 Trophy MHEV"
     ],
     "Landwind": [
-      "CV9"
+      "CV9",
+      "Rongyao",
+      "X2",
+      "X5",
+      "X5 Plus",
+      "X6",
+      "X7",
+      "X8",
+      "X9",
+      "Xiaoyao"
     ],
     "Laraki": [
       "Fulgura"
@@ -12683,7 +13175,11 @@
       "L6"
     ],
     "LEVC": [
-      "TX"
+      "L380",
+      "L380 Air",
+      "L380 Pro",
+      "L380 Max",
+      "L380 Ultra"
     ],
     "Lexus": [
       "CT",
@@ -12912,7 +13408,24 @@
       "SEV"
     ],
     "Lifan": [
-      "X60"
+      "X60",
+      "520",
+      "530",
+      "720",
+      "Myway",
+      "320",
+      "330",
+      "X50",
+      "X70",
+      "X80",
+      "Breez",
+      "Celliya",
+      "Cebrium",
+      "Murman",
+      "Smily",
+      "Solano",
+      "620",
+      "X60 VIP"
     ],
     "Lightyear": [
       "Lightyear 0",
@@ -13001,7 +13514,12 @@
     ],
     "Livan": [
       "X3 Pro",
-      "X6 Pro"
+      "X6 Pro",
+      "7",
+      "8",
+      "9",
+      "Blue Balloon",
+      "S6 Pro"
     ],
     "Lixiang": [
       "L9",
@@ -13445,10 +13963,26 @@
       "Baleno",
       "Ciaz",
       "Esteem",
-      "Gipsy",
+      "Gypsy",
       "Swift",
       "Wagon R",
-      "Zen"
+      "Zen",
+      "S-Presso",
+      "Alto K10",
+      "Celerio",
+      "Eeco",
+      "Ertiga",
+      "Dzire",
+      "Victoris",
+      "Brezza",
+      "FRONX",
+      "Grand Vitara",
+      "Invicto",
+      "Jimny",
+      "XL6",
+      "Estilo",
+      "Ritz",
+      "Omni"
     ],
     "Maserati": [
       "222",
@@ -13569,7 +14103,11 @@
       "MXT"
     ],
     "Matra": [
-      "Murena"
+      "Murena",
+      "Djet",
+      "M530",
+      "Bagheera",
+      "Rancho"
     ],
     "Maxus": [
       "eDeliver 9",
@@ -13746,7 +14284,6 @@
       "RIL",
       "RX-7 CABRIOLET TURBO 2 U9",
       "RX7 SAVANNA",
-      "TITAN",
       "121 1.3I-16V CABRIO TOP U9",
       "121 1.3I-16V GLX U9",
       "121 1.3I-16V LX U9",
@@ -14002,7 +14539,27 @@
       "Familia Rotary Coupe",
       "Chantez",
       "Grand Familia",
-      "Clef"
+      "Clef",
+      "Scrum Wagon",
+      "Scrum Wagon Standoff",
+      "Scrum Wagon Standoff Turbo",
+      "Scrum Wagon Standoff Aero Turbo PZ",
+      "Scrum Wagon PX",
+      "Scrum Wagon PX Turbo",
+      "Scrum Wagon PZ Turbo",
+      "Scrum Wagon PZ Turbo Special Package",
+      "Scrum Wagon PZ",
+      "Scrum Wagon PZ-S",
+      "Bongo Friendee",
+      "Bongo Friendee RF-V",
+      "Bongo Friendee RS-V",
+      "Bongo Friendee City Runner",
+      "Bongo Friendee City Runner II",
+      "Bongo Friendee City Runner III",
+      "Bongo Friendee City Runner NAVI Edition",
+      "Bongo Friendee RS-V Aero",
+      "Bongo Friendee RF-S Aero",
+      "Bongo Friendee RF-S"
     ],
     "Mazzanti": [
       "Evantra 01",
@@ -16395,10 +16952,18 @@
     ],
     "Microcar": [
       "M-8",
-      "M-GO",
+      "M.GO",
       "MC1",
       "MC2",
-      "VIRGO"
+      "VIRGO",
+      "Dué",
+      "Dué INITIAL",
+      "Dué MUST",
+      "M.GO INITIAL",
+      "M.GO MUST",
+      "M.GO X",
+      "Dué PLUS",
+      "M.GO PLUS"
     ],
     "Minerva": [
       "Minerva"
@@ -18318,7 +18883,8 @@
     ],
     "Pegaso": [
       "Z-102",
-      "Z-102 Cúpula"
+      "Z-102 Cúpula",
+      "Z-103"
     ],
     "Perodua": [
       "Alza",
@@ -19024,7 +19590,11 @@
       "Spider",
       "Battista Anniversario",
       "Battista Edizione Nino Farina",
-      "Battista Targamerica"
+      "Battista Targamerica",
+      "Battista Cinquantacinque",
+      "Battista Novantacinque",
+      "B95 Gotham",
+      "Battista Reversario"
     ],
     "Plymouth": [
       "Acclaim",
@@ -20304,7 +20874,8 @@
       "W152 S6"
     ],
     "Rossion": [
-      "Q1"
+      "Q1",
+      "Q1R"
     ],
     "Rover": [
       "10",
@@ -22082,7 +22653,11 @@
       "G03F",
       "G05",
       "G01 PRO",
-      "G03F EDI"
+      "G03F EDI",
+      "G05PRO",
+      "G01F Premium DCT",
+      "G03F Deluxe MT",
+      "G05 PRO Premium DCT"
     ],
     "Sylva": [
       "Striker"
@@ -23498,7 +24073,8 @@
       "M50V",
       "T70X",
       "T70",
-      "T90"
+      "T90",
+      "D60EV PLUS"
     ],
     "VinFast": [
       "VF 6",
@@ -24933,7 +25509,15 @@
       "1.3",
       "353",
       "353 W",
-      "Tourist"
+      "Tourist",
+      "311",
+      "311/8 Limousine",
+      "311/3 Coupé",
+      "Sport 313/1",
+      "312/300 HT",
+      "311-2 Cabriolet",
+      "353 „Knight Mark IV“",
+      "353 S Tourist"
     ],
     "Weltmeister": [
       "EX5",
@@ -24987,7 +25571,15 @@
       "G9",
       "Wey 03",
       "Wey 05",
-      "COFFEE 01"
+      "COFFEE 01",
+      "WEY 07",
+      "WEY 80",
+      "VV5",
+      "VV6",
+      "VV7",
+      "VV7 GT",
+      "VV7 PHEV",
+      "VV7GT PHEV"
     ],
     "Wiesmann": [
       "GT MF4",
@@ -25098,7 +25690,12 @@
       "Hongguang Mini EV"
     ],
     "Xev": [
-      "Yoyo Pro"
+      "Yoyo Pro",
+      "YOYO",
+      "YOYO Easy",
+      "YOYO City",
+      "YOYO Tech",
+      "YOYO Premium"
     ],
     "Xiaomi": [
       "SU7",
@@ -25127,11 +25724,11 @@
     "Yangwang": [
       "U7",
       "U8",
-      "U9"
-    ],
-    "Yucon": [
-      "Microliner Yucon",
-      "63G"
+      "U9",
+      "U8 Premium Edition",
+      "U8 Off-road Master Edition",
+      "U9 Xtreme",
+      "U8L Dingshi Edition"
     ],
     "Yugo": [
       "102, GV",
@@ -25223,13 +25820,21 @@
       "Thirty 7"
     ],
     "Zenos": [
-      "E10"
+      "E10",
+      "E10 S",
+      "E10 R",
+      "E10 r2",
+      "E10 rZ"
     ],
     "Zenvo": [
       "Aurora",
       "ST1",
       "TS1",
-      "TSR-S"
+      "TSR-S",
+      "TS1 GT",
+      "TSR",
+      "TSR-GT",
+      "Aurora Tur"
     ],
     "Zhongtong": [
       "LCK"
@@ -25498,7 +26103,10 @@
     ],
     "SSC": [
       "Ultimate Aero",
-      "Tuatara"
+      "Tuatara",
+      "Tuatara Striker",
+      "Tuatara Aggressor",
+      "Ultimate Aero XT"
     ],
     "ZINORO": [
       "1E",
@@ -25556,6 +26164,59 @@
       "Hyper SSR",
       "Hyper GT",
       "Hyper GT Global Model"
+    ],
+    "Brough Superior": [
+      "4 Litre",
+      "3.5-litre",
+      "Dual Purpose",
+      "3.5-litre Saloon"
+    ],
+    "Railton": [
+      "Fairmile Series I Drop Head Coupe",
+      "Cobham Saloon",
+      "Light Sports Tourer",
+      "10 HP Drop Head Coupe",
+      "Sandown Saloon",
+      "Stratton Saloon",
+      "Claremont Drophead Coupé",
+      "Carrington Drophead Coupé",
+      "University Limousine",
+      "Fairmile II",
+      "Fairmile Series III Drophead Coupe"
+    ],
+    "Invicta": [
+      "SC",
+      "LC",
+      "NLC",
+      "A Type",
+      "S Type",
+      "L",
+      "LS",
+      "Black Prince",
+      "S1 Coupe"
+    ],
+    "Framo": [
+      "Stromer",
+      "Piccolo"
+    ],
+    "Mega": [
+      "e-Scouty Evo"
+    ],
+    "M2": [
+      "1001",
+      "1002",
+      "1028"
+    ],
+    "Autozam": [
+      "AZ-1",
+      "AZ-3",
+      "Carol",
+      "Revue"
+    ],
+    "Maico": [
+      "MC 400/H",
+      "MC 500",
+      "500 Sport"
     ]
   },
   "motorcycle": {
@@ -25564,7 +26225,17 @@
       "MH3"
     ],
     "Access": [
-      "Motor"
+      "Motor",
+      "Xtreme Enduro SP 400",
+      "Xtreme Supermoto SP450SM EFI",
+      "Shade Typical T300U",
+      "Shade Xtreme AX600",
+      "Shade Sport 800 AMX800UL",
+      "Xtreme Mini ST100LA",
+      "Xtreme Enduro SP450EFI",
+      "Shade Sport 600 ABS",
+      "Shade Sport 800 ABS",
+      "Shade Sport 800L ABS"
     ],
     "Acma": [
       "Vespa",
@@ -25587,7 +26258,14 @@
       "M 250",
       "MB 201",
       "MB Sprinter",
-      "Junior"
+      "Junior",
+      "MB 250S",
+      "MB 280",
+      "MB 280S",
+      "Favorit",
+      "MR 100 Roller Luxus",
+      "MR 125 Roller Sport",
+      "MF2"
     ],
     "Adly": [
       "GTA50",
@@ -25633,7 +26311,18 @@
       "ATV-125TF",
       "ATV-320TF",
       "ATV-100T",
-      "E-M 500L"
+      "E-M 500L",
+      "E-S 2000",
+      "E-D 2000",
+      "E-T 2000",
+      "E-M 500i",
+      "ATV-100TF",
+      "ATV-700",
+      "ATV-320a",
+      "ATV-320b",
+      "MK-320",
+      "ATV-500",
+      "ATV-300XS"
     ],
     "Aeon": [
       "Cobra 180",
@@ -25641,7 +26330,39 @@
       "AERO",
       "ARGON",
       "COBRA",
-      "TORCH"
+      "TORCH",
+      "CO-IN 110",
+      "CO-IN 125",
+      "Dory 115",
+      "OZ 125",
+      "OZ 125E",
+      "OZS 150",
+      "OZ Polini 150",
+      "ES 150",
+      "Urban 180",
+      "Elite 250",
+      "Elite 300i",
+      "Elite 300E",
+      "Elite 300R",
+      "Elite 400i ABS",
+      "3W Elite 350",
+      "3D-350",
+      "3D-350R",
+      "STR",
+      "MY 125",
+      "MY 150",
+      "Ai-1 Sport",
+      "Ai-1 More",
+      "Ai-2 Gather",
+      "Ai-1 Comfort",
+      "Ai-1 Comfort+",
+      "Ai-3 Comfort",
+      "Ai-3 Comfort+",
+      "Ai-4 Ever",
+      "Ai-1 Ultra Belt",
+      "Ai-1 Ultra ABS",
+      "Ai-1 Sport+",
+      "MY 150 Retro ABS"
     ],
     "AGM": [
       "Brash 50",
@@ -25718,7 +26439,8 @@
       "SPR 510R ENDURO",
       "SPR 125 SUPERMOTO",
       "SPR 240 SUPERMOTO",
-      "SPR 250 SUPERMOTO"
+      "SPR 250 SUPERMOTO",
+      "SPR 240 ENDURO"
     ],
     "AJS": [
       "'71 Desert Scrambler 125",
@@ -26052,7 +26774,7 @@
     "Arch Motorcycle": [
       "KRGT-1",
       "1s",
-      "Method 143"
+      "Method143"
     ],
     "Arctic Cat": [
       "Cat",
@@ -26109,7 +26831,11 @@
       "Vg",
       "Vh",
       "VH500",
-      "W / Ng"
+      "W / Ng",
+      "Ace",
+      "Ace R",
+      "Ace Iron Horse",
+      "Ace of Diamonds"
     ],
     "Askoll": [
       "eSpro",
@@ -26132,7 +26858,18 @@
       "eS3"
     ],
     "Augment": [
-      "360"
+      "360",
+      "ES210 Air",
+      "ES210 Honeycomb",
+      "ES210 Super",
+      "Alturo",
+      "Agaru Smart",
+      "ES One 10 Long Deck",
+      "ES One 10 Short Deck",
+      "Agaru Ultra",
+      "360 25 km/h",
+      "360 45 km/h",
+      "ES210"
     ],
     "AWO": [
       "425",
@@ -26224,7 +26961,49 @@
       "CLASSIC 125",
       "HYPER 125",
       "HYPER 250",
-      "FRX 125"
+      "FRX 125",
+      "NAKED 50",
+      "FIGHTER Eco",
+      "FR",
+      "SPRINT",
+      "VOLCANO 50",
+      "RANGER Classic 50",
+      "CORAL 125",
+      "XTRAIL 125",
+      "XPLORE 125",
+      "CORAL 50",
+      "BMAX 125",
+      "FALCON 125",
+      "SCALPEL 50",
+      "FLASH 50",
+      "FALCON 50",
+      "TRES",
+      "TERRAX 125",
+      "DIRTMAN 125",
+      "ROCKY 125",
+      "RAPTOR 125",
+      "THOR 125",
+      "RAZE 200",
+      "PENTORA 125",
+      "IRON 200",
+      "NXT 90",
+      "NXT 125",
+      "NXT 150",
+      "NXT 250 Base",
+      "NXT 250",
+      "NXT 300",
+      "DB125-3",
+      "T-REX 125",
+      "EAGLE 125",
+      "VOLT",
+      "DISCOVER 200",
+      "BRAVER 300",
+      "ROAD HUNTER 200",
+      "Cafe Racer 50",
+      "RALLY 125",
+      "STRATOS 125",
+      "MZK 250",
+      "QUATRO"
     ],
     "Bashan": [
       "ATV200S-7",
@@ -26236,9 +27015,44 @@
       "Mot-O-Mat",
       "Whippet",
       "Batavette VA 21",
-      "Comforte",
+      "Conforte",
       "Tramp Sport",
-      "Mini Batavette GO-GO"
+      "Mini Batavette GO-GO",
+      "Bilonet Itom",
+      "Bilonet F48",
+      "HM48",
+      "Bilonet FP50",
+      "Transport FP50",
+      "Bilonet G50",
+      "Bilonet FH48 Transport",
+      "Bilonet G-50 Sport",
+      "Bilonet G-50 Tour",
+      "CombiSport",
+      "FP50 Sport",
+      "Tourist G50",
+      "SuperSport",
+      "Rotary",
+      "Transport G-50",
+      "Bilonet Husky",
+      "Starflite",
+      "Batavette S",
+      "Batavette V-21",
+      "TS49",
+      "TS50",
+      "TS 49 S",
+      "TS49-4",
+      "GO-GO V30",
+      "Bronco",
+      "MK2",
+      "MK4",
+      "MK4S",
+      "HS50",
+      "City",
+      "HS 60",
+      "Mondial",
+      "Heja Cross",
+      "Gran Prix",
+      "Mot 'O-Mat S"
     ],
     "Baw": [
       "Pony"
@@ -26249,7 +27063,11 @@
     "Bellier": [
       "B8",
       "Jade",
-      "Opale"
+      "Opale",
+      "B8 Italia",
+      "B8 Soft",
+      "B8 Série C",
+      "B8 Série S Line"
     ],
     "Benda": [
       "BD50QT-5",
@@ -26262,7 +27080,17 @@
       "Napoleon 500",
       "LFC 700",
       "Chinchilla 300",
-      "Napoleonbob 500"
+      "Napoleonbob 500",
+      "Rock 250",
+      "Rock 300",
+      "Rock 707",
+      "Chinchilla 250 CVT",
+      "Chinchilla 350 CVT",
+      "Chinchilla 500",
+      "Dark Flag 500 Commander",
+      "Dark Flag 950",
+      "LFC 700 Pro",
+      "LFS 700"
     ],
     "Bendao": [
       "Bdesd-C3"
@@ -26359,7 +27187,25 @@
     ],
     "Benzhou": [
       "25 Sixties",
-      "50 Retro"
+      "50 Retro",
+      "City Star 50",
+      "YY50QT-6",
+      "YY50QT-10",
+      "YY50QT-10B",
+      "YY50QT-15",
+      "YY50QT-21",
+      "YY50QT-24",
+      "YY50QT-24B",
+      "YY50QT-25",
+      "YY50QT-26",
+      "YY50QT-28",
+      "YY50QT-31",
+      "YY50QT-5",
+      "YY50QT-7",
+      "YY50QT-7A",
+      "YY125T-12",
+      "YY125T-25L",
+      "YY125T-6"
     ],
     "Berini": [
       "25 Sixties",
@@ -26368,7 +27214,20 @@
       "Iva LUX50",
       "M13",
       "M58",
-      "Napoli"
+      "Napoli",
+      "M21",
+      "M59",
+      "Classic 50",
+      "Light 50",
+      "Bella Milano",
+      "Smart 50",
+      "GP50",
+      "Newton",
+      "Mio 50",
+      "New City 2",
+      "E-Napoli",
+      "Matador",
+      "YY50QT-32A"
     ],
     "Beta": [
       "400 RR",
@@ -26537,7 +27396,9 @@
       "Bonfire E",
       "Bonfire X",
       "Bonfire 45",
-      "Wildfire"
+      "Wildfire",
+      "Bonfire Performance",
+      "Wildfire Performance"
     ],
     "Bluroc": [
       "Heritage 50",
@@ -26556,20 +27417,13 @@
       "X-BONGO 125",
       "Hero 250",
       "Tracker 125",
-      "Spirit 125"
-    ],
-    "Bluroc Motorcycles": [
-      "Heritage 125",
-      "X-Bongo 125",
-      "V-BOB 250",
-      "Hero 250",
-      "Tracker 125",
       "Spirit 125",
-      "Hero 125",
-      "Legend 125",
+      "Heritage 125",
+      "V-BOB 250",
       "Hero 50 EFI",
-      "X-Bongo 50",
-      "Heritage 50"
+      "Hero 125 – Titanium",
+      "Hero 125 – Gold black",
+      "Hero 125 Desert Trophy"
     ],
     "BMW Motorrad": [
       "100",
@@ -26840,7 +27694,19 @@
       "Bhc-2",
       "Bhc-3 502",
       "Bhc-3ZZ4",
-      "ZZ4 350"
+      "ZZ4 350",
+      "Coupe Trike",
+      "'57 Chevy Trike",
+      "SS Truck Trike",
+      "Willys Trike",
+      "Gangsta Trike",
+      "Dragon Trike",
+      "Touring Bagger Bike",
+      "Cruiser Bike",
+      "BHC-9 LS300",
+      "BHC-3 LS SS",
+      "BHC-9 LS Coupe",
+      "BHC-9 ZZ4 Sierra Truck Trike"
     ],
     "Braaap": [
       "ST250",
@@ -27073,7 +27939,17 @@
     ],
     "Bullit": [
       "Hero 125",
-      "Spirit 125"
+      "Spirit 125",
+      "Hero 250",
+      "Hunt XC 125",
+      "Bluroc 125",
+      "Bluroc 250",
+      "Heritage 50",
+      "Heritage 125",
+      "V-Bob 250",
+      "Hero 50",
+      "Hunt S 125",
+      "Hunt S 250"
     ],
     "Bullit Motorcycles": [
       "Bluroc 125",
@@ -27094,10 +27970,66 @@
       "Metralla",
       "Metralla MK2",
       "Sherpa",
-      "ASTRO"
+      "ASTRO",
+      "Mercurio 125",
+      "Mercurio 175",
+      "Mercurio 150",
+      "Mercurio 200 USA",
+      "Mercurio 155 GT",
+      "Mercurio 175 GT",
+      "Campera 125",
+      "Campera 155",
+      "Campera 175",
+      "Campera MK2 175",
+      "Saturno 200",
+      "Junior 74",
+      "Junior 74 GT",
+      "Junior 100 Swedish Model",
+      "Junior 100 GT",
+      "Junior 125",
+      "Junior 125 GT",
+      "Junior GT2 75",
+      "Junior GT2 125",
+      "Senior 200",
+      "El Tigre",
+      "Metralla GT 250",
+      "Metralla GTS",
+      "Streaker 74",
+      "Streaker 125",
+      "Alpina 175",
+      "Alpina 250",
+      "Alpina 350",
+      "Matador MK2 200",
+      "Matador MK3 250",
+      "Matador MK9 350",
+      "Frontera 74",
+      "Frontera MK9 250",
+      "Frontera MK9 370",
+      "Frontera MK10 250",
+      "Frontera MK10 370",
+      "Lobito 100",
+      "Lobito MK7 75",
+      "Lobito MK7 125",
+      "Lobito MK7 175",
+      "Lobito MK8 75",
+      "Lobito MK8 125",
+      "Lobito MK8 175",
+      "Sherpa T 74",
+      "Sherpa T 125",
+      "Sherpa T 238",
+      "Sherpa T 250",
+      "Sherpa T 350",
+      "Chispa 49",
+      "Brinco 75"
     ],
     "Bye Bike": [
-      "One"
+      "One",
+      "One Edition 30 km/h Long Seat",
+      "One Edition 30 km/h Short Seat",
+      "One Cargo",
+      "One Edition",
+      "One Plus",
+      "One Plus Edition"
     ],
     "Cagiva": [
       "650 Alazzurra",
@@ -27161,15 +28093,36 @@
       "Kalk&",
       "Makka",
       "Makka Flex",
-      "Osa",
-      "Osa Lite"
+      "Ösa",
+      "Osa Lite",
+      "Kalk OR Race",
+      "Kalk OR",
+      "Kalk INK Race",
+      "Kalk INK",
+      "Kalk AP",
+      "Kalk INK&",
+      "Ösa+",
+      "Ösa Flex",
+      "Ösa Range",
+      "Makka Range"
     ],
     "Calthorpe": [
       "Ivory",
-      "Ivory 250cc",
-      "Ivory 350cc",
-      "Ivory 500cc",
-      "Sports"
+      "Ivory 250 Minor",
+      "Ivory 350 Junior",
+      "Ivory 500 Major",
+      "Sports",
+      "New Lightweight",
+      "Precision 3½ h.p. SV Touring",
+      "Precision 4¼ h.p. SV",
+      "6 h.p. Precision V-twin",
+      "3.5 h.p. Standard Touring",
+      "4 h.p. Precision V-twin Standard Touring",
+      "Twin Lightweight Combination",
+      "D.6.A Sports",
+      "D.6.S OHV Super Sports",
+      "G.1",
+      "OHV Popular"
     ],
     "Can-Am": [
       "COMMANDER 1000",
@@ -27296,21 +28249,44 @@
       "F80 Street Sport",
       "F80 Dual Sport",
       "FX OR-60",
-      "F80 OR-60"
+      "F80 OR-60",
+      "FX Off-Road (72V48A)",
+      "F80 Off-Road (72V30A)",
+      "F80 Off-Road (72V32A)",
+      "F80 Off-Road (72V48A)",
+      "F80 Road Low (L3e)",
+      "F80 Road High Position (L3e)"
     ],
     "Capri": [
       "CL"
     ],
     "Carver": [
       "One",
-      "S+80"
+      "S+80",
+      "R+",
+      "Cargo R+",
+      "Cargo S+",
+      "Base",
+      "Cargo Base"
     ],
     "Casalini": [
       "M12",
       "M14",
       "M20",
       "Sulky",
-      "Sulkycar"
+      "Sulkycar",
+      "650 Starter",
+      "650 Xtreme",
+      "650 Sportiva",
+      "David PT 50",
+      "David Thin 50",
+      "Sulky 125 A 16",
+      "Sulky 50 Berlina",
+      "Sulky 50 Break",
+      "Sulky 50 Cabriolet",
+      "Sulky Diesel",
+      "Sulky SP 50",
+      "Sulky Ydea"
     ],
     "CCM": [
       "404",
@@ -27453,7 +28429,10 @@
       "1000MT-X LS"
     ],
     "Chang Jiang": [
-      "CJ750"
+      "CJ750",
+      "Pekin Express Adventure CJ 650",
+      "Pekin Express Dynasty CJ 650",
+      "SIBERIAN EXPRESS 750"
     ],
     "Chaoya": [
       "Beter",
@@ -27468,7 +28447,22 @@
       "CH32",
       "CH33",
       "CH40",
-      "CH46"
+      "CH46",
+      "CH46 Junior",
+      "CH46 Spring",
+      "CH44 Barooder",
+      "CH46 Sportline",
+      "CH46 Sportline R",
+      "CH46 Sportline R2",
+      "CH40 Barooder",
+      "CH40 Sportline R",
+      "CH46 K SL",
+      "CH46e SL",
+      "CH46 K Série",
+      "CH46 K Sportline RR",
+      "CH46e Sportline RR",
+      "Media",
+      "Stella"
     ],
     "Chihui": [
       "Ches-A-10",
@@ -27495,7 +28489,9 @@
       "Electric Scooter"
     ],
     "Clean Motion": [
-      "Zbee"
+      "Zbee",
+      "Zbee RS",
+      "Zbee Cargo"
     ],
     "Cleveland CycleWerks": [
       "Ace 250",
@@ -27588,7 +28584,29 @@
       "SX 250"
     ],
     "Crescent": [
-      "2000"
+      "2000",
+      "2005",
+      "2010",
+      "2015",
+      "2011",
+      "2013",
+      "Autoped 1118",
+      "1129",
+      "1126",
+      "1136",
+      "1139",
+      "1151",
+      "1151-1",
+      "1149",
+      "Skoterett 1264",
+      "50s",
+      "Trapper",
+      "Topper",
+      "1238 LM16",
+      "Shopping 1259",
+      "Compact 1240",
+      "E-type 1293",
+      "F50gl"
     ],
     "Cube": [
       "Kathmandu Hybrid"
@@ -27721,7 +28739,55 @@
     "DKW": [
       "Hummel",
       "NZ350",
-      "RT350S"
+      "RT350S",
+      "Block 175",
+      "Block 200",
+      "Block 300",
+      "Block 500",
+      "BM 200",
+      "E 206",
+      "E 250",
+      "E 300",
+      "KM 175",
+      "KM 200 Doppelport",
+      "KM 200 Einport",
+      "KS 200",
+      "Lomos Sesselrad",
+      "Luxus 200",
+      "Luxus 300",
+      "Luxus 500",
+      "Luxus Sport 300",
+      "NZ 250",
+      "SB 200",
+      "SB 300",
+      "SB 350",
+      "SB 500",
+      "Sport 250",
+      "Sport 350",
+      "Sport 500",
+      "Super Sport 600",
+      "TM 200",
+      "Volksrad",
+      "Z 500",
+      "ZSW 500",
+      "Hobby Roller",
+      "RT 125 Italien",
+      "RT 125/2",
+      "RT 125/H",
+      "RT 125W",
+      "RT 175",
+      "RT 175S",
+      "RT 175VS",
+      "RT 200",
+      "RT 200 H",
+      "RT 200/2",
+      "RT 200S",
+      "RT 200VS",
+      "RT 250/1",
+      "RT 250/2",
+      "RT 250H",
+      "RT 250S",
+      "RT 250VS"
     ],
     "Dnepr": [
       "11",
@@ -27747,7 +28813,38 @@
       "Ew",
       "Mark V",
       "T35",
-      "TS23"
+      "TS23",
+      "A31",
+      "A32",
+      "B31",
+      "B32",
+      "C31",
+      "C32",
+      "D31",
+      "D32",
+      "D33",
+      "E31",
+      "E32",
+      "F31",
+      "F32",
+      "G31",
+      "G32",
+      "H32",
+      "K32",
+      "M32",
+      "S5",
+      "S6",
+      "T6",
+      "X",
+      "X.1",
+      "Y",
+      "Y.1",
+      "Y.2",
+      "Z",
+      "Z.1",
+      "O.W.",
+      "O.W.1",
+      "Endeavour"
     ],
     "Dts": [
       "Milano"
@@ -28223,7 +29320,19 @@
       "Se",
       "SR",
       "SS",
-      "SS3.0"
+      "SS3.0",
+      "Pro S",
+      "MINI",
+      "DJ",
+      "PRO 4.0",
+      "Pro SS 2.0",
+      "MINI R",
+      "SE L1E",
+      "SS 2.5 L1E",
+      "SS 2.5 OFF ROAD",
+      "SS 3.0 ROAD LEGAL",
+      "SS 4.0 ROAD LEGAL",
+      "SR ROAD LEGAL"
     ],
     "E-Max": [
       "110S",
@@ -28328,7 +29437,19 @@
     "Ebroh": [
       "Bravo GLE",
       "E-F10",
-      "Veracruz"
+      "Veracruz",
+      "BRAVO CR",
+      "BRAVO CR Special Edition",
+      "BRAVO GLE Pro",
+      "BRAVO GLS",
+      "Spuma Li",
+      "Spuma Li 5K",
+      "Veracruz gle",
+      "SPUM-ON",
+      "Strada 20th 10K",
+      "Strada 12K",
+      "Strada 9K",
+      "Strada 11K"
     ],
     "Ecooter": [
       "E1",
@@ -28356,13 +29477,27 @@
       "Tem",
       "E-TREK",
       "ESCAPE",
-      "EM ESCAPE"
+      "EM ESCAPE",
+      "Epure FACTOR-e",
+      "Epure Race",
+      "Escape R",
+      "Escape X",
+      "Escape XR",
+      "Epure Lite",
+      "Epure Sport",
+      "Escape Lite",
+      "Escape S",
+      "Escape X+",
+      "Escape XR+",
+      "Escape SE"
     ],
     "Eli": [
       "Zero"
     ],
     "Elmoto": [
-      "HR-2"
+      "HR-2",
+      "Loop",
+      "HR-4"
     ],
     "Elveco": [
       "Pro"
@@ -28395,14 +29530,36 @@
       "EVA RIBELLE RS",
       "SS",
       "SS9+ RS",
-      "EsseEsse9"
+      "EsseEsse9",
+      "Experia Launch Edition",
+      "Ego+ RS",
+      "Ego+",
+      "EGO + P",
+      "EGO + P RS",
+      "EVA RIBELLE P",
+      "EVA RIBELLE P RS",
+      "SS9 + P",
+      "SS9 + P RS"
     ],
     "Engtian": [
       "TH01"
     ],
     "Estrima": [
       "Biro",
-      "Biro Van"
+      "Biro Van",
+      "Birò B2211 Big Dressed 45 Maxi",
+      "Birò B2211 Big Dressed 45 ReMove",
+      "Birò B2211 Big Dressed 60 Maxi",
+      "Birò Classic Big/Batteria litio Re-move",
+      "Birò Classic Box/Batteria litio Re-move",
+      "Birò Classic Summer/Batteria litio Maxi",
+      "Birò Classic Summer/Batteria litio Re-move",
+      "Birò Classic Winter/Batteria litio Maxi",
+      "Birò Classic Winter/Batteria litio Re-move",
+      "Birò B2211 Small Dressed 45 Maxi",
+      "Birò B2211 Small Dressed 45 ReMove",
+      "Birò B2211 Small Naked 45 ReMove",
+      "Birò B2211 Small Dressed 60 Maxi"
     ],
     "Eurocka": [
       "Cka Express"
@@ -28417,7 +29574,6 @@
     ],
     "Excelsior": [
       "Big X",
-      "Manxman",
       "Super X"
     ],
     "Explorer": [
@@ -28458,7 +29614,28 @@
       "NK14 STEALTH 125",
       "Caballero 500",
       "XEF 250",
-      "XE 125"
+      "XE 125",
+      "Rally Legend Red 500",
+      "Scrambler 500",
+      "Deluxe 500",
+      "Rally 500",
+      "Scrambler 700",
+      "XMF 125 Competition",
+      "XMF 125 Performance",
+      "XEF 125 Performance",
+      "XEF 125 Competition",
+      "XEF 310",
+      "Deluxe 125",
+      "Rally 125",
+      "Scrambler 125",
+      "Travel 700",
+      "Deluxe 700",
+      "XEF 450",
+      "XEF 250 Trail",
+      "XM 50 Performance",
+      "XM 50 Competition",
+      "XE 50 Performance",
+      "XE 50 Competition"
     ],
     "Fecht": [
       "Trike"
@@ -28467,8 +29644,15 @@
       "Feddz"
     ],
     "Felo": [
-      "FW03",
-      "M1"
+      "FW-03",
+      "M1",
+      "FW-06",
+      "FW-07",
+      "FW-03 SIC Limited Edition",
+      "FW03 STD",
+      "FW03 Type 2",
+      "FW05",
+      "M壱"
     ],
     "Fiat": [
       "Spiaggina",
@@ -28481,7 +29665,20 @@
     "FN": [
       "350",
       "M70 Sahara",
-      "M90"
+      "M90",
+      "M 60",
+      "M 67 A",
+      "M 67 B",
+      "M 67 C",
+      "M 67 D",
+      "M 70 C",
+      "M 70 D Luxe",
+      "M 71",
+      "M 90 A",
+      "M 91",
+      "M 200",
+      "M 250",
+      "M 86"
     ],
     "Focus": [
       "Jarifa",
@@ -28526,7 +29723,51 @@
     "Francis-Barnett": [
       "Cruiser",
       "Falcon",
-      "Merlin"
+      "Merlin",
+      "Empire Model 12",
+      "Dominion Model 16",
+      "Black Hawk Model 21",
+      "Condor Model 26",
+      "Falcon Model 22",
+      "Snipe J48",
+      "Plover J40",
+      "Merlin 51",
+      "Merlin 52",
+      "Merlin 53",
+      "Falcon 54",
+      "Falcon 55",
+      "Merlin 57",
+      "Falcon 58",
+      "Merlin 59",
+      "Falcon 60",
+      "Merlin 61",
+      "Falcon 62",
+      "Merlin 63",
+      "Falcon 64",
+      "Falcon 65",
+      "Falcon 67",
+      "Cruiser 68",
+      "Falcon 70",
+      "Cruiser 71",
+      "Falcon 72",
+      "Plover 73",
+      "Falcon 74",
+      "Cruiser 75",
+      "Falcon 76",
+      "Falcon 77",
+      "Plover 78",
+      "Light Cruiser 79",
+      "Cruiser 80",
+      "Falcon 81",
+      "Cruiser 84",
+      "Plover 86",
+      "Falcon 87",
+      "Fulmar 88",
+      "Cruiser 89",
+      "Sports Fulmar 90",
+      "Sports Cruiser 91",
+      "Plover 95",
+      "Model 96"
     ],
     "Frisian Motors": [
       "FM-50"
@@ -28539,7 +29780,44 @@
       "Mosquito",
       "Rekord",
       "MOPED",
-      "CAPRI LX"
+      "CAPRI LX",
+      "Capri 100",
+      "349cc Routiere",
+      "Junior Turismo 50",
+      "Monza Junior",
+      "Gulp Flex",
+      "Gulp Matic",
+      "Eureka",
+      "Gulp 50",
+      "Gran Turismo 50",
+      "Junior Tiger Cross",
+      "Minibat Cross",
+      "Katia",
+      "Ciclone KL50 SV",
+      "Noi",
+      "Basic",
+      "RSX 125",
+      "TSR 125",
+      "Tiger 125 XR",
+      "Tiger 125 XRD",
+      "Tiger 50 XLE",
+      "Tiger 125 XLE",
+      "Formuno 50",
+      "Team Matic",
+      "Team 50 ES Bimatic",
+      "Team 3V",
+      "Ciclone 50",
+      "Flexi 50",
+      "FLO 50",
+      "FX 50",
+      "Grinta 50",
+      "GSP 50",
+      "KRS 50",
+      "Queenie 50",
+      "Sahel 50",
+      "Urka 50",
+      "VIP 50",
+      "XO 50"
     ],
     "Garia": [
       "Club Car Urban L7E-S",
@@ -28732,7 +30010,43 @@
       "RE"
     ],
     "Goricke": [
-      "Diva Luxus"
+      "Diva Luxus",
+      "Gö 100 K",
+      "Gö 100 S",
+      "Gö 150",
+      "Gö 150 S",
+      "Gö 175",
+      "Gö 175 S",
+      "Gö 200",
+      "MS 1",
+      "T38B",
+      "Gö 98H",
+      "Gö 98D",
+      "Gö 125 Ilo",
+      "GA175",
+      "Domino",
+      "Femina",
+      "Diva-Luxus-Schwing 313",
+      "Diva-Luxus-Schwing 314",
+      "Diva-Luxus 312",
+      "Diva",
+      "Göretta",
+      "100S/57",
+      "Regina-Luxus 342",
+      "Regina-Luxus 343",
+      "Jlo-Piano 363",
+      "Supersport 367",
+      "Regina Luxus 326",
+      "Saxonette 301 AM",
+      "343 LKF",
+      "345 LKF",
+      "350 S",
+      "Modell 300",
+      "Modell 325",
+      "Modell 725",
+      "725 TL",
+      "301A",
+      "301B"
     ],
     "Goupil": [
       "G2",
@@ -28749,7 +30063,19 @@
       "S2.4",
       "T2.4",
       "T3.4",
-      "CE"
+      "CE",
+      "GO! T 1.5",
+      "GO! T 2.6",
+      "FLEX",
+      "GO! S1.5",
+      "GO! S2.6",
+      "GO! S2.6+",
+      "GO! S2.5",
+      "GO! S3.6",
+      "GO! T3.6",
+      "Schwalbe L1e",
+      "Schwalbe L3e",
+      "GO! T2.5"
     ],
     "GPX": [
       "Drone Keyless",
@@ -28760,7 +30086,23 @@
       "FSE",
       "250E",
       "TSE",
-      "300 EFI"
+      "300 EFI",
+      "GR200R Dacorsa2",
+      "Legend250 TWIN III",
+      "Drone 4 Valves",
+      "Demon GR200R",
+      "Legend250 Brighton",
+      "Popz 110",
+      "Drone",
+      "GR200R DaCorSa",
+      "Demon 150GR FI",
+      "Legend250 TwinII",
+      "Rock",
+      "Popz 125",
+      "Legend 150Fi",
+      "Mad 300Max",
+      "Raptor 180",
+      "Legend 250 Twin"
     ],
     "Grecav": [
       "Eke",
@@ -29723,14 +31065,30 @@
       "Cocis"
     ],
     "Heinkel": [
-      "103A-2",
       "Perle",
       "Tourist",
       "Tourist 103A-1",
-      "Tourist 103A2"
+      "Tourist 103A2",
+      "Tourist 101 A0",
+      "Tourist 102 A1",
+      "Tourist 103 A0",
+      "150"
     ],
     "Henderson": [
-      "Deluxe"
+      "Deluxe",
+      "Model A",
+      "Model B",
+      "Model C",
+      "Model D",
+      "Model E",
+      "Model F",
+      "Model G",
+      "Model H",
+      "Model Z",
+      "Model Z-2",
+      "Model K",
+      "KJ Streamline",
+      "KL Special"
     ],
     "Hensim": [
       "ADV 300"
@@ -29755,11 +31113,74 @@
       "SCRAMBLER"
     ],
     "Hercules": [
-      "K125BW",
       "Saxonette",
       "K 180 BW",
       "ELECTRIC",
-      "SCOOTER"
+      "SCOOTER",
+      "K 200 Sport",
+      "SS 500",
+      "HJ 500",
+      "K 350",
+      "Liliput",
+      "B 50",
+      "K 500",
+      "Prinz 175",
+      "S 200",
+      "S 204",
+      "HS 350",
+      "MF 100 Liliput",
+      "MF 2 Damenausfuhrung",
+      "S125",
+      "220 MK",
+      "K 175 SE",
+      "K 102",
+      "K 50",
+      "K 103 S",
+      "K 50 Sport",
+      "Lastboy",
+      "K 50 Supersport",
+      "K 105",
+      "K105/125X",
+      "Sportbike",
+      "K 50 RE",
+      "K 125 T",
+      "W 2000",
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "Prima 1",
+      "Prima 2",
+      "Prima 3",
+      "Prima 4",
+      "Prima 5",
+      "Prima 6",
+      "Prima G3",
+      "Prima GT",
+      "Prima GX",
+      "Prima SX",
+      "Optima",
+      "221 MF",
+      "C3",
+      "Cb 1",
+      "Hobbyrider HR 2",
+      "Jogging",
+      "L 50",
+      "MF3",
+      "MF4",
+      "MX1",
+      "Prima 2 S",
+      "Prima 2N",
+      "Prima 3 S",
+      "Prima 4 S",
+      "Prima 4N",
+      "Prima 4SL",
+      "Prima 5 S",
+      "Prima 5N",
+      "Prima 5SL",
+      "Prima Presto",
+      "Prima Pronto"
     ],
     "Hero": [
       "Hunk 440",
@@ -29779,7 +31200,8 @@
       "Karizma XMR"
     ],
     "Hesketh": [
-      "V1000"
+      "V1000",
+      "Vampire"
     ],
     "Honda": [
       "125",
@@ -31453,7 +32875,31 @@
       "Dream D-Type"
     ],
     "Horex": [
-      "Regina 250"
+      "Regina 250",
+      "Model L",
+      "T5",
+      "T55",
+      "T6",
+      "S5",
+      "SS5",
+      "S2",
+      "S3",
+      "S6",
+      "S8",
+      "S35",
+      "S64",
+      "S25",
+      "SB35",
+      "EM",
+      "Regina 350",
+      "Regina 400",
+      "Regina Sport",
+      "Regina V",
+      "Imperator 400",
+      "Resident 250",
+      "Resident 350",
+      "Rebell Type 10",
+      "Citation"
     ],
     "Horwin": [
       "CR6",
@@ -31463,7 +32909,14 @@
       "EK3",
       "SK1",
       "SK3",
-      "TLA3"
+      "TLA3",
+      "SK3 Plus",
+      "HT5",
+      "EK1 DS",
+      "EK3 DS",
+      "SK1 DS",
+      "SK3 DS",
+      "SK1 Pro"
     ],
     "Huatian": [
       "HT150T-15",
@@ -31903,7 +33356,70 @@
       "JUPITER 5"
     ],
     "James": [
-      "Cadet"
+      "Cadet",
+      "Model T",
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A9",
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B7",
+      "B8",
+      "B9",
+      "B10",
+      "B11",
+      "C8",
+      "C9",
+      "C10",
+      "C11",
+      "C12",
+      "D1",
+      "D2",
+      "D4",
+      "D5",
+      "D7",
+      "D8",
+      "D11",
+      "D12",
+      "D14",
+      "D15",
+      "K.8",
+      "K.9",
+      "K.15",
+      "K.16",
+      "K.17",
+      "K.18",
+      "Superlux",
+      "Comet 1",
+      "Comet L1",
+      "Captain",
+      "Captain J8",
+      "Captain K7",
+      "Captain L20",
+      "Sports Captain L20S",
+      "Cadet J5",
+      "Cadet J15",
+      "Cadet L15",
+      "Cadet M15",
+      "Flying Cadet L15A",
+      "Commando J9",
+      "Commando K7T",
+      "Commando L25T",
+      "Commando M25T",
+      "Colonel K12",
+      "Commodore L25",
+      "Cavalier L17",
+      "Superswift M25",
+      "Sports Superswift M25S"
     ],
     "Jawa": [
       "05",
@@ -32978,12 +34494,41 @@
       "NK125R",
       "450 RALLY EX",
       "KY 125 R",
-      "450 RALLY RE"
+      "450 RALLY RE",
+      "800X Touring",
+      "525X",
+      "250RR",
+      "450R",
+      "350R",
+      "250R",
+      "450 Enduro RE",
+      "MX450 Cross R",
+      "MX250 Cross R",
+      "625V"
     ],
     "Kove Moto": [
       "450 Rally",
       "800X",
-      "321RR"
+      "321RR",
+      "800X Touring",
+      "625X",
+      "800X Pro",
+      "525X",
+      "800X Rally",
+      "450 Rally RE",
+      "450 Rally EX",
+      "450RR",
+      "350RR",
+      "250RR",
+      "450R",
+      "350R",
+      "250R",
+      "450 Enduro RE",
+      "MX450 Cross R",
+      "MX250 Cross R",
+      "625V",
+      "625X Max",
+      "250 Enduro"
     ],
     "Kovi": [
       "250-ST Advance",
@@ -33004,7 +34549,57 @@
       "K53-311",
       "K53/402",
       "RS",
-      "CR125"
+      "CR125",
+      "R 50",
+      "J 50",
+      "J 51",
+      "J 51/1",
+      "J 51 R",
+      "K 50",
+      "K 51",
+      "Amazone K 52",
+      "Amazone K 52/2",
+      "Amazone K 52/3",
+      "Florett K 53",
+      "Florett K 53/M",
+      "Florett K 53/1 M",
+      "Florett SL K 53/2 NL",
+      "Florett K 53/3",
+      "Florett Sport K 53/3 NL",
+      "Florett Grand Prix K 53/42",
+      "Florett GP K 53/43 NL",
+      "Florett LF K 53/301",
+      "Florett LF K 53/302",
+      "Florett LF K 53/303",
+      "Florett GP/RM K 53/401",
+      "Florett RM K 53/403",
+      "Florett RMC K 53/409",
+      "Florett K 54",
+      "Florett Mokick K 54/0",
+      "Florett K 54/1",
+      "Florett Super K 54/2",
+      "Florett Super K 54/2 A",
+      "Florett K 54/2 B",
+      "Florett K 54/2 C",
+      "Florett K 54/3",
+      "Florett Super 5 / TS K 54/5",
+      "Florett TM K 54/31 CH",
+      "Florett GT K 54/51 GT",
+      "Florett GT K 54/52",
+      "Florett RSH K 54/53 H",
+      "Florett TM K 54/54",
+      "Florett TM K 54/54 F",
+      "Florett TM K 54/54 CH",
+      "Florett TM K 54/54/1 CH",
+      "Florett LH K 54/305",
+      "Florett LF K 54/307",
+      "Florett Cross K 54/316",
+      "Florett LF-F K 54/319",
+      "Mustang 50 K 54/400",
+      "Florett RS-L K 54/503",
+      "Florett Cross K 54/513",
+      "Florett RMC S 5 K 54/540",
+      "Flory 12 MF 12"
     ],
     "KSR Moto": [
       "Grs",
@@ -33661,14 +35256,28 @@
       "LK 50"
     ],
     "Leonart": [
-      "Pilder 125"
+      "Pilder 125",
+      "Daytona 125",
+      "Rigger",
+      "Lobo 450",
+      "Pulse 125 2026 Red Edition",
+      "Pulse 125 2026 Neon Edition",
+      "Racer 300"
     ],
     "Letbe": [
       "Flygon 125",
       "Island 125",
       "Mecha 125",
       "Neon 50",
-      "Velocity 125"
+      "Velocity 125",
+      "Arthur 700",
+      "Tara 125",
+      "Neon 125",
+      "Island 160",
+      "Velocity 200",
+      "Mecha 200",
+      "Aurora 125",
+      "Flygon 220"
     ],
     "Lexmoto": [
       "Adrenaline 125",
@@ -33894,7 +35503,10 @@
       "S2 Del Mar",
       "S2 Mulholland",
       "S2 Alpinista",
-      "S2 Del Mar Launch Edition"
+      "S2 Del Mar Launch Edition",
+      "S2 Del Mar European Launch Edition",
+      "S4 Honcho Trail",
+      "S4 Honcho Street"
     ],
     "Lmi": [
       "YD2000",
@@ -33964,14 +35576,60 @@
     "Maeving": [
       "RM1",
       "RM1S",
-      "RM"
+      "RM",
+      "RM2",
+      "RM1S Blackout"
     ],
     "Magni": [
       "Australia",
-      "1200 SPORT"
+      "1200 SPORT",
+      "MH1",
+      "MB2",
+      "LeMans 1000",
+      "Classico 1000",
+      "Arturo 1000",
+      "Sfida 1000",
+      "Sfida 400",
+      "Sfida ottovalvole",
+      "Sfida 1100 carb.",
+      "Sfida 1100 i.e.",
+      "Sfida 1000 4V",
+      "Australia 98",
+      "Giappone 52",
+      "Filo Rosso"
     ],
     "Maico": [
-      "Maicoletta"
+      "Maicoletta",
+      "Maicoletta 175",
+      "Maicoletta 250",
+      "Blizzard 250",
+      "M125",
+      "M150",
+      "M200",
+      "Maicomobil",
+      "Taifun",
+      "Maicomobil MB 151",
+      "Maicomobil MB 175",
+      "Maicomobil MB 200",
+      "M 126",
+      "M 151",
+      "M 175 S",
+      "M 175 T",
+      "PASSAT 175",
+      "M 200 S",
+      "M 200 T",
+      "Taifun 350",
+      "Taifun 400",
+      "MC 250",
+      "MC 400",
+      "MC 450",
+      "MC 501",
+      "MC 440",
+      "MC 490",
+      "MC 250/T",
+      "MC 490/T",
+      "GS 250",
+      "GS 490"
     ],
     "Malaguti": [
       "Centro",
@@ -34156,7 +35814,20 @@
       "SST 125"
     ],
     "Micro": [
-      "Microlino"
+      "Microlino",
+      "Microlino Lite",
+      "Microlino Spiaggina",
+      "Microlino Spiaggina First Edition",
+      "Microlino Urban",
+      "Microlino Dolce",
+      "Microlino Competizione",
+      "Microlino Pioneer Series",
+      "Microlino Dolce 6 kWh",
+      "Microlino Dolce 10,5 kWh",
+      "Microlino Competizione 10,5 kWh",
+      "Microlino Competizione 14 kWh",
+      "Microlino Lite 5.5 kWh",
+      "Microlino Lite 10.5 kWh"
     ],
     "Microcar": [
       "40",
@@ -34936,7 +36607,6 @@
       "Prima",
       "Prima 3",
       "Prima III KL",
-      "Quickly",
       "Quickly L",
       "Quickly N",
       "Quickly T",
@@ -34945,7 +36615,8 @@
       "Fox",
       "Quickly Cavallino",
       "Quickly TT",
-      "Quickly TT/K"
+      "Quickly TT/K",
+      "501 Konsul II"
     ],
     "Opel": [
       "Rocks-E",
@@ -34999,7 +36670,18 @@
       "De Luxe Tlf",
       "T1",
       "T5",
-      "Tlf"
+      "Tlf",
+      "TL",
+      "TLT",
+      "TLB",
+      "T8",
+      "T6",
+      "P10/H",
+      "P20",
+      "T5/H",
+      "P21 Luxus",
+      "P12",
+      "P21"
     ],
     "Panther": [
       "100",
@@ -35664,7 +37346,35 @@
       "AVENTURA",
       "MRT7",
       "RALLY 307",
-      "MR 300"
+      "MR 300",
+      "BYE BIKE 45 KM/H E4",
+      "HOBBY BYE BIKE 45 KM/H E4",
+      "Aventura Rally 307 R",
+      "Aventura 125 E5+",
+      "MR PRO 300 i 2026",
+      "MR RACING 300 i 2026",
+      "MRT 50 Pro",
+      "MRT 50 SM",
+      "MRT 50 SM Pro",
+      "MRT 50 SM Trophy",
+      "Ray 7.7",
+      "Scrambler 607",
+      "Tango 125i",
+      "XPLORA 557 S",
+      "XPLORA 707 S",
+      "XPLORA 707 X",
+      "MR 300 i HARD ENDURO 2027",
+      "MR 300 i PRO 2027",
+      "MR 300 i RACING 2027",
+      "MRT 50 SM Pro Black Series",
+      "MRT 50 SM Trophy Mirage",
+      "MRT 50 SM Matt Grey",
+      "MR PRO 125",
+      "Marathon 125 SM",
+      "NKX 125",
+      "MX12 250W",
+      "MX14 500W",
+      "Nuuk Cargo 6"
     ],
     "Riese & Muller": [
       "Charger",
@@ -35801,7 +37511,12 @@
     "Rudge": [
       "Special",
       "Ulster",
-      "Whitworth"
+      "Whitworth",
+      "Silver Vase Special",
+      "250 Sports",
+      "250 Standard",
+      "250 Rapid",
+      "Sports Special"
     ],
     "Ryuka": [
       "Classic FI",
@@ -35902,7 +37617,9 @@
     "Scott": [
       "Flying Squirrel",
       "Squirrel",
-      "TT Replica"
+      "TT Replica",
+      "Super Squirrel 2-speed",
+      "Super Squirrel 3-speed"
     ],
     "Secma": [
       "Fun"
@@ -36012,7 +37729,17 @@
       "S04",
       "Seat MO 125",
       "Seat MO50",
-      "S SERIES"
+      "S SERIES",
+      "S01+",
+      "S02 L3e",
+      "S02 L1e",
+      "S04 L7e Plus",
+      "S04 L6e Vivo",
+      "S04 L6e",
+      "S01 Connected",
+      "S01 Basic",
+      "S01 Standard",
+      "S01 LS"
     ],
     "Simpa": [
       "Abaca"
@@ -36181,7 +37908,21 @@
     "Solifer": [
       "50QT-15",
       "BT49QT-9F3",
-      "Speed"
+      "Speed",
+      "Capri",
+      "Export",
+      "Export Thermomat",
+      "Export Automat",
+      "Silva",
+      "10",
+      "Automat",
+      "SM",
+      "SMA",
+      "Trial",
+      "GT",
+      "Tavaramopo",
+      "TS-50",
+      "TS-50 S"
     ],
     "Spark": [
       "SP125C-1CF",
@@ -36255,7 +37996,43 @@
       "Model 9",
       "S7",
       "S8",
-      "IMP"
+      "IMP",
+      "Model 1",
+      "Model 2",
+      "Model 3",
+      "Model 4",
+      "Model 5",
+      "Model 6",
+      "Model 7",
+      "Model 8",
+      "Model 80",
+      "Model 90",
+      "Model 9A",
+      "Little 90",
+      "Model 95",
+      "Model 14",
+      "500cc Lion",
+      "600cc Lion",
+      "Little 95",
+      "Model 14 Longstroke",
+      "Model 95L",
+      "Model 95R",
+      "Model 16",
+      "Model 8 Sport",
+      "Model 9 Sport",
+      "Model 14 Sport",
+      "500cc Light Solo",
+      "500cc Light Solo Sport",
+      "A23",
+      "A23S",
+      "A24",
+      "A24S",
+      "A25",
+      "A26",
+      "A27",
+      "A28",
+      "A29 Lion",
+      "A30 Lion"
     ],
     "Sunra": [
       "Future 2500",
@@ -36291,9 +38068,12 @@
       "MOTORCYCLE",
       "STORM",
       "ULTRA BEE HP",
-      "E RIDE PRO 2.0",
-      "E RIDE PRO SS",
-      "LIGHT BEE X"
+      "LIGHT BEE X",
+      "Hyper Bee",
+      "Ultra Bee HP 2026",
+      "2025 Light Bee X",
+      "Light Bee 2026",
+      "Light Bee L1e"
     ],
     "Suzuki": [
       "125GT",
@@ -37531,7 +39311,19 @@
       "RACING"
     ],
     "Torrot": [
-      "Muvi"
+      "Muvi",
+      "MX1 MY26",
+      "MX2 MY26",
+      "MX1 UW",
+      "MX2 UW",
+      "Tr1",
+      "Tr2",
+      "SM1",
+      "SM2",
+      "MX3",
+      "Muvi City",
+      "Muvi Executive",
+      "Muvi B2B"
     ],
     "Torvenna": [
       "Mirotta 45"
@@ -37964,7 +39756,15 @@
       "X-47 Desert Wing",
       "X-47 Venom",
       "F77 Mach 2 Recon",
-      "F77 SuperStreet Recon"
+      "F77 SuperStreet Recon",
+      "X47 ORIGINAL",
+      "X47 ORIGINAL +",
+      "X47 RECON",
+      "X47 RECON +",
+      "F77 Space Edition",
+      "F77 Original",
+      "F77 Recon",
+      "F77 Limited Edition"
     ],
     "UM": [
       "Renegade",
@@ -38006,7 +39806,10 @@
     "Vectrix": [
       "Vx-1LI+",
       "MAXI SCOOTER",
-      "SCOOTER"
+      "SCOOTER",
+      "VX-1",
+      "VX-2",
+      "VX-3"
     ],
     "Veeley": [
       "Veeley"
@@ -38016,7 +39819,13 @@
       "Calima S",
       "Eon",
       "Tramontana S",
-      "Vortex"
+      "Vortex",
+      "Bora +",
+      "Tramontana Ciclomotor",
+      "Tramontana",
+      "Calima",
+      "ONE",
+      "EON First Edition"
     ],
     "Velocette": [
       "GTP",
@@ -38032,7 +39841,11 @@
       "Venom",
       "Venom Clubman",
       "Viper",
-      "Viper Clubman"
+      "Viper Clubman",
+      "KTT Mk. IV",
+      "MSS (Iron Engine)",
+      "MAC (Rigid Frame)",
+      "MAC (RS)"
     ],
     "Velosolex": [
       "1700",
@@ -38042,7 +39855,11 @@
       "Solex"
     ],
     "Verge": [
-      "Ts"
+      "TS",
+      "TS Pro",
+      "TS Ultra",
+      "TS Pro California Edition",
+      "Mika Häkkinen Signature Edition"
     ],
     "Vespa": [
       "100",
@@ -38186,7 +40003,69 @@
     ],
     "Victoria": [
       "V35 Bergmeister",
-      "Vicky 4"
+      "Vicky 4",
+      "K.R. I",
+      "K.R. II",
+      "K.R. III",
+      "K.R. VI",
+      "K.R. 7",
+      "K.R. 20",
+      "K.R. 35",
+      "KR 6 Bergmeister",
+      "KR 8 Fahrmeister",
+      "KR 9 Fahrmeister",
+      "KR 12-N",
+      "KR 15",
+      "KR 15-N",
+      "KR 20 EN Lux",
+      "KR 20 LN Luxus",
+      "KR 20 Z",
+      "KR 20 HM",
+      "KR 20 ZB",
+      "KR 25 S Aero",
+      "KR 35 B/G",
+      "KR 35 Sport",
+      "KR 35 SLM",
+      "KR 35 SN Pionier",
+      "KR 35 SS Pionier",
+      "KR 35",
+      "KR 50",
+      "KR 50S",
+      "V 75",
+      "V 80 L",
+      "V 99 Fix",
+      "V 109 Fix",
+      "FM 38",
+      "KR 25 Aero",
+      "KR 125 BiFix",
+      "KR 17 Parilla",
+      "KR 21 Swing",
+      "KR 25 HM",
+      "KR 26",
+      "KR 26 N",
+      "KR 26 N Sport",
+      "Vicky II",
+      "Vicky III",
+      "Nicky",
+      "Peggy",
+      "Avanti (K)",
+      "Tory Moped",
+      "Preciosa",
+      "Mofa 25",
+      "Vicky Superluxus",
+      "Type 115",
+      "Aero 136",
+      "Vicky 136",
+      "139 Typ 139004",
+      "Vicky Super Typ 126 Earles",
+      "Vicky Super Typ 126 Telescopic",
+      "Vicky Standard Typ 113 Einsitzer",
+      "Vicky Standard Typ 113 Zweisitzer",
+      "Vicky Standard Typ 117",
+      "110",
+      "Typ 111",
+      "Typ 502",
+      "Typ 503"
     ],
     "Victory": [
       "15TH ANNIVERSARY CROSS COUNTRY TOUR",
@@ -38248,7 +40127,17 @@
       "Black Prince",
       "Black Shadow",
       "Comet",
-      "Rapide"
+      "Rapide",
+      "Meteor",
+      "Rapide Series A",
+      "Rapide Series B",
+      "Rapide Series C",
+      "Meteor Series C",
+      "Comet Series C",
+      "Black Shadow Series C",
+      "White Shadow",
+      "Firefly",
+      "Black Knight"
     ],
     "Viper": [
       "V250L"
@@ -38408,7 +40297,21 @@
       "GT2",
       "Rebbe",
       "Sixteen 125",
-      "Storm-T 125"
+      "Storm-T 125",
+      "GT2 125",
+      "GT2 300",
+      "GT2 V2 125",
+      "GT2 V2 300",
+      "Storm 125 Euro 5",
+      "Storm 125 Euro 5+",
+      "Storm-R 125",
+      "Storm-R 300",
+      "Storm-S 300",
+      "Storm-V",
+      "Storm-X",
+      "GP1",
+      "GP2",
+      "GP1 125 RS"
     ],
     "Xingyue": [
       "Artery",
@@ -38457,7 +40360,8 @@
       "I6",
       "KEENESS",
       "OWIN",
-      "YO EM66"
+      "YO EM66",
+      "GT25"
     ],
     "Yamaha": [
       "100",
@@ -39892,7 +41796,14 @@
       "AE2"
     ],
     "Zenith": [
-      "Gradua"
+      "Gradua",
+      "Bi-Car",
+      "Model 19C",
+      "Model 20 A",
+      "Model 19 B",
+      "LC1",
+      "CP",
+      "Super-Eight Model Sports"
     ],
     "Zero Motorcycles": [
       "DS",
@@ -40113,7 +42024,13 @@
       "KS Super"
     ],
     "Zxmoto": [
-      "500RR"
+      "500RR",
+      "820RR",
+      "500F",
+      "500F LAMS L",
+      "500RR LAMS L",
+      "MX250",
+      "MX450"
     ],
     "Zycar": [
       "Z2",
@@ -40131,7 +42048,68 @@
       "477",
       "Sport 125",
       "125 D/L",
-      "175 D/L"
+      "175 D/L",
+      "175 typ 450.00",
+      "125 typ 453.00",
+      "250 typ 455.00",
+      "175 typ 450.00.72 Cocky",
+      "175 typ 450.00.76 Cocky",
+      "175 typ 450.05 De Lux",
+      "125 typ 453.05 De Luxe",
+      "250 typ 455.05 De Luxe",
+      "175 typ 450.05.26",
+      "125 typ 453.05.26",
+      "175 typ 450.08",
+      "125 typ 453.01 Tropy",
+      "175 typ 450.01 Tropy",
+      "125 typ 453.06 Tropy",
+      "175 typ 450.06 Tropy",
+      "125 typ 453.10",
+      "175 typ 450.10",
+      "175 typ 470.08",
+      "175 typ 470.05",
+      "125 typ 473.05",
+      "175 typ 470",
+      "125 typ 473",
+      "250 typ 475",
+      "175 typ 470.04 Trial",
+      "125 typ 473.04 Trial",
+      "250 typ 475.04 Trial",
+      "175 typ 477.00",
+      "175 typ 477.01",
+      "125 typ 476.00",
+      "125 typ 476.01",
+      "175 typ 477.02",
+      "125 typ 476.02",
+      "175 typ 477.03",
+      "175 typ 477.04",
+      "125 typ 476.03",
+      "125 typ 476.04",
+      "175 typ 477.05",
+      "175 typ 477.07",
+      "125 typ 476.05",
+      "125 typ 476.07",
+      "175 typ 477.06",
+      "125 typ 476.06",
+      "175 typ 482.00 Trail",
+      "125 typ 481.00 Trail",
+      "175 typ 482.02 Trail",
+      "125 typ 481.01 Trail",
+      "175 typ 482.01.00 Cocy",
+      "175 typ 482.01.01 Cocy",
+      "175 typ 482.03 Trail",
+      "125 typ 481.03 Trail",
+      "175 typ 482.04 Trail",
+      "125 typ 481.04 Trail",
+      "175 typ 482.05 Trail",
+      "125 typ 481.05 Trail",
+      "175 typ 482.06 Trail",
+      "125 typ 481.06 Trail",
+      "250 typ 471.0 Sport",
+      "250 typ 471.1 Sport",
+      "350 typ 472.1 Sport",
+      "250 typ 471.2",
+      "350 typ 472.2"
     ],
     "SEV Electric Vehicles": [
       "eTRICKS"
@@ -40148,6 +42126,130 @@
       "Shade Sport 600L",
       "Shade Sport 800L",
       "Shade Sport Plus FF800UL"
+    ],
+    "Caselani": [
+      "TYPE-AMI"
+    ],
+    "Janus Motorcycles": [
+      "Halcyon 250",
+      "Halcyon 450",
+      "Gryffin 250",
+      "Gryffin 450",
+      "Halcyon Origin 250",
+      "Halcyon Origin 450",
+      "Phoenix 250",
+      "Halcyon 50",
+      "Halcyon 250 10th Anniversary Edition",
+      "Phoenix 250 10th Anniversary Edition"
+    ],
+    "Brough Superior": [
+      "SS100",
+      "Pendine Sand Racer",
+      "Anniversary",
+      "Lawrence",
+      "Nefud",
+      "Dagger",
+      "SS80",
+      "11/50",
+      "OHV 680",
+      "SS100 JAP",
+      "SS100 MATCHLESS",
+      "680 S.V. JUNIOR",
+      "680 S.V. 5-15 JAP",
+      "SS100 Alpine Grand Sports",
+      "Austin Four"
+    ],
+    "Ryvid": [
+      "Anthem",
+      "OUTSET",
+      "Anthem Launch Edition"
+    ],
+    "Ather Energy": [
+      "450S",
+      "450X",
+      "450 Apex",
+      "450S 2.9 kWh",
+      "450S 3.5 kWh",
+      "450X 2.9 kWh",
+      "450X 3.5 kWh",
+      "Rizta S",
+      "Rizta Z",
+      "Rizta S 2.9 kWh",
+      "Rizta Z 2.9 kWh",
+      "Rizta Z 3.7 kWh"
+    ],
+    "Ola Electric": [
+      "Roadster X",
+      "Roadster X+",
+      "Roadster X 2.5 kWh",
+      "Roadster X 3.5 kWh",
+      "Roadster X 4.5 kWh",
+      "Roadster X+ 4.5 kWh",
+      "Roadster X+ 9.1 kWh",
+      "S1 Pro Gen 1",
+      "S1 Pro Gen 2",
+      "S1 Air",
+      "S1 X Gen 2",
+      "S1 Pro+ Gen 3",
+      "S1 Pro Gen 3",
+      "S1 X+ Gen 3",
+      "S1 X Gen 3"
+    ],
+    "Excelsior (UK)": [
+      "Manxman",
+      "Model 3",
+      "Model 4",
+      "Model 7",
+      "Model 9",
+      "A2",
+      "A3",
+      "A4",
+      "AE4",
+      "A5",
+      "AE5",
+      "A7",
+      "A9",
+      "A6",
+      "A10",
+      "A11",
+      "A8",
+      "A12",
+      "A13",
+      "E.1 Pioneer",
+      "E.2 Empire",
+      "E.3 Bantam",
+      "E.9 Viking",
+      "E.4 Meritor",
+      "E.5 Scout",
+      "E.6 Dictator",
+      "E.7 Pathfinder",
+      "E.8 Chieftain",
+      "E.10 Powerplus",
+      "E.0 Universal",
+      "G0 Universal",
+      "G1 Pioneer",
+      "G11 Manxman",
+      "G12 Manxman",
+      "G4 Meritor",
+      "GD4 Meritor",
+      "G5 Scout",
+      "G8 Norseman",
+      "G9 Warrior",
+      "G14 Manxman",
+      "G15 Manxman Special",
+      "Talisman Sports",
+      "Condex D12",
+      "Consort F4",
+      "Skutabyke S.B.1",
+      "Monarch",
+      "Monarch MkII",
+      "50/S1",
+      "50/G2",
+      "50/U1",
+      "50/U2",
+      "50/R1",
+      "50/R2",
+      "50/TT1"
     ]
   },
   "watercraft": {
@@ -40603,7 +42705,10 @@
       "BGM75",
       "BGF45",
       "BGX60",
-      "BGX70"
+      "BGX70",
+      "BG72",
+      "BG62",
+      "BG60"
     ],
     "Boston Whaler": [
       "130 Super Sport",
@@ -40646,7 +42751,9 @@
       "P-8 Voyager",
       "P-12 Shuttle",
       "P-12 Business",
-      "P-12 Voyager"
+      "P-12 Voyager",
+      "C-8 CC",
+      "Seven"
     ],
     "Carver Yachts": [
       "350 Mariner",
@@ -40717,7 +42824,17 @@
       "41 Nighthawk SD Edition",
       "42 GTO",
       "35 Cafe Racer",
-      "41 GTR"
+      "41 GTR",
+      "50 Marauder",
+      "50 Marauder Carbon Fiber Edition",
+      "39 Top Gun",
+      "GTO Reserve",
+      "41 GTR Reserve Carbon Fiber Edition",
+      "Firefox",
+      "46 Rough Rider",
+      "42 Revolution",
+      "42 Tiger",
+      "50 Marauder AMG"
     ],
     "Dufour Yachts": [
       "DRAKKAR 24",
@@ -40782,7 +42899,16 @@
       "Impression 50.1",
       "GT5",
       "GT6",
-      "GT6 X"
+      "GT6 X",
+      "350",
+      "Impression 434",
+      "340",
+      "450",
+      "31S",
+      "333",
+      "E310",
+      "i494",
+      "E320"
     ],
     "Excess Catamarans": [
       "Excess 11",
@@ -40876,7 +43002,20 @@
       "Power 67",
       "Power 80",
       "Isla 40",
-      "Astrea 42"
+      "Astrea 42",
+      "FP48",
+      "FP55",
+      "Ipanema 58",
+      "Victoria 67",
+      "Helia 44",
+      "Saba 50",
+      "Lipari 41 Evolution",
+      "Mahé 36",
+      "Sanya 57",
+      "Summerland MY 40 LC",
+      "Cumberland MY 47 LC",
+      "Queensland MY 55",
+      "MY 37"
     ],
     "Galeon Yachts": [
       "325 GTO",
@@ -41080,7 +43219,18 @@
       "GT320",
       "GT320S",
       "GT280",
-      "GT280S"
+      "GT280S",
+      "FX270",
+      "FX240",
+      "FX200",
+      "FX190",
+      "CX240",
+      "CX250",
+      "CX270",
+      "CX280",
+      "HX200",
+      "SX280",
+      "TT460 Shell Edition"
     ],
     "Jeanneau": [
       "Cap Camarat 7.5 CC",
@@ -41550,7 +43700,31 @@
       "46",
       "56",
       "575",
-      "HP46"
+      "HP46",
+      "655",
+      "625",
+      "62",
+      "61",
+      "545",
+      "54",
+      "53",
+      "49",
+      "HP49 Pilot House",
+      "485",
+      "48 Lightwave",
+      "475",
+      "47",
+      "45",
+      "435",
+      "SJ43",
+      "42",
+      "SJ41",
+      "406",
+      "Lightwave 395",
+      "Powerline 390",
+      "39",
+      "Heritage 37",
+      "37"
     ],
     "Parker Boats": [
       "180 Coastal",
@@ -41563,7 +43737,23 @@
       "227 Explorer",
       "247 Explorer",
       "257 Explorer",
-      "287 Explorer"
+      "287 Explorer",
+      "2320 SL Sport Cabin",
+      "1801",
+      "21SE",
+      "21CC",
+      "23SE",
+      "23CC",
+      "25SE",
+      "2501",
+      "2801",
+      "2120",
+      "2310WA",
+      "2520 XL",
+      "2520 XLD",
+      "2820 XLD",
+      "2510XL",
+      "2510XLD"
     ],
     "Pershing": [
       "Pershing 6X",
@@ -41619,7 +43809,51 @@
       "X80",
       "X95",
       "Y72",
-      "Y80"
+      "Y80",
+      "Odyssey 108",
+      "X95 Vista",
+      "X90",
+      "Y95",
+      "F58",
+      "S80",
+      "S74",
+      "S65",
+      "C48 Open",
+      "C48",
+      "Y85",
+      "R35",
+      "V39",
+      "F43",
+      "V48",
+      "V48 Open",
+      "F49",
+      "V50 Open",
+      "V52",
+      "52",
+      "56",
+      "V58",
+      "V58 Open",
+      "V60",
+      "S60",
+      "S62",
+      "F62",
+      "60",
+      "V62-S",
+      "64",
+      "S66",
+      "68",
+      "72 Motor Yacht",
+      "S72",
+      "F70",
+      "Y75",
+      "Y82 Motor Yacht",
+      "Y88 Motor Yacht",
+      "S78",
+      "V78",
+      "Y78",
+      "30M",
+      "35M",
+      "40M"
     ],
     "Quicksilver Boats": [
       "Activ 455 Open",
@@ -41982,7 +44216,14 @@
       "wallypower58X",
       "wallywhy100",
       "wallywhy150",
-      "wallywhy200"
+      "wallywhy200",
+      "wallywind110",
+      "wallyrocket51",
+      "wallyrocket71",
+      "wallynano37",
+      "wallycento",
+      "wally80",
+      "wally101 Full Custom"
     ],
     "Wellcraft": [
       "28 T-Top",
@@ -41995,7 +44236,11 @@
       "243 Fisherman",
       "263 Fisherman",
       "302 Fisherman",
-      "352 Fisherman"
+      "352 Fisherman",
+      "222 Fisherman",
+      "28 Explorer",
+      "38 Explorer",
+      "44 Explorer"
     ],
     "Williams Jet Tenders": [
       "MiniJet 280",
@@ -42026,13 +44271,28 @@
       "275SD",
       "AR190",
       "AR220",
-      "EX",
-      "FX Cruiser HO",
-      "GP SVHO",
-      "SuperJet",
       "SX190",
       "SX220",
-      "VX Cruiser"
+      "SX195",
+      "AR195",
+      "195S",
+      "222S",
+      "222SE",
+      "222SD",
+      "SX250",
+      "AR250",
+      "252S",
+      "255XE",
+      "255XD",
+      "275SE",
+      "190 FSH Sport",
+      "195 FSH Sport",
+      "220 FSH Sport",
+      "222 FSH Sport",
+      "222 FSH Sport E",
+      "252 FSH Sport",
+      "255 FSH Sport E",
+      "255 FSH Sport H"
     ],
     "Yamaha WaveRunner": [
       "JetBlaster",
@@ -42050,7 +44310,17 @@
       "JetBlaster LTD",
       "VX Limited HO",
       "FX Cruiser HO",
-      "VX DeLuxe"
+      "VX DeLuxe",
+      "FX Cruiser SVHO",
+      "FX Limited SVHO",
+      "JetBlaster PRO 2-Up",
+      "JetBlaster PRO 3-Up",
+      "JetBlaster DLX 2-Up",
+      "JetBlaster DLX 3-Up",
+      "VX Limited",
+      "FX HO",
+      "VX Cruiser HO",
+      "WaveBlaster"
     ],
     "Zodiac Nautic": [
       "Cadet",
@@ -42064,7 +44334,30 @@
       "Open 5.5",
       "Open 6.5",
       "Pro 5.5",
-      "Pro 7"
+      "Pro 7",
+      "Cadet Roll Up",
+      "Cadet RIB ALU",
+      "Cadet RIB ALU DL",
+      "EOPEN 3.1",
+      "EOPEN 3.4",
+      "Open 3.4",
+      "X9CC",
+      "X10CC",
+      "Yachtline 4.0",
+      "Classic Mark II C",
+      "Pro 420",
+      "EJET 450",
+      "Pro 500",
+      "Futura Mark II",
+      "Medline 500",
+      "Open 5.5 Gulfstream",
+      "Medline 580",
+      "Open 6.5 Gulfstream",
+      "N-ZO 680",
+      "Open 7",
+      "N-ZO 700 cabine",
+      "Medline 7.5 GT",
+      "N-ZO 760"
     ],
     "Seawind Catamarans": [
       "1160",
@@ -42103,6 +44396,23 @@
       "325CC",
       "325DC",
       "400DC-X"
+    ],
+    "Capoforte": [
+      "FX270",
+      "FX240",
+      "FX200",
+      "FX190",
+      "CX280i",
+      "CX270",
+      "CX250i",
+      "CX240",
+      "SX280i",
+      "SX200",
+      "HX200",
+      "SQ240i",
+      "CX280i Summer Edition",
+      "CX250i Summer Edition",
+      "SX280i Summer Edition"
     ]
   },
   "aircraft": {
@@ -42110,7 +44420,10 @@
       "Adventurer"
     ],
     "Aermacchi": [
-      "AL-60"
+      "AL-60",
+      "AL 60-B",
+      "AL 60-F5",
+      "AL 60-C5"
     ],
     "Aero": [
       "C-104S"
@@ -42119,7 +44432,9 @@
       "AB-115",
       "AB-150",
       "AB-180",
-      "AB-95"
+      "AB-95",
+      "AB-180 AG",
+      "AB-180 RVR"
     ],
     "Aero Vodochody": [
       "Ae 270 Ibis"
@@ -42150,7 +44465,8 @@
       "A-32"
     ],
     "Aerotec": [
-      "A-122 Uirapuru"
+      "A-122 Uirapuru",
+      "A-122-B Uirapuru"
     ],
     "AGAC": [
       "AG-5B Tiger"
@@ -42383,7 +44699,13 @@
       "ACJ TwoTwenty",
       "ACJ319neo",
       "ACJ320neo",
-      "ACJ330neo"
+      "ACJ330neo",
+      "ACJ350",
+      "ACJ318",
+      "ACJ319",
+      "ACJ320",
+      "ACJ330",
+      "ACJ340"
     ],
     "Airbus Helicopters": [
       "AS355 Écureuil 2",
@@ -42517,7 +44839,10 @@
     "Australian Aircraft Kits": [
       "Bushman",
       "Hornet",
-      "Wasp"
+      "Wasp",
+      "Hornet STOL",
+      "Flamingo",
+      "Hornet Cub"
     ],
     "AutoGyro": [
       "MTOsport",
@@ -42528,7 +44853,16 @@
       "MTOclassic",
       "MTOsport 2017 915iS",
       "MTOsport 2017 916 iS",
-      "Cavalon 915iS"
+      "Cavalon 915iS",
+      "MTOclassic 912 ULS",
+      "MTOclassic 915 iS",
+      "MTOclassic 916 iS",
+      "MTOsport 2017 912 ULS",
+      "Calidus 912 ULS",
+      "Calidus 915 iS",
+      "Calidus 916 iS",
+      "Cavalon 912 ULS",
+      "Cavalon 916 iS"
     ],
     "Avantage": [
       "A-29",
@@ -42549,7 +44883,10 @@
       "Pitts S-2",
       "Pitts S-2A",
       "Pitts S-2B",
-      "Pitts S-2S"
+      "Pitts S-2S",
+      "Husky A-1B-160",
+      "Husky A-1B-WF",
+      "Husky A-1B-NF"
     ],
     "Basler": [
       "BT-67"
@@ -42771,8 +45108,8 @@
     ],
     "Blackshape": [
       "BK-100 Prime",
-      "BK-160 Gabriel",
-      "BS-115 Gabriel",
+      "BK 160 Gabriél",
+      "BS 115 Gabriel",
       "BK 160-200",
       "BK 160TR"
     ],
@@ -43941,7 +46278,11 @@
       "CL-44D4",
       "CL-44J",
       "CL-600 Challenger 600",
-      "CL-600 Challenger 601"
+      "CL-600 Challenger 601",
+      "Challenger 601-3A",
+      "CL-44D4-1",
+      "CL-44D4-2",
+      "CL-44D4-6"
     ],
     "CASA": [
       "1.131-E3B Jungmann",
@@ -44270,11 +46611,24 @@
       "Carbon Cub SS",
       "NX Cub",
       "XCub",
-      "Carbon Cub"
+      "Carbon Cub",
+      "Carbon Cub EX-2",
+      "Carbon Cub EX-3",
+      "Carbon Cub FX",
+      "Carbon Cub FX-2",
+      "Carbon Cub FX-3",
+      "Sport Cub",
+      "Top Cub",
+      "Carbon Cub UL",
+      "Carbon Cub ULT",
+      "NX Cub (CC19-215)",
+      "NX Cub (CCX-2300)",
+      "NX Cub (CCK-2300)"
     ],
     "Czech Sport Aircraft": [
       "PS-28 Cruiser",
-      "SportCruiser"
+      "SportCruiser",
+      "PS-28 N Cruiser"
     ],
     "Daher": [
       "Kodiak 100",
@@ -44283,7 +46637,14 @@
       "TBM 910",
       "TBM 930",
       "TBM 940",
-      "TBM 960"
+      "TBM 960",
+      "TBM 700",
+      "TBM 700A",
+      "TBM 700B",
+      "TBM 700C2",
+      "TBM 850 Legacy",
+      "TBM 850",
+      "TBM 850 Elite"
     ],
     "Dassault": [
       "Falcon 2000",
@@ -44345,13 +46706,6 @@
       "DA42 MPP Geostar"
     ],
     "Douglas": [
-      "AC-47D Spooky",
-      "AD-1 Skyraider",
-      "AD-4 Skyraider",
-      "AD-4N Skyraider",
-      "AD-4NA Skyraider",
-      "AD-6 Skyraider",
-      "AD4-DW Skyraider",
       "DC-10-10 Freighter",
       "DC-10-30 Combi",
       "DC-2",
@@ -44374,14 +46728,18 @@
       "DC-9-30",
       "DC-9-40",
       "DC-9-50",
-      "EA-1E Skyraider",
       "R4D-8 Super Skytrain",
-      "RB-26C Invader",
-      "SBD Dauntless",
-      "SBD-4 Dauntless",
-      "SBD-5 Dauntless",
       "Super DC-3",
-      "TA-4J Skyhawk"
+      "DC-8-52",
+      "DC-8-61",
+      "DC-8-62F",
+      "DC-8-63",
+      "DC-8-63F",
+      "DC-8F-55",
+      "DC-9-15F",
+      "DC-9-31",
+      "DC-9-32",
+      "DC-7C"
     ],
     "Eclipse Aerospace": [
       "Eclipse 400",
@@ -44504,7 +46862,9 @@
       "280C",
       "280F",
       "480",
-      "480B-G"
+      "480B-G",
+      "F-28C-2",
+      "F-28F-R"
     ],
     "Eve Air Mobility": [
       "Eve eVTOL"
@@ -44513,13 +46873,34 @@
       "EV-97 Eurostar",
       "Harmony LSA",
       "SportStar RTC",
-      "Harmony"
+      "Harmony",
+      "SportStar Plus",
+      "SportStar SL",
+      "SportStar MAX",
+      "SportStar MAX PTF",
+      "EV-97 Eurostar SL",
+      "EV-97 Eurostar SLW",
+      "Eurostar SLx",
+      "Eurostar SL+"
     ],
     "Extra Aircraft": [
       "Extra 300",
       "Extra 330LE",
       "Extra 330LX",
-      "Extra 330SC"
+      "Extra 330SC",
+      "Extra NG",
+      "Extra 330SX",
+      "Extra 330LT",
+      "Extra 200",
+      "Extra 300/S",
+      "Extra 300/L",
+      "Extra 300/LP",
+      "Extra 300/LC",
+      "Extra 230",
+      "Extra 260",
+      "Extra 400",
+      "Extra 500",
+      "Extra 300SR"
     ],
     "Flight Design": [
       "CTLS",
@@ -44536,14 +46917,29 @@
       "CTLS 2020 SE",
       "CTLSi 2020 SE",
       "CTSLi",
-      "CTLSi-LSA"
+      "CTLSi-LSA",
+      "F2-CS23",
+      "F2 Ultralight",
+      "CTLSi 2020 GT"
     ],
     "Fokker": [
       "100",
       "50",
       "70",
       "F27 Friendship",
-      "F28 Fellowship"
+      "F28 Fellowship",
+      "F.II",
+      "F.III",
+      "F.V",
+      "F.VII",
+      "F.VIII",
+      "F.IX",
+      "F.XII",
+      "F.XVIII",
+      "F.XX",
+      "F.XXII",
+      "F.XXXVI",
+      "F-10 Super TriMotor"
     ],
     "Game Composites": [
       "GB1 GameBird"
@@ -44552,7 +46948,18 @@
       "Glasair I",
       "Glasair II",
       "Glasair III",
-      "GlaStar"
+      "GlaStar",
+      "Glasair II TD",
+      "Glasair II FT",
+      "Glasair II RG",
+      "Glasair II-S FT",
+      "Glasair II-S RG",
+      "Glasair Super II TD",
+      "Glasair Super II FT",
+      "Glasair Super II RG",
+      "Glasair III (Version 1)",
+      "Glasair III (Version 2)",
+      "Sportsman 2+2"
     ],
     "Grob Aircraft": [
       "G 109",
@@ -44671,7 +47078,10 @@
       "HondaJet Echelon",
       "HondaJet Elite",
       "HondaJet Elite II",
-      "HondaJet"
+      "HondaJet",
+      "HondaJet Elite S",
+      "HondaJet APMG",
+      "HondaJet APMG S"
     ],
     "Hughes": [
       "269",
@@ -44679,8 +47089,7 @@
       "269A-1",
       "269B",
       "269C",
-      "300C",
-      "Hkp.5B"
+      "300C"
     ],
     "ICON Aircraft": [
       "A5",
@@ -44855,8 +47264,6 @@
       "M-22 Mustang",
       "M20",
       "M20 Turbo",
-      "M10 Cadet",
-      "M18 Mite",
       "M20A",
       "M20B",
       "M20C",
@@ -44871,9 +47278,12 @@
       "M20M Bravo",
       "M20R Ovation",
       "M20TN Acclaim",
-      "M22 Mustang",
       "M20U Ovation Ultra",
-      "M20V Acclaim Ultra"
+      "M20V Acclaim Ultra",
+      "M-18C",
+      "M-18C 55",
+      "M-18L",
+      "M-18LA"
     ],
     "Nextant Aerospace": [
       "400XT",
@@ -44902,7 +47312,8 @@
       "PC-6/B1-H2",
       "PC-6/B2-H2",
       "PC-6/B2-H4",
-      "PC-6/A2-H2"
+      "PC-6/A2-H2",
+      "PC-12 NG"
     ],
     "Piper": [
       "Archer DX",
@@ -44997,11 +47408,17 @@
       "Virus SW 100 iS",
       "Virus SW 127",
       "Virus SW 80 (P)",
-      "Virus SW 100 (P)"
+      "Virus SW 100 (P)",
+      "Sinus 503",
+      "Taurus 503",
+      "Taurus Electro G2",
+      "Virus 912"
     ],
     "PZL": [
       "PZL-110 Koliber 150",
-      "PZL-110 Koliber 160A"
+      "PZL-110 Koliber 160A",
+      "PZL-Koliber 110",
+      "PZL-Koliber 150A"
     ],
     "Reims Aviation": [
       "F150F",
@@ -45031,7 +47448,6 @@
       "F406 Caravan II",
       "FA150K Aerobat",
       "FA150L Aerobat",
-      "FA152",
       "FA152 Aerobat",
       "FR172E Reims Rocket",
       "FR172F Reims Rocket",
@@ -45043,7 +47459,6 @@
       "FR182 Skylane RG",
       "FRA150L Aerobat",
       "FRA150M Aerobat",
-      "FT337GP Pressurised Skymaster",
       "FT337GP Pressurized Skymaster",
       "FTB337G Turbo Super Skymaster"
     ],
@@ -45077,9 +47492,13 @@
       "269A",
       "269C",
       "269C-1",
-      "269D",
+      "269D (S-330)",
       "300C",
-      "Hkp.5B"
+      "269B",
+      "269A-1",
+      "S-300CB",
+      "S-300CBi",
+      "S-333"
     ],
     "Schweizer Helicopters": [
       "269",
@@ -45087,7 +47506,9 @@
       "300CB",
       "300CBi",
       "330",
-      "333"
+      "333",
+      "269A",
+      "269B"
     ],
     "Shorts": [
       "SC-5 Belfast",
@@ -45123,7 +47544,8 @@
       "Sling 2",
       "Sling 4",
       "Sling TSi",
-      "Sling High Wing"
+      "Sling High Wing",
+      "Sling High Wing Taildragger"
     ],
     "Socata": [
       "235C Gabier",
@@ -45177,7 +47599,10 @@
       "S12",
       "S12 SW",
       "S12G",
-      "ASP15"
+      "ASP15",
+      "S10-V",
+      "S10-VT",
+      "S6-RT"
     ],
     "Sukhoi": [
       "Superjet 100-95",
@@ -45217,7 +47642,11 @@
       "P92 Eaglet Amphibious",
       "P92 Eaglet",
       "P92-J",
-      "P92-JS"
+      "P92-JS",
+      "P2012 Traveller Continental",
+      "P2012 Traveller Lycoming",
+      "P2012 Skydive",
+      "P2012 Medevac"
     ],
     "Textron Aviation": [
       "Citation M2",
@@ -45229,7 +47658,9 @@
       "510P2",
       "510P2+",
       "710P",
-      "Fire Bird"
+      "Fire Bird",
+      "510P",
+      "T660"
     ],
     "TL-Ultralight": [
       "BackCountry Sirius",
@@ -45238,7 +47669,9 @@
       "Stream",
       "Stream Turbo",
       "TL-2000 Sting S4",
-      "TL-2000 Sting RG"
+      "TL-2000 Sting RG",
+      "TL-96 Star",
+      "TL-96 Star (100 HP)"
     ],
     "Tupolev": [
       "Tu-134",
@@ -45304,7 +47737,9 @@
       "YMF-5",
       "YMF-5C",
       "YMF Classic",
-      "Great Lakes 2T-1A"
+      "Great Lakes 2T-1A",
+      "Great Lakes 2T-1A-2",
+      "YMF-5D Super"
     ],
     "Yakovlev": [
       "Yak-112",
@@ -45422,7 +47857,12 @@
       "VL3",
       "EVO",
       "Phoenix NG",
-      "SV4-RS"
+      "SV4-RS",
+      "VL3 Evolution RG 912 ULS",
+      "VL3 Evolution RG 915 iS",
+      "VL3 912iS",
+      "VL3 916iS",
+      "VL3 RG Essential"
     ],
     "Air Tractor": [
       "AT-402B",
@@ -45487,6 +47927,131 @@
       "DG-600",
       "DG-800",
       "DG-1000"
+    ],
+    "ERCO": [
+      "415-C",
+      "415-CD",
+      "415-D",
+      "E",
+      "G"
+    ],
+    "Evangel": [
+      "4500-300",
+      "4500-300 SERIES II"
+    ],
+    "Fairchild": [
+      "F-27",
+      "F-27A",
+      "F-27B",
+      "F-27F",
+      "F-27G",
+      "F-27J",
+      "FH-227",
+      "FH-227B",
+      "FH-227C",
+      "FH-227D",
+      "FH-227E",
+      "24R9",
+      "24R9S",
+      "24R40",
+      "24R40S",
+      "24R-46",
+      "24R-46S",
+      "24R-46A",
+      "24W-9",
+      "24W-9S",
+      "24W-40",
+      "24W-40S",
+      "24W-41",
+      "24W-41S",
+      "24W-41A",
+      "24W-41AS",
+      "24W-46",
+      "24W-46S",
+      "24 C8C",
+      "24 C8CS",
+      "24H",
+      "24K",
+      "F24 C8E",
+      "F24 C8ES",
+      "KR-34C"
+    ],
+    "Brantly": [
+      "305",
+      "B-2",
+      "B-2A",
+      "B-2B"
+    ],
+    "Forney": [
+      "F-1",
+      "F-1A"
+    ],
+    "Funk": [
+      "B85C"
+    ],
+    "Globe": [
+      "GC 1A",
+      "GC 1B"
+    ],
+    "Great Lakes": [
+      "2T-1A",
+      "2T-1A-1",
+      "2T-1A-2"
+    ],
+    "Howard": [
+      "DGA-15P"
+    ],
+    "Helio": [
+      "H-250",
+      "H-295",
+      "H-391",
+      "H-391B",
+      "H-395",
+      "H-395A",
+      "H-700",
+      "H-800",
+      "HT-295",
+      "H-500 Twin Courier",
+      "HST-550A"
+    ],
+    "Hiller": [
+      "UH-12",
+      "UH-12A",
+      "UH-12B",
+      "UH-12C",
+      "UH-12D",
+      "UH-12E",
+      "UH-12E-L",
+      "UH-12L",
+      "UH-12L4",
+      "1100"
+    ],
+    "Fairchild Hiller": [
+      "FH-1100"
+    ],
+    "Air Création": [
+      "Pixel",
+      "Skypper Evo",
+      "Skypper Bush",
+      "Tanarg Neo",
+      "Skypper Evo 912",
+      "Skypper Evo 912 S",
+      "Skypper Evo 912 IS",
+      "Tanarg Neo 912",
+      "Tanarg Neo 912 S",
+      "Tanarg Neo 912 IS",
+      "Skypper 582",
+      "Skypper 582S",
+      "Skypper 700E",
+      "Skypper 912",
+      "Tanarg 582",
+      "Tanarg 912",
+      "Racer 447 - Fun 14",
+      "GTE 503S-Kiss 450",
+      "XP GTE 503 S",
+      "MILD GTE 503 S",
+      "KISS 450 GTE CLIPPER 912",
+      "GTE-CLIPPER"
     ]
   },
   "agriculture": {
@@ -45507,9 +48072,7 @@
     "AGCO": [
       "DT Series",
       "RT Series",
-      "ST Series",
-      "Fendt 700 Vario",
-      "Massey Ferguson 8S"
+      "ST Series"
     ],
     "AGCO Allis Tractors": [
       "4650",
@@ -45734,15 +48297,6 @@
       "Condor MountainMaster",
       "Condor V",
       "Condor Endurance II"
-    ],
-    "Agrinar Tractors": [
-      "T-85",
-      "T-100",
-      "T-110",
-      "T-120",
-      "T-150",
-      "T-160",
-      "T-180"
     ],
     "Agro-Masz": [
       "FASTER CUT",
@@ -46008,7 +48562,22 @@
       "Cirrus",
       "Pantera",
       "UX Super",
-      "ZA-TS"
+      "ZA-TS",
+      "Pantera 4504",
+      "Pantera 7004",
+      "Pantera 4503",
+      "Pantera 4502-H",
+      "Pantera 4503-H",
+      "Profihopper 1250",
+      "Profihopper 1500",
+      "Profihopper 1500 Cab",
+      "Catros+ 2503",
+      "Catros+ 3003",
+      "Catros+ 3503",
+      "Catros+ 4003",
+      "CatrosXL 3003",
+      "CatrosXL 3503",
+      "CatrosXL 4003"
     ],
     "AMF lawn tractors Tractors": [
       "1010",
@@ -46103,7 +48672,14 @@
       "4110 Q",
       "E 3020 G",
       "E 3040 G",
-      "E 3070 G"
+      "E 3070 G",
+      "2025",
+      "2035",
+      "4060 F",
+      "4080 F",
+      "4090 AF",
+      "P5100",
+      "P5130"
     ],
     "Arctic Enterprises lawn tractors Tractors": [
       "D-1005",
@@ -46287,7 +48863,16 @@
       "4025",
       "4035",
       "5045",
-      "5055"
+      "5055",
+      "4035CH",
+      "1022H",
+      "1025H",
+      "3026H",
+      "4025H",
+      "4035H",
+      "2024H",
+      "5048",
+      "5055CS"
     ],
     "Baldwin Tractors": [
       "DM300",
@@ -46797,7 +49382,9 @@
       "230",
       "BM-10",
       "BM-20",
-      "BM-21"
+      "BM-21",
+      "35",
+      "425 Terrier"
     ],
     "Bombardier Tractors": [
       "MPV-20"
@@ -47007,7 +49594,18 @@
       "Helianthus Pro",
       "Spartan",
       "Quick Up",
-      "944 Twin System"
+      "944 Twin System",
+      "Quasar F4",
+      "Quasar F5",
+      "Quasar F6",
+      "Quasar F8",
+      "Quasar F12",
+      "Quasar R5",
+      "Quasar R6",
+      "Quasar R8",
+      "Quasar R9",
+      "Quasar HS10",
+      "Quasar HS12"
     ],
     "Captain Tractors": [
       "120 DI",
@@ -47409,7 +50007,8 @@
     "Centaur Tractors": [
       "AG-48",
       "KV",
-      "KV-22"
+      "KV-22",
+      "6-10"
     ],
     "Century Tractors": [
       "2028",
@@ -48692,7 +51291,9 @@
       "D4K-B",
       "UB-28",
       "UE-28",
-      "UE-50"
+      "UE-50",
+      "UC-28",
+      "UD-28"
     ],
     "Eagle Manufacturing Tractors": [
       "6A",
@@ -48753,7 +51354,36 @@
       "640",
       "684E",
       "6100",
-      "Super 55"
+      "Super 55",
+      "Ebro",
+      "Super Ebro",
+      "E 48",
+      "160",
+      "183",
+      "155",
+      "684",
+      "TC-75",
+      "350 Est",
+      "460 Est",
+      "480 E",
+      "6040",
+      "6040 V",
+      "6070",
+      "6070 DT",
+      "6079",
+      "6079 DT",
+      "6080",
+      "6080 DT",
+      "6090",
+      "6090 DT",
+      "6100 DT",
+      "6125",
+      "6125 DT",
+      "8070",
+      "8100",
+      "8110",
+      "8135",
+      "6120"
     ],
     "Economy lawn tractors Tractors": [
       "Country Squire",
@@ -48778,7 +51408,21 @@
       "485",
       "5150",
       "5660",
-      "6100"
+      "6100",
+      "650 4WD PRIMA G3",
+      "251",
+      "280 PLUS 4WD",
+      "480 4WD PRIMA G3",
+      "480 2WD PRIMA G3",
+      "557 4WD PRIMA G3",
+      "380 4WD PRIMA G3",
+      "557 4WD",
+      "551 4WD",
+      "548",
+      "480 4WD",
+      "380 4WD",
+      "330",
+      "188 4WD"
     ],
     "Empire Tractors": [
       "88",
@@ -49377,9 +52021,6 @@
       "1000 Super",
       "1300 Super"
     ],
-    "Fiat-Hesston Tractors": [
-      "130-90"
-    ],
     "Force Motors Tractors": [
       "Balwan 300",
       "Balwan 400",
@@ -49508,7 +52149,8 @@
       "New Major",
       "Power Major",
       "Super Dexta",
-      "Super Major"
+      "Super Major",
+      "E27N P6(TA)"
     ],
     "Fortschritt Tractors": [
       "GT 124",
@@ -50042,7 +52684,28 @@
       "1580",
       "1880",
       "F110",
-      "F130"
+      "F130",
+      "130-90DT",
+      "140-90DT",
+      "160-90DT",
+      "180-90DT",
+      "70-90DT",
+      "80-90DT",
+      "60-90DT",
+      "60-66DT",
+      "60-66OR",
+      "60-66ORDT",
+      "70-66DT",
+      "70-66ORDT",
+      "70-66HC",
+      "70-66HCDT",
+      "80-66DT",
+      "80-66OR",
+      "80-66ORDT",
+      "80-66HC",
+      "80-66HCDT",
+      "55-66DT",
+      "70-66OR"
     ],
     "Hiller lawn tractors Tractors": [
       "Yard Hand 100"
@@ -50238,7 +52901,62 @@
       "Pronto",
       "Terrano",
       "Sprinter",
-      "Tiger"
+      "Tiger",
+      "Cruiser XL",
+      "Cruiser SL",
+      "Joker CT",
+      "Joker RT",
+      "Joker HD",
+      "Terrano FM",
+      "Terrano FX",
+      "Terrano GX",
+      "Terrano MT",
+      "Tiger AS",
+      "Tiger LT",
+      "Tiger MT",
+      "Finer SL",
+      "Cura 6-15 ST",
+      "Cultro",
+      "Transformer VF",
+      "Avatar 3-8 SD",
+      "Avatar 12-18 SD",
+      "Avatar 18 MD",
+      "Avatar SW",
+      "Express KR",
+      "Express TD",
+      "Focus TD",
+      "Pronto DC",
+      "Pronto SW",
+      "Pronto AS",
+      "Pronto KR",
+      "Pronto NT",
+      "Serto SC",
+      "Serto SW",
+      "Sprinter ST",
+      "Sprinter SW",
+      "Sprinter NT",
+      "Taro SL",
+      "Versa KR",
+      "Maestro CV",
+      "Maestro CX",
+      "Maestro DV",
+      "Maestro RV",
+      "Maestro RX",
+      "Maestro SV",
+      "Maestro SX",
+      "Maestro 31 SV",
+      "Joker RX",
+      "Joker MT",
+      "Fortis AS",
+      "Avatar 40 SD",
+      "Avatar 60 SD",
+      "Avatar 60 MD",
+      "Avatar 66 TD",
+      "Panther",
+      "Cougar",
+      "Maestro SP",
+      "Leeb VL",
+      "Leeb TD"
     ],
     "Huber Tractors": [
       "12-25 Light Four",
@@ -51194,7 +53912,18 @@
       "Fastrac 4000",
       "Fastrac 8000",
       "Loadall 542-70",
-      "Loadall 531-70"
+      "Loadall 531-70",
+      "Loadall 532-60 Agri",
+      "Loadall 536-95 Agri",
+      "Loadall 538-70 Agri",
+      "Loadall 560-80 Agri",
+      "Loadall 525-60 Agri",
+      "Loadall 525-60 Agri Plus",
+      "Loadall 538-60 Agri",
+      "403 Agri",
+      "406 Agri",
+      "407 Agri",
+      "409 Agri"
     ],
     "JCB Tractors": [
       "125-65",
@@ -52083,7 +54812,17 @@
       "Maxima",
       "VB Series",
       "Discover",
-      "Vari-Master"
+      "Vari-Master",
+      "HR 4030 RCS",
+      "HR 4530 RCS",
+      "HR 5030 RCS",
+      "VB 3160",
+      "VB 3190",
+      "VB 3260",
+      "VB 3290",
+      "ESPRO 3002",
+      "ESPRO 4002 R",
+      "ESPRO 6002 R"
     ],
     "Kverneland": [
       "150 S",
@@ -52460,7 +55199,47 @@
       "Juwel",
       "Karat",
       "Rubin",
-      "Solitair"
+      "Solitair",
+      "Juwel 10",
+      "Diamant",
+      "Titan 18",
+      "Titan 18 V",
+      "FlexPack",
+      "VarioPack",
+      "Zirkon 8",
+      "Zirkon 12",
+      "Korund",
+      "System-Kompaktor",
+      "Heliodor 9",
+      "Rubin 10",
+      "Rubin 12",
+      "Koralin",
+      "Kristall",
+      "Karat 10",
+      "Karat 12",
+      "Gigant",
+      "Solitair 12 SW",
+      "Solitair 23",
+      "Saphir 9",
+      "Saphir 10",
+      "Solitair 8+",
+      "Solitair 9+",
+      "Solitair 9+Duo",
+      "Solitair 9",
+      "Solitair 12",
+      "Solitair 25 KA",
+      "Compact-Solitair H",
+      "Compact-Solitair HD",
+      "Spica 8",
+      "Tauri 8",
+      "Tauri 12",
+      "Polaris 12",
+      "Polaris 14",
+      "Solitair DT",
+      "Rubin 10/1000 KUA",
+      "Juwel 10 i",
+      "Juwel 10 M",
+      "Juwel 8 i"
     ],
     "Lenar Tractors": [
       "FS180",
@@ -52525,7 +55304,66 @@
       "Geotrac 73",
       "Geotrac 83",
       "Geotrac 93",
-      "Geotrac 103"
+      "Geotrac 103",
+      "Lintrac 70",
+      "Lintrac 80",
+      "Lintrac 90",
+      "Lintrac 100",
+      "Lintrac 110",
+      "Lintrac 130",
+      "Lintrac 160",
+      "Lintrac 65 LS",
+      "Lintrac 75 LS",
+      "Lintrac 95 LS",
+      "Lintrac 95 LS Alpin",
+      "Lintrac 115 LS",
+      "Geotrac 50",
+      "Geotrac 60",
+      "Geotrac 63 Alpin",
+      "Geotrac 64",
+      "Geotrac 64 ep",
+      "Geotrac 65",
+      "Geotrac 70",
+      "Geotrac 73 Alpin",
+      "Geotrac 74",
+      "Geotrac 74 ep",
+      "Geotrac 75 A",
+      "Geotrac 80",
+      "Geotrac 83T",
+      "Geotrac 84",
+      "Geotrac 84 ep",
+      "Geotrac 84 ep PRO",
+      "Geotrac 85",
+      "Geotrac 94",
+      "Geotrac 94 ep",
+      "Geotrac 100",
+      "Geotrac 104 ep",
+      "Geotrac 114",
+      "Geotrac 114 ep",
+      "Geotrac 124",
+      "Geotrac 134 ep",
+      "BF 350 S A",
+      "BF 650 S N",
+      "BF 450 S N",
+      "BF 450 S A",
+      "BF 650 S A",
+      "BF 350 N",
+      "BF 350 A",
+      "BF 250 A",
+      "BF 320 N",
+      "BF 250 GT",
+      "BF 320 GT",
+      "BF 320 A",
+      "BF 450 A",
+      "BF 450 N",
+      "BF 25 A",
+      "BF 16 N",
+      "BF 45 N",
+      "BF 45 A",
+      "BF 35 N",
+      "BF 30",
+      "BF 22 A",
+      "BF 14 N"
     ],
     "Long Tractors": [
       "260",
@@ -53336,7 +56174,12 @@
       "253",
       "254",
       "254S",
-      "255"
+      "255",
+      "MF 8S.205",
+      "MF 8S.225",
+      "MF 8S.245",
+      "MF 8S.285",
+      "MF 8S.305"
     ],
     "Massey Ferguson lawn tractors Tractors": [
       "5",
@@ -53753,7 +56596,10 @@
       "MF34.7",
       "MF34.9",
       "MF44.7",
-      "MF44.9"
+      "MF44.9",
+      "TF27.6",
+      "TF30.7",
+      "TF35.7 CS 140"
     ],
     "Midland Company lawn tractors Tractors": [
       "Bull Pup R-70"
@@ -54677,7 +57523,9 @@
       "M4",
       "Mini 9/16",
       "PM-4",
-      "Universal 3"
+      "Universal 3",
+      "PM3V",
+      "DM3V"
     ],
     "Oliver lawn tractors Tractors": [
       "75",
@@ -55187,7 +58035,22 @@
       "MG3",
       "MG5",
       "MG6",
-      "MG40"
+      "MG40",
+      "MP653",
+      "MP670",
+      "MP655",
+      "HR380",
+      "AURØRA ELiTE",
+      "HM600",
+      "MT503",
+      "Highway 3",
+      "MT383",
+      "TR320",
+      "HR300",
+      "MP495",
+      "MP493",
+      "Parkway 3",
+      "Commander"
     ],
     "Raven lawn tractors Tractors": [
       "MPV-710",
@@ -56078,7 +58941,9 @@
     ],
     "Shaktimaan Tractors": [
       "30",
-      "35"
+      "35",
+      "40",
+      "45 DLX"
     ],
     "Sheppard Diesel Tractors": [
       "SD-1",
@@ -56358,7 +59223,16 @@
       "204S",
       "254",
       "304",
-      "404"
+      "404",
+      "Tornado",
+      "Lightning",
+      "404MK",
+      "404MK-XL",
+      "504MK",
+      "MK75",
+      "254CH",
+      "404CHSynchro",
+      "504CH"
     ],
     "Skoda-LIAZ Tractors": [
       "ŠT 180"
@@ -56519,7 +59393,23 @@
       "DA 50",
       "Som 25",
       "Som 45",
-      "Som 55"
+      "Som 55",
+      "SOM 20 D",
+      "Som 30B",
+      "SOM 40",
+      "215",
+      "215F",
+      "315",
+      "415",
+      "612",
+      "615",
+      "650",
+      "670",
+      "715",
+      "750",
+      "750TD",
+      "900",
+      "800"
     ],
     "Sonalika Tractors": [
       "DI 55",
@@ -57866,13 +60756,48 @@
       "932",
       "939",
       "MT 224 1D FENTM",
-      "MT 225 1D FENTM"
+      "MT 225 1D FENTM",
+      "932 2WD",
+      "939 2WD",
+      "165 DI",
+      "165 DI ES",
+      "135 DI",
+      "130 DI",
+      "95 DI IGNITO",
+      "FT 50 GE",
+      "PG50",
+      "FT 35 GE",
+      "FT 20",
+      "FT 80",
+      "FT 55 GE"
     ],
     "Väderstad": [
       "Rapid 300-400C/S",
       "Rapid A 600-800C/J",
       "Spirit 600-900S",
-      "Tempo L"
+      "Tempo L",
+      "Carrier 300-400",
+      "Carrier 420-820",
+      "Carrier 925-1225",
+      "Carrier XL 425-725",
+      "Carrier XL 925-1225",
+      "Carrier XT 425-625",
+      "Cultus 300-400",
+      "Cultus HD 300-400",
+      "Cultus 425-525",
+      "Cultus HD 425-525",
+      "NZ Extreme 1250-1425",
+      "TopDown 300-700",
+      "Inspire 1200C/S",
+      "Rapid A 400-800S",
+      "Seed Hawk",
+      "Tempo F",
+      "Tempo R",
+      "Tempo T",
+      "Tempo V",
+      "Sladden",
+      "HV",
+      "NZ"
     ],
     "Wagner Tractors": [
       "TR-6",
@@ -57935,7 +60860,30 @@
       "1280",
       "1290e",
       "1390",
-      "1390e"
+      "1390e",
+      "2080",
+      "3080",
+      "2080T",
+      "3080T",
+      "4080 Basic Line",
+      "4080T Basic Line",
+      "4080",
+      "5080",
+      "4080T",
+      "5080T",
+      "9580T",
+      "2060",
+      "2060T",
+      "3060T",
+      "3060",
+      "4060",
+      "4060T",
+      "T4512",
+      "T6025",
+      "T7035",
+      "T7042",
+      "T9535",
+      "T4512e"
     ],
     "Wetmore Tractors": [
       "12-25"
@@ -58969,6 +61917,88 @@
       "Bahia 2 MKHE 3",
       "Hydro 80 MKHP3",
       "Hydro 100 III MKEHH"
+    ],
+    "Agrinar": [
+      "2140 EV.V HE",
+      "AXIAL 3000 FULL",
+      "T140-4",
+      "T70-4",
+      "T180-4",
+      "T60-4",
+      "T170-4",
+      "T50-4",
+      "T80-4",
+      "T150-4",
+      "T160-4",
+      "T200-4",
+      "T120-4",
+      "T130-4",
+      "T220-4",
+      "100-4",
+      "T90-4",
+      "T-85",
+      "T-110",
+      "T-100",
+      "T-120",
+      "T-150",
+      "T-160",
+      "T-180",
+      "MC 80",
+      "T 100-4",
+      "T 85-4",
+      "T 110-2",
+      "T 120-2"
+    ],
+    "Shaktiman": [
+      "Side Shift Rotary Tiller SRT - 1.55",
+      "Side Shift Rotary Tiller SRT - 1.80",
+      "Side Shift Rotary Tiller SRT - 2.05",
+      "Side Shift Rotary Tiller SRT - 2.30",
+      "Semi Champion SRT - 4",
+      "Semi Champion SRT - 5",
+      "Semi Champion SRT - 5.5",
+      "Semi Champion SRT - 6",
+      "Semi Champion SRT - 7",
+      "Semi Champion SRT - 8",
+      "Viktor SRT - 150",
+      "Viktor SRT - 175",
+      "Viktor SRT - 200",
+      "Viktor SRT - 225",
+      "SRP 75",
+      "SRP 100",
+      "SRP 125",
+      "SRP 150",
+      "SRP 175",
+      "SRP 200",
+      "SRP 225",
+      "SRP 250",
+      "SRP 275",
+      "SRP 300",
+      "SRP 350",
+      "SSCH 3737 TEJAS-V-BR",
+      "SSCH 3737 TEJAS",
+      "SSCH 3737",
+      "E60",
+      "SBM 175"
+    ],
+    "Trakstar": [
+      "540",
+      "550",
+      "545",
+      "525 4WD",
+      "531",
+      "536",
+      "550 DLX",
+      "531 DLX",
+      "536 DLX",
+      "545 DLX",
+      "525 4WD NT",
+      "540 Orchard",
+      "540 HT",
+      "545 4WD",
+      "550 4WD",
+      "540 DLX",
+      "525 2WD"
     ]
   },
   "construction": {
@@ -59187,7 +62217,22 @@
       "BW 90 SCC-5",
       "BW 100 ADM-5",
       "BW 100 ACM-5",
-      "BW 100 AD-5"
+      "BW 100 AD-5",
+      "BW 55",
+      "BW 71",
+      "BW 65 D",
+      "BW 65",
+      "BW 75 H",
+      "BMP 8500",
+      "BW 120 AD-5",
+      "BW 120 AC-5",
+      "BW 135 AD-5",
+      "BW 138 AC-5",
+      "BW 120 AD-4",
+      "BW 100 AC-5",
+      "BW 100 SC-5",
+      "BW 100 SCC-5",
+      "BW 90 SC-5"
     ],
     "Brokk": [
       "70+",
@@ -59508,7 +62553,22 @@
       "CC1100C VI",
       "CC2200 VI",
       "CC2300 VI",
-      "CC1100C"
+      "CC1100C",
+      "CA1300D",
+      "CA1300PD",
+      "CA1400D",
+      "CA1400PD",
+      "CA3500D",
+      "CA3500PD",
+      "CA4000D",
+      "CA4000PD",
+      "CA5000D",
+      "CA5000PD",
+      "CA6000D",
+      "CA6000PD",
+      "CA6500D",
+      "CA6500PD",
+      "CA25"
     ],
     "Epiroc": [
       "SmartROC T30 RX",
@@ -61354,7 +64414,10 @@
       "ZE20G",
       "ZE55GU",
       "ZE26GU",
-      "ZE27GU"
+      "ZE27GU",
+      "ZE18GU",
+      "ZE35GU",
+      "ZS090V"
     ],
     "Develon": [
       "DX10Z-7",
@@ -61620,7 +64683,16 @@
       "Airmaster 125 cfm Gas",
       "Airmaster 125 cfm Diesel",
       "Airmaster 185 cfm Gas",
-      "Airmaster 185 cfm Diesel"
+      "Airmaster 185 cfm Diesel",
+      "Airmaster 60 cfm Gas",
+      "Airmaster 85 cfm Gas",
+      "Airmaster 105 cfm Gas",
+      "Airmaster 210 cfm Gas",
+      "Airmaster 250 cfm Diesel",
+      "Airmaster 365 cfm Gas",
+      "Airmaster 365 cfm Diesel",
+      "Airmaster 600 cfm Diesel",
+      "Q375DCE"
     ],
     "Blaw-Knox": [
       "PF-4410",
@@ -61781,7 +64853,19 @@
       "716A VHP",
       "726A VHP",
       "736A VHP",
-      "C50A"
+      "C50A",
+      "C60A",
+      "C66A",
+      "C70A",
+      "C76A",
+      "C80A",
+      "C86A",
+      "710A VHP",
+      "720A VHP",
+      "710A",
+      "730A",
+      "750A",
+      "780A"
     ],
     "Thwaites": [
       "Mach",
@@ -61820,7 +64904,16 @@
       "DT835",
       "TR825",
       "GA-524",
-      "DA-520"
+      "DA-520",
+      "GA-624",
+      "DA-625",
+      "GA-724",
+      "DA-725"
+    ],
+    "Agrinar": [
+      "CR90",
+      "CR 90-2",
+      "CF100"
     ]
   },
   "commercial": {
@@ -61838,14 +64931,29 @@
       "MA 9.0 Euro III",
       "MT 12.0 LE",
       "MT 15.0 LE",
-      "MT 17.0 LE"
+      "MT 17.0 LE",
+      "A 11.000 Gás",
+      "EXT 4x4 (Truck Home)",
+      "A 8.700",
+      "A 10.000",
+      "A 10.000 4x4",
+      "A 15.000",
+      "A 18.000",
+      "A7500"
     ],
     "Aixam": [
       "Mega",
       "D-TRUCK 600 Drop-Side",
       "D-TRUCK 600 Van",
       "e-TRUCK Drop side",
-      "e-TRUCK Van"
+      "e-TRUCK Van",
+      "D-TRUCK 400 Van",
+      "D-TRUCK 400 Drop-Side",
+      "D-TRUCK 400 Pick-Up",
+      "D-TRUCK 400 Chassis Cab Base",
+      "D-TRUCK 600 Chassis Cab Base",
+      "D-TRUCK 600 Tipper",
+      "D-TRUCK 600 Pick-Up"
     ],
     "Albach": [
       "Diamant",
@@ -61854,7 +64962,6 @@
     ],
     "Alexander Dennis": [
       "Dart",
-      "Ecollect",
       "Enviro",
       "Javelin",
       "Enviro200",
@@ -61865,7 +64972,9 @@
       "Enviro500",
       "Enviro500EV",
       "Enviro400XLB",
-      "Enviro400 City"
+      "Enviro400 City",
+      "Enviro400FCEV",
+      "Enviro400ER"
     ],
     "Alke": [
       "Atx",
@@ -61877,7 +64986,23 @@
       "ATX340ED",
       "ATX310E",
       "ATX340E",
-      "ATX340EDH"
+      "ATX340EDH",
+      "ATX330E",
+      "ATX330ED",
+      "ATX330EH",
+      "ATX330EDH",
+      "ATX340EX",
+      "ATX340EDX",
+      "ATX 440 S",
+      "ATX 440 M",
+      "ATX 440 L",
+      "ATX 440 DS",
+      "ATX 440 DM",
+      "ATX 480 S",
+      "ATX 480 M",
+      "ATX 480 L",
+      "ATX 480 DS",
+      "ATX 480 DM"
     ],
     "Altas Auto": [
       "Sprinter",
@@ -61901,7 +65026,11 @@
       "Hummer"
     ],
     "Ameline": [
-      "Master"
+      "Master",
+      "AML Haras",
+      "AML Select",
+      "AML Ecostar",
+      "AML Horsebox"
     ],
     "Ashok Leyland": [
       "Bada Dost",
@@ -61913,11 +65042,39 @@
       "Captain",
       "AVTR",
       "Oyster",
-      "Sunshine"
+      "Sunshine",
+      "DOST + XL CNG",
+      "SAATHI",
+      "BADA DOST i3+ with LNT",
+      "Dost + XL Twin Fuel",
+      "Dost Twin Fuel",
+      "DOST XL",
+      "Bada Dost i3+XL",
+      "BADA DOST i3+",
+      "DOST + XL",
+      "Bada Dost i5 XL",
+      "Bada Dost i5+",
+      "BADA DOST i6",
+      "BADA DOST i5",
+      "BADA DOST i4",
+      "DOST CNG",
+      "BADA DOST CNG",
+      "BADA DOST i2",
+      "AVTR 4525H DTLA",
+      "AVTR 4925H DTLA",
+      "AVTR 4625H LA",
+      "Mitr"
     ],
     "Ataman": [
       "A-092H6",
-      "D-093S2"
+      "D-093S2",
+      "А09216",
+      "А09620",
+      "D093S4",
+      "D093S201",
+      "A092G6",
+      "A140",
+      "DА9016"
     ],
     "Atm": [
       "Master",
@@ -61934,7 +65091,20 @@
       "Mini 1000 Pick Up",
       "Mini Van",
       "Seven",
-      "ALLEGRO"
+      "ALLEGRO",
+      "FX3",
+      "FL1",
+      "FX4",
+      "FX4D",
+      "FL2",
+      "FL2D",
+      "HL (High Lot)",
+      "TT (Twin Top)",
+      "LL (Low Loader)",
+      "FL (Flash Lot)",
+      "FL1D",
+      "FX3D",
+      "FX4Q"
     ],
     "Austin-Morris": [
       "Mini"
@@ -61950,20 +65120,34 @@
       "Xpeditor",
       "Xpert",
       "Xspotter",
-      "Legend"
+      "Legend",
+      "DC-64T",
+      "DC-64R",
+      "DC-64M",
+      "DC-64D",
+      "DC-64P"
     ],
     "Automet": [
       "Apollo",
-      "MiniCity"
+      "MiniCity",
+      "MiniCity 906CA50C",
+      "Apollo 970.28-HD",
+      "MiniCity Electric",
+      "Feniks 84P",
+      "MiniCity W907 517CDI"
     ],
     "Aveuro": [
-      "Sprinter"
+      "Sprinter",
+      "School Minibus",
+      "Standard Touristic Minibus",
+      "City Minibus",
+      "Deluxe Touristic Minibus"
     ],
     "Ayats": [
       "Bravo",
       "Horizon",
       "Eclipse",
-      "Bravo IR City",
+      "Bravo 1R City",
       "Kronos Cabrio",
       "Nightliner",
       "Bravo IR City Electric",
@@ -61971,10 +65155,26 @@
       "Atlas 2",
       "Bravo 1",
       "Atlantis C III",
-      "Bravo II"
+      "Bravo II",
+      "Spirit",
+      "Intercity"
     ],
     "Barkas": [
-      "V 901/2"
+      "V 901/2",
+      "B 1000",
+      "B 1000-1",
+      "B 1000 Kastenwagen",
+      "B 1000 Pritschenwagen",
+      "B 1000 Kleinbus",
+      "B 1000 FR/LK",
+      "B 1000 KM",
+      "B 1000 FR/IK",
+      "B 1000 FR/MK",
+      "V 901/2-Z",
+      "V 901/2 P DQ",
+      "B 1000 KM/1",
+      "B 1000 KM/2",
+      "B 1000-1/KB"
     ],
     "Bci": [
       "Cityrider",
@@ -62022,7 +65222,10 @@
       "10CWT",
       "ASTRAVAN",
       "KB26",
-      "6CWT"
+      "6CWT",
+      "CF 280",
+      "CF 230",
+      "CF2"
     ],
     "Beulas": [
       "Aura",
@@ -62032,10 +65235,37 @@
       "Cygnus",
       "Kala",
       "Stergo",
-      "Spica"
+      "Spica",
+      "Beulas 75",
+      "Superpanorama",
+      "Panorama",
+      "Euroestar E-83",
+      "Gianino",
+      "Jewel E"
     ],
     "Bloomfields": [
-      "Legacy"
+      "Legacy",
+      "Legacy S",
+      "Legacy SL",
+      "Legacy SLE",
+      "Eventer 5T",
+      "Eventer 5T XL",
+      "BXL 72",
+      "BXL 72 S",
+      "BXL 75 / 100",
+      "Pro Lite",
+      "Professional",
+      "Eventer Compact",
+      "Eventer 4.5T",
+      "Eventer 5T XS",
+      "Raceline Professional",
+      "Eventer Compact 3.5T",
+      "Legacy SLE 3.5T",
+      "Professional 3.5T",
+      "Legacy S 3.5T",
+      "Legacy S 4T",
+      "Legacy S 4.25T",
+      "Legacy S 4.5T"
     ],
     "BMC": [
       "Tuğra",
@@ -62064,7 +65294,26 @@
       "TUGRA",
       "NEOPORT",
       "PROCITY",
-      "NEOCITY"
+      "NEOCITY",
+      "NEOCITY 8.5 M Diesel",
+      "NEOCITY 8.5 M Electric",
+      "NEOCITY 8.5 M VIP",
+      "NEOCITY 9 M CNG",
+      "PROCITY 10.7 M Diesel",
+      "PROCITY 12 M CNG",
+      "PROCITY 12 M Diesel",
+      "PROCITY+ 12 M Electric",
+      "PROCITY 18 M CNG",
+      "PROCITY 18 M Diesel",
+      "NEOCITY 10 M Diesel",
+      "PRO L 1856",
+      "TGR 1846 High Roof (4x2)",
+      "TGR 1846 Standard Roof (4x2)",
+      "TGR 3232 Sleeper Cab (8x2)",
+      "TGR 2532 Sleeper Cab (6x2)",
+      "TGR 1832 (4x2)",
+      "TGR 4340 (8x4)",
+      "TGR 3540 (6x4)"
     ],
     "Bova": [
       "Fhd",
@@ -62080,17 +65329,47 @@
       "JOB X 4",
       "JOB X 2",
       "JOB",
-      "T-REX"
+      "T-REX",
+      "T-REX 35",
+      "T-REX 60"
     ],
     "Bristol": [
       "Lodekka",
-      "Vrt"
+      "VRT",
+      "J",
+      "K",
+      "L",
+      "LWL",
+      "LS",
+      "SC",
+      "MW",
+      "RE",
+      "VR",
+      "LH",
+      "FLF6B Lodekka",
+      "LH6L",
+      "K5G"
     ],
     "Bucher": [
       "City",
       "Citycat",
       "CITYCAT 5006",
-      "CITYCAT VR50"
+      "CITYCAT VR50",
+      "CityCat V20",
+      "CityCat V20e",
+      "CityCat VS20",
+      "CityCat VS20e",
+      "CityCat VR50e",
+      "CityCat VR17e",
+      "C202",
+      "MaxPowa V50",
+      "MaxPowa V50m",
+      "MaxPowa V50h",
+      "MaxPowa V65",
+      "MaxPowa V65m",
+      "MaxPowa V65h",
+      "MaxPowa V65e",
+      "MaxPowa V120"
     ],
     "Bus-Prestige": [
       "Sprinter",
@@ -62145,7 +65424,19 @@
       "e.City Gold",
       "H2.City Gold",
       "Levante III",
-      "Invictus"
+      "Invictus",
+      "e.City Gold 8,5m",
+      "e.City Gold 12m",
+      "e.City Gold 18m",
+      "H2.City Gold 12m",
+      "H2.City Gold 18m",
+      "H2.City Gold BRT 18m",
+      "iTrabus",
+      "iTRABUS S33",
+      "Optimo",
+      "Enigma",
+      "Winner",
+      "A66"
     ],
     "Can-Am": [
       "Traxter",
@@ -62155,15 +65446,48 @@
     ],
     "Car-bus.net": [
       "Shaula",
-      "Spica"
+      "Spica",
+      "Shaula Urban",
+      "Spica Urban",
+      "Corvi S",
+      "Spica Urban Low Entry"
     ],
     "Carrocerias Minda": [
       "35C18",
       "Sprinter"
     ],
     "Caselani": [
-      "Type-H Panelvan",
-      "TYPE HG"
+      "TYPE H PANEL VAN",
+      "TYPE HG",
+      "TYPE H FOOD TRUCK OLD STYLE",
+      "TYPE H FOOD TRUCK MODERN STYLE",
+      "TYPE H TOW TRUCK",
+      "TYPE H CHASSIS-CAB VAN",
+      "TYPE H LOW FLOOR CAB VAN",
+      "TYPE HG PANEL VAN",
+      "TYPE HG CREW CAB VAN",
+      "TYPE HG PASSENGER VAN",
+      "4PE",
+      "616N",
+      "FOURGONNETTE",
+      "616N PANEL VAN",
+      "616N FOOD TRUCK OLD STYLE",
+      "616N FOOD TRUCK MODERN STYLE",
+      "616N TOW TRUCK",
+      "616N CHASSIS-CAB VAN",
+      "616N LOW FLOOR CAB VAN",
+      "4PE MINI TRUCK",
+      "4PE FOOD TRUCK",
+      "FOURGONNETTE PANEL VAN",
+      "e-FOURGONNETTE PANEL VAN",
+      "FOURGONNETTE CREW CAB VAN",
+      "FOURGONNETTE PASSENGER VAN",
+      "TYPE H FOOD TRUCK WILDCAMP",
+      "TYPE HG e-PANELVAN",
+      "TYPE HG Crew Cab Van (electric)",
+      "TYPE HG Passenger Van (electric)",
+      "TYPE H Minibus",
+      "TYPE H (BEV)"
     ],
     "Caterpillar": [
       "CT610",
@@ -62201,11 +65525,30 @@
       "Logistar",
       "Logistar 260",
       "Metro",
-      "CENNTRO, METRO",
-      "Deepstar"
+      "Deepstar",
+      "Logistar 210",
+      "Logistar 300",
+      "Logistar 400",
+      "Logistar 450",
+      "Logistar 200",
+      "LS450 Shuttle Bus",
+      "Deepstar 864",
+      "TeeMak",
+      "Metro MR",
+      "Logistar 100"
     ],
     "Cento Bus": [
-      "Sprinter"
+      "Sprinter",
+      "EVOLVE Touristic",
+      "EVOLVE City",
+      "EVOLVE School",
+      "Touristic Plus",
+      "Touristic Eco",
+      "School",
+      "Cabrio Maxi",
+      "Cabrio Mini",
+      "Transfer Maxi",
+      "Transfer Mini"
     ],
     "Changan Commercial": [
       "Honor S",
@@ -62645,13 +65988,35 @@
       "35S14"
     ],
     "Cuby": [
-      "Sprinter"
+      "Sprinter",
+      "Sprinter Tourist Line",
+      "Sprinter Tourist Line HD",
+      "Sprinter City Line",
+      "Iveco Daily Tourist Line",
+      "Iveco Daily City Line",
+      "Sprinter VIP Captain",
+      "Sprinter Executive Lounge",
+      "Sprinter Business Pullman",
+      "Vito VIP Line"
     ],
     "Dacia": [
       "Dokker",
       "PICK-UP",
       "LOGAN PICK UP",
-      "LOGAN VAN"
+      "LOGAN VAN",
+      "Spring Cargo",
+      "Duster Cargo",
+      "Duster Cargo Hybrid 155",
+      "Duster Commercial Essential TCe 90 4x2 MY22",
+      "Duster Commercial Essential TCe 130 4x2 MY22",
+      "Duster Commercial Essential Blue dCi 115 4x2 MY22",
+      "Duster Commercial Essential Blue dCi 115 4x4 MY22",
+      "Duster Commercial Comfort MY22",
+      "Duster Commercial Comfort TCe 90 4x2 MY22",
+      "Duster Commercial Comfort TCe 130 4x2 MY22",
+      "Duster Commercial Comfort TCe 150 4x2 EDC MY22",
+      "Duster Commercial Comfort Blue dCi 115 4x2 MY22",
+      "Duster Commercial Comfort Blue dCi 115 4x4 MY22"
     ],
     "Daewoo": [
       "Korando",
@@ -63375,7 +66740,18 @@
       "V22",
       "V25",
       "K01",
-      "GLADIATOR EVO 6D"
+      "GLADIATOR EVO 6D",
+      "C71",
+      "C72",
+      "K02",
+      "D71",
+      "D72",
+      "EC36",
+      "C36",
+      "C37",
+      "C56",
+      "K07S",
+      "K05S"
     ],
     "Dodge": [
       "1500",
@@ -63496,7 +66872,15 @@
     "Dongfeng Trucks": [
       "KX",
       "KL",
-      "KR"
+      "KR",
+      "GX PRO",
+      "KX PRO",
+      "X9",
+      "X7",
+      "X7-C",
+      "KL PRO",
+      "KR PRO",
+      "X3"
     ],
     "DR": [
       "PK8",
@@ -63527,7 +66911,21 @@
     "Equi-Trek": [
       "Sonic",
       "SONIC 5",
-      "ATOM"
+      "ATOM",
+      "Evolution",
+      "Evolution Classic",
+      "Evolution Excel",
+      "Evolution Elite",
+      "Evolution Transporter",
+      "Victory 4250kg",
+      "Sonic Excel",
+      "Sonic Elite",
+      "Equinox Excel",
+      "IKONIK",
+      "Endeavour Elite",
+      "Elegance Excel",
+      "Endeavour Excel Plus",
+      "Endeavour Elite Plus"
     ],
     "Erf": [
       "EC12",
@@ -63537,7 +66935,14 @@
     "Esagono Energia": [
       "Gastone",
       "GECO",
-      "GRIFO"
+      "GRIFO",
+      "Gastone Electric Pick-up with Sides",
+      "Gastone Electric Pick-up – Van",
+      "Gastone Electric Pick-up – Closed Van with Electric Rear Platform",
+      "Gastone Electric Pick-up – Isothermal Van with Stand Alone Cooling System",
+      "Gastone Electric Pick-up with Flat Loading Platform",
+      "Gastone Electric Pick-up with Tipper",
+      "Gastone Electric Pick-up with Long Tipper"
     ],
     "Esref Karoser": [
       "Sprinter"
@@ -63555,7 +66960,9 @@
       "Avantgarde",
       "Trend Sprinter",
       "E-Cityline",
-      "X-Clusive"
+      "X-Clusive",
+      "Tourline",
+      "LuxuryCab"
     ],
     "Evo": [
       "Cross4"
@@ -63574,7 +66981,20 @@
       "V7E",
       "H9E",
       "SUPERVAN, FARIZON SV",
-      "SV L1H1"
+      "SV L1H1",
+      "SV L1H2",
+      "SV L2H2",
+      "SV L2H3",
+      "SV L3H3",
+      "V6E",
+      "F1E",
+      "F3E",
+      "C6E",
+      "SuperVan 6HR",
+      "SuperVan 5.5MR",
+      "SuperVan 5FR",
+      "H5E",
+      "H8E-6T"
     ],
     "Faun": [
       "Atf",
@@ -63604,7 +67024,23 @@
     ],
     "Ferqui": [
       "Sunrise",
-      "Sunset"
+      "Sunset",
+      "SUNRISE F2",
+      "SUNRISE F2 ESTÁNDAR",
+      "SUNRISE F2 PMR",
+      "SUNRISE F2 PMR PT",
+      "SUNRISE F2 SEMIURBANO",
+      "SUNRISE F2 SCHOOL",
+      "SUNRISE F3",
+      "LAGOS",
+      "SUNSET S4",
+      "Sunrise SL",
+      "Sunrise PMR PT",
+      "Sunset S4 ESTÁNDAR",
+      "Sunset S4 PMR",
+      "Sunset S4 SEMIURBANO",
+      "SUNSET S4R",
+      "Sunrise F2 GRAN MALETERO"
     ],
     "Fiat": [
       "1100",
@@ -65145,7 +68581,9 @@
       "G6",
       "G5",
       "G5E",
-      "G4 L N1 AUTOMATIC"
+      "G4 L N1 AUTOMATIC",
+      "G1",
+      "G2"
     ],
     "Great Wall": [
       "Cannon",
@@ -65608,7 +69046,15 @@
       "Mobi City L7",
       "Mobi Low Entry",
       "Mago2",
-      "Mobi City"
+      "Mobi City",
+      "Mobi GNC",
+      "Mobi City GNC",
+      "Wing GNC",
+      "e-Mobi City",
+      "Spica",
+      "Spica City",
+      "Shaula",
+      "Shaula City"
     ],
     "INEOS": [
       "Grenadier",
@@ -66313,7 +69759,37 @@
       "ERGA EV",
       "GARA",
       "NMS",
-      "NRR EV"
+      "NRR EV",
+      "Citivolt 12",
+      "Citiport 12",
+      "Citiport 12 CNG",
+      "Citiport 18",
+      "Citiport 18 CNG",
+      "Citibus",
+      "Novociti Life",
+      "Novociti Volt",
+      "Visigo Interurban",
+      "Turquoise Interurban",
+      "Kendo 12.3",
+      "Kendo 13 CNG",
+      "Novo Ultra",
+      "Grand Toro",
+      "Grand Toro XL",
+      "BIG.e",
+      "Turkuaz",
+      "NovoLux",
+      "NPR Long",
+      "NPR 10 Long",
+      "NPR 10",
+      "NPR 3D",
+      "NLR Long",
+      "Citimark",
+      "Novo S",
+      "Roybus",
+      "Classic",
+      "Urban",
+      "NNR Long",
+      "NPR HP"
     ],
     "Its System": [
       "Master",
@@ -66946,8 +70422,25 @@
       "53082"
     ],
     "Karsan": [
-      "E-Atak",
-      "E-JEST BXCEM AUTOMATIC"
+      "e-ATAK",
+      "E-JEST BXCEM AUTOMATIC",
+      "e-JEST",
+      "e-JEST Right-hand drive (UK)",
+      "e-JEST Right-hand drive (JAPAN)",
+      "Autonomous e-JEST",
+      "Autonomous e-ATAK",
+      "e-ATA",
+      "e-ATA LE",
+      "e-ATA HYDROGEN",
+      "e-ATA 10",
+      "e-ATA 12",
+      "e-ATA 18",
+      "J9 Premier",
+      "Jest",
+      "Atak",
+      "Star",
+      "Jest+",
+      "Jestronic"
     ],
     "Kawasaki": [
       "Kaf",
@@ -67269,7 +70762,18 @@
     ],
     "LEVC": [
       "VN5",
-      "VN5, EVN5"
+      "VN5, EVN5",
+      "TX Taxi",
+      "TX Access",
+      "TX Shuttle",
+      "VN5 Business",
+      "VN5 City",
+      "VN5 Ultima",
+      "TX Taxi Icon",
+      "TX Taxi Vista",
+      "TX Taxi Vista + Comfort Pack",
+      "TX Taxi Vista + Comfort Plus Pack",
+      "TX"
     ],
     "Leyland": [
       "Freighter",
@@ -67742,7 +71246,55 @@
       "B 2500 STANDARD CAB 4X2",
       "Mazda-Go Type-DA",
       "Type-DB",
-      "Type-DC"
+      "Type-DC",
+      "Scrum Van",
+      "Scrum Truck",
+      "Scrum Van GA",
+      "Scrum Van PA",
+      "Scrum Van PC",
+      "Scrum Van Buster",
+      "Scrum Truck KU",
+      "Scrum Truck KU Special",
+      "Scrum Truck KU Agricultural Equipment Pack",
+      "Scrum Truck WA Type",
+      "Scrum Truck KA",
+      "Scrum Truck KD",
+      "Scrum Truck KC",
+      "Scrum Truck KL",
+      "Scrum Van PU",
+      "Scrum Van PA-S",
+      "Scrum Truck KX",
+      "Type-HBR",
+      "Type-MAR",
+      "Romper",
+      "D1100",
+      "D1500",
+      "K360",
+      "T600",
+      "T1100",
+      "T1500",
+      "B1500",
+      "Proceed",
+      "Boxer",
+      "Porter Van",
+      "Porter Truck",
+      "Porter Cab",
+      "T2000",
+      "E1300",
+      "E1600",
+      "E2000",
+      "E2700",
+      "E3000",
+      "Bongo Wide-Low",
+      "Bongo Van",
+      "Bongo Truck",
+      "Bongo Brawny Van",
+      "Titan Dash",
+      "Bongo Brawny Truck",
+      "T2000 Bus",
+      "T3000 Bus",
+      "Bongo Brawny Wagon",
+      "Parkway Rotary 26"
     ],
     "Mecalac": [
       "Mdx",
@@ -68470,7 +72022,28 @@
       "Unimog U 430",
       "Unimog U 435",
       "eEconic",
-      "eActros 400"
+      "eActros 400",
+      "Sprinter City 45",
+      "Sprinter City 75",
+      "Sprinter Travel 75",
+      "Sprinter Transfer",
+      "Sprinter Mobility",
+      "Sprinter Transfer 23",
+      "Sprinter Transfer 35",
+      "Sprinter Transfer 45",
+      "Sprinter Transfer 55",
+      "Sprinter Mobility 23",
+      "Sprinter Mobility 45",
+      "Sprinter City 65 K",
+      "Sprinter City 65",
+      "Sprinter City 77",
+      "Sprinter Travel 45",
+      "Sprinter Travel 55",
+      "Sprinter Travel 65",
+      "Sprinter Transfer 34",
+      "Sprinter Mobility 33",
+      "Sprinter Mobility 35",
+      "Sprinter City 75 Interurban"
     ],
     "Mercus": [
       "Crafter",
@@ -69467,7 +73040,38 @@
       "Sultan",
       "Territo",
       "Ulyso",
-      "Vectio"
+      "Vectio",
+      "e-CENTRO",
+      "CENTRO C",
+      "NAVIGO U 7",
+      "NAVIGO U 8",
+      "NAVIGO T 8",
+      "NAVIGO U 9",
+      "NAVIGO T 9",
+      "VECTIO C 9",
+      "VECTIO U",
+      "VECTIO U LE",
+      "e-KENT C 10",
+      "KENT C CNG 10",
+      "e-KENT",
+      "KENT Hidrojen",
+      "e-KENT KÖRÜKLÜ",
+      "KENT CNG",
+      "KENT XL",
+      "KENT LF",
+      "KENT LF KÖRÜKLÜ",
+      "KENT CNG KÖRÜKLÜ",
+      "DORUK LE",
+      "Sultan Comfort",
+      "Sultan Mega",
+      "Sultan Giga",
+      "Sultan Maxi",
+      "Sultan LF",
+      "Doruk",
+      "Doruk Electra",
+      "Doruk Hibra",
+      "Doruk DG",
+      "Kent DG"
     ],
     "P & H": [
       "Omega"
@@ -69505,7 +73109,15 @@
       "1060 EL",
       "900",
       "5022 V",
-      "3020 F"
+      "3020 F",
+      "1061",
+      "1063",
+      "1064",
+      "1065 B",
+      "1066",
+      "1080",
+      "Z-207",
+      "Pegaso I"
     ],
     "Peterbilt": [
       "359",
@@ -70098,7 +73710,8 @@
       "TRUCKS E-TECH C",
       "FILOVAN MASTER XDD",
       "KANGOO VAN E-TECH ELECTRIC PLANCHER CABINE",
-      "MASTER E-TECH JPM"
+      "MASTER E-TECH JPM",
+      "Type AG1 Taxi"
     ],
     "Renault Trucks": [
       "320",
@@ -70180,7 +73793,17 @@
       "Sac",
       "EV 650",
       "SAC2500E",
-      "SAC600E"
+      "SAC600E",
+      "EV550",
+      "SE588kWh Super",
+      "SE636kWh Standard",
+      "SE861kWh Composite",
+      "EV318kWh Standard",
+      "EV490-20",
+      "EV490-25",
+      "EV490-30",
+      "JIANGSHAN EV550",
+      "SE588kWh Composite"
     ],
     "Saurer": [
       "Berna"
@@ -70940,9 +74563,23 @@
       "AT6",
       "AT7",
       "SK498-AT4",
-      "SK 597-AT4",
       "SK1265-AT6",
-      "CITY BOY"
+      "CITY BOY",
+      "SK487-AT3 eDrive",
+      "SK597-AT4 eLift",
+      "SK1265-AT5 eLift",
+      "SK1265-AT6 eLift",
+      "SK2400-R eLift",
+      "SK345-AT3",
+      "SK365-AT3",
+      "SK377-AT3",
+      "SK477-AT4",
+      "SK488-AT4",
+      "SK597-AT4",
+      "SK598-AT5",
+      "SK599-AT5",
+      "SK2400-AT7",
+      "SK2400-R"
     ],
     "Sprintcar": [
       "Sprinter",
@@ -71118,7 +74755,20 @@
       "Ace",
       "Intra",
       "Prima",
-      "Ultra"
+      "Ultra",
+      "Intra V20 Gold",
+      "Intra V30 Gold",
+      "Intra V50 Gold",
+      "Intra V70 Gold",
+      "Ace Gold Plus XL",
+      "Ace Gold+",
+      "Ace Pro Petrol",
+      "Ace Pro Bifuel",
+      "Ace Gold CNG+",
+      "Ace HT+",
+      "Ace Gold CNG 2.0",
+      "Ace Gold Petrol",
+      "Ace Gold CNG"
     ],
     "Tatra": [
       "Phoenix",
@@ -71382,12 +75032,39 @@
       "Toyopet Masterline Pickup"
     ],
     "Toyota Commercial": [
-      "Hiace",
+      "HiAce",
       "Hilux",
-      "Coaster"
+      "Coaster",
+      "HiAce LWB Van",
+      "HiAce LWB Crew Van",
+      "HiAce SLWB Van",
+      "HiAce SLWB Commuter",
+      "HiAce Commuter GL",
+      "HiLux WorkMate Single-Cab",
+      "HiLux WorkMate Double-Cab",
+      "HiLux SR Extra-Cab",
+      "HiLux SR Double-Cab",
+      "HiLux SR5 Double-Cab",
+      "HiLux SR5+ Double-Cab",
+      "HiLux Rogue Double-Cab",
+      "HiLux Rugged X Double-Cab"
     ],
     "Tremonia Mobility": [
-      "Sprinter"
+      "Sprinter",
+      "Sprinter City 45",
+      "Sprinter City 75",
+      "Sprinter Mobility 23",
+      "Sprinter Transfer 35",
+      "Sprinter Transfer 45",
+      "Sprinter Transfer 23 RL",
+      "Sprinter Transfer 35 RL",
+      "Sprinter Transfer 45 RL",
+      "Sprinter Travel 75",
+      "Sprinter Transfer 45 Shuttle",
+      "Sprinter City 45 Electric",
+      "Transfer 45 ELECTRIC",
+      "City 75 ELECTRIC",
+      "Sprinter Travel 45"
     ],
     "Tsd": [
       "Ts",
@@ -71658,13 +75335,31 @@
       "FUTURA FHD2-122/330",
       "FUTURA FHD2-135/300",
       "CITEA LF-181/ELECTRIC",
-      "FUTURA FHD3-129/330"
+      "FUTURA FHD3-129/330",
+      "Futura FMD2-129",
+      "Futura FMD2-135",
+      "Futura FMD2-148",
+      "Futura FHD2-106",
+      "Futura FHD2-122",
+      "Futura FHD2-129",
+      "Futura FHD2-135",
+      "Futura FHD2-139",
+      "Futura FHD2-148",
+      "Futura FDD2-130",
+      "Futura FDD2-141"
     ],
     "Vdl Bova": [
       "Fhd",
       "Futura",
       "MHD",
-      "FUTURA FHD 127.???"
+      "Futura FHD 127",
+      "Futura FHD 104-365",
+      "Futura FHD 120-365",
+      "Futura FHD 127-365",
+      "Futura FLD 120-310",
+      "Futura FLD 120-365",
+      "Futura FLD 127-310",
+      "Futura FLD 127-365"
     ],
     "Volkswagen": [
       "1200",
@@ -71956,7 +75651,9 @@
       "Amarok"
     ],
     "Volta Trucks": [
-      "Zero"
+      "Zero",
+      "Zero 16t",
+      "Zero 18t"
     ],
     "Volvo": [
       "7700",
@@ -72673,7 +76370,10 @@
       "T100",
       "GLR8",
       "Stradair",
-      "TR300"
+      "TR300",
+      "TR 350 Centaure",
+      "GAK 5 R",
+      "GDR 7 W"
     ],
     "Askam": [
       "AS500",
@@ -72726,6 +76426,180 @@
       "6430",
       "643018",
       "643019"
+    ],
+    "Bellier": [
+      "Docker HDI"
+    ],
+    "Framo": [
+      "V 501/2",
+      "V 901",
+      "Hamburg (LTG 500)",
+      "Berlin (HT 600)",
+      "München (HT 1200)",
+      "Dresden D 200 (LTG 200)",
+      "Essen D 500 (LTG 500)",
+      "FPT 300",
+      "VLT 300",
+      "LTV 500",
+      "Leipzig (LTP 200)",
+      "LTP 300",
+      "Chemnitz V 500",
+      "München (V 1200)",
+      "V 901/2",
+      "V 901/2 Pritschenwagen",
+      "V 901/2 Kastenwagen",
+      "V 901/2 Kombinationswagen",
+      "V 901/2 Kleinomnibus",
+      "V 901 Pritschenwagen",
+      "V 901 Kastenwagen",
+      "V 901 Kombiwagen",
+      "V 901 Omnibus"
+    ],
+    "Casalini": [
+      "David 50",
+      "David Back 50",
+      "Kerry",
+      "Kerry TR",
+      "Kerry +"
+    ],
+    "Asia": [
+      "Hi-Topic (AM715)",
+      "Towner Van (AS84, AS85)",
+      "Towner Bus (AS84, AS85)",
+      "Combi AM805",
+      "Combi AM815",
+      "Combi AM825"
+    ],
+    "Ebusco": [
+      "2.2",
+      "2.2 12m LE",
+      "2.2 12m LF",
+      "2.2 13m LE",
+      "2.2 18m LF",
+      "3.0",
+      "3.0 12m",
+      "3.0 18m",
+      "2.2 13.5m",
+      "3.0 13.5m"
+    ],
+    "Addax Motors": [
+      "MT15n Tipper",
+      "MT15n Combi Tipper",
+      "MT15n Cargo",
+      "MT15n Chassis-Cabin",
+      "MT15n Flatbed",
+      "MT15n Tipping Container (2m³)"
+    ],
+    "Lindner": [
+      "Unitrac 72 P5",
+      "Unitrac 92 P5",
+      "Unitrac 112 LDrive",
+      "Unitrac 122 LDrive",
+      "Unitrac 82 SE6C",
+      "Unitrac 102 SE6C",
+      "Unitrac 72 ep",
+      "Unitrac 102 ep",
+      "Unitrac 102 SE6",
+      "Unitrac 82 ep",
+      "Unitrac 92 ep",
+      "Unitrac 82 SE5",
+      "Unitrac 102 SE5",
+      "Unitrac 82",
+      "Unitrac 102 S",
+      "Unitrac 92",
+      "Unitrac 102",
+      "Unitrac 68",
+      "Unitrac 78",
+      "Unitrac 100",
+      "Unitrac 55",
+      "Unitrac 65",
+      "Unitrac 95",
+      "Unitrac 75 L",
+      "Unitrac 75"
+    ],
+    "FSM": [
+      "Syrena R20",
+      "Syrena Bosto"
+    ],
+    "Clean Motion": [
+      "EVIG"
+    ],
+    "Vectrix": [
+      "I-Cargo"
+    ],
+    "Eunos": [
+      "Cargo Van",
+      "Cargo Truck"
+    ],
+    "London Taxis International": [
+      "TX1",
+      "TXII",
+      "TX4",
+      "Fairway Driver Plus"
+    ],
+    "Carbodies": [
+      "Fairway",
+      "FX4",
+      "FL2",
+      "Fairway Driver",
+      "FX4R",
+      "FX4S",
+      "FX4S-Plus",
+      "Fairway 95"
+    ],
+    "Winchester": [
+      "Series I",
+      "Series II",
+      "Series III",
+      "Series IV"
+    ],
+    "Nuffield": [
+      "Oxford",
+      "Oxford Series II",
+      "Oxford Series III"
+    ],
+    "Metrocab": [
+      "Series II",
+      "Series III",
+      "TTT",
+      "Series 1"
+    ],
+    "Beardmore": [
+      "Mk 1",
+      "Mk 2 Super",
+      "Mk 3 Hyper",
+      "Mk 4 Paramount",
+      "Mk 5 Paramount Ace",
+      "Mk 6 Ace",
+      "Mk 7 Paramount"
+    ],
+    "London Coach": [
+      "London Coach",
+      "London Sterling"
+    ],
+    "Bersey": [
+      "Brougham"
+    ],
+    "Morris-Commercial": [
+      "G-Type",
+      "G2 'Junior'",
+      "G2S 'Junior Six'",
+      "G2SW 'Super Six'"
+    ],
+    "Napier": [
+      "15hp"
+    ],
+    "Panhard": [
+      "12/15hp X5"
+    ],
+    "Regent": [
+      "Landaulet"
+    ],
+    "Unic": [
+      "10/12",
+      "12/16",
+      "KF1",
+      "C9"
     ]
   },
   "caravan": {
@@ -73103,7 +76977,14 @@
       "HQ21",
       "HQ21 Balcony",
       "TH19",
-      "TH22"
+      "TH22",
+      "Sergeant",
+      "Patron",
+      "Dominator",
+      "Alpha",
+      "Delta",
+      "Extreme Commando",
+      "Classic"
     ],
     "Bontrager": [
       "Compact 10HD",
@@ -73116,7 +76997,11 @@
       "Standard 15RE",
       "Standard 17BH",
       "Standard 17FD",
-      "Standard 17MB"
+      "Standard 17MB",
+      "Comfort 21PD",
+      "Comfort 21BH",
+      "Comfort 21MB",
+      "Drifter 10ROK"
     ],
     "Bowlus": [
       "Endless Highways",
@@ -73126,7 +77011,8 @@
       "Heritage",
       "Road Chief",
       "Endless Highways Frontier Edition",
-      "Endless Highways Performance Edition"
+      "Endless Highways Performance Edition",
+      "On The Road"
     ],
     "Brinkley": [
       "Model G 3250",
@@ -73174,14 +77060,48 @@
       "Lyseo TD",
       "Nexxo Van",
       "Premio",
-      "Nexxo"
+      "Nexxo",
+      "Lineo T T 569",
+      "Lineo T T 590",
+      "Lineo C",
+      "Copa C 500",
+      "Copa C 530",
+      "Playa Limited C 530",
+      "Signature SFT 7.0",
+      "Signature SFT 7.1",
+      "Signature SFT 7.4",
+      "Signature SFT 7.5",
+      "Papillon PC 6.0",
+      "Habiton HM 6.0",
+      "Habiton HM 6.1",
+      "Habiton HMX 6.0",
+      "Habiton HMX 6.1"
     ],
     "Can-Am": [
       "Maverick X3",
       "Maverick R",
       "Outlander",
       "Defender",
-      "Ryker"
+      "Ryker",
+      "Defender HD11",
+      "Commander",
+      "Maverick Sport",
+      "Maverick Trail",
+      "Outlander Electric",
+      "Outlander PRO",
+      "Outlander 6x6",
+      "Renegade EFI",
+      "DS",
+      "Maverick R X rs",
+      "Maverick R X rc",
+      "Maverick R MAX X rs",
+      "Outlander DPS 500 T ABS",
+      "Outlander DPS 700 T ABS",
+      "Outlander X MR 850",
+      "Outlander X MR 1000R",
+      "Commander DPS",
+      "Commander XT-P",
+      "Commander MAX XT"
     ],
     "Carado": [
       "A Series",
@@ -73280,7 +77200,19 @@
       "660",
       "720",
       "788",
-      "630"
+      "630",
+      "S697",
+      "S697 First",
+      "S697 Sport",
+      "V690",
+      "Twist V594S",
+      "Twist V594",
+      "Twist V594Max",
+      "Twist V694",
+      "Twist V694Max",
+      "Twist V697",
+      "640 Titanium Line",
+      "V594 First Line Light"
     ],
     "Coachmen RV": [
       "Freelander",
@@ -73341,7 +77273,18 @@
       "EXPDN Van 7.0 EL",
       "ADVTR 5.4 DF",
       "ADVTR 6.0 DF",
-      "ADVTR 6.4 EF"
+      "ADVTR 6.4 EF",
+      "TOYOTA LITE",
+      "TOYOTA FLEX",
+      "ADVTR 5.41",
+      "FLEX 541",
+      "FULL 600",
+      "FULL 640",
+      "EXPLR 5.0 F Opel",
+      "EXPLR 5.0 F Peugeot",
+      "OPEL FLEX",
+      "OPEL LITE",
+      "OPEL FULL"
     ],
     "CrossRoads": [
       "Zinger 280RB",
@@ -73484,7 +77427,35 @@
       "Mobile Suites 43 MANHATTAN",
       "Mobile Suites 44 HOUSTON",
       "Mobile Suites 44 NASHVILLE",
-      "Mobile Suites 44 ORLANDO"
+      "Mobile Suites 44 ORLANDO",
+      "Mobile Suites 39RKTS",
+      "Mobile Suites 40FBRL",
+      "Mobile Suites 38 RSSB3",
+      "Mobile Suites 38 KSSB",
+      "Mobile Suites 38 RSB3",
+      "Mobile Suites 39 RESB3",
+      "Mobile Suites 38 RSSA",
+      "Mobile Suites 43 ATLANTA",
+      "Mobile Suites 43 DALLAS",
+      "Mobile Suites 44 MEMPHIS",
+      "Elite Suites 36 RSSB3",
+      "Elite Suites 38 RSSB3",
+      "Elite Suites 38 KSSB",
+      "Elite Suites 39 DBRS3",
+      "Elite Suites 38 RSB3",
+      "Elite Suites 39 RESB3",
+      "Elite Suites 38 RSSA",
+      "Elite Suites 40 KSSB4",
+      "Elite Suites 43 ATLANTA",
+      "Elite Suites 44 HOUSTON",
+      "Elite Suites 43 DALLAS",
+      "Elite Suites 44 MEMPHIS",
+      "Elite Suites 43 MANHATTAN",
+      "Elite Suites 44 NASHVILLE",
+      "Full House JX450",
+      "Full House LX455",
+      "Full House MX450",
+      "Full House LX450"
     ],
     "East to West": [
       "Acclaim 16BH",
@@ -73668,7 +77639,8 @@
       "TOPO2 MTB",
       "TOPO2 Nomad",
       "TOPO2 Voyager",
-      "Original TOPO"
+      "Original TOPO",
+      "TOPO2"
     ],
     "Fendt Caravan": [
       "Bianco",
@@ -74985,7 +78957,16 @@
       "Hawk Flatbed",
       "Grandby Flatbed",
       "Hawk+ Flatbed",
-      "CampOut"
+      "CampOut",
+      "Swift BASE",
+      "Fleet BASE",
+      "Raven BASE",
+      "Hawk BASE",
+      "Grandby BASE",
+      "ORVIS Special Edition",
+      "Hawk Front Dinette",
+      "Hawk Side Dinette",
+      "Hawk Roll Over Couch"
     ],
     "Grand Design": [
       "Imagine 2300MK",
@@ -75512,7 +79493,35 @@
       "Incline FS600D",
       "Incline FS550",
       "Element",
-      "Eclipse"
+      "Eclipse",
+      "Incline 27U",
+      "Incline 29H",
+      "Admiral 28A",
+      "Admiral 29M",
+      "Admiral 32N",
+      "Admiral 34J",
+      "Invicta 32RW",
+      "Invicta 33HB",
+      "Invicta 34MB",
+      "Invicta 36Y",
+      "Invicta 36T",
+      "Vacationer 33C",
+      "Vacationer 35K",
+      "Vacationer 35K (26,000 lbs)",
+      "Vacationer 35GL",
+      "Vacationer 36F",
+      "Nautica 33TL",
+      "Nautica 34RX",
+      "Nautica 37S",
+      "Endeavor 38W",
+      "Endeavor 38N",
+      "Armada 40M",
+      "Armada 40P",
+      "Armada 44LE",
+      "Armada 44B",
+      "Element 25Q",
+      "Element 25T",
+      "Element 25M"
     ],
     "Hymer": [
       "B-Class MasterLine",
@@ -76585,7 +80594,23 @@
       "Kosmo L 105",
       "Kosmo L 319",
       "Ecovip Camper Van 540",
-      "Ecovip Camper Van 600"
+      "Ecovip Camper Van 600",
+      "Kosmo L 409",
+      "Kosmo L 412 DS",
+      "Kosmo H 1319",
+      "Kosmo H 1409",
+      "Ecovip L 2009",
+      "Kosmo 5.4",
+      "Kosmo 6.0",
+      "Kosmo 6.4",
+      "Ecovip Titanio L 2009",
+      "Ecovip Titanio L 3019",
+      "Ecovip Titanio L 4009 DS",
+      "Ecovip Titanio L 4009",
+      "Ecovip Titanio L 4012 DS",
+      "Ecovip Titanio H 2109",
+      "Ecovip Titanio H 3119",
+      "Ecovip Titanio H 4109 DS"
     ],
     "Lance": [
       "Travel Trailer 1685",
@@ -76597,7 +80622,16 @@
       "Travel Trailer 2465",
       "Travel Trailer 2565",
       "Travel Trailer 2285",
-      "Travel Trailer 2445"
+      "Travel Trailer 2445",
+      "Travel Trailer 1475",
+      "Travel Trailer 1575",
+      "Truck Camper 650",
+      "Truck Camper 825",
+      "Truck Camper 850",
+      "Truck Camper 855s",
+      "Truck Camper 865",
+      "Truck Camper 1172",
+      "Truck Camper 1191"
     ],
     "Leisure Travel Vans": [
       "Wonder",
@@ -76689,7 +80723,31 @@
       "Arto 84",
       "Arto 88",
       "Flair 880",
-      "Flair 920"
+      "Flair 920",
+      "Arto 64 EL",
+      "Arto 64 GL",
+      "Arto 64 L",
+      "Arto 69 EL",
+      "Arto 69 L",
+      "Arto 69 PL",
+      "Arto 74 L",
+      "Arto 74 LE",
+      "Flair 7100i",
+      "Flair 7100i C",
+      "Flair 8000i L",
+      "Flair 8000i EB",
+      "Flair 8000i CEB",
+      "Flair 8000i CFB",
+      "Clou 900 SL",
+      "Clou 990 SG",
+      "Arto 59 GL",
+      "Arto 69 E",
+      "Arto 79 F",
+      "Arto 79 L",
+      "Arto 79 LE",
+      "Arto 79 R",
+      "Arto 69 LE",
+      "Arto 74 E"
     ],
     "Northwood": [
       "Arctic Fox Edge 22GT",
@@ -76774,21 +80832,25 @@
       "Switchback R",
       "Switchback S",
       "Expedition 2.0",
-      "Pando 2.0"
-    ],
-    "Oliver": [
-      "Legacy Elite II and Apex Apex X23 Off-Grid",
-      "Legacy Elite II and Apex Legacy Elite II Platinum",
-      "Legacy Elite II and Apex Legacy Elite II Platinum Pro",
-      "Legacy Elite II and Apex Legacy Elite II Premium",
-      "Legacy Elite II and Apex Legacy Elite II Standard"
+      "Pando 2.0",
+      "Sprocketₓ"
     ],
     "Oliver Travel Trailers": [
       "Legacy Elite",
       "Legacy Elite II",
       "Legacy Elite II Twin Bed",
       "Legacy Elite II Standard Floor Plan",
-      "Legacy Elite II Standard"
+      "Legacy Elite II Standard",
+      "Apex X23 Off-Grid",
+      "Legacy Elite II Platinum",
+      "Legacy Elite II Platinum Pro",
+      "Legacy Elite II Premium",
+      "Apex X23 Off-Grid King Floor Plan",
+      "Apex X23 Off-Grid Twin Bed Floor Plan",
+      "Legacy Elite II King Floor Plan",
+      "Legacy Elite II King Floor Plan Platinum",
+      "Legacy Elite II Twin Bed Platinum",
+      "Legacy Elite II Twin Bed Platinum Pro"
     ],
     "Outdoors RV": [
       "Back Country 20MKS",
@@ -76882,7 +80944,13 @@
       "X2",
       "X2-N",
       "X3",
-      "X3 GEN2"
+      "X3 GEN2",
+      "ST7",
+      "X2 Tourer",
+      "X1-H",
+      "TH610",
+      "TH730",
+      "TT730"
     ],
     "Phoenix USA": [
       "Phoenix Cruiser 2100",
@@ -76895,7 +80963,12 @@
       "Phoenix Cruiser 2910D",
       "Phoenix Cruiser 2910T",
       "Phoenix Cruiser 3100",
-      "Phoenix Cruiser TRX"
+      "Phoenix Cruiser TRX",
+      "Ravenna",
+      "Phoenix TRX 1561",
+      "Phoenix TRX 1562",
+      "Phoenix TRX 1563",
+      "Phoenix TRX 1781"
     ],
     "Pilote": [
       "Atlas",
@@ -76908,7 +80981,35 @@
       "P690",
       "V Series",
       "V600",
-      "V630"
+      "V630",
+      "P690GJ Expression",
+      "A690GJ Atlas",
+      "G690GJ Expression",
+      "G690GJ Evidence",
+      "P720FGJ Expression",
+      "G720FGJ Expression",
+      "P740FGJ Expression",
+      "P740GJ Expression",
+      "P600P",
+      "P626D",
+      "P650C",
+      "P650GJ",
+      "P696GJ",
+      "P696D",
+      "P696S",
+      "P696U",
+      "P720FC",
+      "P726FC",
+      "P726FGJ",
+      "P726P",
+      "P740FC",
+      "P746FC",
+      "P740C",
+      "P746C",
+      "P746FGJ",
+      "P746CG",
+      "A656D",
+      "A696G"
     ],
     "Pleasure-Way": [
       "Plateau XLTS",
@@ -76935,7 +81036,48 @@
       "RZR",
       "Ranger",
       "Sportsman",
-      "General"
+      "General",
+      "RANGER 500",
+      "RANGER SP 570",
+      "RANGER SP 570 Premium",
+      "RANGER SP 570 NorthStar",
+      "RANGER 1000",
+      "RANGER 1000 EPS",
+      "RANGER 1000 Premium",
+      "RANGER XP 1000",
+      "RANGER XP 1000 NorthStar Premium",
+      "RANGER XP 1000 Ultimate",
+      "RZR Pro XP Sport",
+      "RZR Pro XP Ultimate",
+      "RZR Pro S Sport",
+      "RZR Pro S Ultimate",
+      "RZR Trail Sport",
+      "RZR Trail Ultimate",
+      "Sportsman 450 H.O.",
+      "Sportsman 570",
+      "Sportsman X2 570",
+      "Sportsman 6X6 570",
+      "Sportsman Touring 570",
+      "Sportsman 850",
+      "Sportsman XP 1000",
+      "Sportsman XP 1000 Ultimate",
+      "Sportsman 450 H.O. EPS",
+      "Sportsman 570 EPS",
+      "Sportsman 570 Trail",
+      "Sportsman 570 Ultimate",
+      "Sportsman Touring 570 Premium",
+      "Sportsman Touring 570 Ultimate",
+      "Sportsman 850 Premium",
+      "Sportsman 850 Trail",
+      "Sportsman 850 Mud Edition",
+      "Sportsman XP 1000 Mud Edition",
+      "Sportsman XP 1000 S",
+      "Sportsman Touring 850 Premium",
+      "Sportsman Touring XP 1000 Trail",
+      "Scrambler 850",
+      "Scrambler XP 1000 S",
+      "Outlaw 70 EFI",
+      "Sportsman 570 Premium – 40th Anniversary Edition"
     ],
     "Rapido": [
       "6F Series",
@@ -76987,7 +81129,17 @@
       "Zion",
       "Zion SL",
       "Chase",
-      "SS Agile"
+      "SS Agile",
+      "Zion SRT",
+      "Play SRT",
+      "Pivot",
+      "Pivot Slumber",
+      "Zion Slumber",
+      "Play Slumber",
+      "190-Popular",
+      "190-Versatile",
+      "190-Independent",
+      "210-Independent"
     ],
     "Roller Team": [
       "Auto-Roller 707",
@@ -77014,7 +81166,18 @@
       "Alto R1723",
       "Alto F1743 Expedition",
       "Alto F2414",
-      "Alto A2124"
+      "Alto A2124",
+      "LX 19' (Mercedes Sprinter)",
+      "LDX 19' (Mercedes Sprinter)",
+      "XL PLUS 22' (Mercedes Sprinter)",
+      "XL FLEX 22' (Mercedes Sprinter)",
+      "22' Go-Van Edition (Mercedes Sprinter)",
+      "MX 18' (Ram ProMaster)",
+      "XL PLUS 21' (Ram ProMaster)",
+      "XL FLEX 21' (Ram ProMaster)",
+      "21' Go-Van Edition (Ram ProMaster)",
+      "XL PLUS 22' (Ford Transit)",
+      "XL FLEX 22' (Ford Transit)"
     ],
     "Scamp": [
       "13'",
@@ -77045,7 +81208,12 @@
       "Shasta I-5 18DBL",
       "Shasta I-5 18FQ",
       "Shasta I-5 521CK",
-      "Shasta I-5 525BHS"
+      "Shasta I-5 525BHS",
+      "Shasta I-5 526RBS",
+      "Shasta I-5 530QB",
+      "Shasta I-5 532BEDS",
+      "Shasta I-5 18BH",
+      "Shasta I-5 14BH"
     ],
     "Starcraft": [
       "Autumn Ridge 173MD",
@@ -77126,7 +81294,11 @@
       "Dark MODE OG",
       "Dark MODE XO",
       "Stealth MODE",
-      "TOUR MODE XL"
+      "TOUR MODE XL",
+      "GXV HILT",
+      "GXV EPIC",
+      "GXV WILD",
+      "Grand Bohemian"
     ],
     "Sunlight": [
       "A Series",
@@ -77170,7 +81342,11 @@
       "VIRE",
       "VAST",
       "TraiLOFT",
-      "GO EASY"
+      "GO EASY",
+      "GO Big",
+      "GO All Out",
+      "GO EASY Essential",
+      "GO EASY Ultimate"
     ],
     "Thor Motor Coach": [
       "Sequence",
@@ -77267,7 +81443,16 @@
       "540 D GO!",
       "600 D GO!",
       "600 L GO!",
-      "630 L GO!"
+      "630 L GO!",
+      "540 D Fiat 140",
+      "600 D Fiat 120",
+      "600 D Fiat 140",
+      "600 D Fiat 180",
+      "600 L Fiat 120",
+      "600 L Fiat 140",
+      "600 L Fiat 180",
+      "630 L Fiat 140",
+      "630 L Fiat 180"
     ],
     "Venture RV": [
       "Sonic Lite SL150VRB",
@@ -77355,7 +81540,10 @@
       "Jules Verne",
       "Kepler One",
       "Kepler Six",
-      "Kipling"
+      "Kipling",
+      "Nansen 600L",
+      "Nansen 640LS",
+      "Meridian"
     ],
     "Wildax Motorhomes": [
       "Pulsar",
@@ -77370,7 +81558,24 @@
       "Constellation",
       "Constellation XL",
       "Constellation 3 XL",
-      "Equinox"
+      "Equinox",
+      "Pulsar Auto Fiat",
+      "Constellation Manual Fiat",
+      "Constellation Auto Fiat",
+      "Constellation XL Manual Fiat",
+      "Constellation XL Auto Fiat",
+      "Aurora Manual Fiat",
+      "Aurora Auto Fiat",
+      "Aurora XL Manual Fiat",
+      "Aurora XL Auto Fiat",
+      "Aurora Leisure Manual Fiat",
+      "Aurora Leisure Auto Fiat",
+      "Aurora Leisure XL Manual Fiat",
+      "Aurora Leisure XL Auto Fiat",
+      "Solaris Manual Fiat",
+      "Solaris Auto Fiat",
+      "Solaris XL Manual Fiat",
+      "Solaris XL Auto Fiat"
     ],
     "Winnebago": [
       "Access 15BH",
@@ -77552,7 +81757,100 @@
       "Mini 300 Sport Edition",
       "Mini 270",
       "Mini 290",
-      "Mini 300"
+      "Mini 300",
+      "Mini 390",
+      "Mini 270 Go",
+      "Mini 300 Go",
+      "Mini 290 Silver",
+      "Mini 442 Silver"
+    ],
+    "Ahorn Camp": [
+      "CV 560",
+      "CV 630",
+      "T 590",
+      "T 640",
+      "T 680",
+      "T 690",
+      "TE 740",
+      "TQ 740",
+      "TL 740",
+      "A 595",
+      "A 690",
+      "A 720",
+      "CV 630 Eclipse",
+      "T 690 Eclipse",
+      "TE 740 Eclipse",
+      "TQ 740 Eclipse",
+      "TL 740 Eclipse",
+      "T 690 MOVE",
+      "A 690 MOVE",
+      "Canada AE",
+      "Canada BC",
+      "Canada AD",
+      "Van 620",
+      "ACA 595",
+      "ACA 640",
+      "ACA 690",
+      "ACT 590",
+      "ACT 640",
+      "ACT 660",
+      "ACT 690",
+      "Canada AS",
+      "Canada TQ",
+      "Canada TF",
+      "Canada TU",
+      "Canada TE",
+      "Alaska TD",
+      "Alaska TE",
+      "Alaska TQ",
+      "Van 550",
+      "Van 620 Plus",
+      "Van 622"
+    ],
+    "Caselani": [
+      "TYPE H CAMPER VAN",
+      "TYPE H MOTORHOME",
+      "TYPE H WILDCAMP",
+      "616N CAMPER VAN",
+      "616N MOTORHOME"
+    ],
+    "Blucamp": [
+      "Ocean 527 Ford",
+      "Ocean 527 Renault",
+      "Ocean 525",
+      "Ocean 725",
+      "Ocean 650",
+      "Ocean 12",
+      "Sky Free",
+      "Lucky 511 Limited Edition",
+      "Lucky 521",
+      "Lucky 526",
+      "Sky 20 S",
+      "Sky 22 S",
+      "Sky 25 S",
+      "Sky 50 G",
+      "Sky 71",
+      "Sky 11",
+      "Sky 20",
+      "Sky 22LE",
+      "Sky 70"
+    ],
+    "Yucon": [
+      "54 B",
+      "60 B",
+      "63 G",
+      "63 H",
+      "51 FB",
+      "51 SB",
+      "55 SB",
+      "V-city 6.0 BD",
+      "K-peak 6.0 GD",
+      "K-peak 6.0 BD",
+      "K-peak 7.0 GD",
+      "6.0 GD",
+      "6.0 BD",
+      "7.0 GD",
+      "51 Switch"
     ]
   }
 }
