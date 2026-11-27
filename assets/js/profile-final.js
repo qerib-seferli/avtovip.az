@@ -49,19 +49,86 @@ function sectionRender(){pruneProfileStories();scheduleStoryExpiry?.();
  window.AvtoVIPHydrateStoryPreviews?.($('#pfOwnStories'));
  $('#pfOwnFeed').innerHTML=(state.feed.length?state.feed.map(x=>postCard(x,{own:true})).join(''):empty('Paylaşım yoxdur.'))+moreBtn('feed');
  $('#pfOwnReels').innerHTML=(state.reels.length?state.reels.map(x=>postCard(x,{own:true})).join(''):empty('Paylaşım yoxdur.'))+moreBtn('reels');
- $('#pfSavedListings').innerHTML=(state.savedListings.length?state.savedListings.map(x=>listingCard(x,{saved:true})).join(''):empty('Saxlanılan elan yoxdur.'))+moreBtn('savedListings');
- $('#pfSavedPosts').innerHTML=(state.savedPosts.length?state.savedPosts.map(x=>postCard(x,{saved:true})).join(''):empty('Saxlanılan paylaşım yoxdur.'))+moreBtn('savedPosts');
- $('#pfLikedListings').innerHTML=(state.likedListings.length?state.likedListings.map(x=>listingCard(x,{liked:true})).join(''):empty('Bəyəndiyiniz elan yoxdur.'))+moreBtn('likedListings');
- $('#pfLikedPosts').innerHTML=(state.likedPosts.length?state.likedPosts.map(x=>postCard(x,{liked:true})).join(''):empty('Bəyəndiyiniz paylaşım yoxdur.'))+moreBtn('likedPosts');
  $('#pfListingCount').textContent=state.listings.length;$('#pfStoryCount').textContent=state.stories.length;$('#pfPostCount').textContent=state.feed.length+state.reels.length;
 }
-async function fetchPage(key,append=false){const from=append?(state.offset[key]||0):0,to=from+PAGE-1;let rows=[];
+const collections = {
+ savedListings: { root: '#pfSavedListings', table: 'favorites', column: 'listing_id', target: 'elanlar', card: row => listingCard(row, {saved: true}), emptyText: 'Saxlanılan elan yoxdur.' },
+ savedPosts: { root: '#pfSavedPosts', table: 'post_saves', column: 'post_id', target: 'posts', card: row => postCard(row, {saved: true}), emptyText: 'Saxlanılan paylaşım yoxdur.' },
+ likedListings: { root: '#pfLikedListings', table: 'listing_likes', column: 'listing_id', target: 'elanlar', card: row => listingCard(row, {liked: true}), emptyText: 'Bəyəndiyiniz elan yoxdur.' },
+ likedPosts: { root: '#pfLikedPosts', table: 'post_likes', column: 'post_id', target: 'posts', card: row => postCard(row, {liked: true}), emptyText: 'Bəyəndiyiniz paylaşım yoxdur.' }
+};
+const collectionOperations = {};
+
+function updateCollectionFooter(key) {
+ const {root, emptyText} = collections[key];
+ const list = $(root);
+ const footer = list.querySelector('.pf-more-wrap');
+ const placeholder = list.querySelector('.pf-empty');
+ if (state[key].length) {
+  placeholder?.remove();
+ } else if (!placeholder) {
+  (footer || list).insertAdjacentHTML(footer ? 'beforebegin' : 'beforeend', empty(emptyText));
+ }
+ if (!state.more[key]) footer?.remove();
+ else if (!footer) list.insertAdjacentHTML('beforeend', moreBtn(key));
+}
+
+async function fetchCollectionPage(key, append) {
+ const {root, table, column, target, card} = collections[key];
+ const from = append ? state.offset[key] : 0;
+ const result = await safe(sb.from(table).select(column).eq('user_id', me.id)
+  .order('created_at', {ascending: false}).order(column).range(from, from + PAGE - 1));
+ if (result.error) {
+  toast(result.error.message, 'error');
+  return;
+ }
+ const ids = (result.data || []).map(row => row[column]);
+ const items = ids.length ? await safe(sb.from(target).select('*').in('id', ids)) : {data: []};
+ if (items.error) {
+  toast(items.error.message, 'error');
+  return;
+ }
+ const byId = new Map((items.data || []).map(row => [row.id, row]));
+ const existing = append ? new Set(state[key].map(row => row.id)) : new Set();
+ const rows = [...new Set(ids)].filter(id => !existing.has(id) && byId.has(id)).map(id => byId.get(id));
+ const list = $(root);
+ if (!append) list.replaceChildren();
+ const footer = list.querySelector('.pf-more-wrap');
+ if (rows.length) (footer || list).insertAdjacentHTML(footer ? 'beforebegin' : 'beforeend', rows.map(card).join(''));
+ state[key] = append ? [...state[key], ...rows] : rows;
+ state.offset[key] = from + ids.length;
+ state.more[key] = ids.length === PAGE;
+ updateCollectionFooter(key);
+}
+
+function queueCollectionOperation(key, operation) {
+ const next = (collectionOperations[key] || Promise.resolve()).then(operation);
+ collectionOperations[key] = next.catch(error => toast(error.message, 'error'));
+ return collectionOperations[key];
+}
+
+function removeCollectionItem(key, id, button) {
+ if (button.disabled) return;
+ button.disabled = true;
+ const {table, column} = collections[key];
+ return queueCollectionOperation(key, async () => {
+  const result = await safe(sb.from(table).delete().eq('user_id', me.id).eq(column, id));
+  if (result.error) {
+   button.disabled = false;
+   toast(result.error.message, 'error');
+   return;
+  }
+  state[key] = state[key].filter(row => String(row.id) !== id);
+  state.offset[key] = Math.max(0, state.offset[key] - 1);
+  button.closest('.pf-item')?.remove();
+  updateCollectionFooter(key);
+ });
+}
+
+async function fetchPage(key,append=false){if(collections[key])return queueCollectionOperation(key,()=>fetchCollectionPage(key,append));const from=append?(state.offset[key]||0):0,to=from+PAGE-1;let rows=[];
  if(key==='listings'){const r=await safe(sb.from('elanlar').select('*').eq('user_id',me.id).order('created_at',{ascending:false}).range(from,to));rows=r.data||[];const ids=rows.map(x=>x.id);if(ids.length){const [lr,cr,fr]=await Promise.all([safe(sb.from('listing_likes').select('listing_id').in('listing_id',ids)),safe(sb.from('listing_comments').select('listing_id').in('listing_id',ids)),safe(sb.from('favorites').select('listing_id').in('listing_id',ids))]);const count=(arr,id)=>arr.reduce((n,x)=>n+(String(x.listing_id)===String(id)?1:0),0);rows=rows.map(x=>({...x,likes_count:count(lr.data||[],x.id),comments_count:count(cr.data||[],x.id),saves_count:count(fr.data||[],x.id),shares_count:Number(x.shares_count??x.share_count??0)}))}}
  if(key==='stories'){const r=await safe(sb.from('stories').select('id,user_id,listing_id,media_url,media_type,caption,status,created_at,expires_at').eq('user_id',me.id).eq('status','active').gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).range(from,to));rows=r.data||[];if(rows.length){const counts=await db.storyViewCounts(rows.map(x=>x.id),storyViewCount);rows=rows.map(x=>({...x,views_count:counts.get(x.id)||0}))}}
  if(key==='feed'||key==='reels'){const r=await safe(sb.from('posts').select('*').eq('user_id',me.id).eq('is_reel',key==='reels').order('created_at',{ascending:false}).range(from,to));rows=r.data||[];const ids=rows.map(x=>x.id);if(ids.length){const [lr,cr,sr,shr]=await Promise.all([safe(sb.from('post_likes').select('post_id').in('post_id',ids)),safe(sb.from('post_comments').select('post_id').in('post_id',ids)),safe(sb.from('post_saves').select('post_id').in('post_id',ids)),safe(sb.from('post_shares').select('post_id').in('post_id',ids))]);const count=(arr,id)=>arr.reduce((n,x)=>n+(String(x.post_id)===String(id)?1:0),0);rows=rows.map(x=>({...x,likes_count:count(lr.data||[],x.id),comments_count:count(cr.data||[],x.id),saves_count:count(sr.data||[],x.id),shares_count:count(shr.data||[],x.id)}))}}
- if(['savedListings','savedPosts','likedListings','likedPosts'].includes(key)){
-   const map={savedListings:['favorites','listing_id','elanlar'],savedPosts:['post_saves','post_id','posts'],likedListings:['listing_likes','listing_id','elanlar'],likedPosts:['post_likes','post_id','posts']};const [join,idcol,target]=map[key];const r=await safe(sb.from(join).select(idcol).eq('user_id',me.id).order('created_at',{ascending:false}).range(from,to));const ids=(r.data||[]).map(x=>x[idcol]);rows=[];if(ids.length){const q=await safe(sb.from(target).select('*').in('id',ids));const all=q.data||[];rows=ids.map(id=>all.find(x=>x.id===id)).filter(Boolean)}
- }
  state[key]=append?[...state[key],...rows]:rows;state.offset[key]=from+rows.length;state.more[key]=rows.length===PAGE;sectionRender();
 }
 async function loadInitialContent(){await Promise.all(['listings','stories','feed','reels'].map(k=>fetchPage(k,false)));state.loaded.content=true}
@@ -200,10 +267,10 @@ async function openOwnerComments(type,id){
 }
 
 
-function bindLibrary(){const track=$('#pfLibraryTrack'),view=$('#pfLibraryViewport');if(!track||!view)return;let active='feed';const set=(name)=>{active=name==='reels'?'reels':'feed';track.style.transform=`translateX(${active==='reels'?'-50%':'0'})`;$$('[data-pf-library]').forEach(b=>b.classList.toggle('active',b.dataset.pfLibrary===active))};$$('[data-pf-library]').forEach(b=>b.onclick=()=>set(b.dataset.pfLibrary));let sx=0,sy=0;view.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});view.addEventListener('touchend',e=>{if(!e.changedTouches.length)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.2)set(dx<0?'reels':'feed')},{passive:true})}
+function bindLibrary(){const track=$('#pfLibraryTrack'),view=$('#pfLibraryViewport');if(!track||!view)return;const set=(name)=>{const active=name==='reels'?'reels':'feed';track.querySelectorAll('[data-pf-library-pane]').forEach(pane=>{pane.hidden=pane.dataset.pfLibraryPane!==active});$$('[data-pf-library]').forEach(b=>b.classList.toggle('active',b.dataset.pfLibrary===active))};$$('[data-pf-library]').forEach(b=>b.onclick=()=>set(b.dataset.pfLibrary));let sx=0,sy=0;view.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});view.addEventListener('touchend',e=>{if(!e.changedTouches.length)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.2)set(dx<0?'reels':'feed')},{passive:true})}
 async function boot(){if(!sb)return;me=await db.requireAuth();if(!me)return;profile=await db.getProfile(me.id)||{};applyProfileHeader();await Promise.all([fillProfileForm(),loadStats(),loadInitialContent()]);bindForm();bindCollapsibles();bindProfileSwipe();bindLibrary();const initial=(location.hash||`#${sessionStorage.getItem('avtovip-profile-tab')||'content'}`).slice(1);history.replaceState({avProfile:true,tab:initial},'',location.href);activate(initial);document.body.classList.add('profile-ready')}
 addEventListener('avtovip:language',()=>{if(me) sectionRender()});
-document.addEventListener('click',async e=>{const detail=e.target.closest('[data-pf-detail]');if(detail){e.preventDefault();e.stopPropagation();const kind=detail.dataset.pfDetail,id=detail.dataset.pfId;if(kind==='listing-comments')return openOwnerComments('listing',id);if(kind==='post-comments')return openOwnerComments('post',id);return openMetricPeople(kind,id)}const tab=e.target.closest('[data-pf-tab]');if(tab){activate(tab.dataset.pfTab,{push:true});return}const ppl=e.target.closest('[data-pf-people]');if(ppl)return openPeople(ppl.dataset.pfPeople);const m=e.target.closest('[data-pf-more]');if(m){m.disabled=true;await fetchPage(m.dataset.pfMore,true);return}const ts=e.target.closest('[data-pf-toggle-sold]');if(ts)return toggleSold(ts.dataset.pfToggleSold,ts.dataset.nextStatus);const dl=e.target.closest('[data-pf-delete-listing]');if(dl)return removeListing(dl.dataset.pfDeleteListing);const ds=e.target.closest('[data-pf-delete-story]');if(ds)return removeStory(ds.dataset.pfDeleteStory);const es=e.target.closest('[data-pf-edit-story]');if(es)return editStory(es.dataset.pfEditStory);const dp=e.target.closest('[data-pf-delete-post]');if(dp)return removePost(dp.dataset.pfDeletePost);const ep=e.target.closest('[data-pf-edit-post]');if(ep)return editPost(ep.dataset.pfEditPost);const pv=e.target.closest('[data-pf-preview-story]');if(pv)return previewStory(pv.dataset.pfPreviewStory);const usl=e.target.closest('[data-pf-unsave-listing]');if(usl){await sb.from('favorites').delete().eq('user_id',me.id).eq('listing_id',usl.dataset.pfUnsaveListing);return fetchPage('savedListings',false)}const usp=e.target.closest('[data-pf-unsave-post]');if(usp){await sb.from('post_saves').delete().eq('user_id',me.id).eq('post_id',usp.dataset.pfUnsavePost);return fetchPage('savedPosts',false)}const ull=e.target.closest('[data-pf-unlike-listing]');if(ull){await sb.from('listing_likes').delete().eq('user_id',me.id).eq('listing_id',ull.dataset.pfUnlikeListing);return fetchPage('likedListings',false)}const ulp=e.target.closest('[data-pf-unlike-post]');if(ulp){await sb.from('post_likes').delete().eq('user_id',me.id).eq('post_id',ulp.dataset.pfUnlikePost);return fetchPage('likedPosts',false)}const card=e.target.closest('.pf-media-card[data-href]');if(card&&!e.target.closest('button,a'))location.href=card.dataset.href});
+document.addEventListener('click',async e=>{const detail=e.target.closest('[data-pf-detail]');if(detail){e.preventDefault();e.stopPropagation();const kind=detail.dataset.pfDetail,id=detail.dataset.pfId;if(kind==='listing-comments')return openOwnerComments('listing',id);if(kind==='post-comments')return openOwnerComments('post',id);return openMetricPeople(kind,id)}const tab=e.target.closest('[data-pf-tab]');if(tab){activate(tab.dataset.pfTab,{push:true});return}const ppl=e.target.closest('[data-pf-people]');if(ppl)return openPeople(ppl.dataset.pfPeople);const m=e.target.closest('[data-pf-more]');if(m){if(m.disabled)return;m.disabled=true;try{await fetchPage(m.dataset.pfMore,true)}finally{m.disabled=false}return}const ts=e.target.closest('[data-pf-toggle-sold]');if(ts)return toggleSold(ts.dataset.pfToggleSold,ts.dataset.nextStatus);const dl=e.target.closest('[data-pf-delete-listing]');if(dl)return removeListing(dl.dataset.pfDeleteListing);const ds=e.target.closest('[data-pf-delete-story]');if(ds)return removeStory(ds.dataset.pfDeleteStory);const es=e.target.closest('[data-pf-edit-story]');if(es)return editStory(es.dataset.pfEditStory);const dp=e.target.closest('[data-pf-delete-post]');if(dp)return removePost(dp.dataset.pfDeletePost);const ep=e.target.closest('[data-pf-edit-post]');if(ep)return editPost(ep.dataset.pfEditPost);const pv=e.target.closest('[data-pf-preview-story]');if(pv)return previewStory(pv.dataset.pfPreviewStory);const usl=e.target.closest('[data-pf-unsave-listing]');if(usl)return removeCollectionItem('savedListings',usl.dataset.pfUnsaveListing,usl);const usp=e.target.closest('[data-pf-unsave-post]');if(usp)return removeCollectionItem('savedPosts',usp.dataset.pfUnsavePost,usp);const ull=e.target.closest('[data-pf-unlike-listing]');if(ull)return removeCollectionItem('likedListings',ull.dataset.pfUnlikeListing,ull);const ulp=e.target.closest('[data-pf-unlike-post]');if(ulp)return removeCollectionItem('likedPosts',ulp.dataset.pfUnlikePost,ulp);const card=e.target.closest('.pf-media-card[data-href]');if(card&&!e.target.closest('button,a'))location.href=card.dataset.href});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 
