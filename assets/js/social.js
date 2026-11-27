@@ -95,8 +95,49 @@
   }
   function persistForm(id,key){
     const form=document.getElementById(id);if(!form)return;const urlParams=new URLSearchParams(location.search),isEdit=urlParams.has('edit'),fresh=urlParams.get('fresh')==='1';if(fresh){localStorage.removeItem(key);history.replaceState(null,'',location.pathname)}if(isEdit){form.dataset.avDraftMode='edit';return}let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')}catch{}
-    const restore=()=>{if(form.dataset.avSkipDraftRestore==='1')return;for(const [name,v] of Object.entries(saved)){const nodes=[...form.querySelectorAll(`[name="${CSS.escape(name)}"]`)];if(!nodes.length)continue;if(nodes[0].type==='checkbox'){nodes.forEach(n=>n.checked=Array.isArray(v)?v.includes(n.value):!!v)}else if(nodes[0].type==='radio'){nodes.forEach(n=>n.checked=n.value===v)}else if(nodes[0].type!=='file'){const n=nodes[0];if(n.tagName!=='SELECT'||[...n.options].some(o=>o.value===v))n.value=v}}};setTimeout(restore,1000);setTimeout(restore,2200);
-    const save=()=>{const out={};const fd=new FormData(form);for(const e of form.elements){if(!e.name||e.type==='file')continue;if(e.type==='checkbox'){out[e.name]=[...form.querySelectorAll(`[name="${CSS.escape(e.name)}"]:checked`)].map(x=>x.value)}else if(e.type==='radio'){if(e.checked)out[e.name]=e.value}else out[e.name]=e.value}localStorage.setItem(key,JSON.stringify(out))};form.addEventListener('input',save);form.addEventListener('change',save);
+    let restoring = true;
+    const restore = async () => {
+      if (form.dataset.avSkipDraftRestore === '1') { restoring = false; return; }
+      const set = (name,value) => {
+        const control=form.elements.namedItem(name);
+        if (!control || value == null || (control.tagName==='SELECT' && ![...control.options].some(option=>option.value===value))) return;
+        control.value=value;control.dispatchEvent(new Event('change',{bubbles:true}));
+      };
+      set('vehicle_category',saved.vehicle_category);
+      set('country_code',saved.country_code);
+      await form.elements.namedItem('country_code')?.avLocationReady;
+      set('state_name',saved.state_name);
+      set('vehicle_type',saved.vehicle_type==='Kem per'?'Kemper':saved.vehicle_type);
+      set('brand',saved.brand);
+      for(const [name,value] of Object.entries(saved)){
+        if(['vehicle_category','country_code','state_name','vehicle_type','brand'].includes(name))continue;
+        const nodes=[...form.querySelectorAll(`[name="${CSS.escape(name)}"]`)].filter(node=>!node.disabled);
+        if(!nodes.length)continue;
+        if(nodes[0].type==='checkbox')nodes.forEach(node=>node.checked=Array.isArray(value)?value.includes(node.value):!!value);
+        else if(nodes[0].type!=='file')set(name,value);
+      }
+      if(saved.vehicle_spec_operating_hours==null) {
+        const hours=form.elements.namedItem('vehicle_spec_operating_hours');
+        if(hours&&!hours.disabled&&saved.operating_hours!=null) hours.value=saved.operating_hours;
+      }
+      form.dispatchEvent(new Event('input',{bubbles:true}));
+      restoring=false;
+    };
+    if(form.dataset.avListingReady==='1')restore();
+    else form.addEventListener('avtovip:listing-ready',restore,{once:true});
+    const save=()=>{
+      if (restoring) return;
+      const out={};
+      for(const control of form.elements){
+        if(!control.name||control.disabled||control.type==='file')continue;
+        if(control.type==='checkbox'){
+          out[control.name] ||= [];
+          if(control.checked)out[control.name].push(control.value);
+        }else out[control.name]=control.value;
+      }
+      localStorage.setItem(key,JSON.stringify(out));
+    };
+    form.addEventListener('input',save);form.addEventListener('change',save);
     const note=document.createElement('div');note.className='draft-note';note.innerHTML=`<i class="fa-solid fa-cloud-arrow-down"></i> ${L().draft}`;form.prepend(note);
   }
 

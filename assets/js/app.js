@@ -859,7 +859,7 @@
   function optionLabel(item){ return item?.[lang] || item?.en || item?.value || ''; }
   function colorLabel(item){ return optionLabel(item); }
   function byLocale(a,b){const c=intl?.collator?.(lang)||new Intl.Collator(locale(),{numeric:true,sensitivity:'base'});return c.compare(String(a||''),String(b||''))}
-  function equipmentLabel(value){const item=EQUIPMENT_OPTIONS.find(x=>x.value===value);return item?optionLabel(item):staticText(value)}
+  function equipmentLabel(value){const item=EQUIPMENT_OPTIONS.find(x=>x.value===value);return item?optionLabel(item):intl?.featureLabel(value,lang)||staticText(value)}
   function localizeBranding(){
     const brand=BRAND_BY_LANG[lang]||BRAND_BY_LANG.en;
     $$('.brand-copy strong').forEach(el=>el.textContent=brand.name);
@@ -937,7 +937,7 @@
     const snapshot=typeof make?.logo==='string'?make.logo:(make?.logo?.local_url||'');
     const mapped=AVTOVIP_CAR_LOGOS[make?.name]||AVTOVIP_CAR_LOGOS_NORMALIZED.get(avtovipLogoKey(make?.name));
     const valid=p=>typeof p==='string' && /^assets\/img\/brand-logos\/car\/avtovip_[a-z0-9_-]+\.(svg|png|jpe?g|webp)$/i.test(p);
-    return [...new Set([mapped,snapshot].filter(valid))];
+    return [...new Set([snapshot,mapped].filter(valid))];
   }
   async function brandRail(container){
     if(!container)return; await ensureCatalogs();
@@ -1026,15 +1026,30 @@
   }
   function makeIdByName(name){return vehicleMakes.find(m=>m.name===name)?.id||String(name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-')}
   async function bindModelAutocomplete(makeSelect,input,list){
-    if(!makeSelect||!input||!list)return; const load=async()=>{const make=makeSelect.value;if(!make){list.innerHTML='';return}const models=intl?await intl.models(makeIdByName(make),lang):[];fillDatalist(list,models.map(m=>m.name))}; makeSelect.addEventListener('change',()=>{input.value='';load()}); if(makeSelect.value)load();
+    if(!makeSelect||!input||!list)return;
+    let sequence = 0;
+    const load = async () => {
+      const request = ++sequence;
+      const make = makeSelect.value;
+      const category = makeSelect.form?.elements.namedItem('vehicle_category')?.value || 'car';
+      let names = [];
+      if (make && intl) {
+        if (category === 'car') names = (await intl.models(makeIdByName(make),lang)).map(model=>model.name);
+        else names = (await intl.loadUnifiedCatalog())?.[category]?.[make] || [];
+      }
+      if (request === sequence) fillDatalist(list,[...names].sort(byLocale));
+    };
+    makeSelect.addEventListener('change',load);
+    await load();
   }
-  async function bindLocation(countryEl,stateEl,cityInput,cityList,{mirror=null,currencyEl=null}={}){
-    if(!countryEl)return; await populateCountries(countryEl); const preferred=localStorage.getItem('avtovip-country')||'AZ'; if([...countryEl.options].some(o=>o.value===preferred))countryEl.value=preferred;
-    let cityNames=[]; let hierarchy=null;
+  async function bindLocation(countryEl,stateEl,cityInput,cityList,{mirror=null,currencyEl=null,initialCountry=null}={}){
+    if(!countryEl)return; await populateCountries(countryEl); const preferred=initialCountry ?? (localStorage.getItem('avtovip-country')||'AZ'); if([...countryEl.options].some(o=>o.value===preferred))countryEl.value=preferred;
+    let cityNames=[]; let hierarchy=null; let locationRequest=0;
     const renderCities=(arr)=>{cityNames=(arr||[]).map(x=>typeof x==='string'?x:x.name).filter(Boolean);fillDatalist(cityList,cityNames)};
-    const onCountry=async()=>{const iso=countryEl.value; if(iso)localStorage.setItem('avtovip-country',iso); if(mirror&&mirror.value!==iso)mirror.value=iso; hierarchy=iso&&intl?await intl.countryHierarchy(iso,lang):null; activeLocationData=hierarchy; const states=hierarchy?.states||[]; if(stateEl)fillSelectPairs(stateEl,states.map(st=>({value:st.name,label:`${st.native&&st.native!==st.name?st.native+' / ':''}${st.name}`})),'Hamısı'); const flat=iso&&intl?await intl.cities(iso,lang):CITIES; renderCities(flat); if(currencyEl&&iso){await ensureCatalogs();const cur=intl?.currencyForCountry?.(countryCatalog,iso);if(cur&&[...currencyEl.options].some(o=>o.value===cur))currencyEl.value=cur}}
+    const onCountry=async()=>{const request=++locationRequest;const iso=countryEl.value; if(iso)localStorage.setItem('avtovip-country',iso); if(mirror&&mirror.value!==iso)mirror.value=iso; const nextHierarchy=iso&&intl?await intl.countryHierarchy(iso,lang):null;if(request!==locationRequest)return;hierarchy=nextHierarchy;activeLocationData=hierarchy; const states=hierarchy?.states||[]; if(stateEl)fillSelectPairs(stateEl,states.map(st=>({value:st.name,label:`${st.native&&st.native!==st.name?st.native+' / ':''}${st.name}`})),'Hamısı'); const flat=iso&&intl?await intl.cities(iso,lang):CITIES; if(request!==locationRequest)return;renderCities(flat); if(currencyEl&&iso){await ensureCatalogs();if(request!==locationRequest)return;const cur=intl?.currencyForCountry?.(countryCatalog,iso);if(cur&&[...currencyEl.options].some(o=>o.value===cur))currencyEl.value=cur}}
     const onState=()=>{if(!stateEl)return;const st=(hierarchy?.states||[]).find(x=>x.name===stateEl.value);if(st?.cities?.length)renderCities(st.cities);};
-    countryEl.addEventListener('change',onCountry); stateEl?.addEventListener('change',()=>{const hydrating=countryEl.closest('form')?.dataset.avHydrating==='1';if(cityInput&&!hydrating)cityInput.value='';onState()}); cityInput?.addEventListener('input',()=>{const q=cityInput.value.trim().toLocaleLowerCase();if(q.length<2)return;fillDatalist(cityList,cityNames.filter(x=>x.toLocaleLowerCase().includes(q)).slice(0,80))}); await onCountry();
+    const loadLocation=()=>countryEl.avLocationReady=onCountry();
+    countryEl.addEventListener('change',loadLocation); stateEl?.addEventListener('change',()=>{const hydrating=countryEl.closest('form')?.dataset.avHydrating==='1';if(cityInput&&!hydrating)cityInput.value='';onState()}); cityInput?.addEventListener('input',()=>{const q=cityInput.value.trim().toLocaleLowerCase();if(q.length<2)return;fillDatalist(cityList,cityNames.filter(x=>x.toLocaleLowerCase().includes(q)).slice(0,80))}); await loadLocation();
   }
   function fillColorSelect(el,placeholder='Seçin'){
     if(!el)return;
@@ -1055,9 +1070,9 @@
     root.innerHTML=items.map(x=>`<label class="check-chip"><input type="checkbox" ${name?`name="${name}"`:''} value="${esc(x.value)}"><span>${esc(optionLabel(x))}</span></label>`).join('');
   }
 
-  async function commonFormOptions(root=document){
+  async function commonFormOptions(root=document,initialCountry=null){
     await populateMakes($('#brand',root)); await populateCurrencies($('#currency',root),'AZN'); fillSelect($('#bodyType',root),BODY_TYPES,'Seçin'); fillSelect($('#fuel',root),FUELS,'Seçin'); fillSelect($('#transmission',root),TRANSMISSIONS,'Seçin'); fillSelect($('#drivetrain',root),DRIVETRAINS,'Seçin'); fillColorSelect($('#color',root),'Seçin');
-    await bindModelAutocomplete($('#brand',root),$('#model',root),$('#modelList',root)); await bindLocation($('#country',root),$('#state',root),$('#city',root),$('#cityList',root),{currencyEl:$('#currency',root)});
+    await bindModelAutocomplete($('#brand',root),$('#model',root),$('#modelList',root)); await bindLocation($('#country',root),$('#state',root),$('#city',root),$('#cityList',root),{currencyEl:$('#currency',root),initialCountry});
     const eq=$('#equipmentGrid',root); renderEquipment(eq,'equipment');
   }
 
@@ -1215,16 +1230,19 @@
       for(const [field,column] of [['priceMax','price'],['yearMax','year']]){
         const n=Number(filters[field]);if(text(filters[field])&&Number.isFinite(n)&&n>=0)q=q.lte(column,n);
       }
-      if(text(filters.spec0))q=q.contains('vehicle_specs',{vehicle_type:text(filters.spec0)});
-      // The second filter means a different quantity in each category.
-      // JSONB numeric comparisons use -> (jsonb), never ->> (text ordering).
-      if(text(filters.spec1)){
-        const value=Number(filters.spec1);
-        const key={motorcycle:'engine_cc',watercraft:'length_m',aircraft:'flight_hours',agriculture:'operating_hours',construction:'operating_hours',commercial:'load_capacity_kg',caravan:'sleeping_capacity'}[category];
-        if(Number.isFinite(value)&&value>=0&&key){
-          const normalized=category==='commercial'?value*1000:value;
-          q=q.filter(`vehicle_specs->${key}`,'gte',String(normalized));
+      if(text(filters.vehicle_type))q=q.contains('vehicle_specs',{vehicle_type:text(filters.vehicle_type)});
+      for (const key of intl.SPEC_FIELDS[category] || []) {
+        for (const [bound,operator] of [['min','gte'],['max','lte']]) {
+          const raw = text(filters[bound+'_'+key]);
+          const value = Number(raw);
+          if (raw && Number.isFinite(value) && value >= 0) q=q.filter(`vehicle_specs->${key}`,operator,String(value));
         }
+      }
+      for (const feature of intl.CATEGORY_EXTRAS[category] || []) {
+        if (!filters['feature_'+feature]) continue;
+        if (feature === 'Kredit') q=q.eq('is_credit',true);
+        else if (feature === 'Barter') q=q.eq('is_barter',true);
+        else q=q.contains('equipment',[feature]);
       }
       if(filters.condition==='new')q=q.eq('is_new',true);
       if(filters.condition==='used')q=q.eq('is_new',false);
@@ -1676,7 +1694,7 @@
     if(insight){if(insight.delta<=-4){priceClass='good';priceLabel=t('goodPrice')}else if(insight.delta>=8){priceLabel=t('highPrice')}else priceLabel=t('marketPrice')}
     const detailLocation=[countryFlag(x.country_code),x.state_name,x.city,x.district].filter(Boolean).join(' • ');
     const flag=countryFlag(x.country_code);
-    const detailSpecs=[
+    const carDetailSpecs=[
       ['İl',x.year],['Vəziyyət',x.is_new?'Yeni':'Sürülmüş'],['Nəsil',x.generation||'-'],['Komplektasiya',x.trim||'-'],
       ['Ban',x.body_type||'-'],['Rəng',COLOR_OPTIONS.find(c=>c.value===x.color)?optionLabel(COLOR_OPTIONS.find(c=>c.value===x.color)):(x.color||'-')],
       ['Mühərrik',x.engine_volume?`${x.engine_volume} L`:'-'],['Güc',x.engine_power?`${x.engine_power} a.g.`:'-'],['Yanacaq',x.fuel||'-'],
@@ -1685,9 +1703,20 @@
       ['Ölkə',`${flag} ${x.country_code||'-'}`.trim()],['Region / Ştat',x.state_name||'-'],['Şəhər',x.city||'-'],['Rayon / Bölgə',x.district||'-'],
       ['Vuruğu var',x.has_accident?'Bəli':'Xeyr'],['Rənglənib',x.is_painted?'Bəli':'Xeyr']
     ];
+    const specs = x.vehicle_specs || {};
+    const specialist = !!intl?.SPEC_FIELDS[x.vehicle_category];
+    const detailSpecs = specialist ? [
+      ...carDetailSpecs.slice(0,2),
+      ...(specs.vehicle_type ? [['Nəqliyyat növü',intl.typeLabel(specs.vehicle_type,lang)]] : []),
+      ...intl.SPEC_FIELDS[x.vehicle_category].flatMap(key=>{
+        const value = specs[key] ?? (key==='mileage_km' && x.mileage>0 ? x.mileage : null);
+        return value == null ? [] : [[intl.specLabel(key,x.vehicle_category,lang),value]];
+      }),
+      ...carDetailSpecs.slice(-6,-2)
+    ] : carDetailSpecs;
     const lowerActions='';
     root.innerHTML=`<div class="detail-layout"><div class="stack"><section class="panel gallery"><div class="gallery-main" id="galleryMain"><img id="mainPhoto" src="${esc(photos[0])}" alt="${esc(x.title||`${x.brand} ${x.model}`)}"><div class="gallery-vin"><span class="gallery-country-flag">${esc(flag||x.country_code||'')}</span><span class="gallery-vin-code">${esc(x.vin||'VIN yoxdur')}</span>${x.vin?'<button type="button" id="copyVin" aria-label="VIN kopyala" title="VIN kopyala"><i class="fa-regular fa-copy"></i></button>':''}</div><button type="button" class="gallery-fav ${isFav?'active':''}" id="detailPhotoFav" aria-label="Sevimlilər"><i class="fa-${isFav?'solid':'regular'} fa-heart"></i></button><button class="gallery-nav gallery-prev" type="button" aria-label="Əvvəlki şəkil"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-nav gallery-next" type="button" aria-label="Növbəti şəkil"><i class="fa-solid fa-chevron-right"></i></button><div class="gallery-photo-actions">${lowerActions}</div><div class="gallery-zoom-tools"><button type="button" data-gallery-zoom="out" aria-label="Kiçilt"><i class="fa-solid fa-minus"></i></button><button type="button" data-gallery-full aria-label="Tam ekran"><i class="fa-solid fa-expand"></i></button><button type="button" data-gallery-zoom="in" aria-label="Böyüt"><i class="fa-solid fa-plus"></i></button></div></div><div class="gallery-thumbs">${photos.map((p,i)=>`<button class="gallery-thumb ${i===0?'active':''}" data-photo="${esc(p)}" data-index="${i}"><img src="${esc(p)}" alt=""></button>`).join('')}</div></section>${x.video_url?`<section class="panel" style="padding:12px"><div class="section-head"><h3><i class="fa-solid fa-video" aria-hidden="true"></i> Video</h3></div><video controls playsinline preload="metadata" style="display:block;width:100%;max-height:65vh;background:#000;border-radius:10px" src="${esc(x.video_url)}" aria-label="Video"></video></section>`:''}
-      <section class="panel detail-main"><div class="detail-title"><div><h1>${esc(x.brand)} ${esc(x.model)}</h1><div class="muted small">${esc([x.generation,x.trim].filter(Boolean).join(' • '))}${(x.generation||x.trim)?' • ':''}${x.year} • ${Number(x.mileage||0).toLocaleString(locale())} km</div><div class="detail-location-line">${esc(detailLocation)}</div></div><div class="card-badges" style="position:static;max-width:none">${listingBadges(x)}</div></div><div class="detail-price">${money(x.price,x.currency)}</div>${insight?`<div class="price-insight"><span class="badge ${priceClass}">${esc(priceLabel)}</span><span>Median: <strong>${money(insight.median,x.currency)}</strong> • ${insight.count} elan</span></div>`:''}<div class="divider"></div><div class="detail-actions detail-actions-compact"><button class="btn btn-outline" id="detailCompare"><i class="fa-solid fa-code-compare"></i>${t('compare')}</button><button class="btn btn-outline" id="detailShare"><i class="fa-solid fa-share-nodes"></i>${t('share')}</button></div><div class="divider"></div><div class="spec-grid">${detailSpecs.map(([a,b])=>`<div class="spec"><span>${esc(staticText(a))}</span><strong>${esc(staticText(b??'-'))}</strong></div>`).join('')}</div>${x.equipment?.length?`<div class="divider"></div><h3>Təchizat</h3><div class="equipment-list">${x.equipment.map(y=>`<span class="equipment-tag"><i class="fa-solid fa-circle-check"></i> ${esc(equipmentLabel(y))}</span>`).join('')}</div>`:''}</section></div>
+      <section class="panel detail-main"><div class="detail-title"><div><h1>${esc(x.brand)} ${esc(x.model)}</h1><div class="muted small">${esc([x.generation,x.trim].filter(Boolean).join(' • '))}${(x.generation||x.trim)?' • ':''}${x.year}${specialist&&!x.mileage?'':` • ${Number(x.mileage||0).toLocaleString(locale())} km`}</div><div class="detail-location-line">${esc(detailLocation)}</div></div><div class="card-badges" style="position:static;max-width:none">${listingBadges(x)}</div></div><div class="detail-price">${money(x.price,x.currency)}</div>${insight?`<div class="price-insight"><span class="badge ${priceClass}">${esc(priceLabel)}</span><span>Median: <strong>${money(insight.median,x.currency)}</strong> • ${insight.count} elan</span></div>`:''}<div class="divider"></div><div class="detail-actions detail-actions-compact"><button class="btn btn-outline" id="detailCompare"><i class="fa-solid fa-code-compare"></i>${t('compare')}</button><button class="btn btn-outline" id="detailShare"><i class="fa-solid fa-share-nodes"></i>${t('share')}</button></div><div class="divider"></div><div class="spec-grid">${detailSpecs.map(([a,b])=>`<div class="spec"><span>${esc(staticText(a))}</span><strong>${esc(staticText(b??'-'))}</strong></div>`).join('')}</div>${x.equipment?.length?`<div class="divider"></div><h3>Təchizat</h3><div class="equipment-list">${x.equipment.map(y=>`<span class="equipment-tag"><i class="fa-solid fa-circle-check"></i> ${esc(equipmentLabel(y))}</span>`).join('')}</div>`:''}</section></div>
       <aside class="detail-sidebar stack"><section class="panel seller-card"><div class="row"><span class="seller-avatar-shell avatar-shell ${seller?.membership_tier||'free'}${avatarVerifiedClass(seller?.is_verified)}"><img class="seller-avatar" src="${esc(seller?.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${seller?.membership_tier==='vip'?'<i class="fa-solid fa-crown avatar-crown" aria-label="VIP"></i>':seller?.membership_tier==='premium'?'<i class="fa-solid fa-gem avatar-gem" aria-label="Premium"></i>':''}</span><div class="grow"><strong class="seller-name-line">${seller?.is_verified?verifiedBadge():''}<span class="seller-name-text">${esc(name)}</span></strong><div class="muted small">${seller?.role==='dealer'?'Diler':'Şəxsi satıcı'}</div><div class="detail-trust-inline"><span class="detail-trust-stars" aria-label="Etibar ulduzları">${Array.from({length:5},(_,i)=>`<i class="fa-solid fa-star ${i<Math.max(0,Math.min(5,Math.floor(Number(seller?.trust_score??50)/20)))?'earned':''}"></i>`).join('')}</span><div class="detail-trust-circle-wrap"><span class="detail-trust-circle" style="--score:${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))};--trust:${Number(seller?.trust_score??50)>=80?'#37d38a':Number(seller?.trust_score??50)>=60?'#e2b83c':Number(seller?.trust_score??50)>=40?'#ff9f43':'#ef4d56'}" aria-label="Etibar ${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))}%"><b>${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))}%</b></span><span class="detail-trust-copy"><strong>Etibar</strong><small>${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))}/100</small></span></div></div></div></div><div class="contact-grid contact-grid-three"><a class="btn contact-call" href="tel:${esc(phone)}"><i class="fa-solid fa-phone"></i>${t('call')}</a>${wa?`<a class="btn btn-whatsapp contact-whatsapp" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(`Salam. AvtoVİP-da ${x.brand} ${x.model} (${x.year}) elanınızla maraqlanıram: ${location.href}`)}"><i class="fa-brands fa-whatsapp"></i>${t('whatsapp')}</a>`:'<button class="btn btn-outline contact-whatsapp" disabled>WhatsApp</button>'}${currentUser?.id===x.user_id?`<button class="btn btn-outline contact-message" disabled><i class="fa-regular fa-comment-dots"></i>Mesaj</button>`:`<a class="btn contact-message" href="mesajlar.html?with=${x.user_id}&listing=${x.id}"><i class="fa-regular fa-comment-dots"></i>Mesaj</a>`}</div><div class="seller-description"><h3>Açıqlama</h3><p>${esc(x.description||'Açıqlama əlavə edilməyib.')}</p></div></section>${hist.length?`<section class="panel panel-pad sidebar-price-history"><div class="section-head"><h3>Qiymət tarixçəsi</h3></div><div class="price-history">${hist.map(h=>`<div class="price-row"><span>${dateText(h.created_at)}</span><span class="price-history-values">${h.old_price!=null?`<del>${money(h.old_price,h.currency)}</del>`:''}<strong>${money(h.new_price,h.currency)}</strong></span></div>`).join('')}</div></section>`:''}<section class="panel panel-pad"><div class="section-head"><h3>Təhlükəsiz alış</h3></div><p class="muted small">Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli elanları bizə bildirin.</p><button class="btn btn-outline btn-block" id="reportBtn"><i class="fa-regular fa-flag"></i>${t('report')}</button></section></aside></div>`;
     const gallery=$('#galleryMain'),mainPhoto=$('#mainPhoto'),thumbs=$$('.gallery-thumb');
     let galleryIndex=0,galleryScale=1,galleryX=0,galleryY=0,startX=0,startY=0,startDist=0,startScale=1,dragging=false,moved=false;
@@ -1735,56 +1764,126 @@
 
   async function initCreateListing(){
     const user=await db.requireAuth();if(!user)return;
-    await commonFormOptions();
     const form=$('#listingForm'),files=$('#listingImages'),preview=$('#imagePreview'),editId=qsParam('edit');
+    const profile = editId ? null : await db.getProfile(user.id).catch(() => null);
+    const code = String(profile?.country_code || '').trim().toUpperCase();
+    await commonFormOptions(document, code && code !== 'AM' ? code : null);
     setupFriendlyFileInput(files,{kind:'images'});
     // Preserve the original car flow; other categories use their own brand lists
     // and JSONB specifications, without forcing car-only technical fields.
     const categorySelect=$('#listingVehicleCategory'),specWrap=$('#listingVehicleSpecs');
     const brandSelect=$('#brand');
     const categoryKeys=['car','motorcycle','watercraft','aircraft','agriculture','construction','commercial','caravan'];
-    let categoryBrands={};
-    try{const r=await fetch('assets/data/vehicle-category-brands.json');if(r.ok)categoryBrands=await r.json()}catch(e){console.warn('[AvtoVIP category brands]',e)}
+    const catalog = await intl.loadUnifiedCatalog();
     const originalBrandOptions=[...brandSelect.options].map(o=>({value:o.value,label:o.textContent}));
-    // Structured JSONB attributes shared by specialist vehicle categories.
-    // Keep these independent of car-only columns and preserve old records.
-    const categorySpecFields={
-      motorcycle:['engine_cc','engine_power_kw'],
-      watercraft:['length_m','beam_m','engine_power_kw','passenger_capacity'],
-      aircraft:['flight_hours','engine_power_kw','seat_capacity','max_takeoff_weight_kg'],
-      agriculture:['engine_power_kw','working_width_m','load_capacity_kg'],
-      construction:['engine_power_kw','operating_weight_kg','bucket_capacity_m3'],
-      commercial:['load_capacity_kg','gross_weight_kg','cargo_volume_m3'],
-      caravan:['length_m','sleeping_capacity','gross_weight_kg']
+    const categorySpecFields = intl.SPEC_FIELDS;
+    const typeSelect = form.elements.namedItem('vehicle_type');
+    const typeField = typeSelect.closest('.field');
+    const equipment = $('#equipmentGrid');
+    const equipmentSection = equipment.closest('.form-section');
+    const equipmentHeading = equipmentSection.querySelector('h2');
+    const carEquipment = [...equipment.children];
+    const carEquipmentHeading = equipmentHeading.innerHTML;
+    const conditions = form.elements.namedItem('is_credit').closest('.row-wrap');
+    const extraConditions = document.createElement('span');
+    extraConditions.style.display = 'contents';
+    conditions.append(extraConditions);
+    const title = document.querySelector('main h1');
+    const carTitle = staticText('Avtomobil elanı yerləşdir');
+    const placeholders = ['model','generation','trim','description'].map(name => {
+      const control = form.elements.namedItem(name);
+      return [control, control.placeholder];
+    });
+    const specialistTitle = {az:'Elan yerləşdir',en:'Post a listing',ru:'Подать объявление',tr:'İlan ver',ka:'განცხადების დამატება'};
+    const specialistEquipmentTitle = {az:'Təchizat',en:'Equipment',ru:'Оснащение',tr:'Donanım',ka:'აღჭურვილობა'};
+    const choose = {az:'Seçin',en:'Select',ru:'Выберите',tr:'Seçin',ka:'აირჩიეთ'};
+    const financeOrDocuments = new Set(['Lizinq','Sənədləri qaydasında','Qeydiyyat sənədi','Uçuşa yararlılıq sertifikatı','Texniki baxış','Servis tarixçəsi','Zəmanət','Gömrük sənədi']);
+    const checkbox = feature => {
+      const label = document.createElement('label');
+      label.className = 'check-chip';
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.name = 'equipment';
+      input.value = feature;
+      const text = document.createElement('span');
+      text.textContent = intl.featureLabel(feature,lang);
+      label.append(input,text);
+      return label;
     };
-    const specLabels={engine_cc:'Mühərrik həcmi (sm³)',engine_power_kw:'Güc (kW)',length_m:'Uzunluq (m)',beam_m:'En (m)',passenger_capacity:'Sərnişin tutumu',flight_hours:'Uçuş saatı',seat_capacity:'Oturacaq sayı',max_takeoff_weight_kg:'Maksimal qalxma çəkisi (kq)',working_width_m:'İş eni (m)',load_capacity_kg:'Yük tutumu (kq)',operating_weight_kg:'İş çəkisi (kq)',bucket_capacity_m3:'Çömçə həcmi (m³)',gross_weight_kg:'Ümumi çəki (kq)',cargo_volume_m3:'Yük həcmi (m³)',sleeping_capacity:'Yataq sayı'};
-    const specControls=new Map();
-    if(specWrap){for(const key of new Set(Object.values(categorySpecFields).flat())){
-      const holder=document.createElement('div');holder.className='field';holder.hidden=true;
-      const label=document.createElement('label');label.textContent=specLabels[key];
-      const input=document.createElement('input');input.name=`vehicle_spec_${key}`;input.type='number';input.min='0';input.step='any';input.disabled=true;
-      label.append(input);holder.append(label);specWrap.append(holder);specControls.set(key,{holder,input});
-    }}
+    const specControls = new Map();
+    const wholeNumbers = new Set(['axle_count','cabin_count','passenger_capacity','seat_capacity','sleeping_capacity']);
+    for (const key of new Set(Object.values(categorySpecFields).flat())) {
+      const holder=document.createElement('div');holder.className='field';
+      const label=document.createElement('label');
+      const input=document.createElement('input');input.id=`listing-spec-${key}`;input.name=`vehicle_spec_${key}`;
+      input.type='number';input.min='0';input.step=wholeNumbers.has(key)?'1':'any';
+      label.htmlFor=input.id;holder.append(label,input);specWrap.append(holder);
+      specControls.set(key,{holder,input,label});
+    }
+    const refreshSpecs = () => {
+      const category = categorySelect.value;
+      const visible = categorySpecFields[category] || [];
+      for (const [key,{holder,input,label}] of specControls) {
+        holder.hidden = !visible.includes(key) || !intl.specApplicable(category,typeSelect.value,key);
+        input.disabled = holder.hidden;
+        label.textContent = intl.specLabel(key,category,lang);
+      }
+    };
+    typeSelect.addEventListener('change',refreshSpecs);
+    let previousCategory = 'car';
     const carOnlyNames=['mileage','engine_volume','engine_power','fuel','transmission','drivetrain','body_type','color','seats','owners_count','market_origin','vin'];
     const refreshCategory=()=>{
       const category=categoryKeys.includes(categorySelect?.value)?categorySelect.value:'car';
       const isCar=category==='car';
       if(specWrap)specWrap.hidden=isCar;
-      const visible=new Set(categorySpecFields[category]||[]);
-      for(const [key,{holder,input}] of specControls){holder.hidden=!visible.has(key);input.disabled=!visible.has(key);}
-
+      const categoryChanged = previousCategory !== category;
+      const previousBrand = brandSelect.value;
+      form.dataset.vehicleCategory = category;
+      for (const [control,original] of placeholders) {
+        control.placeholder = isCar ? original : '';
+        if(control.name==='model') control.maxLength=isCar ? 80 : 130;
+        if (categoryChanged && ['model','generation','trim'].includes(control.name)) control.value = '';
+      }
+      if (categoryChanged) for (const {input} of specControls.values()) input.value = '';
+      const previousType = categoryChanged ? '' : typeSelect.value;
+      const types = intl.CATEGORY_TYPES[category] || [];
+      typeSelect.replaceChildren(new Option(choose[lang] || choose.en,''), ...types.map(value=>new Option(intl.typeLabel(value,lang),value)));
+      typeSelect.value = previousType;
+      typeField.hidden = isCar;
+      typeSelect.disabled = isCar;
+      refreshSpecs();
+      if (title) title.textContent = isCar ? carTitle : (specialistTitle[lang] || specialistTitle.en);
+      const features = (intl.CATEGORY_EXTRAS[category] || []).filter(value=>value!=='Kredit'&&value!=='Barter');
+      const checked = new Set([...equipment.querySelectorAll(':checked'),...extraConditions.querySelectorAll(':checked')].map(input=>input.value));
+      equipment.replaceChildren(...(isCar ? carEquipment : features.filter(value=>!financeOrDocuments.has(value)).map(checkbox)));
+      extraConditions.replaceChildren(...features.filter(value=>financeOrDocuments.has(value)).map(checkbox));
+      equipmentHeading.innerHTML = isCar ? carEquipmentHeading : specialistEquipmentTitle[lang] || specialistEquipmentTitle.en;
+      equipmentSection.hidden = equipment.childElementCount === 0;
+      for (const input of [...equipment.querySelectorAll('input'),...extraConditions.querySelectorAll('input')]) {
+        if (!isCar && !categoryChanged) input.checked = checked.has(input.value);
+      }
+      for (const name of ['has_accident','is_painted']) {
+        const input = form.elements.namedItem(name);
+        input.disabled = !isCar;
+        input.closest('label').hidden = !isCar;
+      }
       for(const name of carOnlyNames){const el=form.elements.namedItem(name);if(!el||el instanceof RadioNodeList)continue;
         const field=el.closest('.field');if(field)field.hidden=!isCar;
         el.disabled=!isCar;el.required=isCar&&name==='mileage';
       }
-      const equipment=form.querySelector('#equipmentGrid');if(equipment){const section=equipment.closest('.form-section');if(section)section.hidden=!isCar;equipment.querySelectorAll('input').forEach(el=>el.disabled=!isCar)}
-      if(brandSelect){const old=brandSelect.value;const options=isCar?originalBrandOptions:[{value:'',label:'Seçin'},...(categoryBrands[category]||[]).map(v=>({value:v,label:v}))];
-        brandSelect.replaceChildren(...options.map(item=>{const o=document.createElement('option');o.value=item.value;o.textContent=item.label;return o}));
-        if(options.some(item=>item.value===old))brandSelect.value=old;
-      }
+      const options = isCar ? originalBrandOptions : [
+        {value:'',label:choose[lang] || choose.en},
+        ...Object.keys(catalog?.[category] || {}).sort(byLocale).map(value=>({value,label:value}))
+      ];
+      brandSelect.replaceChildren(...options.map(item=>new Option(item.label,item.value)));
+      if (!categoryChanged && options.some(item=>item.value===previousBrand)) brandSelect.value = previousBrand;
+      previousCategory = category;
+      brandSelect.dispatchEvent(new Event('change',{bubbles:true}));
     };
     categorySelect?.addEventListener('change',refreshCategory);
     refreshCategory();
+    form.dataset.avListingReady='1';
+    form.dispatchEvent(new Event('avtovip:listing-ready'));
 
     let selectedListingFiles=[],existingUrls=[],editRow=null,removedExisting=[];
     const videoInput=$('#listingVideo'),videoStatus=$('#listingVideoStatus'),removeVideo=$('#listingRemoveVideo');
@@ -1815,15 +1914,15 @@
       const ensureOption=(el,val)=>{if(!el||el.tagName!=='SELECT'||val==null||val==='')return;if(![...el.options].some(o=>String(o.value)===String(val))){const o=document.createElement('option');o.value=String(val);o.textContent=String(val);el.append(o)}};
       const set=(name,val,{event='change'}={})=>{const el=form?.elements?.namedItem(name);if(!el||el instanceof RadioNodeList)return;ensureOption(el,val);el.value=val??'';el.dispatchEvent(new Event(event,{bubbles:true}))};
       const wait=(ms=60)=>new Promise(r=>setTimeout(r,ms));
-      const waitOption=async(el,val,max=4000)=>{if(!el||val==null||val==='')return false;const start=performance.now();while(performance.now()-start<max){if([...el.options].some(o=>String(o.value)===String(val)))return true;await wait(80)}return false};
       /* Hydrate edit values in dependency order. Async catalog/location listeners can
          repopulate selects, so dependent values are restored only after their options exist. */
       if(categorySelect){categorySelect.value=categoryKeys.includes(data.vehicle_category)?data.vehicle_category:'car';refreshCategory();}
       const savedSpecs=data.vehicle_specs&&typeof data.vehicle_specs==='object'?data.vehicle_specs:{};
-      for(const [name,value] of Object.entries({vehicle_type:savedSpecs.vehicle_type,operating_hours:savedSpecs.operating_hours}))set(name,value,{event:'input'});
+      set('vehicle_type',savedSpecs.vehicle_type==='Kem per'?'Kemper':savedSpecs.vehicle_type);
       for(const key of categorySpecFields[categorySelect?.value]||[]){
         const control=specControls.get(key)?.input;
-        if(control&&savedSpecs[key]!=null&&Number.isFinite(Number(savedSpecs[key])))control.value=String(savedSpecs[key]);
+        const value = savedSpecs[key] ?? (key==='mileage_km' && data.mileage>0 ? data.mileage : null);
+        if(control&&value!=null&&Number.isFinite(Number(value)))control.value=String(value);
       }
 
       set('brand',data.brand);await wait(120);
@@ -1832,8 +1931,8 @@
       const countryEl=form.elements.namedItem('country_code');
       if(countryEl&&data.country_code){
         ensureOption(countryEl,data.country_code);countryEl.value=data.country_code;countryEl.dispatchEvent(new Event('change',{bubbles:true}));
-        const stateEl=form.elements.namedItem('state_name');
-        if(data.state_name){await waitOption(stateEl,data.state_name);set('state_name',data.state_name);await wait(80)}
+        await countryEl.avLocationReady;
+        if(data.state_name)set('state_name',data.state_name);
         set('city',data.city,{event:'input'});
       }else{set('state_name',data.state_name);set('city',data.city,{event:'input'})}
       /* Country selection may auto-change currency; restore the saved listing value last. */
@@ -1886,19 +1985,28 @@
         }
         payload.vehicle_category=category;
         payload.vehicle_specs=category==='car'?{}:{
-          vehicle_type:String(fd.get('vehicle_type')||'').trim(),
-          operating_hours:fd.get('operating_hours')!==''&&fd.get('operating_hours')!=null?Number(fd.get('operating_hours')):null
+          ...(editRow?.vehicle_category===category ? editRow.vehicle_specs : {}),
+          vehicle_type:String(fd.get('vehicle_type')||'').trim()
         };
         if(category!=='car')for(const key of categorySpecFields[category]||[]){
           const raw=fd.get(`vehicle_spec_${key}`);
-          if(raw===null||String(raw).trim()==='')continue;
+          if(raw===null){
+            if (payload.vehicle_specs.vehicle_type !== editRow?.vehicle_specs?.vehicle_type) delete payload.vehicle_specs[key];
+            continue;
+          }
+          if(String(raw).trim()===''){delete payload.vehicle_specs[key];continue;}
           const value=Number(raw);
-          if(!Number.isFinite(value)||value<0)throw new Error(`${specLabels[key]} düzgün daxil edilməyib.`);
+          if(!Number.isFinite(value)||value<0)throw new Error(`${intl.specLabel(key,category,lang)} düzgün daxil edilməyib.`);
           payload.vehicle_specs[key]=value;
         }
         // Existing elanlar columns may be NOT NULL; use empty strings rather
         // than null for car-only selectors in non-car categories.
         if(category!=='car')for(const name of ['body_type','color','fuel','transmission','drivetrain'])payload[name]='';
+        if(category!=='car' && editRow?.vehicle_category===category && Array.isArray(editRow.equipment)) {
+          const controls = new Set((intl.CATEGORY_EXTRAS[category] || []).filter(value=>value!=='Kredit'&&value!=='Barter'));
+          payload.equipment.push(...editRow.equipment.filter(value=>!controls.has(value)));
+        }
+        if(category!=='car' && payload.vehicle_specs.mileage_km != null)payload.mileage=payload.vehicle_specs.mileage_km;
         if(!payload.brand||!payload.model||!payload.year||!payload.price||!payload.phone)throw new Error('Vacib sahələri doldurun.');
         if(payload.country_code==='AM'||payload.currency==='AMD')throw new Error('Bu ölkə/valyuta bazarda aktiv deyil.');
         if(editId){

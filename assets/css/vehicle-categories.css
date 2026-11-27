@@ -37,7 +37,7 @@
 .vehicle-noncar .vehicle-features label{padding:5px 9px;min-height:29px;gap:6px;font-size:11px;background:var(--input-bg,#171b23);border-radius:8px}
 .vehicle-noncar .vehicle-features input{width:15px;height:15px;margin:0;flex:0 0 15px}
 .vehicle-noncar .vehicle-features{gap:5px;margin:10px 0}
-@media(max-width:700px){.vehicle-noncar .vehicle-primary-grid .vehicle-field:nth-child(n+3){display:none!important}.vehicle-noncar #applyFilters{display:flex!important;width:100%;justify-content:center;margin-top:8px}.vehicle-noncar .vehicle-primary-grid{margin-bottom:4px}.vehicle-noncar .vehicle-features label{padding:5px 7px;font-size:11px;min-height:28px}}
+@media(max-width:700px){.vehicle-noncar #applyFilters{display:flex!important;width:100%;justify-content:center;margin-top:8px}.vehicle-noncar .vehicle-primary-grid{margin-bottom:4px}.vehicle-noncar .vehicle-features label{padding:5px 7px;font-size:11px;min-height:28px}}
 
 /* Unified card sizing and compact feature chips (desktop and PWA). */
 .vehicle-noncar-brands{box-sizing:border-box}
@@ -123,3 +123,7 @@ html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
   transform: scale(1.03);
 }
 
+
+.vehicle-extra-grid .vehicle-field[hidden]{display:none!important}
+.vehicle-noncar .vehicle-category-search{justify-self:start}
+@media(max-width:700px){.vehicle-noncar .vehicle-category-search{grid-column:1/-1;width:100%}}

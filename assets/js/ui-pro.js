@@ -19,7 +19,7 @@
  async function profile(){if($('.profile-final-shell'))return;const head=$('.profile-head');if(!head||$('.av-profile-actions'))return;const stats=document.createElement('div');stats.className='av-profile-stats';stats.innerHTML=`<div><b id="avFollowers">0</b><span>Takipçi</span></div><div><b id="avFollowing">0</b><span>Takip</span></div><div><b id="avListings">0</b><span>${t('ads')}</span></div><div><b id="avLikes">0</b><span>${t('likes')}</span></div>`;head.append(stats);const actions=document.createElement('div');actions.className='av-profile-actions';actions.innerHTML=`<button data-open-profile><i class="fa-regular fa-user"></i><span>${t('profileInfo')}</span></button><a href="ayarlar.html"><i class="fa-solid fa-gear"></i><span>${t('settings')}</span></a><a href="sevimliler.html"><i class="fa-regular fa-heart"></i><span>${t('saved')}</span></a><a href="odenisler.html"><i class="fa-regular fa-clock"></i><span>${t('history')}</span></a>`;head.after(actions);actions.querySelector('[data-open-profile]').onclick=()=>$('#profileInfoToggle')?.click();try{const cur=await window.avtoDb.current();if(cur.profile?.role==='admin'&&!actions.querySelector('[data-admin-panel]')){const admin=document.createElement('a');admin.href='admin/index.html';admin.dataset.adminPanel='1';admin.className='av-admin-panel-entry';admin.innerHTML='<i class="fa-solid fa-shield-halved"></i><span>Admin panel</span>';actions.append(admin);actions.classList.add('has-admin')}const {data:{session}}=await sb.auth.getSession();const id=session?.user?.id;if(!id)return;const [a,b,c,d]=await Promise.all([sb.from('user_follows').select('*',{count:'exact',head:true}).eq('following_id',id),sb.from('user_follows').select('*',{count:'exact',head:true}).eq('follower_id',id),sb.from('elanlar').select('*',{count:'exact',head:true}).eq('user_id',id),sb.from('listing_likes').select('*',{count:'exact',head:true}).eq('user_id',id)]);$('#avFollowers').textContent=a.count||0;$('#avFollowing').textContent=b.count||0;$('#avListings').textContent=c.count||0;$('#avLikes').textContent=d.count||0}catch{}}
  function createSteps(){
    const form=$('#listingForm');if(!form||$('.av-stepbar'))return;
-   const sections=$$('.form-section',form);
+   const sections=Array.from(form.querySelectorAll('.form-section')).slice(1);
    const groups=[
      {label:'Əsas məlumatlar',section:sections[0],required:['brand','model']},
      {label:'Məkan',section:sections[1],required:['country_code','city']},
@@ -28,7 +28,7 @@
      {label:'Əlavə şərtlər',section:sections[4],checks:['is_credit','is_barter','has_accident','is_painted']},
      {label:'Təchizat',section:sections[5],checks:['equipment']},
      {label:'Şəkillər',section:sections[6],images:true},
-     {label:'Satıcı / Açıqlama',section:sections[7],required:['phone'],watch:['whatsapp_phone','description']}
+     {label:'Satıcı / Açıqlama',section:form.elements.namedItem('phone')?.closest('.form-section'),required:['phone'],watch:['whatsapp_phone','description']}
    ];
    const bar=document.createElement('div');bar.className='av-stepbar av-stepbar-live';
    bar.innerHTML=groups.map((g,i)=>`<button type="button" class="av-step-chip is-empty" data-step="${i}"><b>${i+1}</b><span>${g.label}</span></button>`).join('');
@@ -36,15 +36,18 @@
    const openDraftClearDialog=()=>{let modal=$('#avDraftClearModal');if(!modal){modal=document.createElement('div');modal.id='avDraftClearModal';modal.className='av-confirm-modal';modal.innerHTML=`<div class="av-confirm-card" role="dialog" aria-modal="true" aria-labelledby="avDraftClearTitle"><div class="av-confirm-icon"><i class="fa-solid fa-broom"></i></div><div class="av-confirm-copy"><strong id="avDraftClearTitle">Yadda qalan məlumatlar təmizlənsin?</strong><span>Yeni elan üçün yadda saxlanmış köhnə məlumatlar silinəcək. Mövcud elanlarınıza toxunulmayacaq.</span></div><div class="av-confirm-actions"><button type="button" class="av-confirm-cancel">Ləğv et</button><button type="button" class="av-confirm-ok"><i class="fa-solid fa-broom"></i> Təmizlə</button></div></div>`;document.body.append(modal);const close=()=>modal.classList.remove('show');modal.addEventListener('click',e=>{if(e.target===modal||e.target.closest('.av-confirm-cancel'))close();if(e.target.closest('.av-confirm-ok')){localStorage.removeItem('avtovip-listing-draft-v2');form.dataset.avSkipDraftRestore='1';location.href='elan-ver.html?fresh=1'}});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))close()})}requestAnimationFrame(()=>modal.classList.add('show'))};
    if(titleRow){titleRow.classList.add('av-listing-form-title-row');if(!isEditMode){clearBtn=document.createElement('button');clearBtn.type='button';clearBtn.className='av-clear-listing-draft';clearBtn.innerHTML='<i class="fa-solid fa-broom"></i><span>Təmizlə</span>';clearBtn.title='Yadda qalan köhnə elan məlumatlarını təmizlə';titleRow.append(clearBtn);clearBtn.addEventListener('click',openDraftClearDialog)}}
    form.before(bar);
-   const hasValue=name=>{const nodes=[...form.querySelectorAll(`[name="${name}"]`)];if(!nodes.length)return false;return nodes.some(el=>el.type==='checkbox'||el.type==='radio'?el.checked:String(el.value??'').trim()!=='')};
+   const hasValue=name=>{const nodes=[...form.querySelectorAll(`[name="${name}"]`)];if(!nodes.length)return false;return nodes.some(el=>!el.disabled&&(el.type==='checkbox'||el.type==='radio'?el.checked:String(el.value??'').trim()!==''))};
    const statusFor=g=>{
+     if (g.section?.querySelector('#listingVehicleSpecs') && form.dataset.vehicleCategory && form.dataset.vehicleCategory !== 'car') {
+       return [...g.section.querySelectorAll('#listingVehicleSpecs input,#listingVehicleSpecs select')].some(el=>!el.disabled&&el.value!=='')?'complete':'empty';
+     }
      if(g.images){const n=$$('#imagePreview .upload-tile',form).length||$('#listingImages',form)?.files?.length||0;return n>=3?'complete':n>0?'partial':'empty'}
      const required=g.required||[], watched=[...required,...(g.watch||[])], checks=g.checks||[];
-     if(checks.length){const any=checks.some(hasValue);return any?'complete':'empty'}
+     if(checks.length){const any=[...g.section?.querySelectorAll('input[type=checkbox]')||[]].some(el=>!el.disabled&&el.checked);return any?'complete':'empty'}
      const any=watched.some(hasValue), allRequired=required.length?required.every(hasValue):any;
      return allRequired?'complete':any?'partial':'empty';
    };
-   const update=()=>groups.forEach((g,i)=>{const chip=bar.querySelector(`[data-step="${i}"]`),st=statusFor(g);if(!chip)return;chip.classList.remove('is-complete','is-partial','is-empty');chip.classList.add(`is-${st}`);chip.dataset.state=st;chip.title=st==='complete'?'Tamamlandı':st==='partial'?'Yarımçıqdır':'Doldurulmayıb'});
+   const update=()=>groups.forEach((g,i)=>{const chip=bar.querySelector(`[data-step="${i}"]`),st=statusFor(g);if(!chip)return;chip.hidden=!!g.section?.hidden;chip.classList.remove('is-complete','is-partial','is-empty');chip.classList.add(`is-${st}`);chip.dataset.state=st;chip.title=st==='complete'?'Tamamlandı':st==='partial'?'Yarımçıqdır':'Doldurulmayıb'});
    bar.addEventListener('click',e=>{const chip=e.target.closest('[data-step]');if(!chip)return;groups[Number(chip.dataset.step)]?.section?.scrollIntoView({behavior:'smooth',block:'start'})});
    form.addEventListener('input',update);form.addEventListener('change',update);
    const preview=$('#imagePreview',form);if(preview)new MutationObserver(update).observe(preview,{childList:true,subtree:true});
