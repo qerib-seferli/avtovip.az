@@ -86,6 +86,12 @@ async function load(){
     const exact = await sb.from('posts').select('*').eq('id',requestedId).eq('status','active').maybeSingle();
     if (exact.data && eligible(exact.data)) next.unshift(exact.data);
    }
+   if(reels){
+    for(let index=next.length-1;index>0;index--){
+     const swap=Math.floor(Math.random()*(index+1));
+     [next[index],next[swap]]=[next[swap],next[index]];
+    }
+   }
    if (next.length) {
     await loadPostDetails(next);
     const offset = posts.length;

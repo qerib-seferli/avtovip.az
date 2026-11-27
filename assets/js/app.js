@@ -647,6 +647,8 @@
     if(FULL_TEXT[raw]?.[lang]) return FULL_TEXT[raw][lang];
     const fileTooLarge=raw.match(/^(.+) 10 MB-dan böyükdür\.$/); if(fileTooLarge){const m={en:`${fileTooLarge[1]} is larger than 10 MB.`,ru:`${fileTooLarge[1]} больше 10 МБ.`,tr:`${fileTooLarge[1]} 10 MB'dan büyük.`,ka:`${fileTooLarge[1]} 10 მბ-ზე დიდია.`};return m[lang]||m.en}
     const known=[
+      ['File signature mismatch',{en:'The file content does not match its format.',ru:'Содержимое файла не соответствует формату.',tr:'Dosya içeriği biçimiyle eşleşmiyor.',ka:'ფაილის შიგთავსი ფორმატს არ ემთხვევა.'}],
+      ['Bu media formatı yükləmək üçün uyğun deyil.',{en:'This media format cannot be uploaded.',ru:'Этот формат медиа нельзя загрузить.',tr:'Bu medya biçimi yüklenemiyor.',ka:'ამ ფორმატის ატვირთვა შეუძლებელია.'}],
       ['Invalid login credentials',{en:'Incorrect email or password.',ru:'Неверный email или пароль.',tr:'E-posta veya şifre yanlış.',ka:'ელფოსტა ან პაროლი არასწორია.'}],
       ['Email not confirmed',{en:'Please confirm your email first.',ru:'Сначала подтвердите email.',tr:'Önce e-postanızı doğrulayın.',ka:'ჯერ დაადასტურეთ ელფოსტა.'}],
       ['User already registered',{en:'This email is already registered.',ru:'Этот email уже зарегистрирован.',tr:'Bu e-posta zaten kayıtlı.',ka:'ეს ელფოსტა უკვე რეგისტრირებულია.'}],
@@ -1252,6 +1254,36 @@
       if(media.tagName==='VIDEO'?media.readyState>=2:media.complete&&media.naturalWidth)ready();
     });
   }
+  function prepareStoryMedia(story,media){
+    return (async()=>{
+      const generation=storySessionGeneration;
+      const source=await resolvePrivateMedia(story.media_url);
+      if(media.dataset.storyDiscarded||generation!==storySessionGeneration||!storyActive(story))throw new Error('Story no longer active');
+      const video=media.tagName==='VIDEO';
+      if(video)media.preload='auto';
+      media.src=source;
+      await waitForStoryPixels(media,video?'loadeddata':'load');
+    })();
+  }
+  function prepareNearbyStories(list,id){
+    const index=list.findIndex(row=>row.id===id);
+    const neighbors=new Map();
+    if(index<0)return neighbors;
+    for(const row of [list[index+1],list[index-1]]){
+      if(!row||!storyActive(row))continue;
+      const video=row.media_type==='video';
+      const media=document.createElement(video?'video':'img');
+      media.className='story-media';
+      if(video){
+        media.muted=true;
+        media.playsInline=true;
+      }else media.alt='';
+      const ready=prepareStoryMedia(row,media);
+      ready.catch(()=>neighbors.delete(row.id));
+      neighbors.set(row.id,{media,ready,url:row.media_url});
+    }
+    return neighbors;
+  }
   async function openStory(s,p={},storyList=[],storyProfiles={},previous=null){
     if (!storyActive(s) || !await db.getUser() || !storyActive(s)) return;
     const modal=document.createElement('div');modal.className='story-viewer';modal.dataset.mediaUrl=s.media_url;
@@ -1266,16 +1298,16 @@
     modal.innerHTML=`<div class="story-shell"><div class="story-card"><div class="story-progress"></div>${s.media_type==='video'?`<video class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} playsinline preload="metadata"></video>`:`<img class="story-media" ${privateMediaPattern.test(s.media_url)?'data-private-story="1"':`src="${esc(s.media_url)}"`} alt="story">`}<div class="story-top"><a class="story-owner-link" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerIdentity}</a><button class="story-close" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div>${storyCaption?`<div class="story-caption">${esc(storyCaption)}</div>`:''}</div><aside class="story-social"><div class="story-social-head"><div><a class="story-owner-link story-owner-side" href="user.html?id=${encodeURIComponent(s.user_id)}">${ownerAvatar}${ownerIdentity}</a><span>Avto Hekayə</span></div><button class="story-close story-close-side" aria-label="Bağla"><i class="fa-solid fa-xmark"></i></button></div><div class="story-social-actions"><button type="button" id="storyLikeBtn" class="story-action"><i class="fa-regular fa-heart"></i><span id="storyLikeCount">0</span></button><button type="button" id="storyCommentFocus" class="story-action"><i class="fa-regular fa-comment"></i><span id="storyCommentCount">0</span></button><div class="story-action story-view-action" aria-label="Baxış"><i class="fa-regular fa-eye"></i><span id="storyViewCount">0</span></div>${s.listing_id?`<a class="story-action" href="elan.html?id=${s.listing_id}"><i class="fa-solid fa-car"></i><span>↗</span><small>Elana bax</small></a>`:''}</div><div id="storyComments" class="story-comments"><div class="muted small">Şərhlər yüklənir...</div></div><form id="storyCommentForm" class="story-comment-form"><div class="story-comment-compose"><button type="button" id="storyEmojiBtn" class="story-emoji-btn" aria-label="İfadələr"><i class="fa-regular fa-face-smile"></i></button><input id="storyCommentInput" maxlength="500" placeholder="Şərh yazın..."><div id="storyEmojiPicker" class="story-emoji-picker" hidden></div></div><button type="submit" aria-label="Göndər"><i class="fa-solid fa-paper-plane"></i></button></form></aside></div>`;
     const opening=++storyOpening;
     const generation=storySessionGeneration;
-    const mainMedia=modal.querySelector('.story-media');
+    let mainMedia=modal.querySelector('.story-media');
+    if(previous?.prepared){
+      mainMedia.replaceWith(previous.prepared.media);
+      mainMedia=previous.prepared.media;
+    }
     const video=mainMedia.tagName==='VIDEO'?mainMedia:null;
     const videoStory=Boolean(video);
-    const readyMedia=(async()=>{
-      const source=await resolvePrivateMedia(s.media_url);
-      if(videoStory)mainMedia.preload='auto';
-      mainMedia.src=source;
-      await waitForStoryPixels(mainMedia,videoStory?'loadeddata':'load');
+    const readyMedia=(previous?.prepared?.ready||prepareStoryMedia(s,mainMedia)).then(()=>{
       if(videoStory&&generation===storySessionGeneration&&storyActive(s))retainViewedStoryVideo(s.media_url);
-    })();
+    });
     const readyFrame=viewerFrame?.then(async frame=>{
       if(!frame)throw new Error('No viewer frame');
       const still=new Image();
@@ -1323,6 +1355,7 @@
     if(!previous)history.pushState({...(history.state||{}),avStory:storyHistoryToken},'',location.href);
     let storyInteraction=false, switching=false, imageHeld=false, imageTimer=null;
     let remaining=7000, imageStarted=0;
+    let neighbors=new Map();
     const pauseImage=()=>{
       if(video||imageTimer===null)return;
       clearTimeout(imageTimer);
@@ -1342,6 +1375,14 @@
       if(!replace)storyOpening++;
       clearTimeout(expiryTimer);
       clearTimeout(imageTimer);
+      for(const [id,entry] of neighbors){
+        if(id===replace)continue;
+        entry.media.dataset.storyDiscarded='1';
+        entry.media.removeAttribute('src');
+        if(entry.media.tagName==='VIDEO')entry.media.load();
+        if(!warmStoryVideos.has(entry.url)&&!viewedStoryVideos.has(entry.url))releasePrivateMedia(entry.url);
+      }
+      neighbors.clear();
       if(video&&!warmStoryVideos.has(s.media_url)&&!viewedStoryVideos.has(s.media_url))releasePrivateMedia(s.media_url);
       modal.remove();
       if(!replace)document.documentElement.classList.remove('modal-open');
@@ -1394,7 +1435,7 @@
       pauseImage();
       const wasPlaying=video&&!video.paused;
       if(wasPlaying)video.pause();
-      await openStory(next,nextProfile,storyList,storyProfiles,{modal,token:storyHistoryToken,dispose:()=>close(true,true)});
+      await openStory(next,nextProfile,storyList,storyProfiles,{modal,token:storyHistoryToken,prepared:neighbors.get(next.id),dispose:()=>close(true,next.id)});
       if(modal.isConnected){
         switching=false;
         if(wasPlaying&&!storyInteraction)video.play().catch(()=>{});
@@ -1407,6 +1448,7 @@
     document.body.append(modal);
     document.documentElement.classList.add('modal-open');
     resumeImage();
+    neighbors=prepareNearbyStories(storyList,s.id);
     let key=localStorage.getItem('avtovip-viewer-key');if(!key){key=crypto.randomUUID?.()||Math.random().toString(36).slice(2);localStorage.setItem('avtovip-viewer-key',key)}
     let registeredStoryViews=null;
     try{

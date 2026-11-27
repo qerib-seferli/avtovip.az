@@ -103,7 +103,17 @@
   }
   async function relocalizeProfileCountry(){
     const sel=$('#profileCountry'); if(!sel||!window.AvtoVIPInternational?.countries)return;
-    const selected=sel.value; try{const countries=await window.AvtoVIPInternational.countries(lang());sel.innerHTML=countries.filter(c=>c.iso2!=='AM').map(c=>`<option value="${c.iso2}">${c.emoji||''} ${String(c.displayName||c.name||c.iso2).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}</option>`).join('');sel.value=selected;if(sel.dataset.avSelect==='1')sel.dispatchEvent(new Event('change',{bubbles:true}));}catch(e){console.warn('[Patch11 country i18n]',e)}
+    try{
+      const countries=await window.AvtoVIPInternational.countries(lang());
+      if(!countries.length)return;
+      const selected=sel.value;
+      const oldOption=sel.selectedOptions[0]?.cloneNode();
+      sel.replaceChildren(...countries.filter(c=>c.iso2!=='AM').map(c=>
+        new Option(`${c.emoji||''} ${c.displayName||c.name||c.iso2}`,c.iso2)));
+      if(oldOption&&selected&&![...sel.options].some(option=>option.value===selected))sel.add(oldOption);
+      sel.value=selected;
+      sel.dispatchEvent(new Event('avtovip:select-sync',{bubbles:true}));
+    }catch(e){console.warn('[Patch11 country i18n]',e)}
   }
   function fixCountryFlags(){
     $$('.profile-country-flag').forEach(el=>{const code=(el.getAttribute('aria-label')||el.dataset.country||'').toUpperCase();const html=flagImg(code);if(html)el.innerHTML=html;});

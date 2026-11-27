@@ -393,6 +393,17 @@
     return URL.createObjectURL(blob);
   }
 
+  async function mediaSignature(file){
+    const bytes=new Uint8Array(await file.slice(0,16).arrayBuffer());
+    const ascii=(start,end)=>String.fromCharCode(...bytes.slice(start,end));
+    if(bytes[0]===255&&bytes[1]===216&&bytes[2]===255)return 'image/jpeg';
+    if(bytes.length>=8&&[137,80,78,71,13,10,26,10].every((byte,index)=>bytes[index]===byte))return 'image/png';
+    if(ascii(0,4)==='RIFF'&&ascii(8,12)==='WEBP')return 'image/webp';
+    if(['GIF87a','GIF89a'].includes(ascii(0,6)))return 'image/gif';
+    if(bytes.length>=4&&[26,69,223,163].every((byte,index)=>bytes[index]===byte))return 'video/webm';
+    if(ascii(4,8)==='ftyp'&&!['qt  ','heic','heix','mif1','msf1','avif','avis','hevc','hevx'].includes(ascii(8,12)))return 'video/mp4';
+    return '';
+  }
   async function upload(bucket, userId, file, prefix = '', onProgress) {
     if (!file || !userId) throw new Error('Fayl və istifadəçi tələb olunur.');
     // Route every supported user-media bucket to R2; fail closed otherwise.
@@ -402,6 +413,9 @@
     // Supabase Storage (especially on cached PWA clients).
     if(category){
       if(!Number.isSafeInteger(file.size)||file.size<1)throw new Error('Boş və ya etibarsız media faylı.');
+      const mime=await mediaSignature(file);
+      if(!mime)throw new Error('Bu media formatı yükləmək üçün uyğun deyil.');
+      if(mime!==file.type)file=new File([file],file.name,{type:mime,lastModified:file.lastModified});
       if(['profile','place'].includes(category)&&file.type.startsWith('video/'))throw new Error('Profil və Məkanlar yalnız şəkil qəbul edir.');
       // Once enabled, never silently send an unsupported/oversized file to legacy Storage.
       if(file.size>50*1024*1024)throw new Error('R2 fayl ölçüsü maksimum 50 MB ola bilər.');
@@ -580,31 +594,50 @@
     if(isVideoFile(file))return file;
     let src=file;
     reportProgress && mediaProgress(progressTitle,8,'Şəkil oxunur...');
-    if(isHeicFile(src)){
-      reportProgress && mediaProgress('Şəkil çevrilir...',18,'Telefon formatı uyğun formata hazırlanır...');
-      src=await heicToJpeg(src);
-    }
+    const heic=isHeicFile(src);
     const type=String(src.type||'').toLowerCase();
-    if(!type.startsWith('image/'))throw new Error('Bu fayl şəkil kimi oxuna bilmədi.');
-    if(reportProgress && src.size<=maxBytes && type==='image/webp'){
+    if(!heic&&!type.startsWith('image/'))throw new Error('Bu fayl şəkil kimi oxuna bilmədi.');
+    if(reportProgress && src.size<=maxBytes && type==='image/webp' && await mediaSignature(src)==='image/webp'){
       reportProgress && mediaProgress(progressTitle,100,'Şəkil hazırdır.');reportProgress && mediaProgressHide(100);return src;
     }
     let bitmap;
-    try{bitmap=await createImageBitmap(src,{imageOrientation:'from-image'});}catch{try{bitmap=await createImageBitmap(src)}catch{throw new Error('Şəkil oxuna bilmədi. Telefon formatı çevrilərkən xəta baş verdi.')}}
+    let localImageUrl;
+    try{bitmap=await createImageBitmap(src,{imageOrientation:'from-image'})}
+    catch{
+      localImageUrl=URL.createObjectURL(src);
+      try{
+        bitmap=new Image();
+        bitmap.src=localImageUrl;
+        await bitmap.decode();
+      }catch{
+        URL.revokeObjectURL(localImageUrl);
+        if(heic){
+          reportProgress && mediaProgress('Şəkil çevrilir...',18,'Telefon formatı uyğun formata hazırlanır...');
+          return prepareImage(await heicToJpeg(src),{maxWidth,maxHeight,quality,maxBytes,reportProgress,progressTitle});
+        }
+        throw new Error('Şəkil oxuna bilmədi. Telefon formatı çevrilərkən xəta baş verdi.');
+      }
+    }
     const ratio=Math.min(1,maxWidth/bitmap.width,maxHeight/bitmap.height);
     const w=Math.max(1,Math.round(bitmap.width*ratio)),h=Math.max(1,Math.round(bitmap.height*ratio));
     const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d',{alpha:false});
-    if(!ctx){bitmap.close?.();throw new Error('Şəkil emalı üçün brauzer dəstəyi yoxdur.');}
-    ctx.drawImage(bitmap,0,0,w,h);bitmap.close?.();
-    let qualityNow=quality,blob=null;
+    if(!ctx){bitmap.close?.();if(localImageUrl)URL.revokeObjectURL(localImageUrl);throw new Error('Şəkil emalı üçün brauzer dəstəyi yoxdur.');}
+    try{ctx.drawImage(bitmap,0,0,w,h)}finally{bitmap.close?.();if(localImageUrl)URL.revokeObjectURL(localImageUrl)}
+    let qualityNow=quality,blob=null,mime='image/webp';
     for(let i=0;i<4;i++){
       reportProgress && mediaProgress('Şəkil hazırlanır...',55+i*9,`${w}×${h}`);
-      blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',qualityNow));
+      blob=await new Promise(resolve=>canvas.toBlob(resolve,mime,qualityNow));
+      if(mime==='image/webp'&&(!blob||await mediaSignature(blob)!=='image/webp')){
+        mime='image/jpeg';
+        blob=await new Promise(resolve=>canvas.toBlob(resolve,mime,qualityNow));
+      }
       if(!blob)break;if(blob.size<=maxBytes)break;qualityNow=Math.max(.68,qualityNow-.06);
     }
     if(!blob)throw new Error('Şəkil düzgün formata çevrilə bilmədi.');
     const base=String(src.name||'image').replace(/\.[^.]+$/,'');
-    const out=new File([blob],`${base}.webp`,{type:'image/webp',lastModified:Date.now()});
+    const actual=await mediaSignature(blob);
+    if(!actual.startsWith('image/'))throw new Error('Şəkil formatı təsdiqlənmədi.');
+    const out=new File([blob],`${base}.${actual.split('/')[1]}`,{type:actual,lastModified:Date.now()});
     reportProgress && mediaProgress(progressTitle,100,'Şəkil hazırdır.');reportProgress && mediaProgressHide(100);return out;
   }
 
@@ -629,7 +662,7 @@
        repeated feed/Reels playback does not transfer the original camera file.
        This only changes newly uploaded media; existing Storage files are untouched. */
     const MAX_DIRECT_MP4_BYTES=20*1024*1024;
-    if(ext==='mp4' && String(file.type||'').toLowerCase()==='video/mp4' && file.size<=MAX_DIRECT_MP4_BYTES){
+    if(ext==='mp4' && String(file.type||'').toLowerCase()==='video/mp4' && file.size<=MAX_DIRECT_MP4_BYTES && await mediaSignature(file)==='video/mp4'){
       mediaProgress(progressTitle,100,'Video hazırdır.');onProgress?.(100);mediaProgressHide(100);return file;
     }
     mediaProgress(progressTitle,6,'Video uyğunluğu yoxlanılır...');
@@ -645,9 +678,9 @@
       const common=['-i',input,'-map','0:v:0','-map','0:a:0?','-vf',`scale=w=${maxWidth}:h=${maxHeight}:force_original_aspect_ratio=decrease:force_divisible_by=2`,'-r','30','-c:v','libx264','-preset','ultrafast','-crf','27','-pix_fmt','yuv420p','-threads','1','-c:a','aac','-b:a','96k','-ar','44100','-ac','2','-movflags','+faststart',output];
       await run(common);
       const data=ffmpeg.FS('readFile',output);if(!data?.length)throw new Error('empty-output');
-      const out=new File([data.buffer],`${base}.mp4`,{type:'video/mp4',lastModified:Date.now()});
+      const out=new File([data],`${base}.mp4`,{type:'video/mp4',lastModified:Date.now()});
       // Never replace a valid MP4 with a larger encoded copy.
-      const originalIsSupportedMp4=ext==='mp4' && String(file.type||'').toLowerCase()==='video/mp4';
+      const originalIsSupportedMp4=ext==='mp4' && String(file.type||'').toLowerCase()==='video/mp4' && await mediaSignature(file)==='video/mp4';
       const result=(originalIsSupportedMp4 && out.size>=file.size)?file:out;
       mediaProgress(progressTitle,100,'Video hazırdır.');return result;
     }catch(e){
