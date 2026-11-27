@@ -253,7 +253,7 @@
   }
   function showStoryPoster(image,poster){
     image.src=poster;
-    image.classList.remove('av-story-initial-thumb','av-story-thumb-pending');
+    image.classList.remove('av-story-initial-thumb');
     repairGuestPosterFromStored(image,poster);
   }
   function applyStoredStoryPoster(image){
@@ -309,7 +309,7 @@
         if (generation===storySessionGeneration && image.isConnected && owner && (privateMediaSessionUser || currentUser?.id) === owner && storyActive({expires_at:image.dataset.storyExpires})) {
           image.src=local;
           if(video)image.dataset.storyCheckedPoster=local
-          image.classList.remove('av-story-initial-thumb','av-story-thumb-pending');
+          image.classList.remove('av-story-initial-thumb');
           if(image.dataset.storyOwner===owner){
             repairGuestPosterFromStored(image,local);
             saveStoryPoster(image.dataset.storyId,local);
@@ -336,9 +336,7 @@
     }
     const url=story.media_url;
     const video=String(story.media_type).startsWith('video');
-    const guest=guestPreviewSafe(story.guestPreview)?story.guestPreview:'';
-    const initialSource=guest||(!video?logo:'');
-    return `<img class="av-story-initial-thumb${initialSource?'':' av-story-thumb-pending'}" ${initialSource?`src="${esc(initialSource)}"`:''} ${url?`data-story-media="${esc(url)}" data-story-video="${video?1:0}" data-story-id="${esc(story.id)}" data-story-owner="${esc(story.user_id)}" data-story-expires="${esc(story.expires_at)}"`:''} decoding="async" alt="">`;
+    return `<img class="av-story-initial-thumb" src="${logo}" ${url?`data-story-media="${esc(url)}" data-story-video="${video?1:0}" data-story-id="${esc(story.id)}" data-story-owner="${esc(story.user_id)}" data-story-expires="${esc(story.expires_at)}"`:''} decoding="async" alt="">`;
   };
   const storyActive = story => Date.parse(story.expires_at) > Date.now();
   function releaseStoryMedia(url) {
@@ -1312,18 +1310,14 @@
     const active=(data||[]).filter(storyActive);
     const userIds=[...new Set(active.map(row=>row.user_id))];
     const locked=!currentUser;
-    const first=active.slice(0,12).map(row=>row.id);
-    const generation=storySessionGeneration;
     const [profileResult,guestResult]=await Promise.all([
       userIds.length?sb.from('users').select('id,name,surname,avatar_url,membership_tier,is_verified,country_code').in('id',userIds):{data:[]},
-      active.length?sb.from('story_guest_previews').select('story_id,preview')
-        .in('story_id',locked?active.map(row=>row.id):first):{data:[]},
-      !locked&&first.length?lookupStoryPosters(first,generation).catch(()=>{}):null
+      locked&&active.length?sb.from('story_guest_previews').select('story_id,preview').in('story_id',active.map(row=>row.id)):{data:[]}
     ]);
     const profiles=Object.fromEntries((profileResult.data||[]).map(row=>[row.id,row]));
     const storyCountry=String(localStorage.getItem('avtovip-country')||'').toUpperCase();
     const visibleStories=active.filter(row=>storyActive(row)&&(!storyCountry||String(profiles[row.user_id]?.country_code||'').toUpperCase()===storyCountry));
-    if(visibleStories.length){
+    if(locked&&visibleStories.length){
       const previews=guestResult.data;
       const byId=new Map((previews||[]).map(row=>[row.story_id,row.preview]));
       await Promise.all(visibleStories.map(async row=>{
