@@ -53,26 +53,57 @@ function mergeExtendedCatalog(data) {
   }
 }
 const fillOptions=(select,values,placeholder)=>{select.replaceChildren(new Option(placeholder||'—',''));values.forEach(x=>select.add(new Option(x.label||x.name||x,x.value??x.iso2??x.name??x)))};
+const defaultCountry = () => panel.dataset.profileCountry || $('filterCountry')?.value || localStorage.getItem('avtovip-country') || 'AZ';
+const geoLabels = {
+  az:['Məkan','Region / Ştat','Rayon / Bölgə'],
+  en:['Location','Region / State','District / Area'],
+  ru:['Местоположение','Регион / Штат','Район'],
+  tr:['Konum','Bölge / Eyalet','İlçe / Bölge'],
+  ka:['მდებარეობა','რეგიონი / შტატი','რაიონი']
+};
+const narrowFilters = matchMedia('(max-width:900px)');
 async function setupGeo(state = {}) {
   const country = extra.querySelector('[name="country"]');
+  const region = extra.querySelector('[name="region"]');
   const city = extra.querySelector('[name="city"]');
-  if (!country || !city) return;
   const language = document.documentElement.lang || 'az';
-  const preferred = state.country ?? ($('filterCountry')?.value || localStorage.getItem('avtovip-country') || 'AZ');
+  const preferred = state.country ?? defaultCountry();
+  country.dataset.default = preferred;
+  fillOptions(country,preferred?[{value:preferred,label:intl.countryName(preferred,language,preferred)}]:[],t().all);
+  country.value = preferred;
   const countries = await intl.countries(language);
   if (!country.isConnected) return;
   fillOptions(country,countries.map(row=>({label:(row.emoji?row.emoji+' ':'')+row.displayName,value:row.iso2})),t().all);
+  if (preferred && !Array.from(country.options).some(option=>option.value===preferred)) country.add(new Option(intl.countryName(preferred,language,preferred),preferred));
   country.value = preferred;
-  let request = 0;
+  delete country.dataset.default;
+  let request = 0, hierarchy = null;
   const updateCities = async (savedCity = '') => {
     const sequence = ++request;
-    const rows = country.value ? await intl.cities(country.value,language) : [];
-    if (!city.isConnected || sequence !== request) return;
+    const iso = country.value;
+    const regionCities = hierarchy?.states?.find(item=>item.name===region.value)?.cities;
+    const rows = regionCities?.length ? regionCities.map(item=>typeof item==='string'?item:item.name).filter(Boolean) : iso ? await intl.cities(iso,language) : [];
+    if (!city.isConnected || sequence !== request || iso !== country.value) return;
     fillOptions(city,rows,t().city);
     city.value = savedCity;
   };
-  country.addEventListener('change',()=>updateCities());
-  await updateCities(state.city);
+  let regionRequest = 0;
+  const updateRegions = async (savedRegion='', savedCity='') => {
+    const sequence = ++regionRequest;
+    const iso = country.value;
+    hierarchy = null;
+    fillOptions(region,[],t().all);
+    fillOptions(city,[],t().city);
+    const data = iso ? await intl.countryHierarchy(iso,language) : null;
+    if (!country.isConnected || sequence !== regionRequest) return;
+    hierarchy = data;
+    fillOptions(region,(data?.states||[]).map(item=>({value:item.name,label:item.native||item.name})),t().all);
+    region.value = savedRegion;
+    await updateCities(savedCity);
+  };
+  country.addEventListener('change',()=>updateRegions());
+  region.addEventListener('change',()=>updateCities());
+  await updateRegions(state.region,state.city);
 }
 const renderFilters=(state={})=>{if(selected==='car')return;const L=t(),fields=L.fields[selected]||[];extra.innerHTML='';const primary=document.createElement('div');primary.className='vehicle-extra-grid vehicle-primary-grid';const make=makeField('make',L.make,'text', [['',L.all],...DATA.find(x=>x.id===selected).brands.map(b=>[b,b])]);const model=makeField('model',L.model,'text', [['',L.select]]);
 const modelSelect=model.querySelector('select');
@@ -83,14 +114,32 @@ const otherModelValue='__avtovip_other_model__';
 const updateModels=()=>{const brand=make.querySelector('select').value;const models=MODEL_CATALOG[selected]?.[brand]||[];modelSelect.replaceChildren(new Option(L.select,''));for(const name of models)modelSelect.add(new Option(name,name));modelSelect.add(new Option(L.other||'Digər',otherModelValue));modelSelect.value='';manualModel.value='';manualModel.hidden=true;modelSelect.name='model';manualModel.removeAttribute('name');};
 modelSelect.addEventListener('change',()=>{const isOther=modelSelect.value===otherModelValue;manualModel.hidden=!isOther;if(isOther){modelSelect.removeAttribute('name');manualModel.name='model';manualModel.focus();}else{manualModel.removeAttribute('name');modelSelect.name='model';manualModel.value='';}});
 make.querySelector('select').addEventListener('change',()=>{updateModels();custom.querySelectorAll('[data-brand]').forEach(x=>x.classList.toggle('active',x.dataset.brand===make.querySelector('select').value))});
-primary.append(make,model,makeField('country',L.country,'text',[['',L.all]]),makeField('city',L.city,'text',[['',L.all]]));const search = document.createElement('button');
+const labels = geoLabels[document.documentElement.lang] || geoLabels.en;
+const countryField = makeField('country',L.country,'text',[['',L.all]]);
+const cityField = makeField('city',L.city,'text',[['',L.all]]);
+const regionField = makeField('region',labels[1],'text',[['',L.all]]);
+const districtField = makeField('district',labels[2]);
+districtField.querySelector('input').value = state.district || '';
+const search = document.createElement('button');
 search.type = 'button';
 search.className = 'btn btn-primary vehicle-category-search';
 search.innerHTML = '<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>';
 search.append(document.createTextNode(' '+L.search));
 search.addEventListener('click',runCategorySearch);
-primary.append(search);
-extra.append(primary);setupGeo(state);const section=document.createElement('div');section.className='vehicle-advanced-section';section.hidden=true;section.id='vehicleAdvancedSection';const fieldsGrid=document.createElement('div');fieldsGrid.className='vehicle-extra-grid';const typeField = makeField('vehicle_type', fields[0] || L.type, 'text', [['',L.all],...(intl.CATEGORY_TYPES[selected]||[]).map(x=>[x,localCategoryType(x)])]);
+primary.append(make,model,countryField,cityField,search);
+extra.append(primary);
+const section=document.createElement('div');section.className='vehicle-advanced-section';section.hidden=true;section.id='vehicleAdvancedSection';
+const geoHeading=document.createElement('h4');geoHeading.textContent=labels[0];
+const geoGrid=document.createElement('div');geoGrid.className='vehicle-extra-grid vehicle-location-grid';
+geoGrid.append(regionField,districtField);
+section.append(geoHeading,geoGrid);
+const arrangeLocation = () => {
+  if (narrowFilters.matches) geoGrid.replaceChildren(countryField,regionField,cityField,districtField);
+  else search.before(countryField,cityField);
+};
+arrangeLocation();
+const fieldsGrid=document.createElement('div');fieldsGrid.className='vehicle-extra-grid';
+const typeField = makeField('vehicle_type', fields[0] || L.type, 'text', [['',L.all],...(intl.CATEGORY_TYPES[selected]||[]).map(x=>[x,localCategoryType(x)])]);
 fieldsGrid.append(typeField);
 const bounds = {az:['min','max'],en:['min','max'],ru:['от','до'],tr:['min','maks'],ka:['მინ.','მაქს.']}[document.documentElement.lang] || ['min','max'];
 const rangeFields = [];
@@ -111,14 +160,21 @@ typeField.addEventListener('change', () => {
     control.querySelector('input').disabled = control.hidden;
   }
 });
-[['priceMin',L.priceMin],['priceMax',L.priceMax],['yearMin',L.yearMin],['yearMax',L.yearMax]].forEach(([key,label])=>fieldsGrid.append(makeField(key,label,'number')));fieldsGrid.append(makeField('condition',L.condition,'text',[['',L.all],['new',L.new],['used',L.used]]));section.append(fieldsGrid);const features=document.createElement('div');features.className='vehicle-features';for(const feature of intl.CATEGORY_EXTRAS[selected]||[]){const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.name='feature_'+feature;check.value='1';label.append(check,document.createTextNode(' '+localFeature(feature)));features.append(label)}section.append(features);const actions=document.createElement('div');actions.className='filter-actions vehicle-reset-actions';const spacer=document.createElement('span');spacer.className='vehicle-reset-spacer';const reset=document.createElement('button');reset.type='button';reset.className='btn btn-outline btn-sm vehicle-reset-button';reset.innerHTML='<i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span></span>';reset.querySelector('span').textContent=L.reset;reset.addEventListener('click',()=>{extra.querySelectorAll('input,select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''});const mk=extra.querySelector('[name="make"]');if(mk)mk.dispatchEvent(new Event('change',{bubbles:true}));const country=extra.querySelector('[name="country"]');if(country){country.value='';country.dispatchEvent(new Event('change',{bubbles:true}))}extra.querySelector('[name="vehicle_type"]')?.dispatchEvent(new Event('change'));custom.querySelectorAll('.vehicle-brand-chip').forEach(x=>x.classList.remove('active'));if(vip){vip.dataset.on='0';vip.classList.remove('active');vip.setAttribute('aria-pressed','false')}runCategorySearch()});actions.append(spacer,reset);section.append(actions);extra.append(section)};
-const runCategorySearch=()=>{if(selected==='car')return;showPending();document.dispatchEvent(new CustomEvent('avtovip:category-search',{detail:{category:selected,filters:formState(),vipOnly:vip?.dataset.on==='1'}}))};
+[['priceMin',L.priceMin],['priceMax',L.priceMax],['yearMin',L.yearMin],['yearMax',L.yearMax]].forEach(([key,label])=>fieldsGrid.append(makeField(key,label,'number')));fieldsGrid.append(makeField('condition',L.condition,'text',[['',L.all],['new',L.new],['used',L.used]]));section.append(fieldsGrid);const features=document.createElement('div');features.className='vehicle-features';for(const feature of intl.CATEGORY_EXTRAS[selected]||[]){const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.name='feature_'+feature;check.value='1';label.append(check,document.createTextNode(' '+localFeature(feature)));features.append(label)}section.append(features);const actions=document.createElement('div');actions.className='filter-actions vehicle-reset-actions';const spacer=document.createElement('span');spacer.className='vehicle-reset-spacer';const reset=document.createElement('button');reset.type='button';reset.className='btn btn-outline btn-sm vehicle-reset-button';reset.innerHTML='<i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span></span>';reset.querySelector('span').textContent=L.reset;reset.addEventListener('click',()=>{extra.querySelectorAll('input,select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''});const mk=extra.querySelector('[name="make"]');if(mk)mk.dispatchEvent(new Event('change',{bubbles:true}));const country=extra.querySelector('[name="country"]');if(country){country.value=defaultCountry();country.dispatchEvent(new Event('change',{bubbles:true}))}extra.querySelector('[name="vehicle_type"]')?.dispatchEvent(new Event('change'));custom.querySelectorAll('.vehicle-brand-chip').forEach(x=>x.classList.remove('active'));if(vip){vip.dataset.on='0';vip.classList.remove('active');vip.setAttribute('aria-pressed','false')}runCategorySearch()});actions.append(spacer,reset);section.append(actions);extra.append(section);setupGeo(state)};
+const runCategorySearch=()=>{
+  if(selected==='car')return;
+  const filters=formState();
+  const country=extra.querySelector('[name="country"]');
+  if(country?.dataset.default && !filters.country)filters.country=country.dataset.default;
+  showPending();
+  document.dispatchEvent(new CustomEvent('avtovip:category-search',{detail:{category:selected,filters,vipOnly:vip?.dataset.on==='1'}}));
+};
 const originalListings=()=>{delete grid.dataset.categoryPending;document.dispatchEvent(new CustomEvent('avtovip:category-car'))};
 function select(id){if(!DATA.some(x=>x.id===id))return;const was=selected;selected=id;const car=id==='car';if(brandsRail){brandsRail.classList.toggle('vehicle-hidden',!car);brandsRail.setAttribute('aria-hidden',String(!car))}custom.hidden=car;if(quick)quick.classList.toggle('vehicle-hidden',!car);if(advanced){advanced.classList.toggle('vehicle-hidden',!car);if(!car)advanced.classList.remove('open')}if(extra)extra.hidden=car;if(panel)panel.classList.toggle('vehicle-noncar',!car);if(brandPanel)brandPanel.classList.toggle('vehicle-noncar-brands',!car);
 if(toggle){toggle.hidden=false;toggle.setAttribute('aria-expanded','false')}if(apply)apply.disabled=false;
-if(car){if(was!=='car')originalListings()}else{renderBrands();renderFilters();showPending()}
-translate();document.dispatchEvent(new CustomEvent('avtovip:category-changed',{detail:{category:id,backendReady:car}}))}
-function translate(){const L=t();$('vehicleCategoriesTitle').textContent=L.categories;if(brandHeading)brandHeading.textContent=L.brands;const searchHead=panel?.querySelector('.section-head h3');if(searchHead)searchHead.innerHTML='<i class="fa-solid fa-sliders"></i> '+escapeHTML(L.search);rail.querySelectorAll('[data-category]').forEach(b=>{const id=b.dataset.category;b.querySelector('span').textContent=names[id][li()];b.classList.toggle('selected',id===selected);b.setAttribute('aria-pressed',String(id===selected))});if(selected!=='car'){showPending();const state=formState();const expanded=!$('vehicleAdvancedSection')?.hidden;renderFilters(state);$('vehicleAdvancedSection').hidden=!expanded;if(toggle)toggle.setAttribute('aria-expanded',String(expanded));Object.entries(state).forEach(([key,value])=>{const el=extra.querySelector('[name="'+CSS.escape(key)+'"]');if(el){if(el.type==='checkbox')el.checked=value;else el.value=value}});extra.querySelector('[name="vehicle_type"]')?.dispatchEvent(new Event('change'));const mk=extra.querySelector('[name="make"]');if(mk){const oldModel=state.model;mk.dispatchEvent(new Event('change'));const modelField=extra.querySelector('[name="model"]');if(modelField)modelField.value=oldModel||'';}}if(toggle)toggle.textContent=L.advanced;if(apply){const span=apply.querySelector('span');if(span)span.textContent=L.search}const last=$('listingsTitle')||document.querySelector('#listingsGrid')?.parentElement?.querySelector('h2');if(last&&selected!=='car')last.textContent=L.last;}
+if(car){if(was!=='car')originalListings()}else{renderBrands();renderFilters({country:defaultCountry()});showPending()}
+translate(false);document.dispatchEvent(new CustomEvent('avtovip:category-changed',{detail:{category:id,country:car?undefined:defaultCountry(),backendReady:car}}))}
+function translate(rebuild=true){const L=t();$('vehicleCategoriesTitle').textContent=L.categories;if(brandHeading)brandHeading.textContent=L.brands;const searchHead=panel?.querySelector('.section-head h3');if(searchHead)searchHead.innerHTML='<i class="fa-solid fa-sliders"></i> '+escapeHTML(L.search);rail.querySelectorAll('[data-category]').forEach(b=>{const id=b.dataset.category;b.querySelector('span').textContent=names[id][li()];b.classList.toggle('selected',id===selected);b.setAttribute('aria-pressed',String(id===selected))});if(selected!=='car'&&rebuild){const state=formState();const expanded=!$('vehicleAdvancedSection')?.hidden;renderFilters(state);$('vehicleAdvancedSection').hidden=!expanded;if(toggle)toggle.setAttribute('aria-expanded',String(expanded));Object.entries(state).forEach(([key,value])=>{const el=extra.querySelector('[name="'+CSS.escape(key)+'"]');if(el){if(el.type==='checkbox')el.checked=value;else el.value=value}});extra.querySelector('[name="vehicle_type"]')?.dispatchEvent(new Event('change'));const mk=extra.querySelector('[name="make"]');if(mk){const oldModel=state.model;mk.dispatchEvent(new Event('change'));const modelField=extra.querySelector('[name="model"]');if(modelField)modelField.value=oldModel||'';}}if(toggle)toggle.textContent=L.advanced;if(apply){const span=apply.querySelector('span');if(span)span.textContent=L.search}const last=$('listingsTitle')||document.querySelector('#listingsGrid')?.parentElement?.querySelector('h2');if(last&&selected!=='car')last.textContent=L.last;}
 rail.addEventListener('click',e=>{if(rail.dataset.dragged==='1')return;const b=e.target.closest('[data-category]');if(b)select(b.dataset.category)});
 custom.addEventListener('wheel',e=>{if(custom.scrollWidth<=custom.clientWidth)return;if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();custom.scrollLeft+=e.deltaY}else custom.scrollLeft+=e.deltaX;normalizeBrandScroll();brandPause=performance.now()+3500},{passive:false});
 // Pointer dragging works on desktop without triggering an accidental brand selection.
@@ -133,10 +189,17 @@ enableDrag(custom,()=>brandPause=performance.now()+3000);
 if(brandsRail){brandsRail.addEventListener('dragstart',e=>e.preventDefault(),true);brandsRail.querySelectorAll('img').forEach(img=>img.draggable=false);const carObserver=new MutationObserver(()=>brandsRail.querySelectorAll('img').forEach(img=>img.draggable=false));carObserver.observe(brandsRail,{childList:true,subtree:true});}
 enableDrag(rail,()=>holdUntil=performance.now()+3000);
 custom.addEventListener('click',e=>{if(custom.dataset.dragged==='1')return;const b=e.target.closest('[data-brand]');if(!b)return;const inp=extra.querySelector('[name="make"]');const active=b.classList.contains('active');custom.querySelectorAll('[data-brand]').forEach(x=>x.classList.remove('active'));if(inp){inp.value=active?'':b.dataset.brand;inp.dispatchEvent(new Event('change',{bubbles:true}));inp.focus({preventScroll:true})}if(!active)b.classList.add('active');runCategorySearch()});
-const sharedReset=$('resetFilters');if(sharedReset)sharedReset.addEventListener('click',e=>{if(selected==='car')return;e.preventDefault();e.stopImmediatePropagation();extra.querySelectorAll('input,select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''});const make=extra.querySelector('[name="make"]');if(make)make.dispatchEvent(new Event('change',{bubbles:true}));const country=extra.querySelector('[name="country"]');if(country){country.value='';country.dispatchEvent(new Event('change',{bubbles:true}))}extra.querySelector('[name="vehicle_type"]')?.dispatchEvent(new Event('change'));custom.querySelectorAll('.vehicle-brand-chip').forEach(x=>x.classList.remove('active'));if(vip){vip.dataset.on='0';vip.classList.remove('active');vip.setAttribute('aria-pressed','false')}runCategorySearch()},true);
+const sharedReset=$('resetFilters');if(sharedReset)sharedReset.addEventListener('click',e=>{if(selected==='car')return;e.preventDefault();e.stopImmediatePropagation();extra.querySelectorAll('input,select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''});const make=extra.querySelector('[name="make"]');if(make)make.dispatchEvent(new Event('change',{bubbles:true}));const country=extra.querySelector('[name="country"]');if(country){country.value=defaultCountry();country.dispatchEvent(new Event('change',{bubbles:true}))}extra.querySelector('[name="vehicle_type"]')?.dispatchEvent(new Event('change'));custom.querySelectorAll('.vehicle-brand-chip').forEach(x=>x.classList.remove('active'));if(vip){vip.dataset.on='0';vip.classList.remove('active');vip.setAttribute('aria-pressed','false')}runCategorySearch()},true);
 if(toggle)toggle.addEventListener('click',e=>{if(selected==='car')return;e.stopImmediatePropagation();e.preventDefault();const section=$('vehicleAdvancedSection');if(section){section.hidden=!section.hidden;toggle.setAttribute('aria-expanded',String(!section.hidden))}},true);
 if(apply)apply.addEventListener('click',e=>{if(selected==='car')return;e.stopImmediatePropagation();e.preventDefault();runCategorySearch()},true);
 if(vip)vip.addEventListener('click',e=>{if(selected==='car')return;e.stopImmediatePropagation();e.preventDefault();const active=vip.dataset.on!=='1';vip.dataset.on=active?'1':'0';vip.classList.toggle('active',active);vip.setAttribute('aria-pressed',String(active));runCategorySearch()},true);
+document.addEventListener('avtovip:category-filters-ready',()=>{
+  if(selected==='car')return;
+  renderFilters({...formState(),country:defaultCountry(),region:'',city:''});
+  $('vehicleAdvancedSection').hidden=toggle?.getAttribute('aria-expanded')!=='true';
+  runCategorySearch();
+});
+narrowFilters.addEventListener('change',()=>{if(selected!=='car')translate()});
 const observer=new MutationObserver(()=>{if(document.documentElement.lang!==observer.last){observer.last=document.documentElement.lang;translate()}});observer.last=document.documentElement.lang;observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang','data-lang']});
 rail.addEventListener('pointerdown',()=>holdUntil=performance.now()+1800,{passive:true});rail.addEventListener('pointerup',()=>holdUntil=performance.now()+1500,{passive:true});
 function tick(ts){if(selected!=='car'&&ts>brandPause&&!document.hidden&&custom.scrollWidth>custom.clientWidth){const dt=brandPrev?Math.min(40,ts-brandPrev):16;custom.scrollLeft+=dt*.025;normalizeBrandScroll()}brandPrev=ts;if(!prev)prev=ts;const dt=Math.min(40,ts-prev);prev=ts;if(selected&&ts>holdUntil&&!document.hidden&&rail.scrollWidth>rail.clientWidth){rail.scrollLeft+=dt*.025;if(categoryCycleWidth&&rail.scrollLeft>=categoryCycleWidth)rail.scrollLeft-=categoryCycleWidth}requestAnimationFrame(tick)}

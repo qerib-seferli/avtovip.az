@@ -104,13 +104,14 @@
         control.value=value;control.dispatchEvent(new Event('change',{bubbles:true}));
       };
       set('vehicle_category',saved.vehicle_category);
-      set('country_code',saved.country_code);
+      set('country_code',form.dataset.profileCountry||saved.country_code);
       await form.elements.namedItem('country_code')?.avLocationReady;
-      set('state_name',saved.state_name);
+      if(!form.dataset.profileCountry || saved.country_code===form.dataset.profileCountry)set('state_name',saved.state_name);
       set('vehicle_type',saved.vehicle_type==='Kem per'?'Kemper':saved.vehicle_type);
       set('brand',saved.brand);
       for(const [name,value] of Object.entries(saved)){
         if(['vehicle_category','country_code','state_name','vehicle_type','brand'].includes(name))continue;
+        if(form.dataset.profileCountry && saved.country_code!==form.dataset.profileCountry && ['city','district','currency'].includes(name))continue;
         const nodes=[...form.querySelectorAll(`[name="${CSS.escape(name)}"]`)].filter(node=>!node.disabled);
         if(!nodes.length)continue;
         if(nodes[0].type==='checkbox')nodes.forEach(node=>node.checked=Array.isArray(value)?value.includes(node.value):!!value);
@@ -162,7 +163,7 @@
         if(current!==seq)return;
         const matchedUsers=(usersRes.data||[]).filter(u=>foldSearch([u.name,u.surname].filter(Boolean).join(' ')).includes(qFold)).slice(0,24);
         const userIds=matchedUsers.map(u=>u.id);
-        const fields='id,user_id,brand,model,generation,trim,year,city,state_name,district,country_code,price,currency,image_urls,is_vip,is_premium,mileage,engine_volume,fuel,transmission,description,body_type,color,market_origin,vin,created_at';
+        const fields='id,user_id,brand,model,generation,trim,year,city,state_name,district,country_code,price,currency,image_urls,is_vip,is_premium,vehicle_category,vehicle_specs,mileage,engine_volume,fuel,transmission,description,body_type,color,market_origin,vin,created_at';
         const listingQuery=sb.from('elanlar').select(fields).eq('status','approved').or(`brand.ilike.${like},model.ilike.${like},generation.ilike.${like},trim.ilike.${like},city.ilike.${like},state_name.ilike.${like},district.ilike.${like},description.ilike.${like},body_type.ilike.${like},fuel.ilike.${like},transmission.ilike.${like},color.ilike.${like},market_origin.ilike.${like},vin.ilike.${like}`).order('is_premium',{ascending:false}).order('is_vip',{ascending:false}).limit(48);
         const tasks=[listingQuery];
         if(/^\d{4}$/.test(q))tasks.push(sb.from('elanlar').select(fields).eq('status','approved').eq('year',Number(q)).order('is_premium',{ascending:false}).order('is_vip',{ascending:false}).limit(48));
@@ -208,7 +209,8 @@
     const images=(Array.isArray(x.image_urls)?x.image_urls:[]).filter(Boolean);
     const media=images[0]||'assets/img/brand/icon-512.png';
     const imgData=encodeURIComponent(JSON.stringify(images.slice(0,15)));
-    const meta=[x.year,x.mileage?`${Number(x.mileage).toLocaleString()} km`:'',x.engine_volume?`${x.engine_volume} L`:'',x.fuel_type||x.fuel||'',x.transmission||''].filter(Boolean);
+    const vehicle = window.AvtoVIPInternational;
+    const meta=vehicle?.SPEC_FIELDS[x.vehicle_category]?vehicle.specialistCardMeta(x,lang()):[x.year,x.mileage?`${Number(x.mileage).toLocaleString()} km`:'',x.engine_volume?`${x.engine_volume} L`:'',x.fuel_type||x.fuel||'',x.transmission||''].filter(Boolean);
     const score=Math.max(0,Math.min(100,Number(p.trust_score??50)));const stars=Math.max(0,Math.min(5,Math.floor(score/20)));
     const tier=String(p.membership_tier||'free').toLowerCase();
     const tierIcon=tier==='vip'?'<i class="fa-solid fa-crown explore-tier-mark vip" aria-label="VIP"></i>':tier==='premium'?'<i class="fa-solid fa-gem explore-tier-mark premium" aria-label="Premium"></i>':'';

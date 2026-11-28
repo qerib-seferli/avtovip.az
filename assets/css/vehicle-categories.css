@@ -127,3 +127,14 @@ html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
 .vehicle-extra-grid .vehicle-field[hidden]{display:none!important}
 .vehicle-noncar .vehicle-category-search{justify-self:start}
 @media(max-width:700px){.vehicle-noncar .vehicle-category-search{grid-column:1/-1;width:100%}}
+
+/* Match the home automobile search row and keep location under Advanced on phones. */
+@media(min-width:901px){
+  .vehicle-noncar .vehicle-primary-grid{grid-template-columns:minmax(0,1.4fr) minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr) auto!important;align-items:end}
+  .vehicle-noncar .vehicle-category-search{min-height:40px;white-space:nowrap}
+}
+@media(max-width:900px){
+  .vehicle-noncar .vehicle-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .vehicle-noncar .vehicle-category-search{grid-column:1/-1;width:100%}
+}
+.vehicle-location-grid{margin-bottom:12px}

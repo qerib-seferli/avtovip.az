@@ -1021,7 +1021,7 @@
     selects.filter(Boolean).forEach(el=>fillSelectPairs(el,items,'Hamısı'));
   }
   async function populateCurrencies(el,preferred='AZN'){
-    await ensureCatalogs(); const blocked=new Set(['AMD']); const codes=[...new Set(countryCatalog.map(c=>c.currency).filter(Boolean).concat(['AZN','USD','EUR','RUB','TRY','GEL','CNY','KRW','AED','GBP','CAD','JPY','CHF','SEK','NOK','PLN','KZT','UZS']))].filter(x=>!blocked.has(x)).sort(byLocale); fillSelect(el,codes,'Hamısı'); if(preferred&&[...el.options].some(o=>o.value===preferred))el.value=preferred;
+    await ensureCatalogs(); const blocked=new Set(['AMD']); const codes=[...new Set(countryCatalog.map(c=>c.currency).filter(Boolean).concat(['AZN','USD','EUR','RUB','TRY','GEL','CNY','KRW','AED','GBP','CAD','JPY','CHF','SEK','NOK','PLN','KZT','UZS']))].filter(x=>!blocked.has(x)&&intl.listingCurrencies.has(x)).sort(byLocale); fillSelect(el,codes,'Hamısı'); if(preferred&&[...el.options].some(o=>o.value===preferred))el.value=preferred;
   }
   async function populateMakes(select){
     await ensureCatalogs(); fillSelectPairs(select,vehicleMakes.map(m=>({value:m.name,label:m.name})),'Hamısı');
@@ -1096,7 +1096,7 @@
     const img=x.image_urls?.[0]||'assets/img/brand/icon-512.png'; const fav=favoriteSet.has(x.id); const cids=compareIds();
     const flag=countryFlag(x.country_code);
     const place=[x.city,x.state_name].filter(Boolean).join(', ')||x.country_code||'';
-    const specs=[
+    const specs=intl?.SPEC_FIELDS[x.vehicle_category]?intl.specialistCardMeta(x,lang):[
       x.year||null,
       Number.isFinite(Number(x.mileage))?`${Number(x.mileage||0).toLocaleString(locale())} km`:null,
       x.engine_volume?`${x.engine_volume} L`:null,
@@ -1182,6 +1182,7 @@
   async function initHome(){
     const profileCountry = String(currentProfile?.country_code || '').toUpperCase();
     if (profileCountry) localStorage.setItem('avtovip-country', profileCountry);
+    $('#filterPanel').dataset.profileCountry=profileCountry;
     const storyLoad = loadStories().catch(error => console.warn('[AvtoVIP Stories]',error.message));
     await brandRail($('#brandsRail')); await ensureCatalogs(); await populateMakes($('#filterBrand')); await populateCurrencies($('#filterCurrency'),''); fillSelect($('#filterFuel'),FUELS); fillSelect($('#filterTransmission'),TRANSMISSIONS); fillSelect($('#filterDrivetrain'),DRIVETRAINS); fillColorSelect($('#filterColor'),'Hamısı'); fillSelect($('#filterBody'),BODY_TYPES);
     const eq=$('#filterEquipmentGrid'); renderEquipment(eq,'');
@@ -1225,6 +1226,8 @@
       if(text(filters.make))q=q.eq('brand',text(filters.make));
       if(text(filters.model))q=q.ilike('model',`%${text(filters.model).replace(/[%,()]/g,'')}%`);
       if(text(filters.country))q=q.eq('country_code',text(filters.country));
+      if(text(filters.region))q=q.eq('state_name',text(filters.region));
+      if(text(filters.district))q=q.ilike('district',`%${text(filters.district).replace(/[%,()]/g,'')}%`);
       if(text(filters.city))q=q.ilike('city',`%${text(filters.city).replace(/[%,()]/g,'')}%`);
       for(const [field,column] of [['priceMin','price'],['yearMin','year']]){
         const n=Number(filters[field]);if(text(filters[field])&&Number.isFinite(n)&&n>=0)q=q.gte(column,n);
@@ -1258,7 +1261,7 @@
       grid.dataset.ready='1';
     };
     document.addEventListener('avtovip:category-changed',e=>{
-      if(e.detail?.category!=='car')loadCategoryListings({category:e.detail.category});
+      if(e.detail?.category!=='car')loadCategoryListings({category:e.detail.category,filters:{country:e.detail.country ?? profileCountry}});
     });
     document.addEventListener('avtovip:category-search',e=>loadCategoryListings(e.detail||{}));
     document.addEventListener('avtovip:category-car',()=>{categoryRequestId++;const grid=$('#listingsGrid');if(grid){grid.dataset.ready='0';loadHomeListings()}});
@@ -1270,7 +1273,9 @@
     $('#smartSearchInput')?.addEventListener('input',()=>scheduleSmartSearch(false));
     $('#smartSearchInput')?.addEventListener('search',()=>scheduleSmartSearch(true));
     $('#smartSearchInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();scheduleSmartSearch(true)}}); initVoice();
-    bindCardActions($('#listingsGrid')||document); await Promise.all([storyLoad, loadHomeListings()]);
+    bindCardActions($('#listingsGrid')||document);
+    document.dispatchEvent(new Event('avtovip:category-filters-ready'));
+    await Promise.all([storyLoad, loadHomeListings()]);
   }
   function applySmartSearch(text){
     const input=$('#smartSearchInput');if(input&&input.value!==text)input.value=text||'';smartSearchText=String(text||'').trim();
@@ -1716,8 +1721,11 @@
       }),
       ...carDetailSpecs.slice(-6,-2)
     ] : carDetailSpecs;
+    const identifier = specialist ? (x.vehicle_specs?.identifier || x.vin) : x.vin;
+    const idLabel = intl.identifierLabel(x.vehicle_category,x.vehicle_specs?.vehicle_type,lang);
+    const identifierLink = identifier ? `<a class="gallery-vin-code" href="https://www.google.com/search?q=${encodeURIComponent('"'+identifier+'"')}" target="_blank" rel="noopener noreferrer" aria-label="${esc(idLabel+': '+identifier)}" title="${esc(idLabel+': '+identifier)}">${esc(identifier)}</a>` : '';
     const lowerActions='';
-    root.innerHTML=`<div class="detail-layout"><div class="stack"><section class="panel gallery"><div class="gallery-main" id="galleryMain"><img id="mainPhoto" src="${esc(photos[0])}" alt="${esc(x.title||`${x.brand} ${x.model}`)}"><div class="gallery-vin"><span class="gallery-country-flag">${esc(flag||x.country_code||'')}</span><span class="gallery-vin-code">${esc(x.vin||'VIN yoxdur')}</span>${x.vin?'<button type="button" id="copyVin" aria-label="VIN kopyala" title="VIN kopyala"><i class="fa-regular fa-copy"></i></button>':''}</div><button type="button" class="gallery-fav ${isFav?'active':''}" id="detailPhotoFav" aria-label="Sevimlilər"><i class="fa-${isFav?'solid':'regular'} fa-heart"></i></button><button class="gallery-nav gallery-prev" type="button" aria-label="Əvvəlki şəkil"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-nav gallery-next" type="button" aria-label="Növbəti şəkil"><i class="fa-solid fa-chevron-right"></i></button><div class="gallery-photo-actions">${lowerActions}</div><div class="gallery-zoom-tools"><button type="button" data-gallery-zoom="out" aria-label="Kiçilt"><i class="fa-solid fa-minus"></i></button><button type="button" data-gallery-full aria-label="Tam ekran"><i class="fa-solid fa-expand"></i></button><button type="button" data-gallery-zoom="in" aria-label="Böyüt"><i class="fa-solid fa-plus"></i></button></div></div><div class="gallery-thumbs">${photos.map((p,i)=>`<button class="gallery-thumb ${i===0?'active':''}" data-photo="${esc(p)}" data-index="${i}"><img src="${esc(p)}" alt=""></button>`).join('')}</div></section>${x.video_url?`<section class="panel" style="padding:12px"><div class="section-head"><h3><i class="fa-solid fa-video" aria-hidden="true"></i> Video</h3></div><video controls playsinline preload="metadata" style="display:block;width:100%;max-height:65vh;background:#000;border-radius:10px" src="${esc(x.video_url)}" aria-label="Video"></video></section>`:''}
+    root.innerHTML=`<div class="detail-layout"><div class="stack"><section class="panel gallery"><div class="gallery-main" id="galleryMain"><img id="mainPhoto" src="${esc(photos[0])}" alt="${esc(x.title||`${x.brand} ${x.model}`)}"><div class="gallery-vin"><span class="gallery-country-flag">${esc(flag||x.country_code||'')}</span>${identifierLink}</div><button type="button" class="gallery-fav ${isFav?'active':''}" id="detailPhotoFav" aria-label="Sevimlilər"><i class="fa-${isFav?'solid':'regular'} fa-heart"></i></button><button class="gallery-nav gallery-prev" type="button" aria-label="Əvvəlki şəkil"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-nav gallery-next" type="button" aria-label="Növbəti şəkil"><i class="fa-solid fa-chevron-right"></i></button><div class="gallery-photo-actions">${lowerActions}</div><div class="gallery-zoom-tools"><button type="button" data-gallery-zoom="out" aria-label="Kiçilt"><i class="fa-solid fa-minus"></i></button><button type="button" data-gallery-full aria-label="Tam ekran"><i class="fa-solid fa-expand"></i></button><button type="button" data-gallery-zoom="in" aria-label="Böyüt"><i class="fa-solid fa-plus"></i></button></div></div><div class="gallery-thumbs">${photos.map((p,i)=>`<button class="gallery-thumb ${i===0?'active':''}" data-photo="${esc(p)}" data-index="${i}"><img src="${esc(p)}" alt=""></button>`).join('')}</div></section>${x.video_url?`<section class="panel" style="padding:12px"><div class="section-head"><h3><i class="fa-solid fa-video" aria-hidden="true"></i> Video</h3></div><video controls playsinline preload="metadata" style="display:block;width:100%;max-height:65vh;background:#000;border-radius:10px" src="${esc(x.video_url)}" aria-label="Video"></video></section>`:''}
       <section class="panel detail-main"><div class="detail-title"><div><h1>${esc(x.brand)} ${esc(x.model)}</h1><div class="muted small">${esc([x.generation,x.trim].filter(Boolean).join(' • '))}${(x.generation||x.trim)?' • ':''}${x.year}${specialist&&!x.mileage?'':` • ${Number(x.mileage||0).toLocaleString(locale())} km`}</div><div class="detail-location-line">${esc(detailLocation)}</div></div><div class="card-badges" style="position:static;max-width:none">${listingBadges(x)}</div></div><div class="detail-price">${money(x.price,x.currency)}</div>${insight?`<div class="price-insight"><span class="badge ${priceClass}">${esc(priceLabel)}</span><span>Median: <strong>${money(insight.median,x.currency)}</strong> • ${insight.count} elan</span></div>`:''}<div class="divider"></div><div class="detail-actions detail-actions-compact"><button class="btn btn-outline" id="detailCompare"><i class="fa-solid fa-code-compare"></i>${t('compare')}</button><button class="btn btn-outline" id="detailShare"><i class="fa-solid fa-share-nodes"></i>${t('share')}</button></div><div class="divider"></div><div class="spec-grid">${detailSpecs.map(([a,b])=>`<div class="spec"><span>${esc(staticText(a))}</span><strong>${esc(staticText(b??'-'))}</strong></div>`).join('')}</div>${x.equipment?.length?`<div class="divider"></div><h3>Təchizat</h3><div class="equipment-list">${x.equipment.map(y=>`<span class="equipment-tag"><i class="fa-solid fa-circle-check"></i> ${esc(equipmentLabel(y))}</span>`).join('')}</div>`:''}</section></div>
       <aside class="detail-sidebar stack"><section class="panel seller-card"><div class="row"><span class="seller-avatar-shell avatar-shell ${seller?.membership_tier||'free'}${avatarVerifiedClass(seller?.is_verified)}"><img class="seller-avatar" src="${esc(seller?.avatar_url||'assets/img/brand/icon-192.png')}" alt="">${seller?.membership_tier==='vip'?'<i class="fa-solid fa-crown avatar-crown" aria-label="VIP"></i>':seller?.membership_tier==='premium'?'<i class="fa-solid fa-gem avatar-gem" aria-label="Premium"></i>':''}</span><div class="grow"><strong class="seller-name-line">${seller?.is_verified?verifiedBadge():''}<span class="seller-name-text">${esc(name)}</span></strong><div class="muted small">${seller?.role==='dealer'?'Diler':'Şəxsi satıcı'}</div><div class="detail-trust-inline"><span class="detail-trust-stars" aria-label="Etibar ulduzları">${Array.from({length:5},(_,i)=>`<i class="fa-solid fa-star ${i<Math.max(0,Math.min(5,Math.floor(Number(seller?.trust_score??50)/20)))?'earned':''}"></i>`).join('')}</span><div class="detail-trust-circle-wrap"><span class="detail-trust-circle" style="--score:${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))};--trust:${Number(seller?.trust_score??50)>=80?'#37d38a':Number(seller?.trust_score??50)>=60?'#e2b83c':Number(seller?.trust_score??50)>=40?'#ff9f43':'#ef4d56'}" aria-label="Etibar ${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))}%"><b>${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))}%</b></span><span class="detail-trust-copy"><strong>Etibar</strong><small>${Math.max(0,Math.min(100,Math.round(Number(seller?.trust_score??50))))}/100</small></span></div></div></div></div><div class="contact-grid contact-grid-three"><a class="btn contact-call" href="tel:${esc(phone)}"><i class="fa-solid fa-phone"></i>${t('call')}</a>${wa?`<a class="btn btn-whatsapp contact-whatsapp" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent(`Salam. AvtoVİP-da ${x.brand} ${x.model} (${x.year}) elanınızla maraqlanıram: ${location.href}`)}"><i class="fa-brands fa-whatsapp"></i>${t('whatsapp')}</a>`:'<button class="btn btn-outline contact-whatsapp" disabled>WhatsApp</button>'}${currentUser?.id===x.user_id?`<button class="btn btn-outline contact-message" disabled><i class="fa-regular fa-comment-dots"></i>Mesaj</button>`:`<a class="btn contact-message" href="mesajlar.html?with=${x.user_id}&listing=${x.id}"><i class="fa-regular fa-comment-dots"></i>Mesaj</a>`}</div><div class="seller-description"><h3>Açıqlama</h3><p>${esc(x.description||'Açıqlama əlavə edilməyib.')}</p></div></section>${hist.length?`<section class="panel panel-pad sidebar-price-history"><div class="section-head"><h3>Qiymət tarixçəsi</h3></div><div class="price-history">${hist.map(h=>`<div class="price-row"><span>${dateText(h.created_at)}</span><span class="price-history-values">${h.old_price!=null?`<del>${money(h.old_price,h.currency)}</del>`:''}<strong>${money(h.new_price,h.currency)}</strong></span></div>`).join('')}</div></section>`:''}<section class="panel panel-pad"><div class="section-head"><h3>Təhlükəsiz alış</h3></div><p class="muted small">Ödəniş etməzdən əvvəl avtomobili və sənədləri yerində yoxlayın. Şübhəli elanları bizə bildirin.</p><button class="btn btn-outline btn-block" id="reportBtn"><i class="fa-regular fa-flag"></i>${t('report')}</button></section></aside></div>`;
     const gallery=$('#galleryMain'),mainPhoto=$('#mainPhoto'),thumbs=$$('.gallery-thumb');
@@ -1737,11 +1745,10 @@
     gallery?.querySelector('[data-gallery-zoom="in"]')?.addEventListener('click',e=>{e.stopPropagation();zoomGallery(.5)});
     gallery?.querySelector('[data-gallery-zoom="out"]')?.addEventListener('click',e=>{e.stopPropagation();zoomGallery(-.5)});
     gallery?.querySelector('[data-gallery-full]')?.addEventListener('click',e=>{e.stopPropagation();openFullscreen()});
-    gallery?.addEventListener('dblclick',e=>{if(e.target.closest('button'))return;galleryScale=galleryScale>1?1:2;galleryX=galleryY=0;applyGalleryTransform()});
-    gallery?.addEventListener('touchstart',e=>{if(e.target.closest('button'))return;moved=false;if(e.touches.length===2){startDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);startScale=galleryScale}else if(e.touches.length===1){startX=e.touches[0].clientX;startY=e.touches[0].clientY;dragging=true}},{passive:true});
+    gallery?.addEventListener('dblclick',e=>{if(e.target.closest('button,a'))return;galleryScale=galleryScale>1?1:2;galleryX=galleryY=0;applyGalleryTransform()});
+    gallery?.addEventListener('touchstart',e=>{if(e.target.closest('button,a'))return;moved=false;if(e.touches.length===2){startDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);startScale=galleryScale}else if(e.touches.length===1){startX=e.touches[0].clientX;startY=e.touches[0].clientY;dragging=true}},{passive:true});
     gallery?.addEventListener('touchmove',e=>{if(e.touches.length===2&&startDist){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);galleryScale=clamp(startScale*d/startDist,1,3.5);applyGalleryTransform();e.preventDefault();return}if(e.touches.length===1&&dragging){const dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;if(Math.abs(dx)>6||Math.abs(dy)>6)moved=true;if(galleryScale>1){galleryX+=dx;galleryY+=dy;startX=e.touches[0].clientX;startY=e.touches[0].clientY;applyGalleryTransform();e.preventDefault()}}},{passive:false});
     gallery?.addEventListener('touchend',e=>{if(galleryScale===1&&dragging&&moved&&e.changedTouches?.length){const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>42)showGallery(galleryIndex+(dx<0?1:-1))}dragging=false;startDist=0},{passive:true});
-    $('#copyVin')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(x.vin);toast('VIN kopyalandı.','success')}catch{toast('VIN kopyalana bilmədi.','error')}});
     $('#detailPhotoFav')?.addEventListener('click',toggleDetailFavorite);
     $('#detailShare')?.addEventListener('click',shareListing);
     $('#detailCompare').onclick=()=>toggleCompare(x.id);
@@ -1767,9 +1774,10 @@
   async function initCreateListing(){
     const user=await db.requireAuth();if(!user)return;
     const form=$('#listingForm'),files=$('#listingImages'),preview=$('#imagePreview'),editId=qsParam('edit');
-    const profile = editId ? null : await db.getProfile(user.id).catch(() => null);
+    const profile = editId ? null : currentProfile || await db.getProfile(user.id).catch(() => null);
     const code = String(profile?.country_code || '').trim().toUpperCase();
     await commonFormOptions(document, code && code !== 'AM' ? code : null);
+    if(code && $('#country').value===code)form.dataset.profileCountry=code;
     setupFriendlyFileInput(files,{kind:'images'});
     // Preserve the original car flow; other categories use their own brand lists
     // and JSONB specifications, without forcing car-only technical fields.
@@ -1831,9 +1839,20 @@
         label.textContent = intl.specLabel(key,category,lang);
       }
     };
+    const identifierInput = form.elements.namedItem('vin');
+    const identifierHeading = identifierInput.closest('.field').querySelector('label');
+    const updateIdentifier = () => {
+      const category = categorySelect.value;
+      const label = intl.identifierLabel(category,typeSelect.value,lang);
+      identifierHeading.htmlFor = identifierInput.id = 'listingIdentifier';
+      identifierHeading.textContent = label;
+      identifierInput.placeholder = label;
+      identifierInput.maxLength = category==='car' ? 17 : 80;
+    };
+    typeSelect.addEventListener('change',updateIdentifier);
     typeSelect.addEventListener('change',refreshSpecs);
     let previousCategory = 'car';
-    const carOnlyNames=['mileage','engine_volume','engine_power','fuel','transmission','drivetrain','body_type','color','seats','owners_count','market_origin','vin'];
+    const carOnlyNames=['mileage','engine_volume','engine_power','fuel','transmission','drivetrain','body_type','color','seats','owners_count','market_origin'];
     const refreshCategory=()=>{
       const category=categoryKeys.includes(categorySelect?.value)?categorySelect.value:'car';
       const isCar=category==='car';
@@ -1846,7 +1865,10 @@
         if(control.name==='model') control.maxLength=isCar ? 80 : 130;
         if (categoryChanged && ['model','generation','trim'].includes(control.name)) control.value = '';
       }
-      if (categoryChanged) for (const {input} of specControls.values()) input.value = '';
+      if (categoryChanged) {
+        identifierInput.value = '';
+        for (const {input} of specControls.values()) input.value = '';
+      }
       const previousType = categoryChanged ? '' : typeSelect.value;
       const types = intl.CATEGORY_TYPES[category] || [];
       typeSelect.replaceChildren(new Option(choose[lang] || choose.en,''), ...types.map(value=>new Option(intl.typeLabel(value,lang),value)));
@@ -1854,6 +1876,7 @@
       typeField.hidden = isCar;
       typeSelect.disabled = isCar;
       refreshSpecs();
+      updateIdentifier();
       if (title) title.textContent = isCar ? carTitle : (specialistTitle[lang] || specialistTitle.en);
       const features = (intl.CATEGORY_EXTRAS[category] || []).filter(value=>value!=='Kredit'&&value!=='Barter');
       const checked = new Set([...equipment.querySelectorAll(':checked'),...extraConditions.querySelectorAll(':checked')].map(input=>input.value));
@@ -1929,7 +1952,7 @@
 
       set('brand',data.brand);await wait(120);
       set('model',data.model,{event:'input'});
-      ['generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,data[k],{event:'input'}));
+      ['generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,k==='vin'&&data.vehicle_category!=='car'?(data.vehicle_specs?.identifier??data.vin):data[k],{event:'input'}));
       const countryEl=form.elements.namedItem('country_code');
       if(countryEl&&data.country_code){
         ensureOption(countryEl,data.country_code);countryEl.value=data.country_code;countryEl.dispatchEvent(new Event('change',{bubbles:true}));
@@ -1946,7 +1969,7 @@
          keeps the database row authoritative while editing and prevents a delayed UI
          listener from blanking city/model or restoring stale draft values. */
       await wait(180);
-      ['model','generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,data[k],{event:'input'}));
+      ['model','generation','trim','district','price','year','mileage','engine_volume','engine_power','seats','owners_count','market_origin','vin','description','phone','whatsapp_phone'].forEach(k=>set(k,k==='vin'&&data.vehicle_category!=='car'?(data.vehicle_specs?.identifier??data.vin):data[k],{event:'input'}));
       set('city',data.city,{event:'input'});['currency','body_type','color','fuel','transmission','drivetrain'].forEach(k=>set(k,data[k]));set('condition',data.is_new===true?'new':data.is_new===false?'used':(data.condition||''));
       ['is_credit','is_barter','has_accident','is_painted'].forEach(k=>{const el=form.elements.namedItem(k);if(el)el.checked=!!data[k]});for(const cb of form.querySelectorAll('input[name="equipment"]'))cb.checked=selectedEq.has(fold(cb.value));
       form.dataset.avHydrating='0';form.dispatchEvent(new Event('input',{bubbles:true}));form.dispatchEvent(new Event('change',{bubbles:true}));
@@ -1959,7 +1982,7 @@
       try{
         const fd=new FormData(form);
         const currency=String(fd.get('currency')||'').trim().toUpperCase();
-        if(!/^[A-Z]{3}$/.test(currency))throw new Error(staticText('Elan üçün valyuta seçin.'));
+        if(!intl.listingCurrencies.has(currency) && currency!==editRow?.currency)throw new Error(staticText('Elan üçün valyuta seçin.'));
         if(String(fd.get('country_code')||'').toUpperCase()==='AM'||currency==='AMD')throw new Error('Bu ölkə/valyuta bazarda aktiv deyil.');
         const imageFiles=[...files.files].slice(0,15-existingUrls.length);
         if(!editId&&imageFiles.length<3)throw new Error('Minimum 3 avtomobil şəkli əlavə edin.');
@@ -1989,10 +2012,15 @@
           if(payload[field] == null)payload[field]='';
         }
         payload.vehicle_category=category;
+        if(category!=='car')payload.vin='';
         payload.vehicle_specs=category==='car'?{}:{
           ...(editRow?.vehicle_category===category ? editRow.vehicle_specs : {}),
           vehicle_type:String(fd.get('vehicle_type')||'').trim()
         };
+        if(category!=='car'){
+          if(vinValue)payload.vehicle_specs.identifier=vinValue;
+          else delete payload.vehicle_specs.identifier;
+        }
         if(category!=='car')for(const key of categorySpecFields[category]||[]){
           const raw=fd.get(`vehicle_spec_${key}`);
           if(raw===null){
@@ -2142,7 +2170,25 @@
   }
 
   async function initCompare(){
-    const ids=compareIds();const root=$('#compareRoot');if(!ids.length){root.innerHTML='<div class="empty-state">Müqayisə üçün elan kartlarında “Müqayisə” düyməsinə toxunun.</div>';return}const {data,error}=await sb.from('elanlar').select('*').in('id',ids);if(error){root.innerHTML=esc(error.message);return}const arr=ids.map(id=>(data||[]).find(x=>x.id===id)).filter(Boolean);const rows=[['Qiymət',x=>money(x.price,x.currency)],['İl',x=>x.year],['Yürüş',x=>`${Number(x.mileage).toLocaleString()} km`],['Mühərrik',x=>x.engine_volume?`${x.engine_volume} L`:'-'],['Güc',x=>x.engine_power?`${x.engine_power} a.g.`:'-'],['Yanacaq',x=>x.fuel],['Sürətlər qutusu',x=>x.transmission],['Ötürücü',x=>x.drivetrain],['Ban',x=>x.body_type],['Rəng',x=>x.color],['Kredit',x=>x.is_credit?'Bəli':'Xeyr'],['Barter',x=>x.is_barter?'Bəli':'Xeyr'],['VIN',x=>x.vin||'-']];root.innerHTML=`<div class="compare-wrap panel"><table class="compare-table"><thead><tr><th>Parametr</th>${arr.map(x=>`<th><img class="compare-photo" src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}" alt=""><div style="margin-top:6px"><a href="elan.html?id=${x.id}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a></div><button class="btn btn-outline btn-sm" style="margin-top:6px" data-remove-compare="${x.id}">${esc(staticText('Sil'))}</button></th>`).join('')}</tr></thead><tbody>${rows.map(([n,f])=>`<tr><td>${esc(n)}</td>${arr.map(x=>`<td>${esc(f(x)??'-')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;root.onclick=e=>{const b=e.target.closest('[data-remove-compare]');if(b){setCompareIds(compareIds().filter(x=>x!==b.dataset.removeCompare));initCompare()}};
+    const ids=compareIds();const root=$('#compareRoot');if(!ids.length){root.innerHTML='<div class="empty-state">Müqayisə üçün elan kartlarında “Müqayisə” düyməsinə toxunun.</div>';return}const {data,error}=await sb.from('elanlar').select('*').in('id',ids);if(error){root.innerHTML=esc(error.message);return}const arr=ids.map(id=>(data||[]).find(x=>x.id===id)).filter(Boolean);const carRows=[['Yürüş',x=>`${Number(x.mileage||0).toLocaleString(locale())} km`],['Mühərrik',x=>x.engine_volume?`${x.engine_volume} L`:'-'],['Güc',x=>x.engine_power?`${x.engine_power} a.g.`:'-'],['Yanacaq',x=>x.fuel],['Sürətlər qutusu',x=>x.transmission],['Ötürücü',x=>x.drivetrain],['Ban',x=>x.body_type],['Rəng',x=>x.color]];
+    const groups = new Map();
+    for (const row of arr) {
+      const category = row.vehicle_category || 'car';
+      if (!groups.has(category)) groups.set(category,[]);
+      groups.get(category).push(row);
+    }
+    root.innerHTML = [...groups].map(([category, listings])=>{
+      const common=[['Qiymət',x=>money(x.price,x.currency)],['İl',x=>x.year],['Vəziyyət',x=>x.is_new?'Yeni':'Sürülmüş']];
+      const lookups = new Map(listings.map(row=>[row.id,new Map(intl.listingSpecs(row,lang).map(([key,,value])=>[key,value]))]));
+      const specialistRows = [['Nəqliyyat növü',row=>intl.typeLabel(row.vehicle_specs?.vehicle_type,lang)],
+        ...(intl.SPEC_FIELDS[category]||[]).filter(key=>listings.some(row=>intl.specApplicable(category,row.vehicle_specs?.vehicle_type,key)))
+        .map(key=>[intl.specLabel(key,category,lang),row=>lookups.get(row.id).get(key)])];
+      const identifierNames = [...new Set(listings.map(row=>intl.identifierLabel(category,row.vehicle_specs?.vehicle_type,lang)))];
+      const rows=[...common,...(category==='car'?carRows:specialistRows),['Kredit',x=>x.is_credit?'Bəli':'Xeyr'],['Barter',x=>x.is_barter?'Bəli':'Xeyr'],
+        ...identifierNames.map(name=>[name,row=>intl.identifierLabel(category,row.vehicle_specs?.vehicle_type,lang)===name?(row.vehicle_specs?.identifier||row.vin):null])];
+      return `<div class="compare-wrap panel"><table class="compare-table"><thead><tr><th>${esc(staticText('Parametr'))}</th>${listings.map(x=>`<th><img class="compare-photo" src="${esc(x.image_urls?.[0]||'assets/img/brand/icon-512.png')}" alt=""><div><a href="elan.html?id=${esc(x.id)}"><strong>${esc(x.brand)} ${esc(x.model)}</strong></a></div><button class="btn btn-outline btn-sm" data-remove-compare="${esc(x.id)}">${esc(staticText('Sil'))}</button></th>`).join('')}</tr></thead><tbody>${rows.map(([n,f])=>`<tr><td>${esc(staticText(n))}</td>${listings.map(x=>`<td>${esc(staticText(f(x)??'-'))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    }).join('');
+    root.onclick=e=>{const b=e.target.closest('[data-remove-compare]');if(b){setCompareIds(compareIds().filter(x=>x!==b.dataset.removeCompare));initCompare()}};
   }
 
 

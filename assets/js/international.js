@@ -205,5 +205,47 @@ function loadBrandLogos() {
     }))).catch(() => ({}));
 }
 
-  window.AvtoVIPInternational={loadUnifiedCatalog,loadBrandLogos,SPEC_FIELDS,specLabel,specApplicable,CATEGORY_TYPES,CATEGORY_EXTRAS,featureLabel:(value,lang)=>FEATURE_LABELS[lang]?.[value]||value,typeLabel:(value,lang)=>extraTypeLabels[value]?.[lang]||CATEGORY_TYPE_LABELS[lang]?.[value]||value,GEO_BASE,VEHICLE_BASE,VEHICLE_INDEX_URL,LOCAL_VEHICLE_MAKES,LOCAL_VEHICLE_MODELS,BLOCKED_COUNTRIES,BLOCKED_CURRENCIES,countries,countryHierarchy,cities,makes,models,locale,collator,sortByName,countryName,formatMoney,currencyForCountry,slug};
+  const listingCurrencies = new Set(("AED AFN ALL ANG AOA ARS AUD AWG AZN BAM BBD BDT BGN BHD BIF BMD BND BOB BRL BSD BTN BWP BYN BZD CAD CDF CHF CLP CNY COP CRC CUC CUP CVE CZK DJF DKK DOP DZD EGP ERN ETB EUR FJD FKP GBP GEL GHS GIP GMD GNF GTQ GYD HKD HNL HRK HTG HUF IDR ILS INR IQD IRR ISK JMD JOD JPY KES KGS KHR KMF KPW KRW KWD KYD KZT LAK LBP LKR LRD LSL LYD MAD MDL MGA MKD MMK MNT MOP MRU MUR MVR MWK MXN MYR MZN NAD NGN NIO NOK NPR NZD OMR PAB PEN PGK PHP PKR PLN PYG QAR RON RSD RUB RWF SAR SBD SCR SDG SEK SGD SHP SLE SLL SOS SRD SSP STN SVC SYP SZL THB TJS TMT TND TOP TRY TTD TWD TZS UAH UGX USD UYU UZS VED VES VND VUV WST XAF XCD XCG XDR XOF XPF XSU YER ZAR ZMW ZWG ZWL").split(' '));
+  const identifierNames = {
+    vin:['VIN kod','VIN','VIN-код','VIN kodu','VIN კოდი'],
+    pin:['PIN / Seriya nömrəsi','PIN / Serial number','PIN / Серийный номер','PIN / Seri numarası','PIN / სერიული ნომერი'],
+    hin:['HIN / IMO nömrəsi','HIN / IMO number','Номер HIN / IMO','HIN / IMO numarası','HIN / IMO ნომერი'],
+    msn:['MSN / Qeydiyyat nömrəsi','MSN / Registration number','MSN / Регистрационный номер','MSN / Tescil numarası','MSN / რეგისტრაციის ნომერი'],
+    serial:['Seriya nömrəsi (S/N)','Serial number (S/N)','Серийный номер (S/N)','Seri numarası (S/N)','სერიული ნომერი (S/N)']
+  };
+  function identifierLabel(category,type,lang) {
+    const key = category==='watercraft'?'hin':category==='aircraft'?'msn':
+      ['agriculture','construction'].includes(category)?'pin':
+      category==='caravan'&&type==='Digər'?'serial':
+      ['car','motorcycle','commercial','caravan'].includes(category||'car')?'vin':'serial';
+    return identifierNames[key][vehicleLanguageIndex(lang)];
+  }
+  function listingSpecs(listing,lang) {
+    const category = listing.vehicle_category;
+    const specs = listing.vehicle_specs || {};
+    const type = specs.vehicle_type;
+    const fields = SPEC_FIELDS[category] || [];
+    return fields.filter(key=>specApplicable(category,type,key)).flatMap(key=>{
+      const value = specs[key] ?? (key==='mileage_km' && listing.mileage>0 ? listing.mileage : null);
+      return value==null || value==='' ? [] : [[key,specLabel(key,category,lang),Number.isFinite(Number(value))?new Intl.NumberFormat(locale(lang),{maximumFractionDigits:3}).format(value):String(value)]];
+    });
+  }
+  const cardPriority = {
+    motorcycle:['engine_cc','mileage_km','engine_power_kw'],
+    watercraft:['length_m','operating_hours','cabin_count'],
+    aircraft:['flight_hours','seat_capacity','flight_range_km'],
+    agriculture:['operating_hours','engine_power_kw','working_width_m'],
+    construction:['operating_hours','operating_weight_kg','lifting_capacity_kg'],
+    commercial:['mileage_km','load_capacity_kg','axle_count'],
+    caravan:['sleeping_capacity','length_m','gross_weight_kg']
+  };
+  function specialistCardMeta(listing,lang) {
+    const type = listing.vehicle_specs?.vehicle_type;
+    const rows = listingSpecs(listing,lang);
+    const priority = cardPriority[listing.vehicle_category] || [];
+    const ordered = [...priority.flatMap(key=>rows.filter(row=>row[0]===key)), ...rows.filter(row=>!priority.includes(row[0]))];
+    return [listing.year,type&&((CATEGORY_TYPE_LABELS[lang]?.[type])||extraTypeLabels[type]?.[lang]||type),
+      ...ordered.slice(0,3).map(([,label,value])=>label+' '+value)].filter(Boolean);
+  }
+  window.AvtoVIPInternational={listingCurrencies,identifierLabel,listingSpecs,specialistCardMeta,loadUnifiedCatalog,loadBrandLogos,SPEC_FIELDS,specLabel,specApplicable,CATEGORY_TYPES,CATEGORY_EXTRAS,featureLabel:(value,lang)=>FEATURE_LABELS[lang]?.[value]||value,typeLabel:(value,lang)=>extraTypeLabels[value]?.[lang]||CATEGORY_TYPE_LABELS[lang]?.[value]||value,GEO_BASE,VEHICLE_BASE,VEHICLE_INDEX_URL,LOCAL_VEHICLE_MAKES,LOCAL_VEHICLE_MODELS,BLOCKED_COUNTRIES,BLOCKED_CURRENCIES,countries,countryHierarchy,cities,makes,models,locale,collator,sortByName,countryName,formatMoney,currencyForCountry,slug};
 })();

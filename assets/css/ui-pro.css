@@ -3603,3 +3603,19 @@ body[data-page="messages"] .av-message-footer:not(.mine)>.av-footer-reactions{ma
   margin:0!important;
  }
 }
+
+body[data-page="favorites"] #favoritesGrid{align-items:stretch}
+body[data-page="favorites"] #favoritesGrid .listing-card{display:flex!important;flex-direction:column;height:100%}
+body[data-page="favorites"] #favoritesGrid .listing-body{display:flex!important;flex:1;flex-direction:column;min-width:0}
+body[data-page="favorites"] #favoritesGrid .listing-footer{margin-top:auto!important}
+body[data-page="compare"] .compare-wrap{max-width:100%;min-width:0;margin-bottom:12px}
+body[data-page="compare"] .compare-table{table-layout:fixed;min-width:0;width:100%}
+body[data-page="compare"] .compare-table th,
+body[data-page="compare"] .compare-table td{overflow-wrap:anywhere;vertical-align:top}
+body[data-page="compare"] .compare-table th:first-child{width:22%}
+body[data-page="compare"] .compare-photo{max-width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+@media(max-width:760px){
+  body[data-page="compare"] .compare-table th,body[data-page="compare"] .compare-table td{padding:5px 3px;font-size:10px}
+  body[data-page="compare"] .compare-table .btn{min-width:0;max-width:100%;padding-inline:4px;font-size:10px}
+}
+.gallery-vin .gallery-vin-code[href]{color:inherit;text-decoration:underline;pointer-events:auto}
