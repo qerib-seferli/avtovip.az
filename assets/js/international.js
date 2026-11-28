@@ -177,6 +177,269 @@ const extraTypeLabels = {
 };
 const CATEGORY_TYPE_LABELS={"en":{"Yaxta":"Yacht","Qayıq":"Boat","Katamaran":"Catamaran","Yelkənli":"Sailboat","Gəmi":"Ship","Helikopter":"Helicopter","Təyyarə":"Airplane","Biznes jet":"Business jet","Traktor":"Tractor","Kombayn":"Combine harvester","Səpin texnikası":"Seeding equipment","Qoşqu":"Trailer","Püskürdücü":"Sprayer","Ekskavator":"Excavator","Buldozer":"Bulldozer","Kran":"Crane","Yükləyici":"Loader","Beton texnikası":"Concrete equipment","Yük maşını":"Truck","Furqon":"Van","Avtobus":"Bus","Mikroavtobus":"Minibus","Dartıcı":"Tractor unit","Karavan":"Caravan","Avtodom":"Motorhome","Kem per":"Camper","Digər":"Other","Elektrik":"Electric"},"ru":{"Yaxta":"Яхта","Qayıq":"Лодка","Katamaran":"Катамаран","Yelkənli":"Парусная лодка","Gəmi":"Судно","Helikopter":"Вертолёт","Təyyarə":"Самолёт","Biznes jet":"Бизнес-джет","Traktor":"Трактор","Kombayn":"Комбайн","Səpin texnikası":"Посевная техника","Qoşqu":"Прицеп","Püskürdücü":"Опрыскиватель","Ekskavator":"Экскаватор","Buldozer":"Бульдозер","Kran":"Кран","Yükləyici":"Погрузчик","Beton texnikası":"Бетонная техника","Yük maşını":"Грузовик","Furqon":"Фургон","Avtobus":"Автобус","Mikroavtobus":"Микроавтобус","Dartıcı":"Тягач","Karavan":"Караван","Avtodom":"Автодом","Kem per":"Кемпер","Digər":"Другое","Elektrik":"Электрический","Sport":"Спорт","Naked":"Нейкед","Touring":"Туринг","Cruiser":"Круизер","Scooter":"Скутер","Enduro":"Эндуро","Cross":"Кросс","Ultralight":"Сверхлёгкий","Jet ski":"Гидроцикл"},"tr":{"Yaxta":"Yat","Qayıq":"Tekne","Katamaran":"Katamaran","Yelkənli":"Yelkenli","Gəmi":"Gemi","Helikopter":"Helikopter","Təyyarə":"Uçak","Biznes jet":"İş jeti","Traktor":"Traktör","Kombayn":"Biçerdöver","Səpin texnikası":"Ekim makinesi","Qoşqu":"Römork","Püskürdücü":"Pülverizatör","Ekskavator":"Ekskavatör","Buldozer":"Buldozer","Kran":"Vinç","Yükləyici":"Yükleyici","Beton texnikası":"Beton ekipmanı","Yük maşını":"Kamyon","Furqon":"Panelvan","Avtobus":"Otobüs","Mikroavtobus":"Minibüs","Dartıcı":"Çekici","Karavan":"Karavan","Avtodom":"Motokaravan","Kem per":"Kamp aracı","Digər":"Diğer","Elektrik":"Elektrikli","Ultralight":"Ultra hafif","Jet ski":"Jet ski"},"ka":{"Yaxta":"იახტა","Qayıq":"ნავი","Katamaran":"კატამარანი","Yelkənli":"იალქნიანი ნავი","Gəmi":"გემი","Helikopter":"ვერტმფრენი","Təyyarə":"თვითმფრინავი","Biznes jet":"ბიზნესჯეტი","Traktor":"ტრაქტორი","Kombayn":"კომბაინი","Səpin texnikası":"სათესი ტექნიკა","Qoşqu":"მისაბმელი","Püskürdücü":"შემასხურებელი","Ekskavator":"ექსკავატორი","Buldozer":"ბულდოზერი","Kran":"ამწე","Yükləyici":"დამტვირთველი","Beton texnikası":"ბეტონის ტექნიკა","Yük maşını":"სატვირთო","Furqon":"ფურგონი","Avtobus":"ავტობუსი","Mikroavtobus":"მიკროავტობუსი","Dartıcı":"საწევარი","Karavan":"ქარავანი","Avtodom":"ავტოსახლი","Kem per":"კემპერი","Digər":"სხვა","Elektrik":"ელექტრო","Sport":"სპორტული","Naked":"ნეიკედი","Touring":"ტურინგი","Cruiser":"კრუიზერი","Scooter":"სკუტერი","Enduro":"ენდურო","Cross":"კროსი","Ultralight":"ულტრამსუბუქი","Jet ski":"ჰიდროციკლი"}};
 const CATEGORY_EXTRAS={motorcycle:['Kredit','Barter','Sənədləri qaydasında','ABS','TCS','Elektrik start'],watercraft:['Kredit','Barter','Qeydiyyat sənədi','Naviqasiya','Avtopilot','Xilasetmə avadanlığı'],aircraft:['Kredit','Barter','Uçuşa yararlılıq sertifikatı','Texniki baxış','Avtopilot'],agriculture:['Kredit','Barter','Lizinq','4x4','Kabin','Kondisioner'],construction:['Kredit','Barter','Lizinq','Servis tarixçəsi','Zəmanət'],commercial:['Kredit','Barter','Lizinq','Gömrük sənədi','Soyuducu','Taxoqraf'],caravan:['Kredit','Barter','Lizinq','Duş','Mətbəx','Kondisioner','Günəş paneli']};
+const additionalEquipment = {
+  "motorcycle": [
+    [
+      "Sürətli ötürmə sistemi (Quickshifter)",
+      "Quickshifter",
+      "Квикшифтер",
+      "Quickshifter",
+      "სწრაფი გადართვა (Quickshifter)"
+    ],
+    [
+      "Sürüş rejimləri",
+      "Riding modes",
+      "Режимы движения",
+      "Sürüş modları",
+      "მართვის რეჟიმები"
+    ],
+    [
+      "Qızdırılan tutacaqlar",
+      "Heated grips",
+      "Подогрев рукояток",
+      "Isıtmalı elcikler",
+      "სახელურების გათბობა"
+    ],
+    [
+      "Yan çantalar",
+      "Panniers",
+      "Боковые кофры",
+      "Yan çantalar",
+      "გვერდითი ჩანთები"
+    ]
+  ],
+  "watercraft": [
+    [
+      "Exolot",
+      "Depth sounder",
+      "Эхолот",
+      "Derinlik ölçer",
+      "ექოლოტი"
+    ],
+    [
+      "VHF radio",
+      "VHF radio",
+      "УКВ-радио",
+      "VHF telsiz",
+      "VHF რადიო"
+    ],
+    [
+      "Lövbər bucurqadı",
+      "Anchor windlass",
+      "Якорная лебёдка",
+      "Çapa ırgatı",
+      "ღუზის ჯალამბარი"
+    ],
+    [
+      "Sintinə nasosu",
+      "Bilge pump",
+      "Трюмная помпа",
+      "Sintine pompası",
+      "ტრიუმის ტუმბო"
+    ],
+    [
+      "Sahil elektrik bağlantısı",
+      "Shore power",
+      "Береговое питание",
+      "Sahil elektrik bağlantısı",
+      "ნაპირის ელექტრომომარაგება"
+    ]
+  ],
+  "aircraft": [
+    [
+      "GPS naviqasiyası",
+      "GPS navigation",
+      "GPS-навигация",
+      "GPS navigasyonu",
+      "GPS ნავიგაცია"
+    ],
+    [
+      "ADS-B transponder",
+      "ADS-B transponder",
+      "Транспондер ADS-B",
+      "ADS-B transponder",
+      "ADS-B ტრანსპონდერი"
+    ],
+    [
+      "Fövqəladə lokator ötürücüsü (ELT)",
+      "Emergency locator transmitter (ELT)",
+      "Аварийный радиомаяк (ELT)",
+      "Acil durum konum vericisi (ELT)",
+      "ავარიული შუქურა (ELT)"
+    ],
+    [
+      "Uçuş displeyi (EFIS)",
+      "Electronic flight instruments (EFIS)",
+      "Электронные пилотажные приборы (EFIS)",
+      "Elektronik uçuş göstergeleri (EFIS)",
+      "ელექტრონული ფრენის ხელსაწყოები (EFIS)"
+    ]
+  ],
+  "agriculture": [
+    [
+      "Güc çıxış valı (PTO)",
+      "Power take-off (PTO)",
+      "Вал отбора мощности (ВОМ)",
+      "Kuyruk mili (PTO)",
+      "სიმძლავრის ამრთმევი ლილვი (PTO)"
+    ],
+    [
+      "Üçnöqtəli asqı",
+      "Three-point hitch",
+      "Трёхточечная навеска",
+      "Üç nokta askı sistemi",
+      "სამწერტილიანი საკიდი"
+    ],
+    [
+      "Ön yükləyici",
+      "Front loader",
+      "Фронтальный погрузчик",
+      "Ön yükleyici",
+      "წინა მტვირთავი"
+    ],
+    [
+      "ISOBUS",
+      "ISOBUS",
+      "ISOBUS",
+      "ISOBUS",
+      "ISOBUS"
+    ],
+    [
+      "GPS ilə avtomatik idarəetmə",
+      "GPS auto steering",
+      "Автовождение по GPS",
+      "GPS otomatik dümenleme",
+      "GPS ავტომატური მართვა"
+    ]
+  ],
+  "construction": [
+    [
+      "Əlavə hidravlik xətt",
+      "Auxiliary hydraulics",
+      "Дополнительная гидролиния",
+      "Yardımcı hidrolik hat",
+      "დამხმარე ჰიდრავლიკა"
+    ],
+    [
+      "Tezqoşma mexanizmi",
+      "Quick coupler",
+      "Быстросъёмный механизм",
+      "Hızlı bağlantı ataşmanı",
+      "სწრაფი შემაერთებელი"
+    ],
+    [
+      "Arxa görüntü kamerası",
+      "Rear-view camera",
+      "Камера заднего вида",
+      "Arka görüş kamerası",
+      "უკანა ხედვის კამერა"
+    ],
+    [
+      "Kondisioner",
+      "Air conditioning",
+      "Кондиционер",
+      "Klima",
+      "კონდიციონერი"
+    ],
+    [
+      "Yük momenti məhdudlaşdırıcısı",
+      "Load moment limiter",
+      "Ограничитель грузового момента",
+      "Yük momenti sınırlayıcı",
+      "ტვირთის მომენტის შემზღუდველი"
+    ],
+    [
+      "Aşmaya qarşı kabin qoruması (ROPS)",
+      "Rollover protection (ROPS)",
+      "Защита при опрокидывании (ROPS)",
+      "Devrilmeye karşı koruma (ROPS)",
+      "გადაბრუნებისგან დაცვა (ROPS)"
+    ]
+  ],
+  "commercial": [
+    [
+      "Yük platforması lifti",
+      "Tail lift",
+      "Гидроборт",
+      "Arka yük lifti",
+      "უკანა სატვირთო ლიფტი"
+    ],
+    [
+      "Pnevmatik asqı",
+      "Air suspension",
+      "Пневмоподвеска",
+      "Havalı süspansiyon",
+      "პნევმატური დაკიდება"
+    ],
+    [
+      "Mühərrik əyləci",
+      "Engine brake",
+      "Моторный тормоз",
+      "Motor freni",
+      "ძრავის მუხრუჭი"
+    ],
+    [
+      "Əlavə kabin qızdırıcısı",
+      "Auxiliary cab heater",
+      "Автономный отопитель кабины",
+      "Yardımcı kabin ısıtıcısı",
+      "კაბინის დამხმარე გამათბობელი"
+    ]
+  ],
+  "caravan": [
+    [
+      "Tualet",
+      "Toilet",
+      "Туалет",
+      "Tuvalet",
+      "ტუალეტი"
+    ],
+    [
+      "Soyuducu",
+      "Refrigerator",
+      "Холодильник",
+      "Buzdolabı",
+      "მაცივარი"
+    ],
+    [
+      "İsti su sistemi",
+      "Hot water system",
+      "Система горячего водоснабжения",
+      "Sıcak su sistemi",
+      "ცხელი წყლის სისტემა"
+    ],
+    [
+      "Tent",
+      "Awning",
+      "Маркиза",
+      "Tente",
+      "ტენტი"
+    ],
+    [
+      "Yaşayış akkumulyatoru",
+      "Leisure battery",
+      "Аккумулятор жилого отсека",
+      "Yaşam aküsü",
+      "საცხოვრებელი აკუმულატორი"
+    ],
+    [
+      "Sahə elektrik bağlantısı (230 V)",
+      "230 V electric hookup",
+      "Подключение к сети 230 В",
+      "230 V kamp elektrik bağlantısı",
+      "230 ვ დენის მიერთება"
+    ]
+  ]
+};
+for (const [category,entries] of Object.entries(additionalEquipment)) {
+  CATEGORY_EXTRAS[category] = [...new Set([...CATEGORY_EXTRAS[category],...entries.map(([name])=>name)])];
+  for (const [name,...translations] of entries) {
+    for (const [index,language] of ['en','ru','tr','ka'].entries()) {
+      FEATURE_LABELS[language][name] ||= translations[index];
+    }
+  }
+}
+
 const SPEC_FIELDS = {"motorcycle": ["engine_cc", "engine_power_kw", "mileage_km"], "watercraft": ["length_m", "beam_m", "operating_hours", "engine_power_kw", "cabin_count", "passenger_capacity"], "aircraft": ["flight_hours", "operating_hours", "seat_capacity", "flight_range_km", "engine_power_kw", "max_takeoff_weight_kg"], "agriculture": ["operating_hours", "engine_power_kw", "working_width_m", "load_capacity_kg"], "construction": ["operating_hours", "engine_power_kw", "operating_weight_kg", "lifting_capacity_kg", "bucket_capacity_m3"], "commercial": ["mileage_km", "axle_count", "load_capacity_kg", "gross_weight_kg", "cargo_volume_m3"], "caravan": ["sleeping_capacity", "length_m", "gross_weight_kg", "mileage_km"]};
 const SPEC_LABELS = {"engine_cc": ["Mühərrik həcmi (sm³)", "Engine displacement (cc)", "Объём двигателя (см³)", "Motor hacmi (cm³)", "ძრავის მოცულობა (სმ³)"], "engine_power_kw": ["Güc (kW)", "Power (kW)", "Мощность (кВт)", "Güç (kW)", "სიმძლავრე (კვტ)"], "mileage_km": ["Yürüş (km)", "Mileage (km)", "Пробег (км)", "Kilometre (km)", "გარბენი (კმ)"], "operating_hours": ["İş saatı", "Operating hours", "Моточасы", "Çalışma saati", "მუშაობის საათები"], "length_m": ["Uzunluq (m)", "Length (m)", "Длина (м)", "Uzunluk (m)", "სიგრძე (მ)"], "beam_m": ["En (m)", "Beam (m)", "Ширина (м)", "Genişlik (m)", "სიგანე (მ)"], "cabin_count": ["Kabin sayı", "Cabins", "Число кают", "Kabin sayısı", "კაიუტების რაოდენობა"], "passenger_capacity": ["Sərnişin tutumu", "Passenger capacity", "Вместимость пассажиров", "Yolcu kapasitesi", "მგზავრთა ტევადობა"], "flight_hours": ["Uçuş saatı", "Flight hours", "Лётные часы", "Uçuş saati", "ფრენის საათები"], "seat_capacity": ["Oturacaq sayı", "Seats", "Число мест", "Koltuk sayısı", "ადგილების რაოდენობა"], "flight_range_km": ["Uçuş məsafəsi (km)", "Flight range (km)", "Дальность полёта (км)", "Uçuş menzili (km)", "ფრენის მანძილი (კმ)"], "max_takeoff_weight_kg": ["Maksimal qalxma çəkisi (kq)", "Max takeoff weight (kg)", "Макс. взлётная масса (кг)", "Azami kalkış ağırlığı (kg)", "აფრენის მაქსიმალური წონა (კგ)"], "working_width_m": ["İş eni (m)", "Working width (m)", "Рабочая ширина (м)", "Çalışma genişliği (m)", "სამუშაო სიგანე (მ)"], "load_capacity_kg": ["Yük tutumu (kq)", "Payload (kg)", "Грузоподъёмность (кг)", "Yük kapasitesi (kg)", "ტვირთამწეობა (კგ)"], "operating_weight_kg": ["İş çəkisi (kq)", "Operating weight (kg)", "Эксплуатационная масса (кг)", "Çalışma ağırlığı (kg)", "სამუშაო წონა (კგ)"], "lifting_capacity_kg": ["Qaldırma qabiliyyəti (kq)", "Lifting capacity (kg)", "Подъёмная способность (кг)", "Kaldırma kapasitesi (kg)", "აწევის ტევადობა (კგ)"], "bucket_capacity_m3": ["Çömçə həcmi (m³)", "Bucket capacity (m³)", "Объём ковша (м³)", "Kova hacmi (m³)", "ციცხვის მოცულობა (მ³)"], "axle_count": ["Ox sayı", "Axles", "Число осей", "Aks sayısı", "ღერძების რაოდენობა"], "gross_weight_kg": ["Ümumi çəki (kq)", "Gross weight (kg)", "Полная масса (кг)", "Toplam ağırlık (kg)", "სრული წონა (კგ)"], "cargo_volume_m3": ["Yük həcmi (m³)", "Cargo volume (m³)", "Объём груза (м³)", "Yük hacmi (m³)", "ტვირთის მოცულობა (მ³)"], "sleeping_capacity": ["Yataq sayı", "Berths", "Спальные места", "Yatak sayısı", "საძილე ადგილები"]};
 
@@ -213,12 +476,32 @@ function loadBrandLogos() {
     msn:['MSN / Qeydiyyat nömrəsi','MSN / Registration number','MSN / Регистрационный номер','MSN / Tescil numarası','MSN / რეგისტრაციის ნომერი'],
     serial:['Seriya nömrəsi (S/N)','Serial number (S/N)','Серийный номер (S/N)','Seri numarası (S/N)','სერიული ნომერი (S/N)']
   };
-  function identifierLabel(category,type,lang) {
-    const key = category==='watercraft'?'hin':category==='aircraft'?'msn':
+  function identifierKind(category,type) {
+    return category==='watercraft'?'hin':category==='aircraft'?'msn':
       ['agriculture','construction'].includes(category)?'pin':
       category==='caravan'&&type==='Digər'?'serial':
       ['car','motorcycle','commercial','caravan'].includes(category||'car')?'vin':'serial';
-    return identifierNames[key][vehicleLanguageIndex(lang)];
+  }
+  function identifierLabel(category,type,lang) {
+    return identifierNames[identifierKind(category,type)][vehicleLanguageIndex(lang)];
+  }
+  function identifierLookupUrl(listing, identifier) {
+    const code = String(identifier||'').trim();
+    const kind = identifierKind(listing.vehicle_category,listing.vehicle_specs?.vehicle_type);
+    if (kind==='vin' && /^[A-HJ-NPR-Z0-9]{17}$/i.test(code)) {
+      const url = new URL('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/'+encodeURIComponent(code.toUpperCase()));
+      url.searchParams.set('format','xml');
+      if (/^\d{4}$/.test(String(listing.year))) url.searchParams.set('modelyear',listing.year);
+      return url.href;
+    }
+    const context = {
+      vin:'VIN decoder',pin:'equipment PIN serial number',
+      hin:/^(?:IMO\s*)?\d{7}$/i.test(code)?'ship IMO number':'boat HIN hull identification number',
+      msn:/^\d+$/.test(code)?'aircraft MSN manufacturer serial number':'aircraft registration MSN',
+      serial:'vehicle serial number'
+    }[kind];
+    const query = [context,listing.brand,listing.model,'"'+code+'"'].filter(Boolean).join(' ');
+    return 'https://www.google.com/search?q='+encodeURIComponent(query);
   }
   function listingSpecs(listing,lang) {
     const category = listing.vehicle_category;
@@ -247,5 +530,5 @@ function loadBrandLogos() {
     return [listing.year,type&&((CATEGORY_TYPE_LABELS[lang]?.[type])||extraTypeLabels[type]?.[lang]||type),
       ...ordered.slice(0,3).map(([,label,value])=>label+' '+value)].filter(Boolean);
   }
-  window.AvtoVIPInternational={listingCurrencies,identifierLabel,listingSpecs,specialistCardMeta,loadUnifiedCatalog,loadBrandLogos,SPEC_FIELDS,specLabel,specApplicable,CATEGORY_TYPES,CATEGORY_EXTRAS,featureLabel:(value,lang)=>FEATURE_LABELS[lang]?.[value]||value,typeLabel:(value,lang)=>extraTypeLabels[value]?.[lang]||CATEGORY_TYPE_LABELS[lang]?.[value]||value,GEO_BASE,VEHICLE_BASE,VEHICLE_INDEX_URL,LOCAL_VEHICLE_MAKES,LOCAL_VEHICLE_MODELS,BLOCKED_COUNTRIES,BLOCKED_CURRENCIES,countries,countryHierarchy,cities,makes,models,locale,collator,sortByName,countryName,formatMoney,currencyForCountry,slug};
+  window.AvtoVIPInternational={listingCurrencies,identifierLabel,identifierLookupUrl,listingSpecs,specialistCardMeta,loadUnifiedCatalog,loadBrandLogos,SPEC_FIELDS,specLabel,specApplicable,CATEGORY_TYPES,CATEGORY_EXTRAS,featureLabel:(value,lang)=>FEATURE_LABELS[lang]?.[value]||value,typeLabel:(value,lang)=>extraTypeLabels[value]?.[lang]||CATEGORY_TYPE_LABELS[lang]?.[value]||value,GEO_BASE,VEHICLE_BASE,VEHICLE_INDEX_URL,LOCAL_VEHICLE_MAKES,LOCAL_VEHICLE_MODELS,BLOCKED_COUNTRIES,BLOCKED_CURRENCIES,countries,countryHierarchy,cities,makes,models,locale,collator,sortByName,countryName,formatMoney,currencyForCountry,slug};
 })();

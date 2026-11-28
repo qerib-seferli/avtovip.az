@@ -489,6 +489,8 @@
     'Benzin':{en:'Petrol',ru:'Бензин',tr:'Benzin',ka:'ბენზინი'},'Dizel':{en:'Diesel',ru:'Дизель',tr:'Dizel',ka:'დიზელი'},'Qaz':{en:'Gas/LPG',ru:'Газ/LPG',tr:'LPG/Gaz',ka:'გაზი/LPG'},'Elektro':{en:'Electric',ru:'Электро',tr:'Elektrik',ka:'ელექტრო'},'Hibrid':{en:'Hybrid',ru:'Гибрид',tr:'Hibrit',ka:'ჰიბრიდი'},'Plug-in Hibrid':{en:'Plug-in hybrid',ru:'Plug-in гибрид',tr:'Plug-in hibrit',ka:'Plug-in ჰიბრიდი'},'Hidrogen':{en:'Hydrogen',ru:'Водород',tr:'Hidrojen',ka:'წყალბადი'},'Dizel-Hibrid':{en:'Diesel hybrid',ru:'Дизель-гибрид',tr:'Dizel hibrit',ka:'დიზელ-ჰიბრიდი'},
     'Avtomat (AT)':{en:'Automatic (AT)',ru:'Автомат (AT)',tr:'Otomatik (AT)',ka:'ავტომატური (AT)'},'Avtomat (DHT)':{en:'Automatic (DHT)',ru:'Автомат (DHT)',tr:'Otomatik (DHT)',ka:'ავტომატური (DHT)'},'Avtomat (Robot)':{en:'Automated manual (Robot)',ru:'Робот',tr:'Robotik',ka:'რობოტი'},'Avtomat (Variator)':{en:'CVT',ru:'Вариатор',tr:'CVT',ka:'ვარიატორი'},'Avtomat (Reduktor)':{en:'Reducer / single-speed',ru:'Редуктор',tr:'Redüktör',ka:'რედუქტორი'},'Mexaniki (MT)':{en:'Manual (MT)',ru:'Механика (MT)',tr:'Manuel (MT)',ka:'მექანიკური (MT)'},
     'Ön':{en:'Front-wheel drive',ru:'Передний',tr:'Önden çekiş',ka:'წინა ამძრავი'},'Arxa':{en:'Rear-wheel drive',ru:'Задний',tr:'Arkadan çekiş',ka:'უკანა ამძრავი'},'Tam':{en:'All-wheel drive',ru:'Полный',tr:'Dört çeker',ka:'სრული ამძრავი'},
+    'Video seçilməyib.':{en:'No video selected',ru:'Видео не выбрано',tr:'Video seçilmedi',ka:'ვიდეო არ არის არჩეული'},
+    'Mövcud video saxlanılır.':{en:'Existing video will be kept',ru:'Текущее видео будет сохранено',tr:'Mevcut video korunacak',ka:'არსებული ვიდეო შენარჩუნდება'},
     'Elan üçün valyuta seçin.':{en:'Select a currency for the listing.',ru:'Выберите валюту объявления.',tr:'İlan için para birimi seçin.',ka:'აირჩიეთ განცხადების ვალუტა.'},
     'Bu valyuta elan bazasında qəbul edilmədi.':{en:'The listing database rejected this currency.',ru:'База объявлений отклонила эту валюту.',tr:'İlan veritabanı bu para birimini kabul etmedi.',ka:'განცხადებების ბაზამ ეს ვალუტა არ მიიღო.'},
     'Avtobus':{en:'Bus',ru:'Автобус',tr:'Otobüs',ka:'ავტობუსი'},'Avtokran':{en:'Mobile crane',ru:'Автокран',tr:'Mobil vinç',ka:'ავტოკრანი'},'Dartqı':{en:'Tractor unit',ru:'Тягач',tr:'Çekici',ka:'საწევარი'},'Fastbek':{en:'Fastback',ru:'Фастбек',tr:'Fastback',ka:'ფასტბეკი'},'Fayton':{en:'Phaeton',ru:'Фаэтон',tr:'Fayton',ka:'ფაეტონი'},'Furqon':{en:'Cargo van',ru:'Фургон',tr:'Panelvan',ka:'ფურგონი'},'Hetçbek (3 qapı)':{en:'Hatchback (3-door)',ru:'Хэтчбек (3 дв.)',tr:'Hatchback (3 kapı)',ka:'ჰეჩბეკი (3 კარი)'},'Hetçbek (4 qapı)':{en:'Hatchback (4-door)',ru:'Хэтчбек (4 дв.)',tr:'Hatchback (4 kapı)',ka:'ჰეჩბეკი (4 კარი)'},'Hetçbek (5 qapı)':{en:'Hatchback (5-door)',ru:'Хэтчбек (5 дв.)',tr:'Hatchback (5 kapı)',ka:'ჰეჩბეკი (5 კარი)'},'Kabriolet':{en:'Convertible',ru:'Кабриолет',tr:'Cabrio',ka:'კაბრიოლეტი'},'Karvan':{en:'Caravan',ru:'Караван',tr:'Karavan',ka:'ქარავანი'},'Kompakt-Van':{en:'Compact van',ru:'Компактвэн',tr:'Kompakt van',ka:'კომპაქტ-ვენი'},'Kupe':{en:'Coupe',ru:'Купе',tr:'Coupe',ka:'კუპე'},'Kvadrosikl':{en:'Quadricycle',ru:'Квадрицикл',tr:'Quadricycle',ka:'კვადროციკლი'},'Liftbek':{en:'Liftback',ru:'Лифтбек',tr:'Liftback',ka:'ლიფტბეკი'},'Limuzin':{en:'Limousine',ru:'Лимузин',tr:'Limuzin',ka:'ლიმუზინი'},'Mikroavtobus':{en:'Minibus',ru:'Микроавтобус',tr:'Minibüs',ka:'მიკროავტობუსი'},'Mikrovan':{en:'Microvan',ru:'Микровэн',tr:'Microvan',ka:'მიკროვენი'},'Minivan':{en:'Minivan',ru:'Минивэн',tr:'Minivan',ka:'მინივენი'},'Moped':{en:'Moped',ru:'Мопед',tr:'Moped',ka:'მოპედი'},'Motosiklet':{en:'Motorcycle',ru:'Мотоцикл',tr:'Motosiklet',ka:'მოტოციკლი'},'Offroader / SUV (3 qapı)':{en:'SUV (3-door)',ru:'Внедорожник / SUV (3 дв.)',tr:'SUV (3 kapı)',ka:'SUV (3 კარი)'},'Offroader / SUV (5 qapı)':{en:'SUV (5-door)',ru:'Внедорожник / SUV (5 дв.)',tr:'SUV (5 kapı)',ka:'SUV (5 კარი)'},'Offroader / SUV (açıq)':{en:'Open SUV',ru:'Открытый внедорожник',tr:'Açık SUV',ka:'ღია SUV'},'Pikap (bir yarım kabin)':{en:'Pickup (extended cab)',ru:'Пикап (полуторная кабина)',tr:'Pickup (uzatılmış kabin)',ka:'პიკაპი (გრძელი კაბინა)'},'Pikap (ikiqat kabin)':{en:'Pickup (double cab)',ru:'Пикап (двойная кабина)',tr:'Pickup (çift kabin)',ka:'პიკაპი (ორმაგი კაბინა)'},'Pikap (tək kabin)':{en:'Pickup (single cab)',ru:'Пикап (одинарная кабина)',tr:'Pickup (tek kabin)',ka:'პიკაპი (ერთი კაბინა)'},'Qolfkar':{en:'Golf cart',ru:'Гольф-кар',tr:'Golf aracı',ka:'გოლფ-ქარი'},'Rodster':{en:'Roadster',ru:'Родстер',tr:'Roadster',ka:'როდსტერი'},'Sedan':{en:'Sedan',ru:'Седан',tr:'Sedan',ka:'სედანი'},'Skuter':{en:'Scooter',ru:'Скутер',tr:'Scooter',ka:'სკუტერი'},'Spidster':{en:'Speedster',ru:'Спидстер',tr:'Speedster',ka:'სპიდსტერი'},'SUV Kupe':{en:'SUV Coupe',ru:'SUV Купе',tr:'SUV Coupe',ka:'SUV კუპე'},'Tarqa':{en:'Targa',ru:'Тарга',tr:'Targa',ka:'ტარგა'},'Trisikl':{en:'Tricycle',ru:'Трицикл',tr:'Tricycle',ka:'ტრიციკლი'},'Universal (3 qapı)':{en:'Wagon (3-door)',ru:'Универсал (3 дв.)',tr:'Station wagon (3 kapı)',ka:'უნივერსალი (3 კარი)'},'Universal (5 qapı)':{en:'Wagon (5-door)',ru:'Универсал (5 дв.)',tr:'Station wagon (5 kapı)',ka:'უნივერსალი (5 კარი)'},'Van':{en:'Van',ru:'Вэн',tr:'Van',ka:'ვენი'},'Yük maşını':{en:'Truck',ru:'Грузовик',tr:'Kamyon',ka:'სატვირთო'},'Digər':{en:'Other',ru:'Другое',tr:'Diğer',ka:'სხვა'}
@@ -1723,7 +1725,7 @@
     ] : carDetailSpecs;
     const identifier = specialist ? (x.vehicle_specs?.identifier || x.vin) : x.vin;
     const idLabel = intl.identifierLabel(x.vehicle_category,x.vehicle_specs?.vehicle_type,lang);
-    const identifierLink = identifier ? `<a class="gallery-vin-code" href="https://www.google.com/search?q=${encodeURIComponent('"'+identifier+'"')}" target="_blank" rel="noopener noreferrer" aria-label="${esc(idLabel+': '+identifier)}" title="${esc(idLabel+': '+identifier)}">${esc(identifier)}</a>` : '';
+    const identifierLink = identifier ? `<a class="gallery-vin-code" href="${esc(intl.identifierLookupUrl(x,identifier))}" target="_blank" rel="noopener noreferrer" aria-label="${esc(idLabel+': '+identifier)}" title="${esc(idLabel+': '+identifier)}">${esc(identifier)}</a>` : '';
     const lowerActions='';
     root.innerHTML=`<div class="detail-layout"><div class="stack"><section class="panel gallery"><div class="gallery-main" id="galleryMain"><img id="mainPhoto" src="${esc(photos[0])}" alt="${esc(x.title||`${x.brand} ${x.model}`)}"><div class="gallery-vin"><span class="gallery-country-flag">${esc(flag||x.country_code||'')}</span>${identifierLink}</div><button type="button" class="gallery-fav ${isFav?'active':''}" id="detailPhotoFav" aria-label="Sevimlilər"><i class="fa-${isFav?'solid':'regular'} fa-heart"></i></button><button class="gallery-nav gallery-prev" type="button" aria-label="Əvvəlki şəkil"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-nav gallery-next" type="button" aria-label="Növbəti şəkil"><i class="fa-solid fa-chevron-right"></i></button><div class="gallery-photo-actions">${lowerActions}</div><div class="gallery-zoom-tools"><button type="button" data-gallery-zoom="out" aria-label="Kiçilt"><i class="fa-solid fa-minus"></i></button><button type="button" data-gallery-full aria-label="Tam ekran"><i class="fa-solid fa-expand"></i></button><button type="button" data-gallery-zoom="in" aria-label="Böyüt"><i class="fa-solid fa-plus"></i></button></div></div><div class="gallery-thumbs">${photos.map((p,i)=>`<button class="gallery-thumb ${i===0?'active':''}" data-photo="${esc(p)}" data-index="${i}"><img src="${esc(p)}" alt=""></button>`).join('')}</div></section>${x.video_url?`<section class="panel" style="padding:12px"><div class="section-head"><h3><i class="fa-solid fa-video" aria-hidden="true"></i> Video</h3></div><video controls playsinline preload="metadata" style="display:block;width:100%;max-height:65vh;background:#000;border-radius:10px" src="${esc(x.video_url)}" aria-label="Video"></video></section>`:''}
       <section class="panel detail-main"><div class="detail-title"><div><h1>${esc(x.brand)} ${esc(x.model)}</h1><div class="muted small">${esc([x.generation,x.trim].filter(Boolean).join(' • '))}${(x.generation||x.trim)?' • ':''}${x.year}${specialist&&!x.mileage?'':` • ${Number(x.mileage||0).toLocaleString(locale())} km`}</div><div class="detail-location-line">${esc(detailLocation)}</div></div><div class="card-badges" style="position:static;max-width:none">${listingBadges(x)}</div></div><div class="detail-price">${money(x.price,x.currency)}</div>${insight?`<div class="price-insight"><span class="badge ${priceClass}">${esc(priceLabel)}</span><span>Median: <strong>${money(insight.median,x.currency)}</strong> • ${insight.count} elan</span></div>`:''}<div class="divider"></div><div class="detail-actions detail-actions-compact"><button class="btn btn-outline" id="detailCompare"><i class="fa-solid fa-code-compare"></i>${t('compare')}</button><button class="btn btn-outline" id="detailShare"><i class="fa-solid fa-share-nodes"></i>${t('share')}</button></div><div class="divider"></div><div class="spec-grid">${detailSpecs.map(([a,b])=>`<div class="spec"><span>${esc(staticText(a))}</span><strong>${esc(staticText(b??'-'))}</strong></div>`).join('')}</div>${x.equipment?.length?`<div class="divider"></div><h3>Təchizat</h3><div class="equipment-list">${x.equipment.map(y=>`<span class="equipment-tag"><i class="fa-solid fa-circle-check"></i> ${esc(equipmentLabel(y))}</span>`).join('')}</div>`:''}</section></div>
@@ -1758,16 +1760,23 @@
     const reason=await uiDialog({title:'Şikayət',message:'Şikayətin səbəbini qısa yazın:',input:true,confirmText:'Göndər'}); if(!reason?.trim())return; const {error}=await sb.from('listing_reports').insert({listing_id:id,reporter_id:currentUser?.id||null,reason:reason.trim()}); if(error)toast(error.message,'error');else toast('Şikayət admin yoxlamasına göndərildi.','success');
   }
 
-  function setupFriendlyFileInput(input,{kind='images'}={}){
+  function setupFriendlyFileInput(input,{kind='images',status=null}={}){
     if(!input||input.dataset.friendly==='1')return;input.dataset.friendly='1';input.classList.add('native-file-hidden');
     const wrap=document.createElement('div');wrap.className='friendly-file';
     const labelMap={
       images:{az:'Şəkilləri seç',en:'Choose photos',ru:'Выбрать фото',tr:'Fotoğraf seç',ka:'ფოტოების არჩევა'},
+      video:{az:'Videonu seç',en:'Choose video',ru:'Выбрать видео',tr:'Video seç',ka:'ვიდეოს არჩევა'},
       media:{az:'Şəkil/video seç',en:'Choose photo/video',ru:'Выбрать фото/видео',tr:'Fotoğraf/video seç',ka:'ფოტო/ვიდეოს არჩევა'}
     };
     const none={az:'Fayl seçilməyib',en:'No file selected',ru:'Файл не выбран',tr:'Dosya seçilmedi',ka:'ფაილი არ არის არჩეული'};
     wrap.innerHTML=`<button type="button" class="btn btn-outline btn-sm friendly-file-btn"><i class="fa-solid fa-upload"></i>${labelMap[kind]?.[lang]||labelMap[kind]?.en}</button><span class="friendly-file-name">${none[lang]||none.en}</span>`;
     input.insertAdjacentElement('afterend',wrap);wrap.querySelector('button').onclick=()=>input.click();
+    if(status){
+      const filename=wrap.querySelector('.friendly-file-name');
+      status.className=filename.className;
+      filename.replaceWith(status);
+      return;
+    }
     input.addEventListener('change',()=>{const n=input.files?.length||0;wrap.querySelector('.friendly-file-name').textContent=n?(n===1?input.files[0].name:`${n} ${lang==='ru'?'файлов':lang==='tr'?'dosya':lang==='ka'?'ფაილი':lang==='az'?'fayl':'files'}`):(none[lang]||none.en)});
   }
 
@@ -1840,7 +1849,9 @@
       }
     };
     const identifierInput = form.elements.namedItem('vin');
-    const identifierHeading = identifierInput.closest('.field').querySelector('label');
+    const identifierField = identifierInput.closest('.field');
+    const identifierGrid = identifierField.parentElement;
+    const identifierHeading = identifierField.querySelector('label');
     const updateIdentifier = () => {
       const category = categorySelect.value;
       const label = intl.identifierLabel(category,typeSelect.value,lang);
@@ -1876,6 +1887,8 @@
       typeField.hidden = isCar;
       typeSelect.disabled = isCar;
       refreshSpecs();
+      (isCar ? identifierGrid : specWrap).append(identifierField);
+      identifierField.classList.toggle('listing-specialist-identifier',!isCar);
       updateIdentifier();
       if (title) title.textContent = isCar ? carTitle : (specialistTitle[lang] || specialistTitle.en);
       const features = (intl.CATEGORY_EXTRAS[category] || []).filter(value=>value!=='Kredit'&&value!=='Barter');
@@ -1913,11 +1926,12 @@
     let selectedListingFiles=[],existingUrls=[],editRow=null,removedExisting=[];
     const videoInput=$('#listingVideo'),videoStatus=$('#listingVideoStatus'),removeVideo=$('#listingRemoveVideo');
     const videoRemoveLabel=$('#listingRemoveVideoLabel');
+    setupFriendlyFileInput(videoInput,{kind:'video',status:videoStatus});
     const previewUrls=new Map();
     const previewUrl=file=>{if(!previewUrls.has(file))previewUrls.set(file,URL.createObjectURL(file));return previewUrls.get(file)};
     const prunePreviewUrls=()=>{for(const [file,url] of previewUrls){if(!selectedListingFiles.includes(file)){URL.revokeObjectURL(url);previewUrls.delete(file)}}};
     window.addEventListener('pagehide',()=>{for(const url of previewUrls.values())URL.revokeObjectURL(url);previewUrls.clear()},{once:true});
-    const updateVideoStatus=()=>{if(!videoStatus)return;const f=videoInput?.files?.[0];videoStatus.textContent=f?`${f.name} (${(f.size/1048576).toFixed(1)} MB)`:(editRow?.video_url&&!removeVideo?.checked?'Mövcud video saxlanılır.':'Video seçilməyib.');};
+    const updateVideoStatus=()=>{if(!videoStatus)return;const f=videoInput?.files?.[0];videoStatus.textContent=f?`${f.name} (${(f.size/1048576).toFixed(1)} MB)`:(editRow?.video_url&&!removeVideo?.checked?staticText('Mövcud video saxlanılır.'):staticText('Video seçilməyib.'));};
     videoInput?.addEventListener('change',()=>{if(videoInput.files?.[0]?.size>50*1024*1024){videoInput.value='';toast('Video maksimum 50 MB ola bilər.','error')}if(videoInput.files?.length&&removeVideo)removeVideo.checked=false;updateVideoStatus()});
     removeVideo?.addEventListener('change',()=>{if(removeVideo.checked&&videoInput)videoInput.value='';updateVideoStatus()});
     const drawEditPreview=()=>{
@@ -1941,7 +1955,7 @@
       const wait=(ms=60)=>new Promise(r=>setTimeout(r,ms));
       /* Hydrate edit values in dependency order. Async catalog/location listeners can
          repopulate selects, so dependent values are restored only after their options exist. */
-      if(categorySelect){categorySelect.value=categoryKeys.includes(data.vehicle_category)?data.vehicle_category:'car';refreshCategory();}
+      set('vehicle_category',categoryKeys.includes(data.vehicle_category)?data.vehicle_category:'car');
       const savedSpecs=data.vehicle_specs&&typeof data.vehicle_specs==='object'?data.vehicle_specs:{};
       set('vehicle_type',savedSpecs.vehicle_type==='Kem per'?'Kemper':savedSpecs.vehicle_type);
       for(const key of categorySpecFields[categorySelect?.value]||[]){

@@ -3619,3 +3619,16 @@ body[data-page="compare"] .compare-photo{max-width:100%;height:auto;aspect-ratio
   body[data-page="compare"] .compare-table .btn{min-width:0;max-width:100%;padding-inline:4px;font-size:10px}
 }
 .gallery-vin .gallery-vin-code[href]{color:inherit;text-decoration:underline;pointer-events:auto}
+
+@media (min-width:901px){
+  body[data-page="explore"] .explore-feed{align-items:stretch!important}
+}
+body[data-page="create-listing"] #listingVehicleSpecs .listing-specialist-identifier{
+  grid-column:span 2;
+  min-width:0;
+  margin-top:4px;
+}
+body[data-page="create-listing"] .listing-specialist-identifier input{width:100%;min-width:0}
+@media (max-width:900px){
+  body[data-page="create-listing"] #listingVehicleSpecs .listing-specialist-identifier{grid-column:1/-1}
+}

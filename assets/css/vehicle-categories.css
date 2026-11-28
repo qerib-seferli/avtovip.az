@@ -138,3 +138,10 @@ html[data-theme="dark"] .vehicle-noncar-brands .vehicle-brand-chip:hover img {
   .vehicle-noncar .vehicle-category-search{grid-column:1/-1;width:100%}
 }
 .vehicle-location-grid{margin-bottom:12px}
+
+body[data-page="home"] #filterPanel .quick-filters > #applyFilters,
+body[data-page="home"] #filterPanel .vehicle-category-search{
+  box-sizing:border-box;
+  height:42px!important;
+  min-height:42px!important;
+}

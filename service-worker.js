@@ -1,4 +1,4 @@
-const CACHE = 'avtovip-shell-18d5da986d1a';
+const CACHE = 'avtovip-shell-cd943c9badb7';
 const STATIC = [
   "./admin/css/admin.css?av=f023cef9b6ef",
   "./admin/js/admin-places.js?av=103a0beace13",
@@ -8,16 +8,16 @@ const STATIC = [
   "./assets/css/patch11.css?av=03817c3c1c54",
   "./assets/css/places/places.css?av=cf70c7430ebe",
   "./assets/css/profile-final.css?av=94ac81542f5e",
-  "./assets/css/ui-pro.css?av=058ef6282443",
-  "./assets/css/vehicle-categories.css?av=555cab4d6f33",
+  "./assets/css/ui-pro.css?av=46ce5cd1d72f",
+  "./assets/css/vehicle-categories.css?av=a14df2fc64ee",
   "./assets/data/places/categories.js?av=a4cbb381928a",
   "./assets/img/brand/icon-192.png",
   "./assets/img/brand/icon-512.png",
   "./assets/img/brand/logo.png",
   "./assets/img/loading/world.webp",
-  "./assets/js/app.js?av=fafabff9af70",
+  "./assets/js/app.js?av=3b5870069215",
   "./assets/js/feed-v20.js?av=758d2dc7c9b3",
-  "./assets/js/international.js?av=63581ed8b368",
+  "./assets/js/international.js?av=5f5337f4f695",
   "./assets/js/patch11.js?av=ec196b8fb043",
   "./assets/js/places/place-add.js?av=1db30b6aa285",
   "./assets/js/places/place-i18n.js?av=b653a4a80b4a",
